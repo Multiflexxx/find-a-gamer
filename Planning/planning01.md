@@ -32,3 +32,13 @@ We want to create a plattform to connect gamers around the globe.
 
 #### Goal
 > I want to find people, to play with or meet in general. 
+
+#### Pain Points
+- Create a new account for every website if it is complicated
+- long waiting time for a match
+- meet creepy people
+- playing alone
+
+> As Gary Gamer I want to find a gaming buddy to enjoy games together. As I want to play as soon as possible I want a have an easy to use website.
+
+
