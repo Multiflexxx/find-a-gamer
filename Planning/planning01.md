@@ -15,6 +15,7 @@ We want to create a plattform to connect gamers around the globe.
 - Validate Discordtags with Discords API if possible
 - Block unwanted users or favor users
 - History for matches
+- Matchmaking e.g. based on age (implicit) -> follow up needed
 
 ## Personas
 
@@ -25,3 +26,6 @@ We want to create a plattform to connect gamers around the globe.
 - Age: 16-20
 - Location: Germany, Nürnberg
 - Language German
+
+#### Situation
+> I play games, but I don't have many friends. So I want to find people, to play with
