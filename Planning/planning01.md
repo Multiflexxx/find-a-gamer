@@ -17,6 +17,7 @@ We want to create a plattform to connect gamers around the globe.
 - Block unwanted users or favor users
 - History for matches
 - Matchmaking e.g. based on age (implicit) -> follow up needed
+- (Optional) "People you played with also liked"
 
 ## Personas.
 
@@ -46,9 +47,9 @@ We want to create a plattform to connect gamers around the globe.
 Use issues to manage workpackages and assigne users.
 
 # Responsibilties:
-- Anton Ochel [(@tony1704)](https://github.com/Tony1704):
-- Anna-Lena Richert [(@aalenaa)](https://github.com/aalenaa):
-- Benno Grimm [(@grimmig18)](https://github.com/Grimmig18):
-- Tizian Groß [(@tizian123)](https://github.com/tizian123):
-- Tristan Emig [(@TristanMrb)](https://github.com/TristanMrb):
-- Marcel Mertens [(@Nerdystuff)](https://github.com/NerdyStuff):
+- Anton Ochel [(@tony1704)](https://github.com/Tony1704): **Manage Github, Frontend UI**
+- Anna-Lena Richert [(@aalenaa)](https://github.com/aalenaa): **Database**
+- Benno Grimm [(@grimmig18)](https://github.com/Grimmig18): **Backend programming**
+- Tizian Groß [(@tizian123)](https://github.com/tizian123): **Moockup, UI**
+- Tristan Emig [(@TristanMrb)](https://github.com/TristanMrb): **Project Lead, Frontend UI**
+- Marcel Mertens [(@Nerdystuff)](https://github.com/NerdyStuff): **Manage Server, Backend**
