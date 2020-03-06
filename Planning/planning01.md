@@ -50,6 +50,6 @@ Use issues to manage workpackages and assigne users.
 - Anton Ochel [(@tony1704)](https://github.com/Tony1704): **Manage Github, Frontend UI**
 - Anna-Lena Richert [(@aalenaa)](https://github.com/aalenaa): **Database**
 - Benno Grimm [(@grimmig18)](https://github.com/Grimmig18): **Backend programming**
-- Tizian Groß [(@tizian123)](https://github.com/tizian123): **Moockup, UI**
+- Tizian Groß [(@tizian123)](https://github.com/tizian123): **Mockup, UI**
 - Tristan Emig [(@TristanMrb)](https://github.com/TristanMrb): **Project Lead, Frontend UI**
 - Marcel Mertens [(@Nerdystuff)](https://github.com/NerdyStuff): **Manage Server, Backend**
