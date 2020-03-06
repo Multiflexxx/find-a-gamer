@@ -1,5 +1,7 @@
 # Meeting Notes from 06.03.2020
 
+Sprint from xx.xx.xxxx - xx.xx.xxxx
+
 ## Vision:
 **Connect Gamers around the world**
 We want to create a plattform to connect gamers around the globe.
@@ -9,6 +11,17 @@ We want to create a plattform to connect gamers around the globe.
 - Matchmaking for a choosen number of searching players
 - Discover trending now games, for most searched games
 
-
-## Nice to have:
+## Optional:
 - Validate Discordtags with Discords API if possible
+- Block unwanted users or favor users
+- History for matches
+
+## Personas
+
+### Gary Gamer
+![Gary Gamer](https://images.assetsdelivery.com/compings_v2/indomercy/indomercy1410/indomercy141000048.jpg)
+
+- Name: Garry Gamer (Gary66)
+- Age: 16-20
+- Location: Germany, Nürnberg
+- Language German
