@@ -17,7 +17,7 @@ We want to create a plattform to connect gamers around the globe.
 - History for matches
 - Matchmaking e.g. based on age (implicit) -> follow up needed
 
-## Personas
+## Personas.
 
 ### Gary Gamer
 ![Gary Gamer](https://images.assetsdelivery.com/compings_v2/indomercy/indomercy1410/indomercy141000048.jpg)
@@ -28,4 +28,7 @@ We want to create a plattform to connect gamers around the globe.
 - Language German
 
 #### Situation
-> I play games, but I don't have many friends. So I want to find people, to play with
+> I play games, but I don't have many friends, who play these games. I play 4 hours a day.
+
+#### Goal
+> I want to find people, to play with or meet in general. 
