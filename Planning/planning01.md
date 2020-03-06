@@ -41,4 +41,12 @@ We want to create a plattform to connect gamers around the globe.
 
 > As Gary Gamer I want to find a gaming buddy to enjoy games together. As I want to play as soon as possible I want a have an easy to use website.
 
+## Work packages:
 
+# Responsibilties:
+Anton Ochel (@tony1704):
+Anna-Lena Richert (@aalenaa):
+Benno Grimm (@grimmig18):
+Tizian Groß (@tizian123):
+Tristan Emig (@TristanMrb):
+Marcel Mertens (@Nerdystuff):
