@@ -10,6 +10,7 @@ We want to create a plattform to connect gamers around the globe.
 - Every user has an own account, where he/she can enter a list of his/her favourite games
 - Matchmaking for a choosen number of searching players
 - Discover trending now games, for most searched games
+- Personised landingpage if logged in
 
 ## Optional:
 - Validate Discordtags with Discords API if possible
@@ -42,11 +43,12 @@ We want to create a plattform to connect gamers around the globe.
 > As Gary Gamer I want to find a gaming buddy to enjoy games together. As I want to play as soon as possible I want a have an easy to use website.
 
 ## Work packages:
+Use issues to manage workpackages and assigne users.
 
 # Responsibilties:
-Anton Ochel (@tony1704):
-Anna-Lena Richert (@aalenaa):
-Benno Grimm (@grimmig18):
-Tizian Groß (@tizian123):
-Tristan Emig (@TristanMrb):
-Marcel Mertens (@Nerdystuff):
+- Anton Ochel [(@tony1704)](https://github.com/Tony1704):
+- Anna-Lena Richert [(@aalenaa)](https://github.com/aalenaa):
+- Benno Grimm [(@grimmig18)](https://github.com/Grimmig18):
+- Tizian Groß [(@tizian123)](https://github.com/tizian123):
+- Tristan Emig [(@TristanMrb)](https://github.com/TristanMrb):
+- Marcel Mertens [(@Nerdystuff)](https://github.com/NerdyStuff):
