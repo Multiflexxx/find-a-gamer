@@ -59,41 +59,41 @@ pom.xml.tag
 settings.json
 
 # compiled output
-dist/*
-!/dist/v4
-!/dist/v5
+*/dist/*
+!*/dist/v4
+!*/dist/v5
 
-/tmp
-/out-tsc
+*/tmp
+*/out-tsc
 
 # dependencies
-/node_modules
+*/node_modules
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+*/.sass-cache
+*/connect.lock
+*/coverage
+*/libpeerconnection.log
 npm-debug.log
 testem.log
-/typings
+*/typings
 
 # e2e
-/e2e/*.js
-/e2e/*.map
+*/e2e/*.js
+*/e2e/*.map
 
 # System Files
 .DS_Store
 Thumbs.db
 
 # Mock API
-/api/node_modules
+*/api/node_modules
 
 # compiled templates
 src/app/homepage/pages/**/*.html
 
-/dist/
-/bazel-out
-/integration/bazel/bazel-*
+*/dist/
+*/bazel-out
+*/integration/bazel/bazel-*
 *.log
 node_modules
