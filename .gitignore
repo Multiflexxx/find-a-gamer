@@ -57,3 +57,43 @@ pom.xml.tag
 
 # VSC
 settings.json
+
+# compiled output
+dist/*
+!/dist/v4
+!/dist/v5
+
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Mock API
+/api/node_modules
+
+# compiled templates
+src/app/homepage/pages/**/*.html
+
+/dist/
+/bazel-out
+/integration/bazel/bazel-*
+*.log
+node_modules
