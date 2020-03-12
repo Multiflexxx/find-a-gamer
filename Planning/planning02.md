@@ -32,3 +32,4 @@ Optional:
 - Endpoint for search and results
 - Endpoint for user login
 - Endpoint for user account
+- Test [IGDB](https://api.igdb.com/)
