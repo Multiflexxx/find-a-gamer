@@ -15,9 +15,20 @@ Optional:
 
 ### Frontend
 - Choose Framework
+- Test combination of multiple frameworks
 - Landing page if not logged in
 - Landing page for logged in
-- Create Account page
+- Create Account page (three steps:)
+1. personal information
+2. choose favourite games
+3. optional
 - User profile
 
+
 ### Backend
+- Database
+- Matchmaking process
+- Notifcation endpoint
+- Endpoint for search and results
+- Endpoint for user login
+- Endpoint for user account
