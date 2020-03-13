@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class MainComponent implements OnInit {
   isLinear = true;
+  hide = true;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
@@ -21,4 +22,5 @@ export class MainComponent implements OnInit {
       secondCtrl: ['', Validators.required]
     });
   }
+  
 }
