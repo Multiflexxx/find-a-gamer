@@ -57,6 +57,7 @@ pom.xml.tag
 
 # VSC
 settings.json
+.vscode/*
 
 # compiled output
 */dist/*
