@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Setup 
 - Setup angular project with style-type sass or migrate from css to scss for existing project : `ng new name –-style=sccs`
-- Install 4 packeges:
+- Install 4 packages:
   - `npm install node-sass --save-dev`
   - `npm install bulma --save-dev`
   - `ng add @angular/material`
