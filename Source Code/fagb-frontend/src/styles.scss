@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Set colors 
+$dark: hsl(0, 0%, 21%);
+$light: hsl(0, 0%, 96%);
+// Update Bulma's global variables
+
+// Update some of Bulma's component variables 
+$body-background-color: $dark;
+$footer-background-color: $dark;
+$footer-color: true;
+footer {color: $light;}
+
+// Import whole Bulma sass
+@import "../node_modules/bulma/bulma.sass";
