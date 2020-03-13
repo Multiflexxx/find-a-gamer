@@ -1,6 +1,19 @@
-# V1
+# find-a-gamer
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
+
+# Setup 
+- Setup angular project with style-type sass or migrate from css to scss for existing project : `ng new name –-style=sccs`
+- Install 4 packeges:
+  - `npm install node-sass --save-dev`
+  - `npm install bulma --save-dev`
+  - `ng add @angular/material`
+  - `npm install --save @fortaewsome/fontawesome-free`
+- Add js and css path to angular.json 
+  - Style: `./node_modules/@fortawesome/fontawesome-free/js/all.js`
+  - Script: `./node_modules/@fortawesome/fontawesome-free/js/all.js`
+
+The last step may not be necessary.
 
 ## Development server
 
