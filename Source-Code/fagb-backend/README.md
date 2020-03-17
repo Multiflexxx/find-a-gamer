@@ -1,3 +1,34 @@
+# Steps:
+1. Switch to directory `fagb-backend`
+2. Use command `npm i -f` to install **all** packages (or install required packages manually)
+3. Use command `npm run start:dev` to see live changes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>

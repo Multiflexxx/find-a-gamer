@@ -57,6 +57,7 @@ pom.xml.tag
 
 # VSC
 settings.json
+.vscode/*
 
 # compiled output
 */dist/*
@@ -97,3 +98,5 @@ src/app/homepage/pages/**/*.html
 */integration/bazel/bazel-*
 *.log
 node_modules
+
+*databaseLogin.json*
