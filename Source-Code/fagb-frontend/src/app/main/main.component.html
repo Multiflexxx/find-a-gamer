@@ -1,73 +1,103 @@
-
 <section class="hero">
-    <div class="hero-body">
-      <div class="container">
-  
-  <mat-horizontal-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
-        <div>
-          <ng-template matStepLabel>Fill out your Profile</ng-template>
-          <mat-form-field>
-            <mat-label>Vorname</mat-label>
-            <input matInput placeholder="First name" formControlName="firstCtrl" required>
-          </mat-form-field>
-          <ng-template matStepLabel>Fill out your name</ng-template>
-          <mat-form-field>
-            <mat-label>Discord Tag</mat-label>
-            <input matInput placeholder="Benutzername#0000" formControlName="firstCtrl" required>
-          </mat-form-field>
-        </div>
-        
-        
-        <div>
-          <mat-form-field>
-            <mat-label>Passwort</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text' " required>
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field>
-            <mat-label>E-Mail</mat-label>
-            <input matInput placeholder="Example@mail.com" required >
-            
-            
-          </mat-form-field>
-        </div>
+  <div class="hero-body">
+    <div class="container">
+
+      <div id="stepper">
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+          <mat-step #profilestep [stepControl]="profileFormGroup">
+            <form [formGroup]="profileFormGroup">
+              <div>
+                <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
+                <mat-form-field>
+                  <mat-label>First name</mat-label>
+                  <input matInput formControlName="nameCtrl" required>
+                </mat-form-field>
+                <!-- <ng-template matStepLabel><span class="ng-template">Fill out your name</span></ng-template> -->
+                <mat-form-field>
+                  <mat-label>Discord Tag</mat-label>
+                  <input matInput formControlName="tagCtrl" required>
+                </mat-form-field>
+              </div>
+
+              <div>
+                <mat-form-field>
+                  <mat-label>Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="passCtrl" required>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>repeat Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" required>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <!-- <div>
+                <mat-form-field>
+                  <mat-label>E-Mail</mat-label>
+                  <input matInput formControlName="mailCtrl" required>
+                </mat-form-field>
+              </div> -->
+
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput [formControl]="emailControl" formControlName="emailControl" required>
+                <mat-error *ngIf="emailControl.invalid">
+                  {{getErrorMessage()}}
+                </mat-error>
+              </mat-form-field>
+
+              <!-- <div>
+                <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="mailCtrl" [formControl]="emailFormControl" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                  Please enter a valid email address
+                </mat-error>
+                <mat-error *ngIf="emailFormControl.hasError('required')">
+                  Email is required
+                </mat-error>
+                </mat-form-field>
+              </div> -->
+
+              <div>
+                <button mat-button matStepperNext class="button is-dark">Next</button>
+              </div>
+            </form>
+          </mat-step>
           
-        
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-      <form [formGroup]="secondFormGroup">
-        <ng-template matStepLabel>Fill out</ng-template>
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                 required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+          <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
+              <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+              </mat-form-field>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+            <p>You are now done.</p>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="stepper.reset()">Reset</button>
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+        <div> step 1 is complete? {{!!profilestep.completed}}</div>
       </div>
-    </mat-step>
-  </mat-horizontal-stepper>
-  
-</div>
-</div>
+    </div>
+  </div>
 </section>
+
+<!-- <app-login></app-login> -->
