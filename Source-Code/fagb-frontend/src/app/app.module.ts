@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './main/register/register.component';
 import { MaterialModule } from './material/material.module';
+import { LoginComponent } from './main/login/login.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MaterialModule } from './material/material.module';
     MainComponent,
     FooterComponent,
     RegisterComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

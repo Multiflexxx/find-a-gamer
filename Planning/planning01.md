@@ -22,7 +22,7 @@ We want to create a plattform to connect gamers around the globe.
 ## Personas.
 
 ### Gary Gamer
-![Gary Gamer](https://images.assetsdelivery.com/compings_v2/indomercy/indomercy1410/indomercy141000048.jpg)
+![Gary Gamer](https://2.bp.blogspot.com/-ZSGiibN6RVM/UoEsn_EojrI/AAAAAAAAFSs/QimaAZElHxQ/s1600/Hardcore+gamer+header.png)
 
 - Name: Garry Gamer (Gary66)
 - Age: 16-20

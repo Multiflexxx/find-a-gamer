@@ -32,6 +32,13 @@ class Game {
 }
 ```
 
+### MatchRequest
+```javascript
+class MatchRequest {
+
+}
+```
+
 ### Match
 ```javascript
 class Match {
