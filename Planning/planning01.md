@@ -8,7 +8,7 @@ We want to create a plattform to connect gamers around the globe.
 
 ## Idea:
 - Every user has an own account, where he/she can enter a list of his/her favourite games
-- Matchmaking for a choosen number of searching players
+- Matchmaking for a chosen number of searching players
 - Discover trending now games, for most searched games
 - Personised landingpage if logged in
 

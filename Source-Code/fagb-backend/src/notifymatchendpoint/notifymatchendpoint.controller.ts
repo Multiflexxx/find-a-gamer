@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { NotifyMatchDto } from './notifymatch.dto';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
 
@@ -10,8 +10,7 @@ export class NotifymatchendpointController {
     database: ConnectToDatabaseService
 
     @Post()
-    handleUpdate(@Body() notifyMatchDto: NotifyMatchDto)
-    {
+    handleUpdate(@Body() notifyMatchDto: NotifyMatchDto) {
         console.log(notifyMatchDto.userID);
 
         // check database
@@ -19,13 +18,9 @@ export class NotifymatchendpointController {
 
         this.database.getResult('SELECT `PersonID` FROM FindAGamingBuddy.Persons WHERE `PersonID` = ' + notifyMatchDto.userID + ';');
 
-        if(this.flagIsSet)
-        {
+        if (this.flagIsSet) {
             return '{"matchFound":true, "matchedUserID":"' + this.matchedUserID + '"}';
-        }
-
-        else
-        {
+        } else {
             return '{"matchFound":false}';
         }
     }
