@@ -34,3 +34,14 @@ Create Table User (
     Primary Key (region_id)
 );
 ```
+
+### Language
+```sql
+Create Table Language (
+    language_id int(11) NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    language_code varchar(10) NOT NULL,
+    Primary Key (language_id)
+);
+```
+    
