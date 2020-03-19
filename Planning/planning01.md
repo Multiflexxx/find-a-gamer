@@ -8,7 +8,7 @@ We want to create a plattform to connect gamers around the globe.
 
 ## Idea:
 - Every user has an own account, where he/she can enter a list of his/her favourite games
-- Matchmaking for a choosen number of searching players
+- Matchmaking for a chosen number of searching players
 - Discover trending now games, for most searched games
 - Personised landingpage if logged in
 
@@ -22,7 +22,7 @@ We want to create a plattform to connect gamers around the globe.
 ## Personas.
 
 ### Gary Gamer
-![Gary Gamer](https://images.assetsdelivery.com/compings_v2/indomercy/indomercy1410/indomercy141000048.jpg)
+![Gary Gamer](https://2.bp.blogspot.com/-ZSGiibN6RVM/UoEsn_EojrI/AAAAAAAAFSs/QimaAZElHxQ/s1600/Hardcore+gamer+header.png)
 
 - Name: Garry Gamer (Gary66)
 - Age: 16-20
