@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { FormControl, FormGroupDirective, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -11,12 +11,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class MainComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   isLinear = true;
   hide = true;
   profileFormGroup: FormGroup;
@@ -37,7 +38,6 @@ export class MainComponent implements OnInit {
     return this.emailControl.hasError('email') ? 'Not a valid email' : '';
   }
 
-  // matcher = new MyErrorStateMatcher();
 
   constructor(private _formBuilder: FormBuilder) {}
 
@@ -52,7 +52,6 @@ export class MainComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
-
   }
 
 }

@@ -1,20 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-game-selection',
-  templateUrl: './game-selection.component.html',
-  styleUrls: ['./game-selection.component.scss']
+  selector: 'app-add-game',
+  templateUrl: './add-game.component.html',
+  styleUrls: ['./add-game.component.scss']
 })
-export class GameSelectionComponent implements OnInit {
-
-  // items = 
-  // [
-  //   {item: 1},{item: 1},{item: 1},
-  //   {item: 1},{item: 1},{item: 1},
-  //   {item: 1},{item: 1},{item: 1},
-  //   {item: 1},{item: 1},{item: 1}
-
-  // ]
+export class AddGameComponent implements OnInit {
 
   items = [
     {
@@ -70,8 +61,6 @@ export class GameSelectionComponent implements OnInit {
 
 
 
-  // public isSelected = false; 
-
   constructor() { }
 
   addGame(id, name): void {
@@ -90,27 +79,25 @@ export class GameSelectionComponent implements OnInit {
       // Add game id to array
       this.selectedGames.push(id);
       var span = document.createElement("SPAN");
-      span.id = "gametag" +id;
+      span.id = "gametag" + id;
       span.classList.add("tag");
+      span.classList.add("gametag");
       var text = document.createTextNode(name);
       span.appendChild(text);
       document.getElementById("gameTags").appendChild(span);
-      if(this.selectedGames.length == 1) {
+      if (this.selectedGames.length == 1) {
         document.getElementById("gametag").style.display = "none";
       }
     } else {
       // Remove game id from array
-      this.selectedGames.splice(index,1);
+      this.selectedGames.splice(index, 1);
       document.getElementById("gametag" + id).remove();
-      if(this.selectedGames.length == 0) {
+      if (this.selectedGames.length == 0) {
         document.getElementById("gametag").style.display = "inherit";
       }
     }
-
-
   }
 
-  // <span class="tag">All</span>
   ngOnInit(): void {
   }
 

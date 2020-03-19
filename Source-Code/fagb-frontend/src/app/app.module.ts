@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
-import { MainComponent } from './main/main.component';
 import { FooterComponent } from './footer/footer.component';
 
 // Angular Material Components
@@ -12,20 +11,21 @@ import { FooterComponent } from './footer/footer.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './main/register/register.component';
 import { MaterialModule } from './material/material.module';
-import { LoginComponent } from './main/login/login.component';
-import { GameSelectionComponent } from './main/game-selection/game-selection.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AddGameComponent } from './add-game/add-game.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    MainComponent,
     FooterComponent,
-    RegisterComponent,
     LoginComponent,
-    GameSelectionComponent,
+    RegisterComponent,
+    AddGameComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
