@@ -1,8 +1,8 @@
 export class Game {
-    game_id: number;
-    name: string;
-    cover_link: string;
-    game_description: string;
-    publisher: string;
-    published: Date;
+    public game_id: number;
+    public name: string;
+    public cover_link: string;
+    public game_description: string;
+    public publisher: string;
+    public published: Date;
 }

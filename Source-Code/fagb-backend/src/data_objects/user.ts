@@ -1,12 +1,12 @@
 export class User {
-    user_id: number;
-    email: string;
-    password_hash: string;
-    nickname: string;
-    discord_tag: string;
-    profile_picture: string;
-    cake_day: string;
-    birthdate: Date;
-    biography: string;
-    region: string;
+    public user_id: number;
+    public email: string;
+    public password_hash: string;
+    public nickname: string;
+    public discord_tag: string;
+    public profile_picture: string;
+    public cake_day: string;
+    public birthdate: Date;
+    public biography: string;
+    public region: string;
 }

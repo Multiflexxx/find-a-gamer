@@ -2,12 +2,12 @@ import { Language } from './language';
 import { Game } from './game';
 
 export class Registration {
-    email: string;
-    password_hash: string;
-    nickname: string;
-    discord_tag: string;
-    birthdate: Date;
-    region: string;
-    languages: Language[];
-    games: Game[];
+    public email: string;
+    public password_hash: string;
+    public nickname: string;
+    public discord_tag: string;
+    public birthdate: Date;
+    public region: string;
+    public languages: Language[];
+    public games: Game[];
 }
