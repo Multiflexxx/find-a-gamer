@@ -4,7 +4,7 @@
 
       <div id="stepper">
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
-          <mat-step #profilestep [stepControl]="profileFormGroup">
+          <mat-step #profilestep [stepControl]="profileFormGroup" [optional]=true>
             <form [formGroup]="profileFormGroup">
               <div>
                 <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
@@ -47,7 +47,7 @@
 
               <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput [formControl]="emailControl" formControlName="emailControl" required>
+                <input matInput [formControl]="emailControl" required>
                 <mat-error *ngIf="emailControl.invalid">
                   {{getErrorMessage()}}
                 </mat-error>
@@ -72,12 +72,17 @@
             </form>
           </mat-step>
           
-          <mat-step [stepControl]="secondFormGroup">
+          <mat-step [stepControl]="secondFormGroup" [optional]=true>
             <form [formGroup]="secondFormGroup">
               <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+              </div>
+              <app-game-selection></app-game-selection>
               <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                <mat-label>Game</mat-label>
+                <input matInput formControlName="secondCtrl" required>
               </mat-form-field>
               <div>
                 <button mat-button matStepperPrevious>Back</button>
@@ -85,16 +90,21 @@
               </div>
             </form>
           </mat-step>
+
           <mat-step>
             <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+            <div class="testcenter">
             <p>You are now done.</p>
+            <p>Enjoin your expierence on FAGB</p>
+            <br>
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button (click)="stepper.reset()">Reset</button>
             </div>
+          </div>
           </mat-step>
         </mat-horizontal-stepper>
-        <div> step 1 is complete? {{!!profilestep.completed}}</div>
+        <!-- <div> step 1 is complete? {{!!profilestep.completed}}</div> -->
       </div>
     </div>
   </div>

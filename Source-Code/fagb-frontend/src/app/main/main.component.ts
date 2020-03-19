@@ -46,8 +46,7 @@ export class MainComponent implements OnInit {
       nameCtrl: ['', Validators.required],
       tagCtrl: ['', Validators.required],
       passCtrl: ['', Validators.required],
-      rpassCtrl: ['', Validators.required], 
-      // emailControl: ['', Validators.email],  
+      rpassCtrl: ['', Validators.required]
     });
     
     this.secondFormGroup = this._formBuilder.group({

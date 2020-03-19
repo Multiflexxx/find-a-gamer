@@ -3,15 +3,26 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 // Set colors 
+$black-ter: hsl(0, 0%, 14%);
 $dark: hsl(0, 0%, 21%);
 $light: hsl(0, 0%, 96%);
 // Update Bulma's global variables
 
 // Update some of Bulma's component variables 
+$title-color: $light;
+
 $body-background-color: $dark;
 $footer-background-color: $dark;
 $footer-color: true;
 footer {color: $light;}
+
+$card-color: $light;
+$card-header-color: $light;
+$card-header-weight: 400;
+$card-background-color: $black-ter;
+
+$tag-color: $light;
+$tag-background-color: green;
 
 // Import whole Bulma sass
 @import "../node_modules/bulma/bulma.sass";

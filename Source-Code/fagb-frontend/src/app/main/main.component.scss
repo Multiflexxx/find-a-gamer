@@ -16,6 +16,13 @@ mat-label {
 .mat-stepper-horizontal {
     margin-top: 8px;
     background-color: hsl(0, 0%, 21%);
+    // background-color: red;
+  }
+
+  .mat-stepper-vertical {
+    margin-top: 8px;
+    background-color: hsl(0, 0%, 21%);
+    // background-color: red;
   }
   
 .mat-form-field {
@@ -29,4 +36,13 @@ mat-form-field {
 
 input::placeholder {
   color: hsl(0, 0%, 96%);
+}
+
+.testcenter {
+  background-color: red;
+  margin: 0 auto;
+}
+
+.testcenter p {
+  background-color: blue;
 }
