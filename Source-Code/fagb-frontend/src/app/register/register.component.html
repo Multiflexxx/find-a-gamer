@@ -1,0 +1,111 @@
+<section class="hero">
+    <div class="hero-body">
+      <div class="container">
+  
+        <div id="stepper">
+          <mat-horizontal-stepper [linear]="isLinear" #stepper>
+            <mat-step #profilestep [stepControl]="profileFormGroup" [optional]=true>
+              <form [formGroup]="profileFormGroup">
+                <div>
+                  <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
+                  <mat-form-field>
+                    <mat-label>First name</mat-label>
+                    <input matInput formControlName="nameCtrl" required>
+                  </mat-form-field>
+                  <!-- <ng-template matStepLabel><span class="ng-template">Fill out your name</span></ng-template> -->
+                  <mat-form-field>
+                    <mat-label>Discord Tag</mat-label>
+                    <input matInput formControlName="tagCtrl" required>
+                  </mat-form-field>
+                </div>
+  
+                <div>
+                  <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text' " formControlName="passCtrl" required>
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>repeat Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" required>
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+  
+                <!-- <div>
+                  <mat-form-field>
+                    <mat-label>E-Mail</mat-label>
+                    <input matInput formControlName="mailCtrl" required>
+                  </mat-form-field>
+                </div> -->
+  
+                <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input matInput [formControl]="emailControl" required>
+                  <mat-error *ngIf="emailControl.invalid">
+                    {{getErrorMessage()}}
+                  </mat-error>
+                </mat-form-field>
+  
+                <!-- <div>
+                  <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="mailCtrl" [formControl]="emailFormControl" [errorStateMatcher]="matcher">
+                  <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                    Please enter a valid email address
+                  </mat-error>
+                  <mat-error *ngIf="emailFormControl.hasError('required')">
+                    Email is required
+                  </mat-error>
+                  </mat-form-field>
+                </div> -->
+  
+                <div>
+                  <button mat-button matStepperNext class="button is-dark">Next</button>
+                </div>
+              </form>
+            </mat-step>
+  
+            <mat-step [stepControl]="secondFormGroup" [optional]=true>
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+                <app-add-game></app-add-game>
+                <mat-form-field>
+                  <mat-label>Game</mat-label>
+                  <input matInput formControlName="secondCtrl" required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+  
+            <mat-step>
+              <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+              <div class="testcenter">
+              <p>You are now done.</p>
+              <p>Enjoin your expierence on FAGB</p>
+              <br>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset()">Reset</button>
+              </div>
+            </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+          <!-- <div> step 1 is complete? {{!!profilestep.completed}}</div> -->
+        </div>
+      </div>
+    </div>
+  </section>
