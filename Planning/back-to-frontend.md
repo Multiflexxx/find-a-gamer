@@ -14,7 +14,14 @@
 ### User
 ```javascript
 class User {
-    
+  "userid": 12,
+  "email": "mail@mail.com",
+  "passwordhash": "123456",
+  "nickname": "GamerName",
+  "discordtag": "User#1234",
+  "birthdate": "01.01.1970",
+  "biography": "I am a gamer",
+  "region": "Europe"
 }
 ```
 
