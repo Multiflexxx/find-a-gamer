@@ -35,6 +35,19 @@ Create Table User (
 );
 ```
 
+### Game
+```sql
+Create Table Game (
+    game_id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    cover_link varchar(255),
+    game_description varchar(500),
+    publisher varchar(255),
+    published DATE,
+    Primary Key (game_id)
+);
+```
+
 ### Language
 ```sql
 Create Table Language (
@@ -54,5 +67,17 @@ Create Table User_Language_Pair (
     Primary Key(pair_id),
     Foreign Key(language_id) REFERENCES Language(language_id),
     Foreign Key(user_id) REFERENCES User(user_id)
+);
+```
+
+### User_Game_Pair
+```sql
+Create Table User_Game_Pair (
+    pair_id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    game_id int NOT NULL,
+    Foreign Key (user_id) REFERENCES User(user_id),
+    Foreign Key (game_id) REFERENCES Game(game_id),
+    Primary Key (pair_id)
 );
 ```
