@@ -46,7 +46,7 @@ Create Table Language (
 ```
 
 ### User_Language_Pair
-´´´sql
+```sql
 Create Table User_Language_Pair (
     pair_id int AUTO_INCREMENT NOT NULL,
     language_id int NOT NULL,
