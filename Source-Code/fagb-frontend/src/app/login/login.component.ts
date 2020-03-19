@@ -12,4 +12,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  toggle(): void{
+    if(document.getElementById("login-modal").className == "modal"){
+    document.getElementById("login-modal").className = "modal is-active";
+    }else{
+      document.getElementById("login-modal").className = "modal";
+    }
+  }
 }
