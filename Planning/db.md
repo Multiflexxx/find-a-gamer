@@ -25,3 +25,12 @@ Create Table User (
     Foreign Key (region_id) REFERENCES Region(region_id)
 );
 ```
+
+### Region
+```sql
+Create Table User (
+    region_id int AUTO_INCREMENT,
+    region_name varchar(30),
+    Primary Key (region_id)
+);
+```
