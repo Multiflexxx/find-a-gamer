@@ -1,3 +1,3 @@
 export class NotifyMatch {
-    userID: string;
+    public userID: string;
 }
