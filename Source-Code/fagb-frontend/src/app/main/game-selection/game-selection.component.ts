@@ -92,6 +92,7 @@ export class GameSelectionComponent implements OnInit {
       var span = document.createElement("SPAN");
       span.id = "gametag" +id;
       span.classList.add("tag");
+      span.classList.add("gametag");
       var text = document.createTextNode(name);
       span.appendChild(text);
       document.getElementById("gameTags").appendChild(span);
