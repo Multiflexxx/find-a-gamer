@@ -44,4 +44,15 @@ Create Table Language (
     Primary Key (language_id)
 );
 ```
-    
+
+### User_Language_Pair
+´´´sql
+Create Table User_Language_Pair (
+    pair_id int AUTO_INCREMENT NOT NULL,
+    language_id int NOT NULL,
+    user_id int NOT NULL,
+    Primary Key(pair_id),
+    Foreign Key(language_id) REFERENCES Language(language_id),
+    Foreign Key(user_id) REFERENCES User(user_id)
+);
+```
