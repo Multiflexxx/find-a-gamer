@@ -28,7 +28,13 @@ class User {
 ### Registration
 ```javascript
 class Registration {
-
+  "email": "mail@mail.com",
+  "passwordhash": "123456",
+  "nickname": "GamerName",
+  "discordtag": "User#1234",
+  "birthdate": "01.01.1970",
+  "region": "Europe",
+  "games": [{game}, {game}]
 }
 ```
 
