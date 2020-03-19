@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { Registration } from '../data_objects/registration';
 import { RegistrationResponse } from '../data_objects/registrationresponse';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
+import { strict } from 'assert';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
@@ -13,6 +15,8 @@ export class RegistrationendpointController {
     @Post()
     handleRegistration(@Body() registration: Registration): RegistrationResponse
     {
+        this.database = new ConnectToDatabaseService();
+
         if(!this.validateInput(registration)) {
             return new RegistrationResponse(false, null);
         }
@@ -26,7 +30,7 @@ export class RegistrationendpointController {
         // get data => registration.userID;
 
         // check database
-        this.database = new ConnectToDatabaseService;
+        
 
         console.log(JSON.stringify(this.database));
 
@@ -50,30 +54,53 @@ export class RegistrationendpointController {
             return false; 
         }
 
+        //Format: mm/dd/yyyy
         if (registration.birthdate) {
-
+            return false;
         }
 
-        if (registration.games) {
+        var gameString:string = QueryBuilder.getGames();
+    
+        var resultSet = this.database.getResult(gameString);
 
-        }
+        resultSet.forEach(result => {
+            registration.games.forEach(game => {
+                if (game.game_id !== result.game_id) {
+                    return false;
+                }
+            })
+        })
         
-        if (registration.languages) {
+        var languageString:string = QueryBuilder.getLanguages();
+    
+        var resultSet = this.database.getResult(languageString);
+        
+        resultSet.forEach(result => {
+            registration.languages.forEach(language => {
+                if (result.language_id !== language.language_id) {
+                    return false;
+                }
+            })
+        });
 
+        if (!(registration.nickname.length > 32 && registration.nickname === "" && registration.nickname === null)) {
+            return false;
         }
 
-        if (!registration.nickname) {
-
+        if (registration.password_hash === null && registration.password_hash === "") {
+            return false;
         }
 
-        if (registration.password_hash) {
-
-        }
-
-        if (registration.region) {
-            
-        }
-
+        var regionString:string = QueryBuilder.getRegions();
+    
+        var resultSet = this.database.getResult(regionString);
+        
+        resultSet.forEach(element => {
+            if (registration.region.region_id !== element.region_id) {
+                return false;
+            }
+        });
+        
         return true;
     }
     
