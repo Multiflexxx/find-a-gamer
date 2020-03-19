@@ -28,6 +28,8 @@ export class RegistrationendpointController {
         // check database
         this.database = new ConnectToDatabaseService;
 
+        console.log(JSON.stringify(this.database));
+
         // this.database.getResult('SELECT `PersonID` FROM FindAGamingBuddy.Persons WHERE `PersonID` = ' + signUp.userID + ';');
 
         // Check if user already in DB -> Redirect to login
@@ -43,8 +45,9 @@ export class RegistrationendpointController {
             return false;
         }
 
-        if (registration.discord_tag) {
-            // REGEX: RegExp([a-zA-Z0-9]*)#(\d{4});
+        var regex = new RegExp('([a-zA-Z0-9]*)#(\d{4})');
+        if (!regex.test(registration.discord_tag)) {
+            return false; 
         }
 
         if (registration.birthdate) {
@@ -76,5 +79,3 @@ export class RegistrationendpointController {
     
 
 }
-
-https://www.npmjs.com/package/email-validator
