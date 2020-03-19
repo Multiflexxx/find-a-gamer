@@ -78,13 +78,30 @@ export class AddGameComponent implements OnInit {
     if (index == -1) {
       // Add game id to array
       this.selectedGames.push(id);
+
+      // Create tag-component
+      var control = document.createElement("DIV");
+      control.classList.add("control");
+      control.id = "gametag" + id;
+
+      var tags = document.createElement("DIV");
+      tags.classList.add("tags", "are-small", "has-addons");
+
       var span = document.createElement("SPAN");
-      span.id = "gametag" + id;
-      span.classList.add("tag");
-      span.classList.add("gametag");
+      span.classList.add("tag", "is-link");
       var text = document.createTextNode(name);
+
+      var adelete = document.createElement("A");
+      adelete.classList.add("tag", "is-delete");
+      adelete.addEventListener("click", (e: Event) => this.addGame(id, name))
+
       span.appendChild(text);
-      document.getElementById("gameTags").appendChild(span);
+      tags.appendChild(span);
+      tags.appendChild(adelete);
+      control.appendChild(tags);
+
+      document.getElementById("gametags").appendChild(control);
+
       if (this.selectedGames.length == 1) {
         document.getElementById("gametag").style.display = "none";
       }
