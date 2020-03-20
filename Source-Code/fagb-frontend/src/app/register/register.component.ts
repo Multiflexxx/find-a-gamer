@@ -17,7 +17,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements AfterViewInit {
+export class RegisterComponent implements OnInit {
   // stepper
   isLinear = true;
   hide = true;
@@ -31,8 +31,6 @@ export class RegisterComponent implements AfterViewInit {
 
   url = 'http://httpbin.org/post';
   json;
-
-  message = "Penis";
 
   constructor(private _formBuilder: FormBuilder, private http: HttpClient) {
     this.profileFormGroup = this._formBuilder.group({
@@ -71,8 +69,7 @@ export class RegisterComponent implements AfterViewInit {
     console.log('Form Test', userData);
   }
 
-  recieveMessage($event) {
-    this.message = $event;
+  ngOnInit(): void {
   }
 
 }
