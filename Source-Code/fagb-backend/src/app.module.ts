@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NotifymatchendpointController } from './notifymatchendpoint/notifymatchendpoint.controller';
 import { ConnectToDatabaseService } from './connecttodatabase/connecttodatabase.service';
-import { SignupendpointController } from './signupendpoint/signupendpoint.controller';
+import { RegistrationendpointController } from './registrationendpoint/registrationendpoint.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, NotifymatchendpointController, SignupendpointController],
+  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController],
   providers: [AppService, ConnectToDatabaseService],
 })
 export class AppModule {}

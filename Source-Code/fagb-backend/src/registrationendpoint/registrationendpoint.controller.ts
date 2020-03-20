@@ -1,16 +1,16 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { SignUpDto } from './signup.dto';
+import { Registration } from '../data_objects/registration';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
 
-@Controller('signupendpoint')
-export class SignupendpointController {
+@Controller('registrationendpoint')
+export class RegistrationendpointController {
     
     database: ConnectToDatabaseService
 
     @Post()
-    handleUpdate(@Body() signUp: SignUpDto)
+    handleUpdate(@Body() registration: Registration)
     {
-        // get data => signUp.userID;
+        // get data => registration.userID;
 
         // check database
         this.database = new ConnectToDatabaseService;
