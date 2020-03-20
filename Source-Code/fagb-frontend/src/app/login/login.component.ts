@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
       this.loginForm = this.formBuilder.group({
         email: '',
         password: '',
-        stayLoggedIn:''});
+        stayLoggedIn:'',
+      });
     }
 
   ngOnInit(): void {
@@ -43,10 +44,8 @@ export class LoginComponent implements OnInit {
     this.emailIsInitial = false;
     if(this.regexp.test(event.target.value)){
       this.emailValid = true;
-      console.log("emailrichtig")
     }else{
       this.emailValid = false;
-      console.log("emailfalsch")
     }
   }
 
@@ -54,15 +53,13 @@ export class LoginComponent implements OnInit {
     this.pwIsInitial = false;
     if(event.target.value == "" || event.target.value == null){
       this.pwEntered = false;
-      console.log("pwfalsch")
     }else{
       this.pwEntered = true;
     }
   }
 
-  login(): void {
-
-
+  login(userData): void {
+    console.log(userData);
   }
 
 }
