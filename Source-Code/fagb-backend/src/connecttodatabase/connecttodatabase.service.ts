@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
+// See https://www.npmjs.com/package/mysql
+
 @Injectable()
 export class ConnectToDatabaseService {
 
     databaseLogin: string;
     connection: any;
 
-    constructor()
-    {
+    constructor() {
         var mysql = require('mysql');
         const databaseLoginData = require('../../databaseLogin.json');
 
@@ -23,13 +24,25 @@ export class ConnectToDatabaseService {
         this.connection.connect();
     }
 
-    public getResult(query: string)
-    {
+    public getResult(query: string): any {
+        var queryResults: any[];
+
         this.connection.query(query, function (error, results, fields) {
-            if (error) throw error;
-            console.log('The solution is: ', results);
-          });
-           
-          this.connection.end();
+            if (error) {
+                throw error;
+            }
+
+            queryResults = results;
+        });
+
+        return queryResults;
+    }
+
+    public executeQuery(query: string): void {
+        this.getResult(query);
+    }
+
+    public closeConnetion() {
+        this.connection.end();
     }
 }

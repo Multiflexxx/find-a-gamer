@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroupDirective, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-
+import { HttpClient } from '@angular/common/http';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -18,40 +18,58 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  // stepper
   isLinear = true;
   hide = true;
   profileFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-
-  @ViewChild('profilestep') profilestep;
+  gameFormGroup: FormGroup;
 
   emailControl = new FormControl('', [
     Validators.required,
     Validators.email,
   ]);
 
-  getErrorMessage() {
-    if (this.emailControl.hasError('required')) {
-      return 'You must enter a value';
-    }
+  url = 'http://httpbin.org/post';
+  json;
 
-    return this.emailControl.hasError('email') ? 'Not a valid email' : '';
-  }
-
-
-  constructor(private _formBuilder: FormBuilder) {}
-
-  ngOnInit() {
-    this.profileFormGroup = this._formBuilder.group({
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+    this.profileFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       tagCtrl: ['', Validators.required],
       passCtrl: ['', Validators.required],
-      rpassCtrl: ['', Validators.required]
+      rpassCtrl: ['', Validators.required],
+      mailCtrl: ['', [Validators.required, Validators.email]]
     });
     
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+    this.gameFormGroup = this.formBuilder.group({
+      secondCtrl: ['', Validators.required],
+      gameCtrl: ['', Validators.required]
     });
+  }
+
+  onSubmit(userData) {
+    // Process checkout data here
+    // this.profileFormGroup.reset();
+
+    this.http.post(this.url, userData).toPromise().then((data:any) => {
+      console.log(data);
+      this.json = JSON.stringify(data.json);
+    });
+    console.log('Form Test', userData);
+  }
+
+  onSubmit1(userData) {
+    // Process checkout data here
+    // this.profileFormGroup.reset();
+
+    this.http.post(this.url, userData).toPromise().then((data:any) => {
+      console.log(data);
+      this.json = JSON.stringify(data.json);
+    });
+    console.log('Form Test', userData);
+  }
+
+  ngOnInit(): void {
   }
 
 }
