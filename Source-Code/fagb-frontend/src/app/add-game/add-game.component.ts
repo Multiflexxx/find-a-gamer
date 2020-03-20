@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-add-game',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-game.component.scss']
 })
 export class AddGameComponent implements OnInit {
+
+  @Input() gameFormGroup: FormGroup;
 
   items = [
     {
@@ -57,7 +60,7 @@ export class AddGameComponent implements OnInit {
 
   public isSelected: Array<boolean> = [false, false, false];
   public selectedGames: Array<number> = [];
-  public gamesString: String = "";
+  public gamesString: String = "Game";
 
 
 

@@ -12,13 +12,11 @@
                     <mat-label>First name</mat-label>
                     <input type="text" matInput formControlName="nameCtrl" required>
                   </mat-form-field>
-                  <!-- <ng-template matStepLabel><span class="ng-template">Fill out your name</span></ng-template> -->
                   <mat-form-field>
                     <mat-label>Discord Tag</mat-label>
                     <input matInput formControlName="tagCtrl" required>
                   </mat-form-field>
                 </div>
-  
                 <div>
                   <mat-form-field>
                     <mat-label>Password</mat-label>
@@ -37,43 +35,34 @@
                     </button>
                   </mat-form-field>
                 </div>
-  
                 <div>
                   <mat-form-field>
                     <mat-label>E-Mail</mat-label>
                     <input matInput formControlName="mailCtrl" required>
                   </mat-form-field>
                 </div>
-  
-                <!-- <mat-form-field>
-                  <mat-label>Email</mat-label>
-                  <input id="email" matInput [formControl]="emailControl" required>
-                  <mat-error *ngIf="emailControl.invalid">
-                    {{getErrorMessage()}}
-                  </mat-error>
-                </mat-form-field> -->
-  
                 <div>
                   <button mat-button matStepperNext class="button is-dark" type="submit">Next</button>
                 </div>
               </form>
             </mat-step>
   
-            <mat-step [stepControl]="secondFormGroup" [optional]=true>
-              <form [formGroup]="secondFormGroup">
+            <mat-step [stepControl]="gameFormGroup" [optional]=true>
+              <form [formGroup]="gameFormGroup" (ngSubmit)="onSubmit1(gameFormGroup.value)">
                 <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
                 <div>
                   <button mat-button matStepperPrevious>Back</button>
                   <button mat-button matStepperNext>Next</button>
                 </div>
-                <app-add-game></app-add-game>
+                <!-- <app-add-game (messageEvent)="recieveMessage($event)"></app-add-game> -->
+                <app-add-game [gameFormGroup]="gameFormGroup"></app-add-game>
                 <mat-form-field>
                   <mat-label>Game</mat-label>
                   <input matInput formControlName="secondCtrl" required>
                 </mat-form-field>
                 <div>
                   <button mat-button matStepperPrevious>Back</button>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext type="submit">Next</button>
                 </div>
               </form>
             </mat-step>
@@ -98,4 +87,5 @@
 
   <pre>
     {{json}}
+    Message: {{message}}
   </pre>
