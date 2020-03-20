@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,16 @@ export class LoginComponent implements OnInit {
   public emailIsInitial: boolean;
   public pwIsInitial: boolean;
   regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  loginForm;
 
-  constructor() { }
+  constructor( private formBuilder: FormBuilder
+    ) {
+      this.loginForm = this.formBuilder.group({
+        email: '',
+        password: '',
+        stayLoggedIn:'',
+      });
+    }
 
   ngOnInit(): void {
     this.emailValid = true;
@@ -35,10 +44,8 @@ export class LoginComponent implements OnInit {
     this.emailIsInitial = false;
     if(this.regexp.test(event.target.value)){
       this.emailValid = true;
-      console.log("emailrichtig")
     }else{
       this.emailValid = false;
-      console.log("emailfalsch")
     }
   }
 
@@ -46,15 +53,13 @@ export class LoginComponent implements OnInit {
     this.pwIsInitial = false;
     if(event.target.value == "" || event.target.value == null){
       this.pwEntered = false;
-      console.log("pwfalsch")
     }else{
       this.pwEntered = true;
     }
   }
 
-  login(): void {
-
-
+  login(userData): void {
+    console.log(userData);
   }
 
 }

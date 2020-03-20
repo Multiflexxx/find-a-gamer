@@ -6,11 +6,11 @@
         <h1 class="title">Login</h1>
       </div>
       <div class="card-content">
-        <form #login="ngForm">
+        <form #loginForm="ngForm" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value);">
           <div class="field">
             <label class="label has-text-white">E-Mail</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-rounded" type="email" placeholder="E-Mail" id="emailInput" (keyup)= "validateEmail($event)" required email>
+              <input class="input is-rounded" type="email" formControlName="email" placeholder="E-Mail" id="emailInput" (keyup)= "validateEmail($event)" required email>
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
               </span>
@@ -28,7 +28,7 @@
           <div class="field">
             <label class="label has-text-white" id="pwInput">Passwort</label>
             <div class="control has-icons-left">
-              <input class="input is-rounded" type="password" placeholder="Passwort" (keyup) ="validatePassword($event)" required>
+              <input class="input is-rounded" type="password" formControlName="password" placeholder="Passwort" (keyup) ="validatePassword($event)" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -40,14 +40,14 @@
           <div class="field">
             <div class="control">
               <label class="checkbox has-text-white">
-                <input type="checkbox" id="stayLoggedIn">
+                <input type="checkbox" id="stayLoggedIn" formControlName="stayLoggedIn">
                 Angemeldet bleiben
               </label>
             </div>
           </div>
           <div class="field is-grouped">
             <div class="control">
-              <button class="button is-link" [disabled]="!((emailValid && pwEntered) && !emailIsInitial && !pwIsInitial)">Login</button>
+              <button class="button is-link" type="submit" [disabled]="!((emailValid && pwEntered) && !emailIsInitial && !pwIsInitial)">Login</button>
             </div>
             <div class="control">
               <button class="button is-link is-light" (click)="toggle()">Abbrechen</button>
