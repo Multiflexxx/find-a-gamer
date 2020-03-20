@@ -32,16 +32,16 @@ export class RegisterComponent implements OnInit {
   url = 'http://httpbin.org/post';
   json;
 
-  constructor(private _formBuilder: FormBuilder, private http: HttpClient) {
-    this.profileFormGroup = this._formBuilder.group({
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+    this.profileFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       tagCtrl: ['', Validators.required],
       passCtrl: ['', Validators.required],
       rpassCtrl: ['', Validators.required],
-      mailCtrl: ['', Validators.required]
+      mailCtrl: ['', [Validators.required, Validators.email]]
     });
     
-    this.gameFormGroup = this._formBuilder.group({
+    this.gameFormGroup = this.formBuilder.group({
       secondCtrl: ['', Validators.required],
       gameCtrl: ['', Validators.required]
     });

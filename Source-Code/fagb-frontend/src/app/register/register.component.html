@@ -42,7 +42,7 @@
                   </mat-form-field>
                 </div>
                 <div>
-                  <button mat-button matStepperNext class="button is-dark" type="submit">Next</button>
+                  <button mat-button matStepperNext class="button is-dark" type="submit" [disabled]="profileFormGroup.invalid">Next</button>
                 </div>
               </form>
             </mat-step>
