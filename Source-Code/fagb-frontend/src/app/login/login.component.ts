@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,15 @@ export class LoginComponent implements OnInit {
   public emailIsInitial: boolean;
   public pwIsInitial: boolean;
   regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  loginForm;
 
-  constructor() { }
+  constructor( private formBuilder: FormBuilder
+    ) {
+      this.loginForm = this.formBuilder.group({
+        email: '',
+        password: '',
+        stayLoggedIn:''});
+    }
 
   ngOnInit(): void {
     this.emailValid = true;
