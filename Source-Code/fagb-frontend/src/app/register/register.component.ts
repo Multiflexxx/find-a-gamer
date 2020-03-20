@@ -19,15 +19,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RegisterComponent implements OnInit {
   // stepper
-  isLinear = true;
+  isEditable = false;
   hide = true;
   profileFormGroup: FormGroup;
   gameFormGroup: FormGroup;
-
-  emailControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
 
   url = 'http://httpbin.org/post';
   json;
@@ -42,15 +37,11 @@ export class RegisterComponent implements OnInit {
     });
     
     this.gameFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required],
       gameCtrl: ['', Validators.required]
     });
   }
 
   onSubmit(userData) {
-    // Process checkout data here
-    // this.profileFormGroup.reset();
-
     this.http.post(this.url, userData).toPromise().then((data:any) => {
       console.log(data);
       this.json = JSON.stringify(data.json);
@@ -59,9 +50,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit1(userData) {
-    // Process checkout data here
-    // this.profileFormGroup.reset();
-
     this.http.post(this.url, userData).toPromise().then((data:any) => {
       console.log(data);
       this.json = JSON.stringify(data.json);

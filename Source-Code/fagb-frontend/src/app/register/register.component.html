@@ -3,8 +3,8 @@
       <div class="container">
   
         <div id="stepper">
-          <mat-horizontal-stepper [linear]="isLinear" #stepper>
-            <mat-step #profilestep [stepControl]="profileFormGroup" [optional]=true>
+          <mat-horizontal-stepper linear #stepper>
+            <mat-step [stepControl]="profileFormGroup" [editable]="isEditable" [optional]="true">
               <form [formGroup]="profileFormGroup" (ngSubmit)="onSubmit(profileFormGroup.value)">
                 <div>
                   <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
@@ -47,21 +47,15 @@
               </form>
             </mat-step>
   
-            <mat-step [stepControl]="gameFormGroup" [optional]=true>
+            <mat-step [stepControl]="gameFormGroup" [editable]="isEditable">
               <form [formGroup]="gameFormGroup" (ngSubmit)="onSubmit1(gameFormGroup.value)">
                 <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
                 <div>
                   <button mat-button matStepperPrevious>Back</button>
                   <button mat-button matStepperNext>Next</button>
                 </div>
-                <!-- <app-add-game (messageEvent)="recieveMessage($event)"></app-add-game> -->
                 <app-add-game [gameFormGroup]="gameFormGroup"></app-add-game>
-                <mat-form-field>
-                  <mat-label>Game</mat-label>
-                  <input matInput formControlName="secondCtrl" required>
-                </mat-form-field>
                 <div>
-                  <button mat-button matStepperPrevious>Back</button>
                   <button mat-button matStepperNext type="submit">Next</button>
                 </div>
               </form>
@@ -69,14 +63,9 @@
   
             <mat-step>
               <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
-              <div class="testcenter">
+              <div>
               <p>You are now done.</p>
               <p>Enjoin your expierence on FAGB</p>
-              <br>
-              <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button (click)="stepper.reset()">Reset</button>
-              </div>
             </div>
             </mat-step>
           </mat-horizontal-stepper>
