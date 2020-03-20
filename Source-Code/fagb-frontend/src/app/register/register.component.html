@@ -5,7 +5,7 @@
         <div id="stepper">
           <mat-horizontal-stepper linear #stepper>
             <mat-step [stepControl]="profileFormGroup" [editable]="isEditable" [optional]="true">
-              <form [formGroup]="profileFormGroup" (ngSubmit)="onSubmit(profileFormGroup.value)">
+              <form [formGroup]="profileFormGroup" (ngSubmit)="onProfileSubmit(profileFormGroup.value)">
                 <div>
                   <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
                   <mat-form-field>
@@ -48,7 +48,7 @@
             </mat-step>
   
             <mat-step [stepControl]="gameFormGroup" [editable]="isEditable">
-              <form [formGroup]="gameFormGroup" (ngSubmit)="onSubmit1(gameFormGroup.value)">
+              <form [formGroup]="gameFormGroup" (ngSubmit)="onBackEndSubmit(gameFormGroup.value)">
                 <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
                 <div>
                   <button mat-button matStepperPrevious>Back</button>
@@ -62,6 +62,7 @@
             </mat-step>
   
             <mat-step>
+
               <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
               <div>
               <p>You are now done.</p>

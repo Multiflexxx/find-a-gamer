@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   profileFormGroup: FormGroup;
   gameFormGroup: FormGroup;
 
+  private profileData : any;
   url = 'http://httpbin.org/post';
   json;
 
@@ -41,16 +42,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit(userData) {
-    this.http.post(this.url, userData).toPromise().then((data:any) => {
-      console.log(data);
-      this.json = JSON.stringify(data.json);
-    });
-    console.log('Form Test', userData);
+  onProfileSubmit(userData) {
+    this.profileData = userData;
   }
 
-  onSubmit1(userData) {
-    this.http.post(this.url, userData).toPromise().then((data:any) => {
+  onBackEndSubmit(userData) {
+    var data = { o1: this.profileData, o2 : userData}
+    this.http.post(this.url, data).toPromise().then((data:any) => {
       console.log(data);
       this.json = JSON.stringify(data.json);
     });
