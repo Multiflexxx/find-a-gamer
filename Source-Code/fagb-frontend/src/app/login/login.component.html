@@ -47,7 +47,7 @@
           </div>
           <div class="field is-grouped">
             <div class="control">
-              <button class="button is-link" [disabled]="validateEmail && validatePassword && !formIsInitial">Login</button>
+              <button class="button is-link" [disabled]="!((emailValid && pwEntered) && !emailIsInitial && !pwIsInitial)">Login</button>
             </div>
             <div class="control">
               <button class="button is-link is-light" (click)="toggle()">Abbrechen</button>
