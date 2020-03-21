@@ -111,7 +111,7 @@ export class AddGameComponent implements OnInit {
         document.getElementById("gametag").style.display = "inherit";
       }
     }
-    this.selectedGamesString = this.selectedGames.toString();
+    this.selectedGamesString = JSON.stringify(this.selectedGames);
   }
 
   ngOnInit(): void {
