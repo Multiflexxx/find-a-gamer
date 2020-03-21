@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit {
 
   private profileData: any;
   private gameData: any;
-  // url = 'http://httpbin.org/post';
-  url = 'http://localhost:3000/notifymatchendpoint';
+  url = 'http://httpbin.org/post';
+  // url = 'http://localhost:3000/registrationendpoint';
   json;
 
   regionList = [
@@ -87,17 +87,17 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private onProfileSubmit(userData): void {
+  onProfileSubmit(userData): void {
     this.profileData = userData;
   }
 
-  private onGameSubmit(userData): void {
+  onGameSubmit(userData): void {
     this.gameData = userData;
     console.log(this.profileData);
     this.onSubmit();
   }
 
-  private onSubmit(): void {
+  onSubmit(): void {
     var games: Array<Game> = [];
     var gameids: Array<number> = JSON.parse(this.gameData.gameCtrl);
     for (let i = 0; i < gameids.length; i++) {
