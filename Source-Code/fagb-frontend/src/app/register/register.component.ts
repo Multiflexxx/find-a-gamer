@@ -3,6 +3,12 @@ import { FormControl, FormGroupDirective, FormGroup, Validators, FormBuilder } f
 import { ErrorStateMatcher } from '@angular/material/core';
 import { HttpClient } from '@angular/common/http';
 
+// Import data objects
+import { Registration } from '../data_objects/registration';
+import { Game } from '../data_objects/game';
+import { Language } from '../data_objects/language';
+import { Region } from '../data_objects/region';
+
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | null): boolean {
@@ -19,54 +25,111 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RegisterComponent implements OnInit {
   // stepper
-  isLinear = true;
+  isEditable = false;
   hide = true;
   profileFormGroup: FormGroup;
   gameFormGroup: FormGroup;
 
-  emailControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-
-  url = 'http://httpbin.org/post';
+  private profileData: any;
+  private gameData: any;
+  // url = 'http://httpbin.org/post';
+  url = 'http://localhost:3000/notifymatchendpoint';
   json;
+
+  regionList = [
+    {
+      id: 0,
+      name: 'Africa'
+    },
+    {
+      id: 1,
+      name: 'Asia'
+    },
+    {
+      id: 2,
+      name: 'North America'
+    },
+    {
+      id: 3,
+      name: 'South America'
+    },
+    {
+      id: 4,
+      name: 'Africa'
+    }
+  ];
+
+  langList = [
+    {
+      id: 0,
+      name: 'english'
+    },
+    {
+      id: 1,
+      name: 'german'
+    }
+  ];
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.profileFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       tagCtrl: ['', Validators.required],
+      mailCtrl: ['', [Validators.required, Validators.email]],
+      dateCtrl: ['', Validators.required],
+      regionCtrl: ['', Validators.required],
+      langCtrl: ['', Validators.required],
       passCtrl: ['', Validators.required],
-      rpassCtrl: ['', Validators.required],
-      mailCtrl: ['', [Validators.required, Validators.email]]
+      rpassCtrl: ['', Validators.required]
     });
-    
+
     this.gameFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required],
       gameCtrl: ['', Validators.required]
     });
   }
 
-  onSubmit(userData) {
-    // Process checkout data here
-    // this.profileFormGroup.reset();
-
-    this.http.post(this.url, userData).toPromise().then((data:any) => {
-      console.log(data);
-      this.json = JSON.stringify(data.json);
-    });
-    console.log('Form Test', userData);
+  private onProfileSubmit(userData): void {
+    this.profileData = userData;
   }
 
-  onSubmit1(userData) {
-    // Process checkout data here
-    // this.profileFormGroup.reset();
+  private onGameSubmit(userData): void {
+    this.gameData = userData;
+    console.log(this.profileData);
+    this.onSubmit();
+  }
 
-    this.http.post(this.url, userData).toPromise().then((data:any) => {
+  private onSubmit(): void {
+    var games: Array<Game> = [];
+    var gameids: Array<number> = JSON.parse(this.gameData.gameCtrl);
+    for (let i = 0; i < gameids.length; i++) {
+      games.push(new Game(gameids[i]));
+    }
+
+
+    // Langs with id!!!!
+    var langs: Array<Language> = [];
+    for (let i = 0; i < this.profileData.langCtrl.length; i++) {
+      langs.push(new Language(this.profileData.langCtrl[i]));
+    }
+
+    var region: Region = this.profileData.regionCtrl;
+
+    var registration: Registration = new Registration(
+      this.profileData.mailCtrl,
+      this.profileData.passCtrl,
+      this.profileData.nameCtrl,
+      this.profileData.tagCtrl,
+      this.profileData.dateCtrl,
+      region,
+      langs,
+      games
+    );
+
+    console.log(registration);
+
+    this.http.post(this.url, registration).toPromise().then((data: any) => {
       console.log(data);
       this.json = JSON.stringify(data.json);
     });
-    console.log('Form Test', userData);
   }
 
   ngOnInit(): void {

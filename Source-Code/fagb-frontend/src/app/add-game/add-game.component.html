@@ -38,9 +38,8 @@
   </div>
 </div>
 
-<label for="test" [formGroup]="gameFormGroup">Test
-  <input id="test" matInput formControlName="gameCtrl">
+<label for="test" [formGroup]="gameFormGroup">
+  <input type="hidden" id="test" formControlName="gameCtrl" [(ngModel)]="selectedGamesString" required>
 </label>
 
-<!-- <button (click)="sendMessage()">Send</button> -->
 </section>
