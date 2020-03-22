@@ -29,6 +29,8 @@
                 <mat-form-field>
                   <mat-label>E-Mail</mat-label>
                   <input matInput formControlName="mailCtrl" required>
+                  <mat-error *ngIf="hasError('mailCtrl', 'required')">Email is required.</mat-error>
+                  <mat-error *ngIf="hasError('mailCtrl', 'forbiddenEmail')">Email is invalid.</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Birthdate</mat-label>

@@ -7,6 +7,7 @@ import { Registration } from '../data_objects/registration';
 import { Game } from '../data_objects/game';
 import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
+import { emailValidator, ageRangeValidator } from '../shared/email-validator.directive';
 
 @Component({
   selector: 'app-register',
@@ -67,7 +68,7 @@ export class RegisterComponent implements OnInit {
     this.profileForm = new FormGroup({
       nameCtrl: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]),
       tagCtrl: new FormControl('', [Validators.required, Validators.pattern(this.regDisTag)]),
-      mailCtrl: new FormControl('', [Validators.required, Validators.email]),
+      mailCtrl: new FormControl('', [Validators.required, emailValidator()]),
       dateCtrl: new FormControl('', Validators.required),
       regionCtrl: new FormControl('', Validators.required),
       langCtrl: new FormControl('', Validators.required),
@@ -124,7 +125,8 @@ export class RegisterComponent implements OnInit {
       games
     );
 
-    console.log(registration);
+    console.log(JSON.stringify(registration));
+
 
     this.http.post(this.url, registration).toPromise().then((data: any) => {
       console.log(data);
