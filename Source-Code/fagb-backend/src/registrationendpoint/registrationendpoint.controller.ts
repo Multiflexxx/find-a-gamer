@@ -25,6 +25,8 @@ export class RegistrationendpointController {
         // TODO: CREATE SESSION 
         // TODO: Validate Birthdate
 
+        //console.log(registration); // => Does work!
+
         if (!isInputValid) {
             return new RegistrationResponse(false, null);
         }
