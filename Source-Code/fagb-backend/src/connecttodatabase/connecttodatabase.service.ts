@@ -1,48 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { QueryObject } from 'src/data_objects/queryobject';
 
 // See https://www.npmjs.com/package/mysql
 
 @Injectable()
 export class ConnectToDatabaseService {
 
-    databaseLogin: string;
-    connection: any;
+    static databaseLogin: string = '../../databaseLogin.json';
 
-    constructor() {
-        var mysql = require('mysql');
-        const databaseLoginData = require('../../databaseLogin.json');
-
-        // establish connection to database
-        this.connection = mysql.createConnection({
+    public static getConnection() {
+        let mysql = require('mysql');
+        const databaseLoginData = require(ConnectToDatabaseService.databaseLogin);
+        
+        return mysql.createConnection({
             host: databaseLoginData.host,
             port: databaseLoginData.port,
             user: databaseLoginData.user,
             password: databaseLoginData.password,
             database: databaseLoginData.database
         });
-
-        this.connection.connect();
     }
 
-    public getResult(query: string): any {
-        var queryResults: any[];
+    public static getPromise(queryObject: QueryObject): Promise<any> {
+        return new Promise(function(resolve, reject) {
+            let c = ConnectToDatabaseService.getConnection();
 
-        this.connection.query(query, function (error, results, fields) {
-            if (error) {
-                throw error;
-            }
-
-            queryResults = results;
+            c.query(queryObject.createQueryObject(), function (error, results, fields) {
+                if (error) {
+                    reject(error);
+                    throw error;
+                }
+                resolve(results);
+            });
+            c.end();
         });
-
-        return queryResults;
-    }
-
-    public executeQuery(query: string): void {
-        this.getResult(query);
-    }
-
-    public closeConnetion() {
-        this.connection.end();
     }
 }
