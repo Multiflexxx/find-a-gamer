@@ -4,105 +4,134 @@ import { RegistrationResponse } from '../data_objects/registrationresponse';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
 import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
-import { strict } from 'assert';
+import { QueryObject } from 'src/data_objects/queryobject';
+import { Session } from 'src/data_objects/session';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
-    
-    database: ConnectToDatabaseService;
-    validation: boolean;
 
     @Post()
-    handleRegistration(@Body() registration: Registration): RegistrationResponse
-    {
-        this.database = new ConnectToDatabaseService();
+    async handleRegistration(@Body() registration: Registration) {
 
-        if(!this.validateInput(registration)) {
+        let isInputValid = false;
+        
+        let myPromise = this.validateInput(registration);
+        await myPromise.then(function (callbackValue) {
+            isInputValid = true;
+        }, function(callbackValue) {
+            console.log(callbackValue);
+        });
+
+        // TODO: CREATE SESSION 
+        // TODO: Validate Birthdate
+
+        if (!isInputValid) {
             return new RegistrationResponse(false, null);
         }
         
-        
-
-        
-
-
-
-        // get data => registration.userID;
-
-        // check database
-        
-
-        console.log(JSON.stringify(this.database));
-
-        // this.database.getResult('SELECT `PersonID` FROM FindAGamingBuddy.Persons WHERE `PersonID` = ' + signUp.userID + ';');
-
-        // Check if user already in DB -> Redirect to login
-        // If not create user in DB
-
-        return null;
+        // TEST:
+        // Create User and return Session
+        return new RegistrationResponse(true, new Session("test_session", 2, true));
     }
-
-    private validateInput(registration: Registration): boolean {
+    private async validateInput(registration: Registration): Promise<boolean> {
         // Validate User input
-        
-        if (!EmailValidator.validate(registration.email)) {
-            return false;
-        }
-
-        var regex = new RegExp('([a-zA-Z0-9]*)#(\d{4})');
-        if (!regex.test(registration.discord_tag)) {
-            return false; 
-        }
-
-        //Format: mm/dd/yyyy
-        if (registration.birthdate) {
-            return false;
-        }
-
-        var gameString:string = QueryBuilder.getGames();
-    
-        var resultSet = this.database.getResult(gameString);
-
-        resultSet.forEach(result => {
-            registration.games.forEach(game => {
-                if (game.game_id !== result.game_id) {
-                    return false;
-                }
-            })
-        })
-        
-        var languageString:string = QueryBuilder.getLanguages();
-    
-        var resultSet = this.database.getResult(languageString);
-        
-        resultSet.forEach(result => {
-            registration.languages.forEach(language => {
-                if (result.language_id !== language.language_id) {
-                    return false;
-                }
-            })
-        });
-
-        if (!(registration.nickname.length > 32 && registration.nickname === "" && registration.nickname === null)) {
-            return false;
-        }
-
-        if (registration.password_hash === null && registration.password_hash === "") {
-            return false;
-        }
-
-        var regionString:string = QueryBuilder.getRegions();
-    
-        var resultSet = this.database.getResult(regionString);
-        
-        resultSet.forEach(element => {
-            if (registration.region.region_id !== element.region_id) {
-                return false;
+        return new Promise(async function (resolve, reject) {
+            if (!EmailValidator.validate(registration.email)) {
+                reject(false);
             }
-        });
-        
-        return true;
-    }
-    
 
+            let queryResult: any;
+
+            let emailQueryObject: QueryObject = QueryBuilder.getUserByEmail(registration.email);
+            let emailPromise = ConnectToDatabaseService.getPromise(emailQueryObject);
+            await emailPromise.then(function (callback_value) {
+                // Successfully got value
+                queryResult = callback_value;
+            }, function (callback_value) {
+                // Error Case of Promise
+                console.log(callback_value);
+            });
+
+            if (queryResult.length > 0) {
+                reject(false);
+            }
+
+            var regex = new RegExp('([a-zA-Z0-9]*)#(\d{4})');
+            if (!regex.test(registration.discord_tag)) {
+                reject(false);
+            }
+
+            //Format: mm/dd/yyyy
+            /*if (registration.birthdate) {
+                return false;
+            }*/
+
+            queryResult = undefined; // reset Result
+
+            registration.games.forEach(async game => {
+
+                let gameQueryObject: QueryObject = QueryBuilder.getGameById(game.game_id);
+
+                let gamePromise = ConnectToDatabaseService.getPromise(gameQueryObject);
+                await gamePromise.then(function (callback_value) {
+                    // Successfully got value
+                    queryResult = callback_value;
+                }, function (callback_value) {
+                    // Error Case of Promise
+                    console.log(callback_value);
+                });
+
+                if (queryResult.length == 0) {
+                    reject(false);
+                }
+            });
+
+            queryResult = undefined; // reset Result
+
+            registration.languages.forEach(async language => {
+
+                let languageQueryObject: QueryObject = QueryBuilder.getLanguageById(language.language_id);
+
+                let languagePromise = ConnectToDatabaseService.getPromise(languageQueryObject);
+                await languagePromise.then(function (callback_value) {
+                    // Successfully got value
+                    queryResult = callback_value;
+                }, function (callback_value) {
+                    // Error Case of Promise
+                    console.log(callback_value);
+                });
+
+                if (queryResult.length == 0) {
+                    reject(false);
+                }
+            });
+
+            if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === "" || registration.nickname === null) {
+                reject(false);
+            }
+
+            if (registration.password_hash === null || registration.password_hash === "") {
+                reject(false);
+            }
+
+            queryResult = undefined; // reset Result
+
+            let regionQueryObject: QueryObject = QueryBuilder.getRegionById(registration.region.region_id);
+
+            let regionPromise = ConnectToDatabaseService.getPromise(regionQueryObject);
+            await regionPromise.then(function (callback_value) {
+                // Successfully got value
+                queryResult = callback_value;
+            }, function (callback_value) {
+                // Error Case of Promise
+                console.log(callback_value);
+            });
+
+            if (queryResult.length == 0) {
+                reject(false);
+            }
+
+            resolve(true);
+        });
+    }
 }
