@@ -7,7 +7,7 @@ import { Registration } from '../data_objects/registration';
 import { Game } from '../data_objects/game';
 import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
-import { emailValidator, ageRangeValidator } from '../shared/email-validator.directive';
+import { emailValidator } from '../shared/email-validator.directive';
 
 @Component({
   selector: 'app-register',
@@ -23,8 +23,8 @@ export class RegisterComponent implements OnInit {
 
   private profileData: any;
   private gameData: any;
-  url = 'http://httpbin.org/post';
-  // url = 'http://localhost:3000/registrationendpoint';
+  //url = 'http://httpbin.org/post';
+  url = 'http://localhost:3000/registrationendpoint';
   json;
 
   // RegExp
@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
   langList = [
     {
       id: 0,
-      name: 'english'
+      name: 1
     },
     {
       id: 1,
