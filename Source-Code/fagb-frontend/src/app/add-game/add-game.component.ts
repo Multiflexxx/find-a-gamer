@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-add-game',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-game.component.scss']
 })
 export class AddGameComponent implements OnInit {
+
+  @Input() gameForm: FormGroup;
 
   items = [
     {
@@ -57,24 +60,19 @@ export class AddGameComponent implements OnInit {
 
   public isSelected: Array<boolean> = [false, false, false];
   public selectedGames: Array<number> = [];
-  public gamesString: String = "";
-
-
+  public selectedGamesString : String;
+  
 
   constructor() { }
 
   addGame(id, name): void {
     id = id;
     this.isSelected[id] = !this.isSelected[id];
-    this.gamesString += name + " ";
     this.createTag(id, name);
-    // console.log(id);
-    // console.log(this.isSelected[id]);
   }
 
   createTag(id, name): void {
     let index: number = this.selectedGames.indexOf(id);
-    console.log(index);
     if (index == -1) {
       // Add game id to array
       this.selectedGames.push(id);
@@ -113,6 +111,7 @@ export class AddGameComponent implements OnInit {
         document.getElementById("gametag").style.display = "inherit";
       }
     }
+    this.selectedGamesString = JSON.stringify(this.selectedGames);
   }
 
   ngOnInit(): void {
