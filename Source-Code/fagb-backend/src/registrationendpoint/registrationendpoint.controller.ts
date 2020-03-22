@@ -25,7 +25,11 @@ export class RegistrationendpointController {
         // TODO: CREATE SESSION 
         // TODO: Validate Birthdate
 
-        //console.log(registration); // => Does work!
+        console.log(registration); // => Does work!
+
+        let myRegistration:Registration = registration;
+
+        console.log(myRegistration.discord_tag);
 
         if (!isInputValid) {
             return new RegistrationResponse(false, null);
