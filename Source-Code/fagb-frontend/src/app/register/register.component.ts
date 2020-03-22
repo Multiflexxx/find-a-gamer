@@ -1,17 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroupDirective, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
-
+// Import data objects
+import { Registration } from '../data_objects/registration';
+import { Game } from '../data_objects/game';
+import { Language } from '../data_objects/language';
+import { Region } from '../data_objects/region';
 
 @Component({
   selector: 'app-register',
@@ -20,56 +15,120 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RegisterComponent implements OnInit {
   // stepper
-  isLinear = true;
+  isEditable = false;
   hide = true;
-  profileFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  profileForm: FormGroup;
+  gameForm: FormGroup;
 
-  emailControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-
-// localhost:3060
-
+  private profileData: any;
+  private gameData: any;
   url = 'http://httpbin.org/post';
+  // url = 'http://localhost:3000/registrationendpoint';
   json;
 
-  constructor(private _formBuilder: FormBuilder, private http: HttpClient) {
-    this.profileFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      tagCtrl: ['', Validators.required],
-      passCtrl: ['', Validators.required],
-      rpassCtrl: ['', Validators.required],
-      mailCtrl: ['', Validators.required]
+  // RegExp
+  regDisTag : string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
+
+  regionList = [
+    {
+      id: 0,
+      name: 'Africa'
+    },
+    {
+      id: 1,
+      name: 'Asia'
+    },
+    {
+      id: 2,
+      name: 'North America'
+    },
+    {
+      id: 3,
+      name: 'South America'
+    },
+    {
+      id: 4,
+      name: 'Africa'
+    }
+  ];
+
+  langList = [
+    {
+      id: 0,
+      name: 'english'
+    },
+    {
+      id: 1,
+      name: 'german'
+    }
+  ];
+
+  constructor(private http: HttpClient) {
+    this.profileForm = new FormGroup({
+      nameCtrl: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]),
+      tagCtrl: new FormControl('', [Validators.required, Validators.pattern(this.regDisTag)]),
+      mailCtrl: new FormControl('', [Validators.required, Validators.email]),
+      dateCtrl: new FormControl('', Validators.required),
+      regionCtrl: new FormControl('', Validators.required),
+      langCtrl: new FormControl('', Validators.required),
+      passCtrl: new FormControl('', Validators.required),
+      rpassCtrl: new FormControl('', Validators.required)
     });
-    
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+
+    this.gameForm = new FormGroup({
+      gameCtrl: new FormControl('', Validators.required)
     });
   }
 
-  ngOnInit() {
-    
+  ngOnInit(): void {
   }
 
-  onSubmit(userData) {
-    // Process checkout data here
-    // this.profileFormGroup.reset();
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.profileForm.controls[controlName].hasError(errorName);
+  }
 
-    this.http.post(this.url, userData).toPromise().then((data:any) => {
+  onProfileSubmit(userData): void {
+    this.profileData = userData;
+  }
+
+  onGameSubmit(userData): void {
+    this.gameData = userData;
+    console.log(this.profileData);
+    this.onSubmit();
+  }
+
+  onSubmit(): void {
+    var games: Array<Game> = [];
+    var gameids: Array<number> = JSON.parse(this.gameData.gameCtrl);
+    for (let i = 0; i < gameids.length; i++) {
+      games.push(new Game(gameids[i]));
+    }
+
+
+    // Langs with id!!!!
+    var langs: Array<Language> = [];
+    for (let i = 0; i < this.profileData.langCtrl.length; i++) {
+      langs.push(new Language(this.profileData.langCtrl[i]));
+    }
+
+    var region: Region = this.profileData.regionCtrl;
+
+    var registration: Registration = new Registration(
+      this.profileData.mailCtrl,
+      this.profileData.passCtrl,
+      this.profileData.nameCtrl,
+      this.profileData.tagCtrl,
+      this.profileData.dateCtrl,
+      region,
+      langs,
+      games
+    );
+
+    console.log(registration);
+
+    this.http.post(this.url, registration).toPromise().then((data: any) => {
       console.log(data);
       this.json = JSON.stringify(data.json);
     });
-    console.log('Form Test', userData);
   }
-
-  getErrorMessage() {
-    if (this.emailControl.hasError('required')) {
-      return 'You must enter a value';
-    }
-
-    return this.emailControl.hasError('email') ? 'Not a valid email' : '';
-  }
-
 }
