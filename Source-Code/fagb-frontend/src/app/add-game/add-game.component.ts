@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class AddGameComponent implements OnInit {
 
-  @Input() gameFormGroup: FormGroup;
+  @Input() gameForm: FormGroup;
 
   items = [
     {
