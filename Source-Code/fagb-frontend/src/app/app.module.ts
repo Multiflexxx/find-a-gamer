@@ -28,7 +28,7 @@ import { EmailValidatorDirective } from './shared/email-validator.directive';
     RegisterComponent,
     AddGameComponent,
     LandingPageComponent,
-    EmailValidatorDirective,
+    EmailValidatorDirective
   ],
   imports: [
     BrowserModule,
