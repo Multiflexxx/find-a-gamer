@@ -102,6 +102,6 @@ src/app/homepage/pages/**/*.html
 */bazel-out
 */integration/bazel/bazel-*
 *.log
-node_modules
+
 
 *databaseLogin.json*
