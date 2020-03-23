@@ -16,6 +16,8 @@ export function emailValidator(): ValidatorFn {
   // return (control: AbstractControl): {[key: string]: any} | null => {
   return function (control: AbstractControl): { [key: string]: any } | null {
     let forbidden;
+    console.log(control);
+    console.log(control.value);
     if (!EmailValidator.validate(control.value) && control.value !== "") {
       forbidden = true;
     } else {
