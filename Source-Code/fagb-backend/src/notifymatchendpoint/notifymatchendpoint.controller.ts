@@ -14,13 +14,20 @@ export class NotifymatchendpointController {
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
+        let test;
+
+        for(let i = 0; i < 100; i++) {
+            test = i;
+            console.log(test);
+        }
+
         // UUID: b9117c5e-8c9e-4e5e-be97-717677c8ecfd
 
-        await ConnectToDatabaseService.getPromise(new QueryObject("Select BIN_TO_UUID((Select UUID_TO_BIN('b9117c5e-8c9e-4e5e-be97-717677c8ecfd')));")).then(function(callbackValue) {
-            console.log(callbackValue);
-        }, function(callbackValue) {
-            console.error(callbackValue);
-        })
+        // await ConnectToDatabaseService.getPromise(new QueryObject("Select BIN_TO_UUID((Select UUID_TO_BIN('b9117c5e-8c9e-4e5e-be97-717677c8ecfd')));")).then(function(callbackValue) {
+        //     console.log(callbackValue);
+        // }, function(callbackValue) {
+        //     console.error(callbackValue);
+        // })
         // return uuidv4();
       
         // let result: any;
