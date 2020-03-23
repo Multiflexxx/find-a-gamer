@@ -68,8 +68,12 @@ settings.json
 */out-tsc
 
 # dependencies
-*/node_modules
-!*node_modules/angular/material
+*/node_modules/*
+!*node_modules/angular/
+
+*/node_modules/angular/*
+!*/node_modules/angular/matrial/
+
 
 # misc
 */.sass-cache
