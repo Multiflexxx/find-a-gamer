@@ -68,7 +68,12 @@ settings.json
 */out-tsc
 
 # dependencies
-*/node_modules
+*/node_modules/*
+!*node_modules/angular/
+
+*/node_modules/angular/*
+!*/node_modules/angular/matrial/
+
 
 # misc
 */.sass-cache
@@ -97,6 +102,6 @@ src/app/homepage/pages/**/*.html
 */bazel-out
 */integration/bazel/bazel-*
 *.log
-node_modules
+
 
 *databaseLogin.json*

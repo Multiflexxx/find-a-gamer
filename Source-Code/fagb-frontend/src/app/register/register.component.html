@@ -55,47 +55,39 @@
                 <mat-form-field>
                   <mat-label>Languages</mat-label>
                   <mat-select formControlName="langCtrl" multiple required>
-                    <!-- <mat-select-trigger>
-                      {{profileForm.get(langCtrl).value ? profileForm.get(langCtrl).value[0] : ''}}
-                      <span *ngIf="profileForm.get(langCtrl).value?.length > 1" class="example-additional-selection">
-                        (+{{profileForm.get(langCtrl).value.length - 1}} {{profileForm.get(langCtrl).value?.length === 2 ? 'other' : 'others'}})
-                      </span>
-                    </mat-select-trigger> -->
-                    <mat-option *ngFor="let lang of langList" [value]="lang.id">{{lang.name}}</mat-option>
+                    <mat-option *ngFor="let lang of langList" [value]="lang.id" data-name="lang.name">{{lang.name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="hasError('langCtrl', 'required')">Select at least one language.</mat-error>
                 </mat-form-field>
-
-                <!-- <mat-form-field>
-                  <mat-label>Toppings</mat-label>
-                  <mat-select [formControl]="toppings" multiple>
-                    <mat-select-trigger>
-                      {{toppings.value ? toppings.value[0] : ''}}
-                      <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
-                        (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
-                      </span>
-                    </mat-select-trigger>
-                    <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-                  </mat-select>
-                </mat-form-field> -->
 
               </div>
               <div>
                 <mat-form-field>
                   <mat-label>Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="passCtrl" required>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="passCtrl"
+                  
+                  required>
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 0">Password strength: weak</mat-hint>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 1">Password strength: medium</mat-hint>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 2">Password strength: strong</mat-hint>
+                  <mat-error *ngIf="hasError('passCtrl', 'required')">Password is required.</mat-error>
                 </mat-form-field>
+
                 <mat-form-field>
-                  <mat-label>repeat Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" required>
+                  <mat-label>Verify Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" [errorStateMatcher]="errorMatcher" required>
+                  
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
+                  <mat-error *ngIf="profileForm.hasError('passwordsDoNotMatch')">
+                    Passwords do not match!
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div>

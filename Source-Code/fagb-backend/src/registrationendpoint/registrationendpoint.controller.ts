@@ -59,6 +59,8 @@ export class RegistrationendpointController {
                 reject(false);
             }
 
+            console.log(registration);
+
             var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
             if (!regex.test(registration.discord_tag)) {
                 reject(false);

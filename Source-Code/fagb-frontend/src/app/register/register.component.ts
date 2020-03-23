@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 // Import data objects
@@ -9,6 +9,14 @@ import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 import { emailValidator } from '../shared/email-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+/** Error when the parent is invalid */
+class CrossFieldErrorMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return control.dirty && form.invalid;
+  }
+}
 
 @Component({
   selector: 'app-register',
@@ -24,6 +32,7 @@ export class RegisterComponent implements OnInit {
   hide = true;
   profileForm: FormGroup;
   gameForm: FormGroup;
+  errorMatcher = new CrossFieldErrorMatcher();
 
   public startDate = new Date(2000, 0, 1);
   public minDate: Date;
@@ -36,6 +45,8 @@ export class RegisterComponent implements OnInit {
 
   // RegExp
   regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
+  strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+  mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 
   regionList = [
     {
@@ -71,11 +82,6 @@ export class RegisterComponent implements OnInit {
     }
   ];
 
-
-  toppings = new FormControl();
-
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-
   constructor(private http: HttpClient) {
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
@@ -92,6 +98,8 @@ export class RegisterComponent implements OnInit {
       langCtrl: new FormControl('', Validators.required),
       passCtrl: new FormControl('', Validators.required),
       rpassCtrl: new FormControl('', Validators.required),
+    }, {
+      validators: this.passwordValidator
     });
 
     this.gameForm = new FormGroup({
@@ -105,6 +113,28 @@ export class RegisterComponent implements OnInit {
   public hasError = (controlName: string, errorName: string) => {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
+
+  public isStrong (controlName: string) : number {
+    let strenght = -1;
+    let pw = this.profileForm.controls[controlName].value;
+    if(this.mediumRegex.test(pw)) {
+      strenght = 1;
+      console.log(controlName);
+    } else if (this.strongRegex.test(pw)) {
+      strenght = 2;
+    } else if (pw != ""){
+      strenght = 0;
+    }
+    return strenght;
+  }
+
+  passwordValidator(form: FormGroup) {
+    const password = form.get('passCtrl')
+    const vPassword = form.get('rpassCtrl');
+
+    return password && vPassword && password.value != vPassword.value  ? { passwordsDoNotMatch: true} : null;
+  }
+
 
   onProfileSubmit(userData): void {
     this.profileData = userData;
