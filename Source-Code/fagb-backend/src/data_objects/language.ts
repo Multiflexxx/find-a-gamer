@@ -5,9 +5,16 @@ export class Language {
 
     public constructor (language_id: number, name?: string, language_code?: string){
         this.language_id = language_id;
-        if(name && language_code) {
+        if(name) {
             this.name = name;
+        } else {
+            this.name = null;
+        }
+        
+        if(language_code) {
             this.language_code = language_code;
+        } else {
+            this.language_code = null;
         }
     }
 }

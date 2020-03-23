@@ -23,4 +23,19 @@ export class UserGamePairFactory {
 
     //     return userGamesPairs;
     // }
+
+    public static async createUserGamePairs(user: User, games: Game[]) {
+        return new Promise(function(resolve, reject) {
+            games.forEach(async game => {
+                let query = QueryBuilder.createUserGamePair(user, game);
+                await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                    // Successfully created
+                }, function(callbackValue) {
+                    console.error(callbackValue);
+                    reject(callbackValue);
+                });
+            });
+            resolve(true);
+        });
+    }
 }
