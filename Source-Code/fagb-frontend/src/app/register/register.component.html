@@ -4,7 +4,7 @@
 
       <div id="stepper">
         <mat-vertical-stepper linear #stepper>
-          <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable" [optional]="true">
+          <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
             <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit(profileForm.value)">
               <div>
                 <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
@@ -79,7 +79,7 @@
 
                 <mat-form-field>
                   <mat-label>Verify Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" [errorStateMatcher]="errorMatcher" required>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" [errorStateMatcher]="errorMatcher" compare="passCtrl" required>
                   
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">

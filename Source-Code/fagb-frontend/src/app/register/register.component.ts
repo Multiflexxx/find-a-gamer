@@ -9,14 +9,6 @@ import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 import { emailValidator } from '../shared/email-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ErrorStateMatcher } from '@angular/material/core';
-
-/** Error when the parent is invalid */
-class CrossFieldErrorMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    return control.dirty && form.invalid;
-  }
-}
 
 @Component({
   selector: 'app-register',
@@ -32,7 +24,6 @@ export class RegisterComponent implements OnInit {
   hide = true;
   profileForm: FormGroup;
   gameForm: FormGroup;
-  errorMatcher = new CrossFieldErrorMatcher();
 
   public startDate = new Date(2000, 0, 1);
   public minDate: Date;
@@ -98,8 +89,6 @@ export class RegisterComponent implements OnInit {
       langCtrl: new FormControl('', Validators.required),
       passCtrl: new FormControl('', Validators.required),
       rpassCtrl: new FormControl('', Validators.required),
-    }, {
-      validators: this.passwordValidator
     });
 
     this.gameForm = new FormGroup({
@@ -128,21 +117,14 @@ export class RegisterComponent implements OnInit {
     return strenght;
   }
 
-  passwordValidator(form: FormGroup) {
-    const password = form.get('passCtrl')
-    const vPassword = form.get('rpassCtrl');
-
-    return password && vPassword && password.value != vPassword.value  ? { passwordsDoNotMatch: true} : null;
-  }
-
-
   onProfileSubmit(userData): void {
     this.profileData = userData;
+    console.log(this.profileData);
   }
 
   onGameSubmit(userData): void {
     this.gameData = userData;
-    console.log(this.profileData);
+    console.log(this.gameData);
     this.onSubmit();
   }
 
@@ -153,8 +135,6 @@ export class RegisterComponent implements OnInit {
       games.push(new Game(gameids[i]));
     }
 
-
-    // Langs with id!!!!
     var langs: Array<Language> = [];
     for (let i = 0; i < this.profileData.langCtrl.length; i++) {
       langs.push(new Language(this.profileData.langCtrl[i]));
