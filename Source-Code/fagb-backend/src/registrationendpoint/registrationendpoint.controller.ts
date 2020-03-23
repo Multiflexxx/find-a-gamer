@@ -17,7 +17,7 @@ export class RegistrationendpointController {
         
         let myPromise = this.validateInput(registration);
         await myPromise.then(function (callbackValue) {
-            isInputValid = true;
+            isInputValid = callbackValue;
         }, function(callbackValue) {
             console.log(callbackValue);
         });
@@ -25,16 +25,12 @@ export class RegistrationendpointController {
         // TODO: CREATE SESSION 
         // TODO: Validate Birthdate
 
-        console.log(registration); // => Does work!
-
-        let myRegistration:Registration = registration;
-
-        console.log(myRegistration.discord_tag);
-
         if (!isInputValid) {
             return new RegistrationResponse(false, null);
         }
         
+        console.log("validation successfull")
+
         // TEST:
         // Create User and return Session
         return new RegistrationResponse(true, new Session("test_session", 2, true));
@@ -136,11 +132,11 @@ export class RegistrationendpointController {
                 console.log(callback_value);
             });
 
-            if (queryResult.length == 0) {
+            if (queryResult.length === 0) {
                 reject(false);
             }
 
-            resolve(true);
+            resolve(true);            
         });
     }
 }
