@@ -4,49 +4,52 @@ import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { User } from 'src/data_objects/user';
 import { Region } from 'src/data_objects/region';
+import { UserFactory } from 'src/factory/userfactory';
+import { v4 as uuidv4 } from 'uuid';
+import { QueryObject } from 'src/data_objects/queryobject';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
 
-    flagIsSet: boolean = true;
-    matchedUserID: String = "123";
-
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
+
+        // UUID: b9117c5e-8c9e-4e5e-be97-717677c8ecfd
+
+        await ConnectToDatabaseService.getPromise(new QueryObject("Select BIN_TO_UUID((Select UUID_TO_BIN('b9117c5e-8c9e-4e5e-be97-717677c8ecfd')));")).then(function(callbackValue) {
+            console.log(callbackValue);
+        }, function(callbackValue) {
+            console.error(callbackValue);
+        })
+        // return uuidv4();
       
-        var result = "Test";
-        // let query = QueryBuilder.getUserByEmail("benno.grimm@gmx.de");
-        let query = QueryBuilder.getEmptyResult();
-        console.log(query);
+        // let result: any;
+        // let query = QueryBuilder.getLanguageById(1);
+       
+        // console.log(query);
 
-        //var connectionDB = ConnectToDatabaseService.getConnection();
+        // var myPromise = ConnectToDatabaseService.getPromise(query);
+        // await myPromise.then(function (callback_value) {
+        //     // Successfully got value
+        //     result = callback_value;
+        // }, function(callback_value) {
+        //     // Error Case of Promise
+        //     console.log(callback_value);
+        // });
 
+        // console.log(result.length);
 
-        var myPromise = ConnectToDatabaseService.getPromise(query);
-        await myPromise.then(function (callback_value) {
-            // Successfully got value
-            result = callback_value;
-        }, function(callback_value) {
-            // Error Case of Promise
-            console.log(callback_value);
-        });
-        console.log(result.length);
-
-
-        return result;
-        
-        //console.log(result);
-
-        //connectionDB.connection.end
-    }
-
-
-
-    delay(ms: number) {
-        return new Promise( resolve => setTimeout(resolve, ms) );
-    }
-
-    public static logOutput(error, result, values) {
-        console.log(result);
+        // return result;
+        // for(let i = 0; i < 100; i++) {
+        //     console.log(uuidv4());
+        // }
+        // await UserFactory.getUserByEmail("benno.grimm@gmx.de").then(function(callbackValue) {
+        //     console.log(callbackValue);
+        //     return callbackValue;
+        // }, function(callbackValue) {
+        //     console.error(callbackValue);
+        //     return '{"id": "' +  uuidv4() + '"}';
+        // });
+        // return '{"id": "' +  uuidv4() + '"}';
     }
 }

@@ -11,7 +11,7 @@ export class ConnectToDatabaseService {
     public static getConnection() {
         let mysql = require('mysql');
         const databaseLoginData = require(ConnectToDatabaseService.databaseLogin);
-        
+
         return mysql.createConnection({
             host: databaseLoginData.host,
             port: databaseLoginData.port,
@@ -21,10 +21,9 @@ export class ConnectToDatabaseService {
         });
     }
 
-    public static getPromise(queryObject: QueryObject): Promise<any> {
+    public static async getPromise(queryObject: QueryObject): Promise<any> {
         return new Promise(function(resolve, reject) {
             let c = ConnectToDatabaseService.getConnection();
-
             c.query(queryObject.createQueryObject(), function (error, results, fields) {
                 if (error) {
                     reject(error);
@@ -34,5 +33,25 @@ export class ConnectToDatabaseService {
             });
             c.end();
         });
+
+        // let myPromise = new Promise(function (resolve, reject) {
+        //     let c = ConnectToDatabaseService.getConnection();
+        //     c.query(queryObject.createQueryObject(), function (error, results, fields) {
+        //         if (error) {
+        //             reject(error);
+        //             throw error;
+        //         }
+        //         resolve(results);
+        //     });
+        //     c.end();
+        // });
+
+        // await myPromise.then(function(callbackValue) {
+        //     return callbackValue;
+        // }, function(callbackValue) {
+        //     console.error("ConnectToDatabaseService getResult(): Promise<any> rejected");
+        //     console.error(callbackValue);
+        //     return null; // TBD: Error Object
+        // })
     }
 }

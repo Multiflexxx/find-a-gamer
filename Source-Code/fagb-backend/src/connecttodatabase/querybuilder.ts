@@ -32,7 +32,7 @@ export class QueryBuilder {
         // return `INSERT INTO User_Language_Pair (language_id, user_id) VALUES (${language.language_id}, ${user.user_id});`;
     }
 
-    public static createUserGamePair(user: User, game: Game): QueryBuilder {
+    public static createUserGamePair(user: User, game: Game): QueryObject {
         return new QueryObject(
             "INSERT INTO User_Game_Pair (user_id, game_id) VALUES (?, ?);",
             [
@@ -145,12 +145,44 @@ export class QueryBuilder {
         );
     }
 
-    public static getEmptyResult(): QueryObject {
+    public static getSessionBySessionId(session_id: string): QueryObject {
         return new QueryObject(
-            "Select * From Game Where game_id = ?;",
+            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE session_id = UUID_TO_BIN('?')",
             [
-                9999999
+                session_id
             ]
         );
     }
+
+    public static createSession(session_id: string, user: User, stay_logged_in: boolean): QueryObject {
+        if(stay_logged_in) {
+            return new QueryObject(
+                "INSERT INTO Session (session_id, user_id, stay_logged_in, expiration_date) VALUES (UUID_TO_BIN('?'), ?, ?, DATE_ADD(CURRENT_DATE(), INTERVAL 1 YEAR));",
+                [
+                    session_id,
+                    user.user_id,
+                    stay_logged_in
+                ]
+            );
+        } else {
+            return new QueryObject(
+                "INSERT INTO Session (session_id, user_id, stay_logged_in) VALUES (UUID_TO_BIN('?'), ?, ?);",
+                [
+                    session_id,
+                    user.user_id,
+                    stay_logged_in
+                ]
+            );
+        }
+    }
+
+    public static getSessionByUserId(user: User): QueryObject {
+        return new QueryObject(
+            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE user_id = ?",
+            [
+                user.user_id
+            ]
+        );
+    }
+
 }

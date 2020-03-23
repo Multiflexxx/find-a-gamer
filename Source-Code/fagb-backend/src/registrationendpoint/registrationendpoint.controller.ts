@@ -56,6 +56,7 @@ export class RegistrationendpointController {
             }, function (callback_value) {
                 // Error Case of Promise
                 console.log(callback_value);
+                reject(false);
             });
 
             if (queryResult.length > 0) {
