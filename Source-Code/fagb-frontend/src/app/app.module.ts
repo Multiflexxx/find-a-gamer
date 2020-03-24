@@ -18,6 +18,7 @@ import { AddGameComponent } from './add-game/add-game.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EmailValidatorDirective } from './shared/email-validator.directive';
+import { CompareValidatorDirective } from './shared/compare-validator.directive';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { EmailValidatorDirective } from './shared/email-validator.directive';
     RegisterComponent,
     AddGameComponent,
     LandingPageComponent,
-    EmailValidatorDirective
+    EmailValidatorDirective,
+    CompareValidatorDirective
   ],
   imports: [
     BrowserModule,

@@ -104,10 +104,25 @@ export class RegistrationendpointController {
                 reject("Discord Tag is invalid");
             }
 
-            //Format: mm/dd/yyyy
-            /*if (registration.birthdate) {
+            let presentDate: Date = new Date(); //Format:2020-03-24T14:30:42.836Z
+            let birthdate: Date = new Date(registration.birthdate); //Format: 2000-06-05T22:00:00.000Z
+            
+            //Validate Birthdate
+            if (Object.prototype.toString.call(birthdate) === "[object Date]") {
+                // it is a date
+                if (isNaN(birthdate.getTime())) {
+                  // date is not valid
+                  return false;
+                } else {
+                  // date is valid
+                  if (birthdate > presentDate) {
+                      return false;
+                    }
+                }
+            } else {
+                // not a date
                 return false;
-            }*/
+            }
 
             queryResult = undefined; // reset Result
 
@@ -178,6 +193,7 @@ export class RegistrationendpointController {
             }
 
             resolve("Success");
+
         });
     }
 }

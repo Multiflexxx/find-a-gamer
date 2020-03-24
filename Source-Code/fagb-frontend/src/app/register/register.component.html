@@ -4,13 +4,14 @@
 
       <div id="stepper">
         <mat-vertical-stepper linear #stepper>
-          <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable" [optional]="true">
+          <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
+
             <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit(profileForm.value)">
               <div>
                 <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
                 <mat-form-field>
                   <mat-label>Nickname</mat-label>
-                  <input matInput formControlName="nameCtrl" required>
+                  <input matInput id="nickname" formControlName="nameCtrl" required>
                   <mat-error *ngIf="hasError('nameCtrl', 'required')">Nickname is required test.</mat-error>
                   <mat-error *ngIf="hasError('nameCtrl', 'maxlength')">Nickname must be shorter than 32 characters.
                   </mat-error>
@@ -22,7 +23,7 @@
                 </mat-error>
                 <mat-form-field>
                   <mat-label>Discord Tag</mat-label>
-                  <input matInput formControlName="tagCtrl" required>
+                  <input matInput id="discrodTag" formControlName="tagCtrl" required>
                   <mat-error *ngIf="hasError('tagCtrl', 'required')">Discord Tag is required .</mat-error>
                   <mat-error *ngIf="hasError('tagCtrl', 'pattern')">Discord Tag must be in this format: Name#1234.
                   </mat-error>
@@ -31,13 +32,13 @@
               <div>
                 <mat-form-field>
                   <mat-label>E-Mail</mat-label>
-                  <input matInput formControlName="mailCtrl" required>
+                  <input matInput id="email" formControlName="mailCtrl" required>
                   <mat-error *ngIf="hasError('mailCtrl', 'required')">Email is required.</mat-error>
                   <mat-error *ngIf="hasError('mailCtrl', 'forbiddenEmail')">Email is invalid.</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Birthdate</mat-label>
-                  <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="dateCtrl" required> 
+                  <input matInput id="birthdate" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="dateCtrl" required> 
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
                   <mat-error *ngIf="hasError('dateCtrl', 'required')">Birthdate is required.</mat-error>
@@ -64,7 +65,7 @@
               <div>
                 <mat-form-field>
                   <mat-label>Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="passCtrl"
+                  <input matInput id="password" [type]="hide ? 'password' : 'text' " formControlName="passCtrl"
                   
                   required>
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
@@ -79,22 +80,22 @@
 
                 <mat-form-field>
                   <mat-label>Verify Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" [errorStateMatcher]="errorMatcher" required>
+                  <input matInput id="vpassword" [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" required>
                   
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
-                  <mat-error *ngIf="profileForm.hasError('passwordsDoNotMatch')">
-                    Passwords do not match!
-                  </mat-error>
-                </mat-form-field>
+                  <mat-error *ngIf="hasError('rpassCtrl', 'required')">Password is required.</mat-error>
+                  <mat-error *ngIf="hasError('rpassCtrl', 'compare')">Passwords don' t match.</mat-error>
+                </mat-form-field> 
               </div>
               <div>
                 <button mat-button matStepperNext class="button is-dark" type="submit"
                   [disabled]="profileForm.invalid">Next</button>
               </div>
             </form>
+
           </mat-step>
 
           <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
