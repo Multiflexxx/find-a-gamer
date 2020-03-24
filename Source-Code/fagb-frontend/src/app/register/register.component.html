@@ -5,6 +5,7 @@
       <div id="stepper">
         <mat-vertical-stepper linear #stepper>
           <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
+
             <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit(profileForm.value)">
               <div>
                 <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
@@ -79,22 +80,22 @@
 
                 <mat-form-field>
                   <mat-label>Verify Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" [errorStateMatcher]="errorMatcher" compare="passCtrl" required>
+                  <input matInput [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl" required>
                   
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
-                  <mat-error *ngIf="profileForm.hasError('passwordsDoNotMatch')">
-                    Passwords do not match!
-                  </mat-error>
-                </mat-form-field>
+                  <mat-error *ngIf="hasError('rpassCtrl', 'compare')">Passwords don' t match!</mat-error>
+                  <!-- <mat-error *ngIf="pwConfirm.errors['compare']">Passwords don' t match!</mat-error>-->
+                </mat-form-field> 
               </div>
               <div>
                 <button mat-button matStepperNext class="button is-dark" type="submit"
                   [disabled]="profileForm.invalid">Next</button>
               </div>
             </form>
+
           </mat-step>
 
           <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
