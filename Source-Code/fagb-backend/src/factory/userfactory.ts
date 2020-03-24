@@ -29,7 +29,9 @@ export class UserFactory {
             // Get created User
             let result;
             await UserFactory.getUserByEmail(registration.email).then(function(callbackValue) {
-                result = callbackValue[0];
+                result = callbackValue;
+                console.log(result);
+                console.log(callbackValue);
             }, function(callbackValue) {
                 console.error(callbackValue);
                 reject(callbackValue);
@@ -38,12 +40,12 @@ export class UserFactory {
             let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result. profile_picture, result.cake_day, result.birthdate, result.biography);
 
             // Get Region
-            await RegionFactory.getRegionById(result.region).then(function(callbackValue) {
-                result = callbackValue[0];
-            }, function(callbackValue) {
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+            // await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
 
             user.region = new Region(result.region_id, result.name);
             
@@ -87,6 +89,8 @@ export class UserFactory {
             result.forEach(language => {
                 user.languages.push(new Language(language.language_id, language.name, language.language_code))
             });
+
+            resolve(user);
         });
     };
 
@@ -111,7 +115,15 @@ export class UserFactory {
                 reject(callbackValue);
             });
     
-            let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region);
+            let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+
+            await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("Failed to get Region in UserFactory getUserByEmail");
+                console.error(callbackValue);
+            })
+            user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {

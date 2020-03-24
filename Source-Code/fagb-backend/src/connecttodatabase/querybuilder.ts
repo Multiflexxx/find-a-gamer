@@ -100,7 +100,7 @@ export class QueryBuilder {
     
     public static getRegions(): QueryObject {
         return new QueryObject(
-            "SELECT region_id FROM Region;"
+            "SELECT region_id FROM Region ORDER BY name ASC;"
         );
         
         // return 'SELECT region_id FROM Region;';
@@ -147,7 +147,7 @@ export class QueryBuilder {
 
     public static getSessionBySessionId(session_id: string): QueryObject {
         return new QueryObject(
-            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE session_id = UUID_TO_BIN('?')",
+            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE session_id = UUID_TO_BIN(?)",
             [
                 session_id
             ]
@@ -157,7 +157,7 @@ export class QueryBuilder {
     public static createSession(session_id: string, user: User, stay_logged_in: boolean): QueryObject {
         if(stay_logged_in) {
             return new QueryObject(
-                "INSERT INTO Session (session_id, user_id, stay_logged_in, expiration_date) VALUES (UUID_TO_BIN('?'), ?, ?, DATE_ADD(CURRENT_DATE(), INTERVAL 1 YEAR));",
+                "INSERT INTO Session (session_id, user_id, stay_logged_in, expiration_date) VALUES (UUID_TO_BIN(?), ?, ?, DATE_ADD(CURRENT_DATE(), INTERVAL 1 YEAR));",
                 [
                     session_id,
                     user.user_id,
@@ -166,7 +166,7 @@ export class QueryBuilder {
             );
         } else {
             return new QueryObject(
-                "INSERT INTO Session (session_id, user_id, stay_logged_in) VALUES (UUID_TO_BIN('?'), ?, ?);",
+                "INSERT INTO Session (session_id, user_id, stay_logged_in) VALUES (UUID_TO_BIN(?), ?, ?);",
                 [
                     session_id,
                     user.user_id,

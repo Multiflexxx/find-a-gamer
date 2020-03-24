@@ -12,6 +12,8 @@ export class SessionFactory {
             let result;
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 result = callbackValue[0];
+                console.log("")
+                console.log(callbackValue);
             }, function(callbackValue) {
                 console.error("ConnectToToDatabaseService getPromise(): Promise rejected");
                 console.error(callbackValue);
@@ -50,7 +52,9 @@ export class SessionFactory {
             });
 
             await SessionFactory.getSessionBySessionId(session_id).then(function(callbackValue) {
-                result = callbackValue[0];
+                result = callbackValue;
+                console.log("getSessionForUser");
+                console.log(callbackValue);
             }, function(callbackValue) {
                 console.error(callbackValue);
                 reject(callbackValue);

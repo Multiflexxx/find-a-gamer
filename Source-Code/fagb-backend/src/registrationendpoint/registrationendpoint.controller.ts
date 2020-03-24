@@ -6,47 +6,81 @@ import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
 import { QueryObject } from 'src/data_objects/queryobject';
 import { Session } from 'src/data_objects/session';
+import { UserFactory } from 'src/factory/userfactory';
+import { SessionFactory } from 'src/factory/sessionfactory';
+import { Region } from 'src/data_objects/region';
+import { Language } from 'src/data_objects/language';
+import { Game } from 'src/data_objects/game';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
-    @Post()
+    @Get()
     async handleRegistration(@Body() registration: Registration) {
 
+
+        registration = new Registration(
+            'test@test16.com',
+            'test123',
+            'Grimmig',
+            'Grimmig#1235',
+            new Date('1999-12-31T23:00:00.000Z'),
+            new Region(1, "EU"),
+            [
+                new Language(1)
+            ],
+            [
+                new Game(1)
+            ]
+        );
+
+        // Validate User Input
         let isInputValid = false;
-        
         let myPromise = this.validateInput(registration);
         await myPromise.then(function (callbackValue) {
             isInputValid = true;
-        }, function(callbackValue) {
-            console.log(callbackValue);
+        }, function (callbackValue) {
+            console.error("Failed to validate User Input");
+            console.error(callbackValue);
         });
 
         // TODO: CREATE SESSION 
         // TODO: Validate Birthdate
 
-        console.log(registration); // => Does work!
 
-        let myRegistration:Registration = registration;
-
-        console.log(myRegistration.discord_tag);
-
+        // return empty Session if User Input is invalid
         if (!isInputValid) {
             return new RegistrationResponse(false, null);
         }
-        
-        // TEST:
-        // Create User and return Session
-        return new RegistrationResponse(true, new Session("test_session", 2, true));
+
+        // Create User using validated registration object
+        let user;
+        await UserFactory.createUser(registration).then(function (callbackValue) {
+            user = callbackValue;
+        }, function (callbackValue) {
+            console.error(callbackValue);
+        })
+
+        // Create Session using created user
+        // stay_logged_in for Session is false by default
+        let session;
+        await SessionFactory.createSessionForUser(user, false).then(function (callbackValue) {
+            session = callbackValue;
+        }, function (callbackValue) {
+            console.error(callbackValue);
+        });
+
+        // Return Session
+        return session;
     }
-    private async validateInput(registration: Registration): Promise<boolean> {
+    private async validateInput(registration: Registration): Promise<string> {
         // Validate User input
         return new Promise(async function (resolve, reject) {
             if (!EmailValidator.validate(registration.email)) {
-                reject(false);
+                reject("Email is invalid");
             }
 
-            let queryResult: any;
+            let queryResult: any = null;
 
             let emailQueryObject: QueryObject = QueryBuilder.getUserByEmail(registration.email);
             let emailPromise = ConnectToDatabaseService.getPromise(emailQueryObject);
@@ -55,19 +89,19 @@ export class RegistrationendpointController {
                 queryResult = callback_value;
             }, function (callback_value) {
                 // Error Case of Promise
-                console.log(callback_value);
-                reject(false);
             });
 
-            if (queryResult.length > 0) {
-                reject(false);
+            if (queryResult !== null) {
+                if (queryResult.length > 0) {
+                    reject("User with that email already exists");
+                }
             }
 
             console.log(registration);
 
             var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
             if (!regex.test(registration.discord_tag)) {
-                reject(false);
+                reject("Discord Tag is invalid");
             }
 
             //Format: mm/dd/yyyy
@@ -87,15 +121,16 @@ export class RegistrationendpointController {
                     queryResult = callback_value;
                 }, function (callback_value) {
                     // Error Case of Promise
-                    console.log(callback_value);
+                    console.error("Failed to get Game");
+                    console.error(callback_value);
                 });
 
                 if (queryResult.length == 0) {
-                    reject(false);
+                    reject("Failed to get Game(s)");
                 }
             });
 
-            queryResult = undefined; // reset Result
+            queryResult = null; // reset Result
 
             registration.languages.forEach(async language => {
 
@@ -107,20 +142,21 @@ export class RegistrationendpointController {
                     queryResult = callback_value;
                 }, function (callback_value) {
                     // Error Case of Promise
-                    console.log(callback_value);
+                    console.error("Failed to get Language");
+                    console.error(callback_value);
                 });
 
                 if (queryResult.length == 0) {
-                    reject(false);
+                    reject("language fail");
                 }
             });
 
             if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === "" || registration.nickname === null) {
-                reject(false);
+                reject("nickname fail");
             }
 
             if (registration.password_hash === null || registration.password_hash === "") {
-                reject(false);
+                reject("password fail");
             }
 
             queryResult = undefined; // reset Result
@@ -133,14 +169,15 @@ export class RegistrationendpointController {
                 queryResult = callback_value;
             }, function (callback_value) {
                 // Error Case of Promise
-                console.log(callback_value);
+                console.error("Failed to get Region");
+                console.error(callback_value);
             });
 
             if (queryResult.length == 0) {
-                reject(false);
+                reject("region fail");
             }
 
-            resolve(true);
+            resolve("Success");
         });
     }
 }

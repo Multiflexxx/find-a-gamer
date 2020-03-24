@@ -8,8 +8,11 @@ export class RegionFactory {
     public static async getRegionById(id: number): Promise<Region> {
         return new Promise(async function (resolve, reject) {
             let result;
-            await ConnectToDatabaseService.getPromise(QueryBuilder.getRegionById(id)).then(function (callbackValue) {
+            let query = QueryBuilder.getRegionById(id);
+            console.log(id);
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 result = callbackValue[0];
+                console.log(callbackValue);
             }, function (callbackValue) {
                 console.error("ConnectToDatabaseService getPromise(): Promise rejected");
                 console.error(callbackValue);
