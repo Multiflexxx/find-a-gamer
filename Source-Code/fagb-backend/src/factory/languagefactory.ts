@@ -16,4 +16,19 @@ export class LanguageFactory {
     //     return languages;
     // }
     
+    public static async getLanguagesForUser(user: User): Promise<Language[]> {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.getLanguagesByUser(user);
+            let languages: Language[] = [];
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                callbackValue.forEach(language => {
+                    languages.push(new Language(language.language_id, language.name, language.language_code));
+                });
+            }, function(callbackValue) {
+                console.error("LanguageFactory getLanguagesForUser(): Promise rejected");
+                reject(callbackValue);
+            })
+            resolve(languages);
+        });
+    }
 }

@@ -1,13 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { 
-    height: 100%; 
+html,
+body {
+  height: 100%;
 }
 
-body { 
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 
 // Set colors 
 $black-ter: hsl(0, 0%, 14%);
@@ -21,7 +23,10 @@ $title-color: $light;
 $body-background-color: $dark;
 $footer-background-color: $dark;
 $footer-color: true;
-footer {color: $light;}
+
+footer {
+  color: $light;
+}
 
 $card-color: $light;
 $card-header-color: $light;

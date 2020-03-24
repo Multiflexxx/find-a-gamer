@@ -1,11 +1,13 @@
 # Database
 ## General Information
-- MySQL Datenbank
+- MariaDB Database
 
 ## Entities
 - User
 - Game
-- Queue
+- Region
+- Language
+- Session
 
 ## Table Definitions
 ### User
@@ -57,6 +59,18 @@ Create Table Language (
     Primary Key (language_id)
 );
 ```
+### Session
+```sql
+Create Table Session(
+    session_id binary(16) NOT NULL,
+    user_id int NOT NULL,
+    stay_logged_in BOOLEAN,
+    expiration_date DATE,
+    Primary Key (session_id),
+    Foreign Key (user_id) REFERENCES User (user_id)
+);
+```
+
 
 ### User_Language_Pair
 ```sql
@@ -81,3 +95,40 @@ Create Table User_Game_Pair (
     Primary Key (pair_id)
 );
 ```
+## Own Functions:
+
+### UUID_TO_BIN
+This function converts a generated UUID with 36 characters length (like this <code>b9117c5e-8c9e-4e5e-be97-717677c8ecfd</code>) to a binary format to store on the database. Therefore it removes the dashes and unhexes the rest.
+
+```sql
+CREATE FUNCTION UUID_TO_BIN(_uuid BINARY(36))
+    RETURNS BINARY(16)
+        LANGUAGE SQL  DETERMINISTIC  CONTAINS SQL  SQL SECURITY INVOKER
+        RETURN
+            UNHEX(CONCAT(
+                SUBSTR(_uuid, 15, 4),
+                SUBSTR(_uuid, 10, 4),
+                SUBSTR(_uuid,  1, 8),
+                SUBSTR(_uuid, 20, 4),
+                SUBSTR(_uuid, 25)
+            ));
+ ```
+
+### Bin_TO_UUID
+This function converts the 16 bytes binary value from the database to a 36 characters long UUID string with dashes. 
+
+ ```sql   
+CREATE FUNCTION BIN_TO_UUID(_bin BINARY(16))
+    RETURNS BINARY(36)
+        LANGUAGE SQL  DETERMINISTIC  CONTAINS SQL  SQL SECURITY INVOKER
+        RETURN
+            LCASE(CONCAT_WS('-',
+                HEX(SUBSTR(_bin,  5, 4)),
+                HEX(SUBSTR(_bin,  3, 2)),
+                HEX(SUBSTR(_bin,  1, 2)),
+                HEX(SUBSTR(_bin,  9, 2)),
+                HEX(SUBSTR(_bin, 11))
+            ));
+```
+
+For more information about the functions see this website: [GUID/UUID Performance](https://mariadb.com/kb/en/guiduuid-performance/).

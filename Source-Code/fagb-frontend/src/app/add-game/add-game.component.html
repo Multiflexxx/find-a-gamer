@@ -39,7 +39,9 @@
 </div>
 
 <label for="test" [formGroup]="gameForm">
-  <input type="hidden" id="test" formControlName="gameCtrl" [(ngModel)]="selectedGamesString" required>
+  <!-- Warning ngModel -->
+  <!-- <input type="text" id="test" formControlName="gameCtrl" [(ngModel)]="selectedGamesString" required> -->
+  <input type="hidden" id="test" formControlName="gameCtrl" required>
 </label>
 
 </section>

@@ -112,6 +112,7 @@ export class AddGameComponent implements OnInit {
       }
     }
     this.selectedGamesString = JSON.stringify(this.selectedGames);
+    this.gameForm.get('gameCtrl').setValue(this.selectedGamesString);
   }
 
   ngOnInit(): void {
