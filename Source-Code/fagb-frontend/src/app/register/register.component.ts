@@ -81,31 +81,6 @@ export class RegisterComponent implements OnInit {
     }
   ];
 
-
-
-  // constructor(private http: HttpClient) {
-  //   // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
-  //   const currentYear = new Date().getFullYear();
-  //   this.minDate = new Date(currentYear - 100, 0, 1);
-  //   this.maxDate = new Date(currentYear - 6, 11, 31);
-
-
-  //   this.profileForm = new FormGroup({
-  //     nameCtrl: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]),
-  //     tagCtrl: new FormControl('', [Validators.required, Validators.pattern(this.regDisTag)]),
-  //     mailCtrl: new FormControl('', [Validators.required, emailValidator()]),
-  //     dateCtrl: new FormControl('', Validators.required),
-  //     regionCtrl: new FormControl('', Validators.required),
-  //     langCtrl: new FormControl('', Validators.required),
-  //     passCtrl: new FormControl('', Validators.required),
-  //     rpassCtrl: new FormControl('', Validators.required),
-  //   });
-
-  //   this.gameForm = new FormGroup({
-  //     gameCtrl: new FormControl('', Validators.required)
-  //   });
-  // }
-
   constructor(private formBuilder: FormBuilder ,private http: HttpClient) {
     
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
@@ -135,37 +110,37 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  get nameCtrl() {
-    return this.profileForm.get('nameCtrl');
-  }
+  // get nameCtrl() {
+  //   return this.profileForm.get('nameCtrl');
+  // }
 
-  get tagCtrl() {
-    return this.profileForm.get('tagCtrl');
-  }
+  // get tagCtrl() {
+  //   return this.profileForm.get('tagCtrl');
+  // }
 
-  get mailCtrl() {
-    return this.profileForm.get('mailCtrl');
-  }
+  // get mailCtrl() {
+  //   return this.profileForm.get('mailCtrl');
+  // }
 
-  get dateCtrl() {
-    return this.profileForm.get('dateCtrl');
-  }
+  // get dateCtrl() {
+  //   return this.profileForm.get('dateCtrl');
+  // }
 
-  get regionCtrl() {
-    return this.profileForm.get('regionCtrl');
-  }
+  // get regionCtrl() {
+  //   return this.profileForm.get('regionCtrl');
+  // }
 
-  get langCtrl() {
-    return this.profileForm.get('langCtrl');
-  }
+  // get langCtrl() {
+  //   return this.profileForm.get('langCtrl');
+  // }
 
-  get passCtrl() {
-    return this.profileForm.get('passCtrl');
-  }
+  // get passCtrl() {
+  //   return this.profileForm.get('passCtrl');
+  // }
 
-  get pwConfirm() {
-    return this.profileForm.get('rpassCtrl');
-  }
+  // get pwConfirm() {
+  //   return this.profileForm.get('rpassCtrl');
+  // }
 
 
   public hasError = (controlName: string, errorName: string) => {
@@ -222,6 +197,8 @@ export class RegisterComponent implements OnInit {
       games
     );
 
+    registration.birthdate.toJSON;
+    console.log(registration);
     console.log(JSON.stringify(registration));
 
 
