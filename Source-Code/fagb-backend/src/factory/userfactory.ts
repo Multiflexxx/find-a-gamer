@@ -29,7 +29,9 @@ export class UserFactory {
             // Get created User
             let result;
             await UserFactory.getUserByEmail(registration.email).then(function(callbackValue) {
-                result = callbackValue[0];
+                result = callbackValue;
+                console.log(result);
+                console.log(callbackValue);
             }, function(callbackValue) {
                 console.error(callbackValue);
                 reject(callbackValue);
@@ -38,12 +40,12 @@ export class UserFactory {
             let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result. profile_picture, result.cake_day, result.birthdate, result.biography);
 
             // Get Region
-            await RegionFactory.getRegionById(result.region).then(function(callbackValue) {
-                result = callbackValue[0];
-            }, function(callbackValue) {
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+            // await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
 
             user.region = new Region(result.region_id, result.name);
             
@@ -87,6 +89,8 @@ export class UserFactory {
             result.forEach(language => {
                 user.languages.push(new Language(language.language_id, language.name, language.language_code))
             });
+
+            resolve(user);
         });
     };
 
@@ -110,8 +114,70 @@ export class UserFactory {
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!result) {
+                reject("No User with that Email");
+                return;
+            }
     
-            let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region);
+            let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+
+            await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("Failed to get Region in UserFactory getUserByEmail");
+                console.error(callbackValue);
+            })
+            user.region = new Region(result.region_id, result.name);
+            
+            // Get Games for user
+            await GameFactory.getGamesForUser(user).then(function(callbackValue) {
+                user.games = callbackValue;
+            }, function(callbackValue) {
+                console.error("GameFactory getGamesForUser: Promise rejected");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            // Get Languages for User
+            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+                user.languages = callbackValue;
+            }, function(callbackValue) {
+                console.error("LanguageFactory getLanguagesForUser: Promise rejected");
+                console.error(callbackValue);
+                reject(callbackValue);
+            })
+            resolve(user);
+        });
+
+    }
+
+    public static async getUserBySessionID(session_id: string): Promise<User> {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.getUserBySessionID(session_id);
+            let result;
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+                result = callbackValue[0];
+            }, function (callbackValue) {
+                console.error("");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!result) {
+                reject("No User with that Session");
+                return;
+            }
+
+            let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+            
+            await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("Failed to get Region in UserFactory getUserByEmail");
+                console.error(callbackValue);
+            })
+            user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
@@ -135,3 +201,4 @@ export class UserFactory {
 
     }
 }
+
