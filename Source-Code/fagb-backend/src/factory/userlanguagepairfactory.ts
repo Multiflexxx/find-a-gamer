@@ -38,4 +38,26 @@ export class UserLanguagePairFactory {
             resolve(true);
         });
     }
+
+
+    public static async deleteUserLanguagePairs(user: User) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.deleteUserLanguagePairsByUser(user);
+            let successful = false;
+
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("userlanguagepairfactory deleteUserLanguagePairs(): Couldn't delete UserLanguagePair");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if (!successful) {
+                return;
+            }
+
+            resolve(true);
+        });
+    }
 }

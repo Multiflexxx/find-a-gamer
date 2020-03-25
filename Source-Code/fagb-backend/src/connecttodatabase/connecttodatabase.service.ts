@@ -54,4 +54,18 @@ export class ConnectToDatabaseService {
         //     return null; // TBD: Error Object
         // })
     }
+
+    public static async testQuery(query: String) {
+        return new Promise(function(resolve, reject) {
+            let c = ConnectToDatabaseService.getConnection();
+            c.query(query, function (error, results, fields) {
+                if (error) {
+                    reject(error);
+                    throw error;
+                }
+                resolve(results);
+            });
+            c.end();
+        })
+    }
 }

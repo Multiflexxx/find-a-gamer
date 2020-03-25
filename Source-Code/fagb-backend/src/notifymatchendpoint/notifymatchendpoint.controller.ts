@@ -14,12 +14,18 @@ export class NotifymatchendpointController {
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
-        let test;
+        await ConnectToDatabaseService.testQuery("Select * from User WHERE email = 'test@test16.com';").then(function(callbackValue) {
+            console.log(callbackValue);
+        }, function(callbackValue) {
+            console.log(callbackValue);
+        })
 
-        for(let i = 0; i < 100; i++) {
-            test = i;
-            console.log(test);
-        }
+        // let test;
+
+        // for(let i = 0; i < 100; i++) {
+        //     test = i;
+        //     console.log(test);
+        // }
 
         // UUID: b9117c5e-8c9e-4e5e-be97-717677c8ecfd
 

@@ -38,4 +38,24 @@ export class UserGamePairFactory {
             resolve(true);
         });
     }
+
+    public static async deleteUserGamePairsByUser(user: User) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.deleteUserGamePairsByUser(user);
+            let successful = false;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePair");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            resolve(true);
+        });
+    }
 }
