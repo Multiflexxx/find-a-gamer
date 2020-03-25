@@ -77,6 +77,16 @@ export class QueryBuilder {
         // return `SELECT * FROM User WHERE email = ${email};`;
     }
 
+    public static getUserBySessionID(session_id: string): QueryObject {
+        return new QueryObject(
+            "SELECT User.* FROM Session RIGHT JOIN User ON (Session.user_id=User.user_id) WHERE session_id = UUID_TO_BIN(?)",
+            [
+                session_id
+            ]
+        );
+    }
+
+
     public static getLanguagesByUser(user: User): QueryObject {
         return new QueryObject(
             "SELECT Language.language_id, Language.name, Language.language_code From Language JOIN User_Language_Pair ON Language.language_id = User_Language_Pair.language_id WHERE User_Language_Pair.user_id = ?;",
@@ -179,6 +189,15 @@ export class QueryBuilder {
     public static getSessionByUserId(user: User): QueryObject {
         return new QueryObject(
             "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE user_id = ?",
+            [
+                user.user_id
+            ]
+        );
+    }
+
+    public static deleteSessionByUserId(user: User) {
+        return new QueryObject(
+            "DELETE FROM Session Where user_id = ?",
             [
                 user.user_id
             ]

@@ -1,9 +1,12 @@
+import { ifError } from "assert";
+
 export class Login {
     public session_id: string;
     public email: string;
     public password_hash: string;
+    public stay_logged_in: boolean;
 
-    public constructor(session_id?: string, email?: string, password_hash?: string) {
+    public constructor(session_id?: string, email?: string, password_hash?: string, stay_logged_in?: boolean) {
 
         if(session_id && !(email || password_hash)) {
             this.session_id = session_id;
@@ -18,6 +21,10 @@ export class Login {
             this.session_id = null;
             this.email = null;
             this.password_hash = null;
+        }
+
+        if(stay_logged_in) {
+            this.stay_logged_in = stay_logged_in;
         }
     }
 }

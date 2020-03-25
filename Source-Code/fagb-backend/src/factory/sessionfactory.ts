@@ -12,14 +12,12 @@ export class SessionFactory {
             let result;
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 result = callbackValue[0];
-                console.log("")
-                console.log(callbackValue);
             }, function(callbackValue) {
                 console.error("ConnectToToDatabaseService getPromise(): Promise rejected");
                 console.error(callbackValue);
             });
     
-            session = new Session(result.session_id, result.user_id, result.stay_logged_in, result.expiration_date);
+            session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
             resolve(session);
         });
     }
@@ -34,7 +32,7 @@ export class SessionFactory {
                 console.error(callbackValue);
                 reject(callbackValue);
             })
-            resolve(new Session(result.session_id, result.user_id, result.stay_logged_in, result.expiration_date));
+            resolve(new Session(result.session_id.toString(), result.user_id, result.stay_logged_in, result.expiration_date));
         });
     }
 
@@ -49,6 +47,9 @@ export class SessionFactory {
                 result = callbackValue;
             }, function(callbackValue) {
                 // unsuccessful
+                reject("Couldn't create session");
+                console.error(callbackValue);
+
             });
 
             await SessionFactory.getSessionBySessionId(session_id).then(function(callbackValue) {
@@ -62,5 +63,18 @@ export class SessionFactory {
             session = new Session(result.session_id, result.user_id, result.stay_logged_in, result.expiration_date);
             resolve(session);
         })
+    }
+
+    public static async deleteSessionByUser(user: User) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.deleteSessionByUserId(user);
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue){
+                resolve(callbackValue);
+            }, function(callbackValue) {
+                console.error("SessionFactory deleteSessionByUser(): Failed to delete Session");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+        });
     }
 }

@@ -18,9 +18,9 @@ export class RegistrationendpointController {
     @Get()
     async handleRegistration(@Body() registration: Registration) {
 
-
+        let randomNumber = Math.floor(Math.random() * 10000);
         registration = new Registration(
-            'test@test16.com',
+            'test@test' + randomNumber + '.com',
             'test123',
             'Grimmig',
             'Grimmig#1235',
