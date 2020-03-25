@@ -171,8 +171,7 @@
   height: 640px;
   top: 50%;
   left: 50%;
-  margin-top: -320px;
-  margin-left: -180px;
+  transform: translate(-50%, -50%);
   border: 6px black solid;
   border-top-width: 10px;
   border-bottom-width: 10px;
@@ -208,35 +207,12 @@
 }
 
 .sm-content {
-  background-color: darkolivegreen;
+  background-color: hsl(0, 0, 17%);
   width: 308px;
   height: 620px;
   border-radius: 27px;
   padding: 20px 5px 0;
 }
-
-// #conversation {
-//   // position: absolute;
-//   // width: 700px;
-//   // height: 28rem;
-//   // top: 50%;
-//   // left: 50%;
-//   // margin-top: -14rem;
-//   // margin-left: -325px;
-//   // padding: 0.75rem;
-//   font-family: 'Courier New', Courier, monospace;
-//   font-size: 1rem;
-//   visibility: inherit;
-//   animation: conversation 3s linear;
-//   animation-delay: 8s;
-//   animation-fill-mode: forwards;
-// }
-
-// @keyframes conversation {
-//   100% {
-//     visibility: inherit;
-//   }
-// }
 
 .sm-message {
   border: 2px solid #dedede;
@@ -299,15 +275,15 @@
 
 #message2 {
   animation:
-    type2 4.1s 4s steps(41) forwards,
-    msgvanish 0.3s 9.2s forwards;
+    type2 4.1s 5.1s steps(41) forwards,
+    msgvanish 0.3s 10.3s forwards;
   height: 0;
 }
 
 #message3 {
   animation:
-    type3 0.8s 8.1s steps(8) forwards,
-    msgvanish 0.3s 9.2s forwards;
+    type3 0.8s 9.2s steps(8) forwards,
+    msgvanish 0.3s 10.3s forwards;
   height: 0;
 }
 
@@ -324,7 +300,7 @@
     width: 0%;
     height: 1.5rem;
     border-right: 2px solid black;
-  }
+  } 
 
   99% {
     width: 75%;
@@ -379,28 +355,28 @@
 }
 
 #test1 {
-  animation: popup 0.5s steps(100) forwards;
+  animation: popup 0.5s steps(50) forwards;
   // animation-delay: 8s;
   animation-fill-mode: forwards;
 }
 
 #test2 {
-  animation: popup 0.5s steps(100) forwards;
- animation-delay: 9.5s;
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 3.35s;
   animation-fill-mode: forwards;
 }
 
-// #test3 {
-//   animation: popup 0.5s steps(100) forwards;
-//   // animation-delay: 11s;
-//   animation-fill-mode: forwards;
-// }
+#test3 {
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 4.8s;
+  animation-fill-mode: forwards;
+}
 
-// #test4 {
-//   animation: popup 0.5s steps(100) forwards;
-//   // animation-delay: 12.5s;
-//   animation-fill-mode: forwards;
-// }
+#test4 {
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 10.3s;
+  animation-fill-mode: forwards;
+}
 
 
 @keyframes popup {
@@ -462,7 +438,7 @@
 
 .text {
   position: absolute;
-  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.1rem;
   font-size: 1.7rem;
   line-height: 2rem;
   top: 50%;
