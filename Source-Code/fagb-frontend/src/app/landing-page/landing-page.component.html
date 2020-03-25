@@ -1,44 +1,73 @@
+<div class="animation">
 
+  <div class="outCircle">
+    <div class="rotate">
 
-    <div class="animation">
-        
-         
-            <i class="fas fa-gamepad" id="controller1"></i>
-            <div class="text">Hey!</div>
-            <i class="fas fa-gamepad" id="controller2"></i>
-            <div>
-                <h1>You want to game with a buddy?</h1>
-            </div>
+      <div class="counterrotate">
+        <object class="inner" data="../../assets/img/icons/joystickdark.svg" type="image/svg+xml"
+          id="controller1"></object>
+      </div>
 
-       
+      <div class="counterrotate">
+        <object class="inner" data="../../assets/img/icons/ps4-gamepad.svg" type="image/svg+xml"
+          id="controller2"></object>
+      </div>
+
     </div>
+  </div>
+  <div id="welcomeText">You'll never<br>game alone.</div>
+  <div id="conversation">
+        <div class="container1" id="test1">
+          <img src="../../assets/img/icons/headset_dark.svg" alt="Avatar" style="width:100%;">
+          <p>Wanna play [Spiel]?</p>
+          <span class="time-right">11:00</span>
+        </div>
+
+        <div class="container1 darker" id="test2">
+          <img src="../../assets/img/icons/headset_dark.svg" alt="Avatar" class="right" style="width:100%;">
+          <p>Nah not in the mood rn</p>
+          <span class="time-left">11:01</span>
+        </div>
+
+        <div class="container1" id="test3">
+          <img src="../../assets/img/icons/headset_dark.svg" style="width:100%;">
+          <p>Feels bad man. I don't want to play alone tho</p>
+          <span class="time-right">11:02</span>
+        </div>
+
+        <div class="container1 darker" id="test4">
+          <img src="../../assets/img/icons/headset_dark.svg" alt="Avatar" class="right" style="width:100%;">
+          <p>Sorry dude.. but you could try FAGB. It's lit fam!</p>
+          <span class="time-left">11:05</span>
+        </div>
+  </div>
+</div>
 
 
 <section class="section">
-    
-    <div>
-        <div class="container">
-            <div class="columns is-gapless is-multiline is-mobile">
-              <div *ngFor="let item of items; let i = index" class="column is-half-tablet is-full-mobile">
-                          
-                    <div *ngIf="i<6" class="card-image">
-                        
-                        <div class="overlay">
-                            
-                            <figure class="image is-2by1">
-                                <img [src]="item.img">
-                                
-                              </figure>
-                              <div class="textbox">
-                                  <div class="text">find a game in cereal and get the best player in the world</div>
-                                </div>
-                              
-                        </div>
-                    </div>             
+
+  <div>
+    <div class="container">
+      <div class="columns is-gapless is-multiline is-mobile">
+        <div *ngFor="let item of items; let i = index" class="column is-half-tablet is-full-mobile">
+
+          <div *ngIf="i<6" class="card-image">
+
+            <div class="overlay">
+
+              <figure class="image is-2by1">
+                <img [src]="item.img">
+
+              </figure>
+              <div class="textbox">
+                <div class="text">find a game in cereal and get the best player in the world</div>
               </div>
+
             </div>
           </div>
-        
+        </div>
+      </div>
     </div>
-</section>
 
+  </div>
+</section>

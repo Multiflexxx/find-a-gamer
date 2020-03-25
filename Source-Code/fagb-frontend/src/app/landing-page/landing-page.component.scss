@@ -1,127 +1,371 @@
-.container{
-    align-items: center;
+.container {
+  align-items: center;
 }
 
-.animation{
-    position: relative;
-    margin: auto;
-    width: 100vw;
-    height: 100vh;
-    animation-duration: 4s;
-    animation-name: smaller;
-    animation-fill-mode: forwards;
+.animation {
+  position: relative;
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  animation-duration: 4s;
+  animation-name: smaller;
+  animation-fill-mode: forwards;
 
-} 
+}
+
 // @keyframes smaller{
 //     0% {height: 100vh;}
 //     100%{height: 50vh;}
 // }
-#controller1 {
-    animation-name: controller1;
-    color: red;
+
+#welcomeText {
+  position: absolute;
+  width: 21.875rem;
+  height: 12.5rem;
+  top: 50%;
+  left: 50%;
+  margin-top: -6.25rem;
+  margin-left: -10.938rem;
+  background-color: rgb(128, 128, 255);
+  text-align: center;
+  font-size: 2.69em;
+  color: white;
+  line-height: 6.25rem;
+  animation-name: welcomeText;
+  animation-delay: 0s;
+  animation-duration: 7.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
-@keyframes controller1{
-    100% {left: 60%;}
+
+
+#welcomeText:before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 175px solid transparent;
+  border-right: 175px solid transparent;
+  border-bottom: 100px solid rgb(128, 128, 255);
+}
+
+#welcomeText:after {
+  content: "";
+  position: absolute;
+  bottom: -100px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 175px solid transparent;
+  border-right: 175px solid transparent;
+  border-top: 100px solid rgb(128, 128, 255);
+}
+
+@keyframes welcomeText {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.outCircle {
+  position: absolute;
+  width: 40rem;
+  height: 40rem;
+  top: 50%;
+  left: 50%;
+  margin-top: -20em;
+  margin-left: -20em;
+  border-radius: 40rem;
+  animation: zoom 1.5s linear;
+  animation-delay: 6s;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes zoom {
+  100% {
+    opacity: 0;
+    width: 80rem;
+    height: 80rem;
+    margin-top: -40em;
+    margin-left: -40em;
+  }
+}
+
+.rotate {
+  width: 100%;
+  height: 100%;
+  animation: circle 8s linear;
+  animation-iteration-count: 0.75;
+  animation-fill-mode: forwards;
+}
+
+@keyframes circle {
+  from {
+    transform: rotateZ(0deg)
+  }
+
+  to {
+    transform: rotateZ(360deg)
+  }
+}
+
+.inner {
+  width: 10rem;
+  height: 10rem;
+  position: absolute;
+  text-align: center;
+  line-height: 10rem;
+  color: white;
+  display: block;
+  animation: ccircle 8s linear;
+  animation-iteration-count: 0.75;
+  animation-fill-mode: forwards;
+}
+
+@keyframes ccircle {
+  from {
+    transform: rotateZ(0deg)
+  }
+
+  to {
+    transform: rotateZ(-360deg)
+  }
+}
+
+#controller1 {
+  top: 0%;
+  right: 50%;
+  margin-top: -5rem;
+  margin-right: -5rem;
 }
 
 #controller2 {
-    animation-name: controller2;
-    color: blue;
-}
-@keyframes controller2{
-    100% {right: 60%;}
-}
-
-.fa-gamepad{
-    position: absolute;
-    
-    height: 10rem;
-    width: 10rem;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-
-    animation-duration: 4s;
-    // animation-name: disappear;
-    animation-fill-mode: forwards;
-    opacity: 100%;
-    
-
-} 
-@keyframes disappear{
-    0% {opacity: 1;}
-    100%{opacity: 0;}
-   
-}
-.text{
-    position: absolute;
-    margin: auto;
-    text-align: center;
-    font-size: 3em;
-    animation-name: text;
-    animation-delay: 2s;
-    animation-duration: 2s;
-    opacity: 0;
-    animation-fill-mode: forwards;
-
-}
-@keyframes text{
-    0% {opacity: 0;}
-    100%{opacity: 1;}
+  bottom: 0%;
+  left: 50%;
+  margin-bottom: -5rem;
+  margin-left: -5rem;
+  opacity: 1;
 }
 
-
-
-.card-image{
-    
-    position: relative;
-    align-items: center;
-    text-align: center;
-    margin: auto;
-   
+#conversation {
+  position: absolute;
+  width: 700px;
+  height: 28rem;
+  top: 50%;
+  left: 50%;
+  margin-top: -14rem;
+  margin-left: -325px;
+  padding: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  visibility: hidden;
+  animation: conversation 3s linear;
+  animation-delay: 8s;
+  animation-fill-mode: forwards;
 }
 
-.textbox{
-    position: absolute;
-     top: 0;
-     left: 0;
-     bottom: 0;
-     right: 0;
-    opacity: 0%;
-    text-align: center;
-    margin: auto;
-    transition: 0.5s ease;
-    
-}
-.text{
-    position: relative;
-    color: white;
-    top: 50%;
-   
-   
-}
-.overlay:hover .textbox{
-    opacity: 1;
-    
-}
-.overlay:hover .image{
-    opacity: 30%;
+@keyframes conversation {
+100%{visibility: inherit;}
 }
 
-h1{
-    animation: type 4s steps(31) forwards;
- 
-    white-space: nowrap;
-    overflow: hidden;
+.conversation-content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.container1 {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 75%;
+  float: left;
+  visibility: hidden;
+  ;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+  float: right;
+}
+
+.container1::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container1 img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.container1 img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
+#test1 {
+  animation: popup 0.5s steps(100) forwards;
+  animation-delay: 8s;
+  animation-fill-mode: forwards;
+}
+
+#test2 {
+  animation: popup 0.5s steps(100) forwards;
+  animation-delay: 9.5s;
+  animation-fill-mode: forwards;
+}
+
+#test3 {
+  animation: popup 0.5s steps(100) forwards;
+  animation-delay: 11s;
+  animation-fill-mode: forwards;
+}
+
+#test4 {
+  animation: popup 0.5s steps(100) forwards;
+  animation-delay: 12.5s;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes popup {
+
+  10%,
+  90% {
+    visibility: inherit;
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    visibility: inherit;
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    visibility: inherit;
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    visibility: inherit;
+    transform: translate3d(4px, 0, 0);
+  }
+
+  100% {
+    visibility: inherit;
+  }
+}
+
+
+
+.text {
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  font-size: 3em;
+  animation-name: text;
+  animation-delay: 2s;
+  animation-duration: 4s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+
+}
+
+.card-image {
+  position: relative;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+}
+
+.textbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0%;
+  text-align: center;
+  margin: auto;
+  transition: 0.5s ease;
+}
+
+.text {
+  position: relative;
+  color: white;
+  top: 50%;
+}
+
+.overlay:hover .textbox {
+  opacity: 1;
+
+}
+
+.overlay:hover .image {
+  opacity: 30%;
+}
+
+h1 {
+  animation: type 4s steps(31) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 28ch;
+  border-right: 4px solid white;
+  color: white;
+}
+
+@keyframes type {
+  0% {
+    width: 0ch;
+  }
+
+  100% {
     width: 28ch;
-    border-right: 4px solid white;
-    color: white;
+  }
 }
-@keyframes type{
-    0%{width: 0ch;}
-    100%{width: 28ch;}
-}
-
-
