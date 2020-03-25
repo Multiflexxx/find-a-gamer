@@ -36,24 +36,17 @@
         <span class="time-right">11:05</span>
       </div>
       <div class="sm-input">
-        <!-- <div class="sm-input-vertical">
-          <p class="message" id="message2">Sorry dude.. but you could try FAGB. It's</p>
-          <p class="message" id="message3">lit fam!</p>
-        </div> -->
-        <div style="display: table; height: 50px; overflow: hidden; border-radius: 20px;">
-          <div style="display: table-cell; vertical-align: middle; background: red;">
-            <p class="message" id="message2">Sorry dude.. but you could try FAGB. It's</p>
-            <p class="message" id="message3">lit fam!</p>
+        <div style="display: table; overflow: hidden; border-radius: 20px;">
+          <div style="display: table-cell; vertical-align: middle;">
+            <div class="sm-input-hor">
+              <p class="message" id="message1">Nah not in the mood rn</p>
+              <p class="message" id="message2">Sorry dude.. but you could try FAGB.</p>
+              <p class="message" id="message3">It's lit fam!</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div>
-    <p class="message" id="message1">Nah not in the mood rn</p>
-  </div>
-  <div>
-    <p class="message" id="message2">Sorry dude.. but you could try FAGB. It's lit fam!</p>
   </div>
 </div>
 
@@ -70,12 +63,10 @@
             <div class="overlay">
 
               <figure class="image is-2by1">
-                <img [src]="item.img">
-
+                <img class="picture" [src]="item.img">
+                <span class="text">find a game in cereal and get the best player in the world</span>
               </figure>
-              <div class="textbox">
-                <div class="text">find a game in cereal and get the best player in the world</div>
-              </div>
+              
 
             </div>
           </div>
