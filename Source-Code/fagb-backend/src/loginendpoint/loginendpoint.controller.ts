@@ -12,9 +12,7 @@ export class LoginendpointController {
     async handleLogin(@Body() login: Login) {
         
         login = new Login(
-            undefined,
-            "ed008579-c4f7-4a6e-93bd-0caadd2a4097",
-            "test123498"
+            "855d6150-4975-4285-9b4d-3ca3f2c5aba0",
         );
 
         

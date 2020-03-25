@@ -94,11 +94,9 @@ export class QueryBuilder {
                 user.user_id
             ]
         );
-        // return `SELECT Language.language_id, Language.name, Language.language_code From Language JOIN User_Language_Pair ON Language.language_id = User_Language_Pair.language_id WHERE User_Language_Pair.user_id = ${user.user_id};`;
     }
 
     public static getGamesByUser(user: User): QueryObject {
-        // return `SELECT Game.game_id, Game.name, Game.cover_link, Game.game_description, Game.publisher, Game.published FROM Game JOIN User_Game_Pair ON Game.game_id = User_Game_Pair.game_id WHERE User_Game_Pair.user_id = ${user.user_id};`;
 
         return new QueryObject(
             "SELECT Game.game_id, Game.name, Game.cover_link, Game.game_description, Game.publisher, Game.published FROM Game JOIN User_Game_Pair ON Game.game_id = User_Game_Pair.game_id WHERE User_Game_Pair.user_id = ?",
@@ -195,9 +193,53 @@ export class QueryBuilder {
         );
     }
 
-    public static deleteSessionByUserId(user: User) {
+    public static deleteSessionByUserId(user: User): QueryObject {
         return new QueryObject(
             "DELETE FROM Session Where user_id = ?",
+            [
+                user.user_id
+            ]
+        );
+    }
+
+    public static updateUser(user: User): QueryObject {
+        return new QueryObject(
+            "UPDATE user SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?",
+            [
+                user.email,
+                user.password_hash,
+                user.nickname,
+                user.discord_tag,
+                user.profile_picture,
+                user.birthdate, 
+                user.biography,
+                user.region.region_id,
+                user.user_id
+            ]
+        );
+    }
+
+    public static deleteUser(user: User): QueryObject {
+        return new QueryObject(
+            "DELETE FROM User WHERE user_id = ?",
+            [
+                user.user_id
+            ]
+        );
+    }
+
+    public static deleteUserGamePairsByUser(user: User) {
+        return new QueryObject(
+            "DELETE FROM User_Game_Pair WHERE user_id = ?;", 
+            [
+                user.user_id
+            ]
+        );
+    }
+
+    public static deleteUserLanguagePairsByUser(user: User) {
+        return new QueryObject(
+            "DELETE FROM User_Language_Pair WHERE user_id = ?;", 
             [
                 user.user_id
             ]

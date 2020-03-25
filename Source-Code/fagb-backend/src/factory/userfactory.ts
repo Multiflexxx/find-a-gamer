@@ -33,19 +33,29 @@ export class UserFactory {
                 console.log(result);
                 console.log(callbackValue);
             }, function(callbackValue) {
+                console.error("UserFactory getUserByEmail(): ")
                 console.error(callbackValue);
                 reject(callbackValue);
             });
             
+            if(!result) {
+                return;
+            }
+            
             let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result. profile_picture, result.cake_day, result.birthdate, result.biography);
 
             // Get Region
-            // await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
-            //     result = callbackValue;
-            // }, function(callbackValue) {
-            //     console.error(callbackValue);
-            //     reject(callbackValue);
-            // });
+            result = null;
+            await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!result) {
+                return;
+            }
 
             user.region = new Region(result.region_id, result.name);
             
@@ -198,7 +208,150 @@ export class UserFactory {
             })
             resolve(user);
         });
+    }
 
+    public static async updateUser(user: User): Promise<User> {
+        return new Promise(async function(resolve, reject) {
+            // Get Query for updating user
+            let query = QueryBuilder.updateUser(user);
+
+            // Update User
+            let successful = false;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserFactory updateUser(): Couldn't update user");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            // If successful, return updated User Object
+            if(!successful) {
+                reject("UserFactory updateUser(): Couldn't update user");
+                return;
+            }
+
+            user = null;
+            await UserFactory.getUserByEmail(user.email).then(function(callbackValue) {
+                user = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserFactory updateUser(): Failed to get User");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!user) {
+                reject("UserFactory updateUser(): No user with that email")
+                return;
+            }
+
+            // Delete old UserGamePairs
+            successful = false;
+            await UserGamePairFactory.deleteUserGamePairsByUser(user).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserFactory updateUser(): Couldn't delete UserGamePairs");
+                console.error(callbackValue);
+                reject(callbackValue);
+            })
+
+            if(!successful) {
+                return;
+            }
+
+            // Create new UserGamePairs
+            successful = false;
+            await UserGamePairFactory.createUserGamePairs(user, user.games).then(function(callbackValue){
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            // Get newly created games for user
+            let result = null;
+            await GameFactory.getGamesForUser(user).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserFactory updateUser(): Couldn't get Games for user");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+            
+            if(!result) {
+                return;
+            }
+
+            user.games = result;
+
+            // Delete old UserLanguagePairs
+
+            // Create new UserLanguagePairs
+
+            // Get newly created UserLanguagePairs
+
+
+
+            resolve(user);
+        });
+    }
+
+    public static async deleteUser(user: User): Promise <User> {
+        return new Promise(async function(resolve, reject) {
+            // Delete UserGamePair
+            let query = QueryBuilder.deleteUserGamePairsByUser(user);
+            let successful= false;
+
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserFactory deleteUser(): Couldn't delete User Game Pair");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+            
+            if (!successful) {
+                reject("UserFactory deleteUser(): couldn't delete user game pair");
+                return;
+            } 
+
+            // Delete UserLanguagePair
+            query = QueryBuilder.deleteUserLanguagePairsByUser(user);
+            
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserFactory deleteUser(): Couldn't delete user language pair");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if (!successful) {
+                reject("UserFactory deleteUser(): couldn't delete user language pair");
+                return;
+            } 
+
+            query = QueryBuilder.deleteUser(user);
+
+            
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserFactory deleteUser(): Couldn't delete user");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if (!successful) {
+                reject("UserFactory deleteUser(): couldn't delete user");
+                return;
+            }    
+        });
     }
 }
 
