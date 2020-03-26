@@ -164,8 +164,8 @@ export class RegisterComponent implements OnInit {
     );
 
     registration.birthdate.toJSON;
-    // console.log(registration);
-    // console.log(JSON.stringify(registration));
+    console.log(registration);
+    console.log(JSON.stringify(registration));
 
 
     this.http.post(this.url, registration).toPromise().then((data: any) => {
