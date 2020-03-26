@@ -18,23 +18,25 @@ export class RegistrationendpointController {
     @Post()
     async handleRegistration(@Body() registration: Registration) {
 
-        let randomNumber = Math.floor(Math.random() * 10000);
-        registration = new Registration(
-            'test@test' + randomNumber + '.com',
-            'test123',
-            'Grimmig',
-            'Grimmig#1235',
-            new Date('1999-12-31T23:00:00.000Z'),
-            new Region(1, "EU"),
-            [
-                new Language(1)
-            ],
-            [
-                new Game(1)
-            ]
-        );
+        // let randomNumber = Math.floor(Math.random() * 10000);
+        // registration = new Registration(
+        //     'test@test' + randomNumber + '.com',
+        //     'test123',
+        //     'Grimmig',
+        //     'Grimmig#1235',
+        //     new Date('1999-12-31T23:00:00.000Z'),
+        //     new Region(1, "EU"),
+        //     [
+        //         new Language(1)
+        //     ],
+        //     [
+        //         new Game(1)
+        //     ]
+        // );
 
         // Validate User Input
+        console.log(registration);
+
         let isInputValid = false;
         let myPromise = this.validateInput(registration);
         await myPromise.then(function (callbackValue) {
