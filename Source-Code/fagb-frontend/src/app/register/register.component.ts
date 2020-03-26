@@ -49,34 +49,34 @@ export class RegisterComponent implements OnInit {
   // Backend input
   regionList = [
     {
-      id: 0,
+      id: 1,
       name: 'Africa'
     },
     {
-      id: 1,
+      id: 2,
       name: 'Asia'
     },
     {
-      id: 2,
+      id: 3,
       name: 'Europa'
     },
     {
-      id: 3,
+      id: 4,
       name: 'North America'
     },
     {
-      id: 4,
+      id: 5,
       name: 'South America'
     }
   ];
 
   langList = [
     {
-      id: 0,
+      id: 1,
       name: 'English'
     },
     {
-      id: 1,
+      id: 2,
       name: 'German'
     }
   ];
@@ -109,39 +109,6 @@ export class RegisterComponent implements OnInit {
       gameCtrl: new FormControl('', Validators.required)
     });
   }
-
-  // get nameCtrl() {
-  //   return this.profileForm.get('nameCtrl');
-  // }
-
-  // get tagCtrl() {
-  //   return this.profileForm.get('tagCtrl');
-  // }
-
-  // get mailCtrl() {
-  //   return this.profileForm.get('mailCtrl');
-  // }
-
-  // get dateCtrl() {
-  //   return this.profileForm.get('dateCtrl');
-  // }
-
-  // get regionCtrl() {
-  //   return this.profileForm.get('regionCtrl');
-  // }
-
-  // get langCtrl() {
-  //   return this.profileForm.get('langCtrl');
-  // }
-
-  // get passCtrl() {
-  //   return this.profileForm.get('passCtrl');
-  // }
-
-  // get pwConfirm() {
-  //   return this.profileForm.get('rpassCtrl');
-  // }
-
 
   public hasError = (controlName: string, errorName: string) => {
     return this.profileForm.controls[controlName].hasError(errorName);
