@@ -119,7 +119,6 @@ export class RegisterComponent implements OnInit {
     let pw = this.profileForm.controls[controlName].value;
     if (this.mediumRegex.test(pw)) {
       strenght = 1;
-      console.log(controlName);
     } else if (this.strongRegex.test(pw)) {
       strenght = 2;
     } else if (pw != "") {
@@ -151,7 +150,7 @@ export class RegisterComponent implements OnInit {
       langs.push(new Language(this.profileData.langCtrl[i]));
     }
 
-    var region: Region = this.profileData.regionCtrl;
+    var region: Region =  new Region(this.profileData.regionCtrl);
 
     var registration: Registration = new Registration(
       this.profileData.mailCtrl,
@@ -165,8 +164,8 @@ export class RegisterComponent implements OnInit {
     );
 
     registration.birthdate.toJSON;
-    console.log(registration);
-    console.log(JSON.stringify(registration));
+    // console.log(registration);
+    // console.log(JSON.stringify(registration));
 
 
     this.http.post(this.url, registration).toPromise().then((data: any) => {
