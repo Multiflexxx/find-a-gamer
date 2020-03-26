@@ -216,6 +216,8 @@ export class UserFactory {
             // Get Query for updating user
             let newGames: Game[];
             newGames = user.games;
+            let newLanguages : Language[];
+            newLanguages = user.languages;
 
             let query = QueryBuilder.updateUser(user);
 
@@ -258,6 +260,10 @@ export class UserFactory {
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!result) {
+                return;
+            }
 
             newUser.games = result;
             // successful = false;
@@ -303,50 +309,59 @@ export class UserFactory {
 
             // newUser.games = result;
 
-            // Delete old UserLanguagePairs
-            successful = false;
-            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
-                successful = true;
-            }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't delete UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            })
-
-            if(!successful) {
-                return;
-            }
-
-            // Create new UserLanguagePairs
-            successful = false;
-            await UserLanguagePairFactory.createUserLanguagePairs(newUser, user.languages).then(function(callbackValue){
-                successful = true;
-            }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't create UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
-
-            if(!successful) {
-                return;
-            }
-
-            // Get newly created UserLanguagePairs
             result = null;
-            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+            await LanguageFactory.updateLanguagesForUser(newUser, newLanguages).then(function(callbackValue) {
                 result = callbackValue;
             }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't get Languages for user");
+                console.error("UserFactory updateUser(): Failed to get Updated Languages for User");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
-            
+
             if(!result) {
                 return;
             }
 
-            newUser.languages = result;
+            newUser.language = result;
+            
+            // // Delete old UserLanguagePairs
+            // successful = false;
+            // await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't delete UserLanguagePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // })
 
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Create new UserLanguagePairs
+            // successful = false;
+            // await UserLanguagePairFactory.createUserLanguagePairs(newUser, user.languages).then(function(callbackValue){
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't create UserLanguagePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Get newly created UserLanguagePairs
+            // result = null;
+            // await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't get Languages for user");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+            
             resolve(newUser);
         });
     }
@@ -387,7 +402,6 @@ export class UserFactory {
             } 
 
             query = QueryBuilder.deleteUser(user);
-
             
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 successful = true;

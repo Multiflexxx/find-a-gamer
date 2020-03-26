@@ -48,9 +48,6 @@ export class RegistrationendpointController {
             console.error(callbackValue);
         });
 
-        // TODO: CREATE SESSION 
-        // TODO: Validate Birthdate
-
 
         // return empty Session if User Input is invalid
         if (!isInputValid) {
@@ -73,6 +70,10 @@ export class RegistrationendpointController {
         }, function (callbackValue) {
             console.error(callbackValue);
         });
+
+        if(!session) {
+            return new RegistrationResponse(false, null);
+        }
 
         // Return Session
         return session;

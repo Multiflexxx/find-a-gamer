@@ -8,36 +8,37 @@ import { UserFactory } from 'src/factory/userfactory';
 export class ProfileDeleteEndpointController {
     @Get()
     async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest) {
-        
-        let session = null;
-        await SessionFactory.getSessionByUser(deleteProfileRequest.user).then(function(callbackValue) {
-            session = callbackValue;
+        // Check Session
+        let session1;
+        await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id).then(function(callbackValue) {
+            session1 = callbackValue;
         }, function(callbackValue) {
-            console.error("Couldn't get Session for User");
+            console.error("ProfileDeleteEndpointController handleProfileDeleteRequest(): Couldn't get Session for session_id");
             console.error(callbackValue);
         });
-
-        if (!session || session.user_id != deleteProfileRequest.user.user_id) {
+        
+        // If is invalid or doesn't belong to user, reject
+        if(!session1 || session1.user_id != deleteProfileRequest.user.user_id) {
             return new DeleteProfileResponse(false, null);
         }
 
         //Delete Session
-        let successfull = false;
-        await SessionFactory.deleteSessionByUser(session.user_id).then(function(callbackValue) {
-           successfull = true;
+        let successful = false;
+        await SessionFactory.deleteSessionByUser(session1.user_id).then(function(callbackValue) {
+           successful = true;
         }, function(callbackValue) {
             console.error("Couldn't delete Session");
             console.error(callbackValue);
         });
 
-        if (!successfull) {
+        if (!successful) {
             return new DeleteProfileResponse(false, null);
         }
 
         // Get User By Session ID
 
         let result = null;
-        await UserFactory.getUserBySessionID(session.user_id).then(function(callbackValue) {
+        await UserFactory.getUserBySessionID(session1.user_id).then(function(callbackValue) {
             result = callbackValue;
         }, function(callbackValue) {
             console.error("profiledeleteendpoint: Couldn't find user");
@@ -51,13 +52,13 @@ export class ProfileDeleteEndpointController {
         // Delete User
 
         await UserFactory.deleteUser(result).then(function(callbackValue){
-            successfull = true;
+            successful = true;
         }, function (callbackValue) {
             console.error("profiledeleteendpoint: Couldn't delete user");
             console.error(callbackValue);
         })
 
-        if (!successfull) {
+        if (!successful) {
             return new DeleteProfileResponse(false, null);
         }
     }
