@@ -41,23 +41,24 @@ export class UserFactory {
             if(!result) {
                 return;
             }
-            
+            console.log("Result in User Factory");
+            console.log(result);
             let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result. profile_picture, result.cake_day, result.birthdate, result.biography);
 
-            // Get Region
-            result = null;
-            await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
-                result = callbackValue;
-            }, function(callbackValue) {
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+            // // Get Region
+            // result = null;
+            // await RegionFactory.getRegionById(result.region_id).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
 
-            if(!result) {
-                return;
-            }
+            // if(!result) {
+            //     return;
+            // }
 
-            user.region = new Region(result.region_id, result.name);
+            // user.region = new Region(result.region_id, result.name);
             
             // Create User Game Pairs
             await UserGamePairFactory.createUserGamePairs(user, registration.games).then(function(callbackValue) {
