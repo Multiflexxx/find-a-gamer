@@ -35,7 +35,9 @@ export class RegistrationendpointController {
         // );
 
         // Validate User Input
-        console.log(registration);
+        let temp = registration.birthdate;
+        registration.birthdate = new Date(temp);
+        // console.log(registration.birthdate);
 
         let isInputValid = false;
         let myPromise = this.validateInput(registration);
