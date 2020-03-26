@@ -165,6 +165,32 @@
   opacity: 1;
 }
 
+.registration {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
+  animation: moveReg 1.5s 13s linear forwards;
+  opacity: 0;
+}
+
+@keyframes moveReg {
+  0% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 50%;
+    right: 10%;
+    transform: translate(+10%, -50%);
+    opacity: 1;
+  }
+}
+
+
 .smartphone {
   position: absolute;
   width: 320px;
@@ -176,6 +202,15 @@
   border-top-width: 10px;
   border-bottom-width: 10px;
   border-radius: 36px;
+  animation: movePhone 3s 11.5s linear forwards;
+}
+
+@keyframes movePhone {
+  100% {
+    top: 50%;
+    left: 20%;
+    transform: translate(-20%, -50%);
+  }
 }
 
 /* The horizontal line on the top of the device */
@@ -215,25 +250,24 @@
 }
 
 .sm-message {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
+  background-color: #f4f4f4;
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
   width: 75%;
-  float: left;
+  float: right;
   visibility: hidden;
 }
 
 .darker {
-  border-color: #ccc;
-  background-color: #ddd;
-  float: right;
+  color: white;
+  background-color: hsl(217, 71%, 53%);
+  float: left;
 }
 
 .time-right {
   float: right;
-  color: #aaa;
+  color: rgb(175, 175, 175);
 }
 
 .sm-input {
@@ -241,7 +275,7 @@
   width: 298px;
   min-height: 36px;
   bottom: 10px;
-  background-color: white;
+  background-color: #f4f4f4;
   border-radius: 26px;
 }
 
@@ -300,7 +334,7 @@
     width: 0%;
     height: 1.5rem;
     border-right: 2px solid black;
-  } 
+  }
 
   99% {
     width: 75%;
