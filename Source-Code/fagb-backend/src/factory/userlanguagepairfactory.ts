@@ -48,13 +48,47 @@ export class UserLanguagePairFactory {
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 successful = true;
             }, function(callbackValue) {
-                console.error("userlanguagepairfactory deleteUserLanguagePairs(): Couldn't delete UserLanguagePair");
+                console.error("UserLanguagePairFactory deleteUserLanguagePairs(): Couldn't delete UserLanguagePair");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
 
             if (!successful) {
                 return;
+            }
+
+            resolve(true);
+        });
+    }
+
+    public static async updateUserLanguagePairs(user: User, newLanguages: Language[]) {
+        return new Promise(async function(resolve, reject) {
+            // Delete old User Language Pairs
+            let successful;
+            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+                successful = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't delete UserLanguagePairs");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            // Create new User Language Pairs
+            successful = null;
+            await UserLanguagePairFactory.createUserLanguagePairs(user, newLanguages).then(function(callbackValue) {
+                successful = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserLanguagePairFactory updateUserLanguagePairs() Couldn't delete UserLanguagePair");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return
             }
 
             resolve(true);

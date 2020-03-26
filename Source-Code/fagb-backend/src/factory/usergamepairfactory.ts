@@ -3,6 +3,7 @@ import { Game } from "src/data_objects/game";
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { UserGamePair } from 'src/data_objects/usergamepair'
+import { rejects } from "assert";
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {
@@ -25,12 +26,13 @@ export class UserGamePairFactory {
     // }
 
     public static async createUserGamePairs(user: User, games: Game[]) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             games.forEach(async game => {
                 let query = QueryBuilder.createUserGamePair(user, game);
-                await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                     // Successfully created
-                }, function(callbackValue) {
+                }, function (callbackValue) {
+                    console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs")
                     console.error(callbackValue);
                     reject(callbackValue);
                 });
@@ -40,22 +42,51 @@ export class UserGamePairFactory {
     }
 
     public static async deleteUserGamePairsByUser(user: User) {
-        return new Promise(async function(resolve, reject) {
+        return new Promise(async function (resolve, reject) {
             let query = QueryBuilder.deleteUserGamePairsByUser(user);
             let successful = false;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 successful = true;
-            }, function(callbackValue) {
-                console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePair");
+                console.log("user_id in deleteUserGamePairs: " + user.user_id);
+            }, function (callbackValue) {
+                console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
 
-            if(!successful) {
+            if (!successful) {
                 return;
             }
 
             resolve(true);
+        });
+    }
+
+    public static async updateUserGamePairs(user: User, newGames: Game[]) {
+        return new Promise(async function (resolve, reject) {
+            // Delete old User Game pairs
+            let successful;
+            await UserGamePairFactory.deleteUserGamePairsByUser(user).then(function (callbackValue) {
+                successful = callbackValue;
+            }, function (callbackValue) {
+                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs")
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if (!successful) {
+                return;
+            }
+
+            // create new User Game Pairs
+            successful = null;
+            await UserGamePairFactory.createUserGamePairs(user, newGames).then(function (callbackValue) {
+                successful = callbackValue;
+            }, function (callbackValue) {
+                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs")
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
         });
     }
 }

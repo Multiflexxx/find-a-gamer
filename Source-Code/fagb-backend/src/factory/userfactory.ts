@@ -213,6 +213,9 @@ export class UserFactory {
     public static async updateUser(user: User): Promise<User> {
         return new Promise(async function(resolve, reject) {
             // Get Query for updating user
+            let newGames: Game[];
+            newGames = user.games;
+
             let query = QueryBuilder.updateUser(user);
 
             // Update User
@@ -231,26 +234,80 @@ export class UserFactory {
                 return;
             }
 
-            user = null;
+            let newUser = null;
             await UserFactory.getUserByEmail(user.email).then(function(callbackValue) {
-                user = callbackValue;
+                newUser = callbackValue;
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get User");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
 
-            if(!user) {
+            if(!newUser) {
                 reject("UserFactory updateUser(): No user with that email")
                 return;
             }
 
-            // Delete old UserGamePairs
+            // Update Games for User
+            let result;
+            await GameFactory.updateGamesForUser(newUser, newGames).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserFactory updateUser(): Failed to get Updated Games for User");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            newUser.games = result;
+            // successful = false;
+            // await UserGamePairFactory.deleteUserGamePairsByUser(newUser).then(function(callbackValue) {
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't delete UserGamePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // })
+
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Create new UserGamePairs
+            // successful = false;
+            // await UserGamePairFactory.createUserGamePairs(newUser, user.games).then(function(callbackValue){
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't create UserGamePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Get newly created games for user
+            // let result = null;
+            // await GameFactory.getGamesForUser(newUser).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't get Games for user");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+            
+            // if(!result) {
+            //     return;
+            // }
+
+            // newUser.games = result;
+
+            // Delete old UserLanguagePairs
             successful = false;
-            await UserGamePairFactory.deleteUserGamePairsByUser(user).then(function(callbackValue) {
+            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
                 successful = true;
             }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't delete UserGamePairs");
+                console.error("UserFactory updateUser(): Couldn't delete UserLanguagePairs");
                 console.error(callbackValue);
                 reject(callbackValue);
             })
@@ -259,12 +316,12 @@ export class UserFactory {
                 return;
             }
 
-            // Create new UserGamePairs
+            // Create new UserLanguagePairs
             successful = false;
-            await UserGamePairFactory.createUserGamePairs(user, user.games).then(function(callbackValue){
+            await UserLanguagePairFactory.createUserLanguagePairs(newUser, user.languages).then(function(callbackValue){
                 successful = true;
             }, function(callbackValue) {
-                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs");
+                console.error("UserFactory updateUser(): Couldn't create UserLanguagePairs");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
@@ -273,12 +330,12 @@ export class UserFactory {
                 return;
             }
 
-            // Get newly created games for user
-            let result = null;
-            await GameFactory.getGamesForUser(user).then(function(callbackValue) {
+            // Get newly created UserLanguagePairs
+            result = null;
+            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
                 result = callbackValue;
             }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't get Games for user");
+                console.error("UserFactory updateUser(): Couldn't get Languages for user");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
@@ -287,17 +344,9 @@ export class UserFactory {
                 return;
             }
 
-            user.games = result;
+            newUser.languages = result;
 
-            // Delete old UserLanguagePairs
-
-            // Create new UserLanguagePairs
-
-            // Get newly created UserLanguagePairs
-
-
-
-            resolve(user);
+            resolve(newUser);
         });
     }
 
