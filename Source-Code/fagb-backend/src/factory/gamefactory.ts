@@ -2,6 +2,7 @@ import { Game } from "src/data_objects/game";
 import { User } from "src/data_objects/user";
 import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
 import { QueryBuilder } from "src/connecttodatabase/querybuilder";
+import { UserGamePairFactory } from "./usergamepairfactory";
 
 export class GameFactory {
     // public static async getGamesForUser(user: User): Game[] {
@@ -31,6 +32,40 @@ export class GameFactory {
             result.forEach(game => {
                 games.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
             });
+            resolve(games);
+        });
+    }
+
+    public static async updateGamesForUser(user: User, newGames: Game[]) {
+        return new Promise(async function(resolve, reject) {
+            // Update UserGamePairs
+            let successful;
+            await UserGamePairFactory.updateUserGamePairs(user, newGames).then(function(callbackValue) {
+                successful = callbackValue;
+            }, function(callbackValue) {
+                console.error("GameFactory updateGamesForUser(): Couldn't update User Game Pairs");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            // Get Updated Games for User
+            let games;
+            GameFactory.getGamesForUser(user).then(function(callbackValue) {
+                games = callbackValue;
+            }, function(callbackValue) {
+                console.error("GameFactory updateGamesForUser(): Couldn't get updated Games for User");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!games) {
+                return;
+            }
+
             resolve(games);
         });
     }

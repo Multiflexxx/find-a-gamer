@@ -204,7 +204,7 @@ export class QueryBuilder {
 
     public static updateUser(user: User): QueryObject {
         return new QueryObject(
-            "UPDATE user SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?",
+            "UPDATE User SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?",
             [
                 user.email,
                 user.password_hash,
