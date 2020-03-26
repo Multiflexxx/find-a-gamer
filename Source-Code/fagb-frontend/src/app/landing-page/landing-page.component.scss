@@ -7,16 +7,7 @@
   margin: auto;
   width: 100vw;
   height: 100vh;
-  animation-duration: 4s;
-  animation-name: smaller;
-  animation-fill-mode: forwards;
-
 }
-
-// @keyframes smaller{
-//     0% {height: 100vh;}
-//     100%{height: 50vh;}
-// }
 
 #welcomeText {
   position: absolute;
@@ -33,7 +24,7 @@
   line-height: 6.25rem;
   animation-name: welcomeText;
   animation-delay: 0s;
-  animation-duration: 7.5s;
+  animation-duration: 4.5s;
   opacity: 0;
   animation-fill-mode: forwards;
 }
@@ -91,7 +82,7 @@
   margin-left: -20em;
   border-radius: 40rem;
   animation: zoom 1.5s linear;
-  animation-delay: 6s;
+  animation-delay: 3s;
   animation-fill-mode: forwards;
 }
 
@@ -109,8 +100,8 @@
 .rotate {
   width: 100%;
   height: 100%;
-  animation: circle 8s linear;
-  animation-iteration-count: 0.75;
+  animation: circle 4s linear;
+  animation-iteration-count: 0.5;
   animation-fill-mode: forwards;
 }
 
@@ -132,8 +123,8 @@
   line-height: 10rem;
   color: white;
   display: block;
-  animation: ccircle 8s linear;
-  animation-iteration-count: 0.75;
+  animation: ccircle 4s linear;
+  animation-iteration-count: 0.5;
   animation-fill-mode: forwards;
 }
 
@@ -145,127 +136,279 @@
   to {
     transform: rotateZ(-360deg)
   }
+
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 #controller1 {
-  top: 0%;
-  right: 50%;
+  top: 50%;
+  right: 0%;
   margin-top: -5rem;
   margin-right: -5rem;
 }
 
 #controller2 {
-  bottom: 0%;
-  left: 50%;
+  bottom: 50%;
+  left: 0%;
   margin-bottom: -5rem;
   margin-left: -5rem;
   opacity: 1;
 }
 
-#conversation {
+.registration {
   position: absolute;
-  width: 700px;
-  height: 28rem;
+  width: 50%;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
+  animation: moveReg 1.5s 13s linear forwards;
+  opacity: 0;
+}
+
+@keyframes moveReg {
+  0% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 50%;
+    right: 10%;
+    transform: translate(+10%, -50%);
+    opacity: 1;
+  }
+}
+
+
+.smartphone {
+  position: absolute;
+  width: 320px;
+  height: 640px;
   top: 50%;
   left: 50%;
-  margin-top: -14rem;
-  margin-left: -325px;
-  padding: 0.75rem;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  visibility: hidden;
-  animation: conversation 3s linear;
-  animation-delay: 8s;
-  animation-fill-mode: forwards;
+  transform: translate(-50%, -50%);
+  border: 6px black solid;
+  border-top-width: 10px;
+  border-bottom-width: 10px;
+  border-radius: 36px;
+  animation: movePhone 3s 11.5s linear forwards;
 }
 
-@keyframes conversation {
-100%{visibility: inherit;}
+@keyframes movePhone {
+  100% {
+    top: 50%;
+    left: 20%;
+    transform: translate(-20%, -50%);
+  }
 }
 
-.conversation-content {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.vertical-center {
-  margin: 0;
+/* The horizontal line on the top of the device */
+.smartphone:before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
+  left: 50%;
+  top: 12px;
+  transform: translate(-50%, -50%);
+  background: black;
+  border-radius: 50%;
 }
 
-.container1 {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
+/* The circle on the bottom of the device */
+.smartphone:after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 5px;
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+  border-radius: 10px;
+}
+
+.sm-content {
+  background-color: hsl(0, 0, 17%);
+  width: 308px;
+  height: 620px;
+  border-radius: 27px;
+  padding: 20px 5px 0;
+}
+
+.sm-message {
+  background-color: #f4f4f4;
   border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
   width: 75%;
-  float: left;
+  float: right;
   visibility: hidden;
-  ;
 }
 
 .darker {
-  border-color: #ccc;
-  background-color: #ddd;
-  float: right;
-}
-
-.container1::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.container1 img {
+  color: white;
+  background-color: hsl(217, 71%, 53%);
   float: left;
-  max-width: 60px;
-  width: 100%;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-
-.container1 img.right {
-  float: right;
-  margin-left: 20px;
-  margin-right: 0;
 }
 
 .time-right {
   float: right;
-  color: #aaa;
+  color: rgb(175, 175, 175);
 }
 
-.time-left {
+.sm-input {
+  position: absolute;
+  width: 298px;
+  min-height: 36px;
+  bottom: 10px;
+  background-color: #f4f4f4;
+  border-radius: 26px;
+}
+
+.sm-input-hor {
+  width: 90%;
+  min-height: 36px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.message {
+  padding: 0;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  width: 100%;
+  color: black;
+  border-right: 2px solid black;
+  border-radius: 0;
+  white-space: nowrap;
+  overflow: hidden;
   float: left;
-  color: #999;
+  background-color: white;
+}
+
+#message1 {
+  animation:
+    type1 2.3s 0.75s steps(23) forwards,
+    msgvanish 0.3s 3.35s forwards;
+  height: 0;
+}
+
+#message2 {
+  animation:
+    type2 4.1s 5.1s steps(41) forwards,
+    msgvanish 0.3s 10.3s forwards;
+  height: 0;
+}
+
+#message3 {
+  animation:
+    type3 0.8s 9.2s steps(8) forwards,
+    msgvanish 0.3s 10.3s forwards;
+  height: 0;
+}
+
+
+@keyframes msgvanish {
+  100% {
+    height: 0;
+  }
+}
+
+
+@keyframes type1 {
+  0% {
+    width: 0%;
+    height: 1.5rem;
+    border-right: 2px solid black;
+  }
+
+  99% {
+    width: 75%;
+    height: 1.5rem;
+    border: 0;
+  }
+
+  100% {
+    height: 1.5rem;
+    border: 0;
+  }
+}
+
+@keyframes type2 {
+  0% {
+    width: 0%;
+    height: 1.5rem;
+    border-right: 2px solid black;
+  }
+
+  99% {
+    width: 96%;
+    height: 1.5rem;
+    border-right: 2px solid black;
+  }
+
+  100% {
+    height: 1.5rem;
+    border: 0;
+  }
+}
+
+@keyframes type3 {
+  0% {
+    width: 0%;
+    height: 1.5rem;
+    border-right: 2px solid black;
+    visibility: inherit;
+  }
+
+  99% {
+    width: 28%;
+    height: 1.5rem;
+    border-right: 2px solid black;
+  }
+
+  100% {
+    width: 28%;
+    height: 1.5rem;
+    border: 0;
+  }
 }
 
 #test1 {
-  animation: popup 0.5s steps(100) forwards;
-  animation-delay: 8s;
+  animation: popup 0.5s steps(50) forwards;
+  // animation-delay: 8s;
   animation-fill-mode: forwards;
 }
 
 #test2 {
-  animation: popup 0.5s steps(100) forwards;
-  animation-delay: 9.5s;
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 3.35s;
   animation-fill-mode: forwards;
 }
 
 #test3 {
-  animation: popup 0.5s steps(100) forwards;
-  animation-delay: 11s;
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 4.8s;
   animation-fill-mode: forwards;
 }
 
 #test4 {
-  animation: popup 0.5s steps(100) forwards;
-  animation-delay: 12.5s;
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 10.3s;
   animation-fill-mode: forwards;
 }
 
@@ -276,25 +419,29 @@
   90% {
     visibility: inherit;
     transform: translate3d(-1px, 0, 0);
+    -webkit-transform: translate3d(-1px, 0, 0);
   }
 
   20%,
   80% {
     visibility: inherit;
     transform: translate3d(2px, 0, 0);
+    -webkit-transform: translate3d(2px, 0, 0);
   }
 
   30%,
   50%,
   70% {
     visibility: inherit;
-    transform: translate3d(-4px, 0, 0);
+    transform: translate3d(-2px, 0, 0);
+    -webkit-transform: translate3d(-2px, 0, 0);
   }
 
   40%,
   60% {
     visibility: inherit;
-    transform: translate3d(4px, 0, 0);
+    transform: translate3d(2px, 0, 0);
+    -webkit-transform: translate3d(2px, 0, 0);
   }
 
   100% {
@@ -304,68 +451,34 @@
 
 
 
-.text {
-  position: absolute;
-  margin: auto;
-  text-align: center;
-  font-size: 3em;
-  animation-name: text;
-  animation-delay: 2s;
-  animation-duration: 4s;
-  opacity: 0;
-  animation-fill-mode: forwards;
 
-}
 
+
+
+// Section 2
 .card-image {
   position: relative;
-  align-items: center;
-  text-align: center;
-  margin: auto;
 }
 
-.textbox {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0%;
-  text-align: center;
-  margin: auto;
-  transition: 0.5s ease;
-}
 
-.text {
-  position: relative;
-  color: white;
-  top: 50%;
-}
-
-.overlay:hover .textbox {
+.overlay:hover .text {
   opacity: 1;
 
 }
 
-.overlay:hover .image {
-  opacity: 30%;
+.overlay:hover .picture {
+  opacity: 10%;
 }
 
-h1 {
-  animation: type 4s steps(31) forwards;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 28ch;
-  border-right: 4px solid white;
+.text {
+  position: absolute;
+  line-height: 1.1rem;
+  font-size: 1.7rem;
+  line-height: 2rem;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  text-align: center;
   color: white;
-}
-
-@keyframes type {
-  0% {
-    width: 0ch;
-  }
-
-  100% {
-    width: 28ch;
-  }
 }
