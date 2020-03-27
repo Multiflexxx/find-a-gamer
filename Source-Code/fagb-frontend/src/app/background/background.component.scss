@@ -1,0 +1,170 @@
+.triangle{
+    color: red;
+    width: 0;
+    height: 0;
+    border-right: 10rem solid transparent;
+    border-top: 20rem solid;
+    
+}
+.circle{
+    background-color: blue;
+    width: 25em;
+    height: 20em;
+    border-radius: 50%;
+}
+
+.quader{
+    background-color: green;
+    height: 15em;
+    width: 10em;
+    border-left: 20em;
+    bottom: -2em;
+    right: -1em;
+    position: absolute;
+    transform: rotate(10deg);
+}
+#shape1{
+    width: 10rem;
+    height: 15rem;
+    background-color: yellow;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#shape1::before{
+content: '';
+position: absolute;
+height: 0;
+width: 0;
+bottom: -2rem;
+
+border-right: 9rem solid transparent;
+border-left: 1rem solid transparent;
+border-top: 2rem solid green;
+
+}
+
+#shape2{
+    width: 10rem;
+    height: 14rem;
+    position: absolute;
+    background-color: pink;
+    right: 40%;
+    top: 30%;
+    transform: rotate(-9deg);
+    
+}
+
+#shape3{
+    width: 0;
+    height: 0;
+    border-left: 4rem solid transparent;
+    border-right: 1.5rem solid transparent;
+    border-bottom: 2rem solid coral;
+    position: absolute;
+    top: 20%;
+    left: 40%;
+
+}
+#shape4{
+    width: 10rem;
+    height: 10rem;
+    position: absolute;
+    border-radius: 100% 0% 0% 0% /100% 40% 40% 0%;
+    background-color: green;
+    top: 30%;
+    right: 10%;
+
+}
+#shape5{
+    width: 8rem;
+    height: 4rem;
+    position: absolute;
+    background-color: wheat;
+    bottom: 0;
+    right: 50%;
+}
+#shape5::before{
+    content: '';
+    width: 0;
+    height: 0;
+    left: 8rem;
+    border-bottom: 4rem solid transparent;
+    border-right: 0rem solid transparent;
+    border-left: 2rem solid coral;
+    position: absolute;
+}
+#shape5::after{
+    content: '';
+    width: 0;
+    height: 0;
+    right: 8rem;
+    border-bottom: 4rem solid transparent;
+    border-left: 0rem solid transparent;
+    border-right: 3rem solid coral;
+    position: absolute;
+
+}
+
+
+#shape6{
+    width: 5rem;
+    height: 10rem;
+    background-color: purple;
+    bottom: 0;
+    left: 0;
+    opacity: 40%;
+    position: absolute;
+}
+#shape6::before{
+    content: '';   
+   position: absolute;
+    height: 0;
+    width: 0;
+    top: -2rem;
+
+    border-right: 2rem solid transparent;
+    border-left: 3rem solid transparent;
+    border-bottom: 2rem solid green;
+}
+
+#shape7{
+    width: 0;
+    height: 0;
+    border-left: 4rem solid lawngreen;
+    border-right: 1.5rem solid transparent;
+    border-bottom: 4rem solid transparent;
+    position: absolute;
+    
+}
+#shape8{
+    width: 10rem;
+    height: 10rem;
+    position: absolute;
+    border-radius: 0 0 50% 50%;
+    background-color: white;
+    top: -5rem;
+    right: 10%;
+    transform-origin: bottom center;
+}
+#shape9{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: mediumaquamarine;
+    top: 10%;
+    right: 10%;
+    position: absolute;
+
+}
+#shape10{
+    width: 0;
+    height: 0;
+    border-top: 20rem solid transparent;
+    border-right: 1.5rem solid transparent;
+    border-right: 10rem solid coral;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

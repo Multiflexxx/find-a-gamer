@@ -173,6 +173,7 @@
   transform: translate(0%, -50%);
   animation: moveReg 1.5s 13s linear forwards;
   opacity: 0;
+  
 }
 
 @keyframes moveReg {
@@ -242,11 +243,13 @@
 }
 
 .sm-content {
-  background-color: hsl(0, 0, 17%);
+  background-color: hsla(0, 0, 21%, 0.7);
+  position: relative;
   width: 308px;
   height: 620px;
   border-radius: 27px;
   padding: 20px 5px 0;
+  z-index: -100000;
 }
 
 .sm-message {
@@ -481,4 +484,9 @@
   transform: translate(-50%, -50%);
   text-align: center;
   color: white;
+}
+
+
+.back {
+  z-index: -1000;
 }
