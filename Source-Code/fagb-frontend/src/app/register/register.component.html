@@ -1,11 +1,9 @@
-<section class="hero">
-  <div class="hero-body">
-    <div class="container">
-
+<!-- <section class="hero">
+  <div class="hero-body">-->
+    <div class="box"> 
       <div id="stepper">
         <mat-vertical-stepper linear #stepper>
           <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
-
             <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit(profileForm.value)">
               <div>
                 <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
@@ -154,6 +152,6 @@
           </ng-template>
         </mat-vertical-stepper>
       </div>
-    </div>
-  </div>
-</section>
+     </div>
+  <!--</div>
+</section> -->
