@@ -15,9 +15,4 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  loginButton(): void {
-    this.login.toggle();
-  }
-
 }
