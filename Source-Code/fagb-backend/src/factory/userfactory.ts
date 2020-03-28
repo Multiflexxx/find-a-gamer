@@ -144,6 +144,7 @@ export class UserFactory {
             // Get Games for user
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
                 user.games = callbackValue;
+                console.log(user.games);
             }, function(callbackValue) {
                 console.error("GameFactory getGamesForUser: Promise rejected");
                 console.error(callbackValue);
@@ -228,7 +229,6 @@ export class UserFactory {
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Couldn't update user");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             // If successful, return updated User Object
@@ -237,13 +237,17 @@ export class UserFactory {
                 return;
             }
 
+            
+
+
             let newUser = null;
             await UserFactory.getUserByEmail(user.email).then(function(callbackValue) {
                 newUser = callbackValue;
+                console.log("New User");
+                console.log(newUser);
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             if(!newUser) {
@@ -258,13 +262,13 @@ export class UserFactory {
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get Updated Games for User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             if(!result) {
+                reject(false);
                 return;
             }
-
+            
             newUser.games = result;
             // successful = false;
             // await UserGamePairFactory.deleteUserGamePairsByUser(newUser).then(function(callbackValue) {
@@ -315,14 +319,14 @@ export class UserFactory {
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get Updated Languages for User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             if(!result) {
+                reject(false);
                 return;
             }
 
-            newUser.language = result;
+            newUser.languages = result;
             
             // // Delete old UserLanguagePairs
             // successful = false;

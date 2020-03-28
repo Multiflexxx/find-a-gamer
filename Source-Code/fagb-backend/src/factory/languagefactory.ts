@@ -4,6 +4,7 @@ import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabas
 import { QueryBuilder } from "src/connecttodatabase/querybuilder";
 import { UserLanguagePair } from "src/data_objects/userlanguagepair";
 import { UserLanguagePairFactory } from "./userlanguagepairfactory";
+import { GameFactory } from "./gamefactory";
 
 export class LanguageFactory {
     // public static getLanguagesForUser(user: User): Language[] {
@@ -51,8 +52,10 @@ export class LanguageFactory {
             }
 
             let languages;
+            await GameFactory.delay(1000);
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
                 languages = callbackValue;
+                console.log(languages);
             }, function(callbackValue) {
                 console.error("LanguageFactory updateLanguagesForUser(): Couldn't get Languages for User");
                 console.error(callbackValue);

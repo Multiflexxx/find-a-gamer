@@ -13,9 +13,15 @@ export class SessionFactory {
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 result = callbackValue[0];
             }, function(callbackValue) {
-                console.error("ConnectToToDatabaseService getPromise(): Promise rejected");
+                console.error("SessionFactory getSessionBySessionId(): Couldn't get Session");
                 console.error(callbackValue);
             });
+
+            if(!result) {
+                console.error("SessionFactory getSessionBySessionId(): No Session with that ID");
+                reject(false);
+                return;
+            }
     
             session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
             resolve(session);
@@ -69,6 +75,8 @@ export class SessionFactory {
         return new Promise(async function(resolve, reject) {
             let query = QueryBuilder.deleteSessionByUserId(user);
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue){
+                // console.log("In Delete Session By User");
+                // console.log(query);
                 resolve(callbackValue);
             }, function(callbackValue) {
                 console.error("SessionFactory deleteSessionByUser(): Failed to delete Session");

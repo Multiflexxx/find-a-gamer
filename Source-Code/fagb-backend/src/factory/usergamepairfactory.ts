@@ -47,7 +47,6 @@ export class UserGamePairFactory {
             let successful = false;
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 successful = true;
-                console.log("user_id in deleteUserGamePairs: " + user.user_id);
             }, function (callbackValue) {
                 console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
                 console.error(callbackValue);
@@ -87,6 +86,13 @@ export class UserGamePairFactory {
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!successful) {
+                return;
+            }
+
+            resolve(true);
+
         });
     }
 }

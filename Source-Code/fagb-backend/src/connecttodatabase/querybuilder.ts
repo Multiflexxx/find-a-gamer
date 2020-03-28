@@ -99,7 +99,7 @@ export class QueryBuilder {
     public static getGamesByUser(user: User): QueryObject {
 
         return new QueryObject(
-            "SELECT Game.game_id, Game.name, Game.cover_link, Game.game_description, Game.publisher, Game.published FROM Game JOIN User_Game_Pair ON Game.game_id = User_Game_Pair.game_id WHERE User_Game_Pair.user_id = ?",
+            "SELECT Game.game_id, Game.name, Game.cover_link, Game.game_description, Game.publisher, Game.published FROM Game JOIN User_Game_Pair ON Game.game_id = User_Game_Pair.game_id WHERE User_Game_Pair.user_id = ?;",
             [
                 user.user_id
             ]  
@@ -186,7 +186,7 @@ export class QueryBuilder {
 
     public static getSessionByUserId(user: User): QueryObject {
         return new QueryObject(
-            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE user_id = ?",
+            "SELECT BIN_TO_UUID(session_id) as session_id, user_id, stay_logged_in, expiration_date FROM Session WHERE user_id = ?;",
             [
                 user.user_id
             ]
@@ -195,7 +195,7 @@ export class QueryBuilder {
 
     public static deleteSessionByUserId(user: User): QueryObject {
         return new QueryObject(
-            "DELETE FROM Session Where user_id = ?",
+            "DELETE FROM Session WHERE user_id = ?;",
             [
                 user.user_id
             ]
@@ -204,7 +204,7 @@ export class QueryBuilder {
 
     public static updateUser(user: User): QueryObject {
         return new QueryObject(
-            "UPDATE User SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?",
+            "UPDATE User SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?;",
             [
                 user.email,
                 user.password_hash,
@@ -221,7 +221,7 @@ export class QueryBuilder {
 
     public static deleteUser(user: User): QueryObject {
         return new QueryObject(
-            "DELETE FROM User WHERE user_id = ?",
+            "DELETE FROM User WHERE user_id = ?;",
             [
                 user.user_id
             ]
