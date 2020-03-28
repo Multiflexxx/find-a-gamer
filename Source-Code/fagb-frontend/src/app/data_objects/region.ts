@@ -4,7 +4,7 @@ export class Region {
 
     public constructor(region_id: number, name?: string) {
         this.region_id = region_id;
-        if (name) {
+        if(name) {
             this.name = name;
         }
     }
