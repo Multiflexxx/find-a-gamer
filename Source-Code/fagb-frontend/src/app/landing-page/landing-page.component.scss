@@ -54,23 +54,6 @@
   border-top: 100px solid rgb(128, 128, 255);
 }
 
-@keyframes welcomeText {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
 
 .outCircle {
   position: absolute;
@@ -87,15 +70,7 @@
 }
 
 
-@keyframes zoom {
-  100% {
-    opacity: 0;
-    width: 80rem;
-    height: 80rem;
-    margin-top: -40em;
-    margin-left: -40em;
-  }
-}
+
 
 .rotate {
   width: 100%;
@@ -105,15 +80,7 @@
   animation-fill-mode: forwards;
 }
 
-@keyframes circle {
-  from {
-    transform: rotateZ(0deg)
-  }
 
-  to {
-    transform: rotateZ(360deg)
-  }
-}
 
 .inner {
   width: 10rem;
@@ -128,27 +95,7 @@
   animation-fill-mode: forwards;
 }
 
-@keyframes ccircle {
-  from {
-    transform: rotateZ(0deg)
-  }
 
-  to {
-    transform: rotateZ(-360deg)
-  }
-
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
 
 #controller1 {
   top: 50%;
@@ -165,39 +112,14 @@
   opacity: 1;
 }
 
-.registration {
-  position: absolute;
-  width: 50%;
-  top: 50%;
-  right: 0%;
-  transform: translate(0%, -50%);
-  animation: moveReg 1.5s 13s linear forwards;
-  opacity: 0;
-  
-}
-
-@keyframes moveReg {
-  0% {
-    opacity: 0;
-  }
-  75% {
-    opacity: 0.5;
-  }
-  100% {
-    top: 50%;
-    right: 10%;
-    transform: translate(+10%, -50%);
-    opacity: 1;
-  }
-}
-
-
 .smartphone {
   position: absolute;
   width: 320px;
   height: 640px;
   top: 50%;
+  
   left: 50%;
+ 
   transform: translate(-50%, -50%);
   border: 6px black solid;
   border-top-width: 10px;
@@ -206,13 +128,7 @@
   animation: movePhone 3s 11.5s linear forwards;
 }
 
-@keyframes movePhone {
-  100% {
-    top: 50%;
-    left: 20%;
-    transform: translate(-20%, -50%);
-  }
-}
+
 
 /* The horizontal line on the top of the device */
 .smartphone:before {
@@ -239,8 +155,33 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: black;
-  border-radius: 10px;
+  border-radius: 10rem;
 }
+
+
+@media(min-width: 769px){
+  .registration{
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+    animation: moveReg 1.5s 13s linear forwards;
+    opacity: 0;
+  }
+ 
+}
+
+@media(max-width: 769px){
+  .registration {
+    position: relative;
+
+    opacity: 1;
+    
+  }
+  
+}
+
 
 .sm-content {
   background-color: hsla(0, 0, 21%, 0.7);
@@ -325,11 +266,72 @@
 }
 
 
-@keyframes msgvanish {
-  100% {
-    height: 0;
+#test1 {
+  animation: popup 0.5s steps(50) forwards;
+  // animation-delay: 8s;
+  animation-fill-mode: forwards;
+}
+
+#test2 {
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 3.35s;
+  animation-fill-mode: forwards;
+}
+
+#test3 {
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 4.8s;
+  animation-fill-mode: forwards;
+}
+
+#test4 {
+  animation: popup 0.5s steps(50) forwards;
+  animation-delay: 10.3s;
+  animation-fill-mode: forwards;
+}
+
+
+
+
+// Section 2
+.card-image {
+  position: relative;
+}
+
+
+.overlay:hover .text {
+  opacity: 1;
+
+}
+
+.overlay:hover .picture {
+  opacity: 10%;
+}
+
+.text {
+  position: absolute;
+  line-height: 3rem;
+  font-size: 1.7rem;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+@media(max-width: 769px){
+  .text{
+    line-height: 1.5rem;
+  font-size: 1rem;
   }
 }
+
+.back {
+  z-index: -1000;
+}
+
+
+
 
 
 @keyframes type1 {
@@ -370,6 +372,8 @@
   }
 }
 
+
+
 @keyframes type3 {
   0% {
     width: 0%;
@@ -389,30 +393,6 @@
     height: 1.5rem;
     border: 0;
   }
-}
-
-#test1 {
-  animation: popup 0.5s steps(50) forwards;
-  // animation-delay: 8s;
-  animation-fill-mode: forwards;
-}
-
-#test2 {
-  animation: popup 0.5s steps(50) forwards;
-  animation-delay: 3.35s;
-  animation-fill-mode: forwards;
-}
-
-#test3 {
-  animation: popup 0.5s steps(50) forwards;
-  animation-delay: 4.8s;
-  animation-fill-mode: forwards;
-}
-
-#test4 {
-  animation: popup 0.5s steps(50) forwards;
-  animation-delay: 10.3s;
-  animation-fill-mode: forwards;
 }
 
 
@@ -451,42 +431,72 @@
     visibility: inherit;
   }
 }
+@keyframes msgvanish {
+  100% {
+    height: 0;
+  }
+}
 
+// Animationen
+@media(min-width: 769px){
+.smartphone{
+  left: 50vw;
+}
+@keyframes ccircle {
+  from { transform: rotateZ(0deg) }
+  to { transform: rotateZ(-360deg) }
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+}
 
+@keyframes welcomeText {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
 
+@keyframes zoom {
+  100% {
+    opacity: 0;
+    width: 80rem;
+    height: 80rem;
+    margin-top: -40em;
+    margin-left: -40em;
+  }
+}
+@keyframes circle {
+  from { transform: rotateZ(0deg) }
+  to {
+    transform: rotateZ(360deg)
+  }
+}
 
-
-
-
-// Section 2
-.card-image {
-  position: relative;
+@keyframes moveReg {
+  0% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 50%;
+    right: 10%;
+    transform: translate(+10%, -50%);
+    opacity: 1;
+  }
+}
+@keyframes movePhone {
+  100% {
+    top: 50%;
+    left: 20%;
+    transform: translate(-20%, -50%);
+  }
 }
 
 
-.overlay:hover .text {
-  opacity: 1;
 
 }
 
-.overlay:hover .picture {
-  opacity: 10%;
-}
 
-.text {
-  position: absolute;
-  line-height: 1.1rem;
-  font-size: 1.7rem;
-  line-height: 2rem;
-  top: 50%;
-  left: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-}
-
-
-.back {
-  z-index: -1000;
-}

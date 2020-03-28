@@ -2,15 +2,15 @@
     color: red;
     width: 0;
     height: 0;
-    border-right: 10rem solid transparent;
-    border-top: 20rem solid;
+    border-right: 10vh solid transparent;
+    border-top: 20vh solid;
     
 }
 .circle{
     background-color: blue;
     width: 25em;
     height: 20em;
-    border-radius: 50%;
+    border-radius: 50vh;
 }
 
 .quader{
@@ -24,147 +24,241 @@
     transform: rotate(10deg);
 }
 #shape1{
-    width: 10rem;
-    height: 15rem;
+    width: 20vh;
+    height: 15vh;
     background-color: yellow;
     position: absolute;
-    top: 0;
+    top: -5vh;
     right: 0;
+    transform: rotate(20deg);
 }
 
-#shape1::before{
-content: '';
-position: absolute;
-height: 0;
-width: 0;
-bottom: -2rem;
+// #shape1::before{
+// content: '';
+// position: absolute;
+// height: 0;
+// width: 0;
+// bottom: -2vh;
 
-border-right: 9rem solid transparent;
-border-left: 1rem solid transparent;
-border-top: 2rem solid green;
+// border-right: 9vh solid transparent;
+// border-left: 4vh solid transparent;
+// border-top: 2vh solid yellow;
 
-}
+// }
 
 #shape2{
-    width: 10rem;
-    height: 14rem;
+    width: 13vh;
+    height: 21vh;
     position: absolute;
     background-color: pink;
-    right: 40%;
-    top: 30%;
+    right: 20vw;
+    top: 57vh;
     transform: rotate(-9deg);
     
 }
 
-#shape3{
-    width: 0;
-    height: 0;
-    border-left: 4rem solid transparent;
-    border-right: 1.5rem solid transparent;
-    border-bottom: 2rem solid coral;
-    position: absolute;
-    top: 20%;
-    left: 40%;
-
+@media(min-width: 769px){
+    #shape3{
+        width: 0;
+        height: 0;
+        border-left: 16vh solid transparent;
+        border-right: 6vh solid transparent;
+        border-bottom: 8vw solid coral;
+        position: absolute;
+        top: 25vh;
+        left: 23vw;
+        transform: rotate(7deg);
+    
+    }
 }
+
 #shape4{
-    width: 10rem;
-    height: 10rem;
+    width: 15vh;
+    height: 10vw;
     position: absolute;
-    border-radius: 100% 0% 0% 0% /100% 40% 40% 0%;
+    border-radius: 100vh 0vh 0vh 0vh /100vh 40vh 40vh 0vh;
     background-color: green;
-    top: 30%;
-    right: 10%;
+    top: 30vh;
+    right: 30vw;
+    transform: rotate(25deg);
+    animation: rotate 2s linear 0s infinite alternate forwards;
 
 }
-#shape5{
-    width: 8rem;
-    height: 4rem;
-    position: absolute;
-    background-color: wheat;
-    bottom: 0;
-    right: 50%;
+@media(min-width: 769px){
+    @keyframes rotate{
+        0%{
+            transform: rotate(25deg);
+        }
+        100%{
+            transform: rotate(31deg);
+        }
+    }
 }
-#shape5::before{
-    content: '';
-    width: 0;
-    height: 0;
-    left: 8rem;
-    border-bottom: 4rem solid transparent;
-    border-right: 0rem solid transparent;
-    border-left: 2rem solid coral;
-    position: absolute;
-}
-#shape5::after{
-    content: '';
-    width: 0;
-    height: 0;
-    right: 8rem;
-    border-bottom: 4rem solid transparent;
-    border-left: 0rem solid transparent;
-    border-right: 3rem solid coral;
-    position: absolute;
 
-}
+// #shape5{
+//     width: 8vw;
+//     height: 4vh;
+//     position: absolute;
+//     background-color: wheat;
+//     bottom: 0;
+//     right: 50vh;
+// }
+// #shape5::before{
+//     content: '';
+//     width: 0;
+//     height: 0;
+//     left: 8vh;
+//     border-bottom: 4vh solid transparent;
+//     border-right: 0vh solid transparent;
+//     border-left: 2vh solid wheat;
+//     position: absolute;
+// }
+// #shape5::after{
+//     content: '';
+//     width: 0;
+//     height: 0;
+//     right: 8vh;
+//     border-bottom: 4vh solid transparent;
+//     border-left: 0vh solid transparent;
+//     border-right: 3vh solid wheat;
+//     position: absolute;
+
+// }
 
 
 #shape6{
-    width: 5rem;
-    height: 10rem;
+    width: 8vw;
+    height: 30vh;
     background-color: purple;
-    bottom: 0;
+    bottom: -8vh;
     left: 0;
     opacity: 40%;
     position: absolute;
 }
-#shape6::before{
-    content: '';   
-   position: absolute;
-    height: 0;
-    width: 0;
-    top: -2rem;
+// #shape6::before{
+//     content: '';   
+//    position: absolute;
+//     height: 0;
+//     width: 0;
+//     top: -2vh;
 
-    border-right: 2rem solid transparent;
-    border-left: 3rem solid transparent;
-    border-bottom: 2rem solid green;
-}
+//     border-right: 2vh solid transparent;
+//     border-left: 3vh solid transparent;
+//     border-bottom: 2vh solid purple;
+// }
 
 #shape7{
     width: 0;
     height: 0;
-    border-left: 4rem solid lawngreen;
-    border-right: 1.5rem solid transparent;
-    border-bottom: 4rem solid transparent;
+    border-left: 12vw solid lawngreen;
+    border-bottom: 17vh solid transparent;
     position: absolute;
     
 }
 #shape8{
-    width: 10rem;
-    height: 10rem;
+    width: 20vh;
+    height: 20vh;
     position: absolute;
-    border-radius: 0 0 50% 50%;
+    border-radius: 0 0 50vh 50vh;
     background-color: white;
-    top: -5rem;
-    right: 10%;
+    top: -10vh;
+    right: 40vw;
     transform-origin: bottom center;
 }
 #shape9{
-    width: 3rem;
-    height: 3rem;
+    width: 15vh;
+    height: 15vh;
     border-radius: 50%;
     background: mediumaquamarine;
-    top: 10%;
-    right: 10%;
+    bottom: 20vh;
+    left: 18vw;
     position: absolute;
-
+    animation: getBig 4s linear 0s infinite alternate forwards;
 }
+// #shape9_1{
+//     width: 15vh;
+//     height: 15vh;
+//     border-radius: 50%;
+//     background: #333;
+//     bottom: 20vh;
+//     left: 18vw;
+//     position: absolute;
+//     animation: getBig 7s  14.3s infinite alternate;
+// }
+@media(min-width: 400px){ 
+    @keyframes getBig{
+        0% { width: 15vh;
+            height: 15vh;
+            }
+        100%{ width: 13vh;
+            height: 13vh;
+            }
+    }
+}
+
 #shape10{
     width: 0;
     height: 0;
-    border-top: 20rem solid transparent;
-    border-right: 1.5rem solid transparent;
-    border-right: 10rem solid coral;
+    border-top: 20vh solid transparent;
+    border-right: 1.5vw solid transparent;
+    border-right: 10vw solid coral;
     position: absolute;
-    bottom: 0;
+    bottom: 2vh;
     right: 0;
+    transform: rotate(8deg);
+    animation: moveup 4s linear 0s infinite alternate forwards;
 }
+#shape11{
+    width: 0;
+    height: 0;
+    border-left: 12vw solid wheat;
+    border-bottom: 17vh solid transparent;
+    bottom: -5vh;
+    right: 50vw;
+    position: absolute;
+    transform: rotate(200deg);
+    
+}
+@media(min-width: 400px){ 
+@keyframes moveup{
+    0% {
+        bottom: 2vh;
+    }
+    50%{
+        bottom: 0vh;
+    }
+}
+}
+
+#shape12{
+    width: 5vw;
+    height: 7.5vw;
+    border-radius: 50%;
+    bottom: -80vh;
+    left: 42.5vw;
+    position: absolute;
+
+}
+
+// #shape13{
+//     width: 15vh;
+//     height: 15vh;
+//     border-radius: 50%;
+//     background: mediumaquamarine;
+//     bottom: 20vh;
+//     left: 18vw;
+//     position: absolute;
+
+// }
+
+
+// #shape14{
+//     width: 15vh;
+//     height: 15vh;
+//     border-radius: 50%;
+//     background: mediumaquamarine;
+//     bottom: 20vh;
+//     left: 18vw;
+//     position: absolute;
+
+// }
