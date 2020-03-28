@@ -81,8 +81,8 @@ export class RegisterComponent implements OnInit {
     }
   ];
 
-  constructor(private formBuilder: FormBuilder ,private http: HttpClient) {
-    
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 100, 0, 1);
@@ -110,6 +110,14 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  private get profileValue() {
+    return this.profileForm.value
+  }
+
+  private get gameValue() {
+    return this.gameForm.value
+  }
+
   public hasError = (controlName: string, errorName: string) => {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
@@ -117,24 +125,22 @@ export class RegisterComponent implements OnInit {
   public isStrong(controlName: string): number {
     let strenght = -1;
     let pw = this.profileForm.controls[controlName].value;
-    if (this.mediumRegex.test(pw)) {
-      strenght = 1;
-    } else if (this.strongRegex.test(pw)) {
+    if (this.strongRegex.test(pw)) {
       strenght = 2;
+    } else if (this.mediumRegex.test(pw)) {
+      strenght = 1;
     } else if (pw != "") {
       strenght = 0;
     }
     return strenght;
   }
 
-  onProfileSubmit(userData): void {
-    this.profileData = userData;
-    console.log(this.profileData);
+  onProfileSubmit(): void {
+    this.profileData = this.profileValue;
   }
 
-  onGameSubmit(userData): void {
-    this.gameData = userData;
-    console.log(this.gameData);
+  onGameSubmit(): void {
+    this.gameData = this.gameValue;
     this.onSubmit();
   }
 
@@ -150,7 +156,7 @@ export class RegisterComponent implements OnInit {
       langs.push(new Language(this.profileData.langCtrl[i]));
     }
 
-    var region: Region =  new Region(this.profileData.regionCtrl);
+    var region: Region = new Region(this.profileData.regionCtrl);
 
     var registration: Registration = new Registration(
       this.profileData.mailCtrl,

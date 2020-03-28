@@ -6,24 +6,24 @@
 .mat-stepper-horizontal,
 .mat-stepper-vertical {
   margin-top: 8px;
-  // background-color: hsl(0, 0%, 21%);
+  // background-color: hsla(0, 0%, 21%, 0.9);
 }
 
 .mat-form-field {
-  margin-top: 16px;
+  margin-top: 1rem;
   width: 100%;
 }
 
-mat-form-field {
-  margin-right: 12px;
-}
-
-input::placeholder {
-  color: hsl(0, 0%, 71%);
-}
+// input::placeholder {
+//   color: hsl(0, 0%, 71%);
+// }
 
 .material-icons-outlined {
   color: hsl(0, 0%, 21%);
+}
+
+.mat-flat-button {
+  margin: 1rem 0;
 }
 
 /* Change Autocomplete styles in Chrome*/
@@ -41,6 +41,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.container {
+.box {
   color: hsl(0, 0%, 96%);
+  background-color: hsl(0, 0, 21%);
 }

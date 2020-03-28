@@ -1,61 +1,31 @@
-<div class="modal" id="login-modal">
-  <div class="modal-background" (click)="toggle()"></div>
-  <div class="modal-content">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="title">Login</h1>
-      </div>
-      <div class="card-content">
-        <form #loginForm="ngForm" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value);">
-          <div class="field">
-            <label class="label has-text-white">E-Mail</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-rounded" type="email" formControlName="email" placeholder="E-Mail" id="emailInput" (keyup)= "validateEmail($event)" required email>
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-              </span>
-              <div *ngIf="!emailValid">
-                <span class="icon is-small is-right is-danger">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </span>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4 is-mobile">
+        <div class="box">
+          <div class="content">
+            <h3 class="title has-text-light">Welcome back!</h3>
+            <p class="subtitle has-text-grey-light">Are you ready to play together?</p>
+            <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" required>
+              </mat-form-field>
+              <div class="checkb has-text-left">
+                <mat-checkbox color="primary" formControlName="check">Stay logged in
+                </mat-checkbox>
               </div>
-            </div>
-            <div *ngIf="!emailValid">
-              <p class="help is-danger">Schreib richtig, Dummkopf</p>
-            </div>
+              <button mat-flat-button color="primary" class="button">Log In <i class="fa fa-sign-in"
+                  aria-hidden="true"></i></button>
+            </form>
+            <p class="has-text-grey">Do you need an account? <a href="../">Sign Up</a></p>
           </div>
-
-          <div class="field">
-            <label class="label has-text-white" id="pwInput">Passwort</label>
-            <div class="control has-icons-left">
-              <input class="input is-rounded" type="password" formControlName="password" placeholder="Passwort" (keyup) ="validatePassword($event)" required>
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-              <div *ngIf="!pwEntered">
-                <p class="help is-danger">Du musst schon ein Passwort eingeben...</p>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <label class="checkbox has-text-white">
-                <input type="checkbox" id="stayLoggedIn" formControlName="stayLoggedIn">
-                Angemeldet bleiben
-              </label>
-            </div>
-          </div>
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link" type="submit" [disabled]="!((emailValid && pwEntered) && !emailIsInitial && !pwIsInitial)">Login</button>
-            </div>
-            <div class="control">
-              <button class="button is-link is-light" (click)="toggle()">Abbrechen</button>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-  <button class="modal-close is-large" aria-label="close" (click)="toggle()"></button>
-</div>
+</section>

@@ -1,159 +1,159 @@
-<section class="hero">
-  <div class="hero-body">
-    <div class="container">
-
-      <div id="stepper">
-        <mat-vertical-stepper linear #stepper>
-          <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
-
-            <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit(profileForm.value)">
-              <div>
-                <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
-                <div class="columns">
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Nickname</mat-label>
-                      <input matInput id="nickname" formControlName="nameCtrl" required>
-                      <mat-error *ngIf="hasError('nameCtrl', 'required')">Nickname is required test.</mat-error>
-                      <mat-error *ngIf="hasError('nameCtrl', 'maxlength')">Nickname must be shorter than 32 characters.
-                      </mat-error>
-                      <mat-error *ngIf="hasError('nameCtrl', 'minlength')">Nickname must be at least 4 characters long.
-                      </mat-error>
-                      <mat-error *ngIf="profileForm.hasError('nameIsRequired')">
-                        Nickname is required!
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Discord Tag</mat-label>
-                      <input matInput id="discrodTag" formControlName="tagCtrl" required>
-                      <mat-error *ngIf="hasError('tagCtrl', 'required')">Discord Tag is required .</mat-error>
-                      <mat-error *ngIf="hasError('tagCtrl', 'pattern')">Discord Tag must be in this format: Name#1234.
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
+<!-- <section class="hero">
+  <div class="hero-body">-->
+<div class="box">
+  <div id="stepper">
+    <mat-vertical-stepper linear #stepper>
+      <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
+        <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
+          <div>
+            <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
+            <div class="columns">
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Nickname</mat-label>
+                  <input matInput id="nickname" formControlName="nameCtrl" required>
+                  <mat-error *ngIf="hasError('nameCtrl', 'required')">Nickname is required test.</mat-error>
+                  <mat-error *ngIf="hasError('nameCtrl', 'maxlength')">Nickname must be shorter than 32 characters.
+                  </mat-error>
+                  <mat-error *ngIf="hasError('nameCtrl', 'minlength')">Nickname must be at least 4 characters long.
+                  </mat-error>
+                  <mat-error *ngIf="profileForm.hasError('nameIsRequired')">
+                    Nickname is required!
+                  </mat-error>
+                </mat-form-field>
               </div>
-              <div>
-                <div class="columns">
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>E-Mail</mat-label>
-                      <input matInput id="email" formControlName="mailCtrl" required>
-                      <mat-error *ngIf="hasError('mailCtrl', 'required')">Email is required.</mat-error>
-                      <mat-error *ngIf="hasError('mailCtrl', 'forbiddenEmail')">Email is invalid.</mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Birthdate</mat-label>
-                      <input matInput id="birthdate" [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
-                        formControlName="dateCtrl" required>
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
-                      <mat-error *ngIf="hasError('dateCtrl', 'required')">Birthdate is required.</mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Discord Tag</mat-label>
+                  <input matInput id="discrodTag" formControlName="tagCtrl" required>
+                  <mat-error *ngIf="hasError('tagCtrl', 'required')">Discord Tag is required .</mat-error>
+                  <mat-error *ngIf="hasError('tagCtrl', 'pattern')">Discord Tag must be in this format: Name#1234.
+                  </mat-error>
+                </mat-form-field>
               </div>
-              <div>
-                <div class="columns">
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Region</mat-label>
-                      <mat-select formControlName="regionCtrl" required>
-                        <mat-option *ngFor="let region of regionList" [value]="region.id">{{region.name}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="hasError('regionCtrl', 'required')">Region is required.</mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Languages</mat-label>
-                      <mat-select formControlName="langCtrl" multiple required>
-                        <mat-option *ngFor="let lang of langList" [value]="lang.id" data-name="lang.name">{{lang.name}}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="hasError('langCtrl', 'required')">Select at least one language.</mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="columns">
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Password</mat-label>
-                      <input matInput id="password" [type]="hide ? 'password' : 'text' " formControlName="passCtrl"
-                        required>
-                      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                        [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
-                      <mat-hint *ngIf="isStrong('passCtrl') == 0">Password strength: weak</mat-hint>
-                      <mat-hint *ngIf="isStrong('passCtrl') == 1">Password strength: medium</mat-hint>
-                      <mat-hint *ngIf="isStrong('passCtrl') == 2">Password strength: strong</mat-hint>
-                      <mat-error *ngIf="hasError('passCtrl', 'required')">Password is required.</mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="column is-half">
-                    <mat-form-field>
-                      <mat-label>Verify Password</mat-label>
-                      <input matInput id="vpassword" [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl"
-                        required>
-
-                      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                        [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
-                      <mat-error *ngIf="hasError('rpassCtrl', 'required')">Password is required.</mat-error>
-                      <mat-error *ngIf="hasError('rpassCtrl', 'compare')">Passwords don' t match.</mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <button mat-button matStepperNext class="button is-dark" type="submit"
-                  [disabled]="profileForm.invalid">Next</button>
-              </div>
-            </form>
-
-          </mat-step>
-
-          <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
-            <form [formGroup]="gameForm" (ngSubmit)="onGameSubmit(gameForm.value)">
-              <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
-              <div>
-                <button mat-button matStepperNext>Next</button>
-              </div>
-              <app-add-game [gameForm]="gameForm"></app-add-game>
-              <div>
-                <button mat-button matStepperNext type="submit">Next</button>
-              </div>
-            </form>
-          </mat-step>
-
-          <mat-step state="done_all">
-            <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
-            <div>
-              <p>You are now done.</p>
-              <p>Enjoin your expierence on FAGB</p>
             </div>
-          </mat-step>
+          </div>
+          <div>
+            <div class="columns">
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>E-Mail</mat-label>
+                  <input matInput id="email" formControlName="mailCtrl" required>
+                  <mat-error *ngIf="hasError('mailCtrl', 'required')">Email is required.</mat-error>
+                  <mat-error *ngIf="hasError('mailCtrl', 'forbiddenEmail')">Email is invalid.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Birthdate</mat-label>
+                  <input matInput id="birthdate" [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
+                    formControlName="dateCtrl" required>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                  <mat-error *ngIf="hasError('dateCtrl', 'required')">Birthdate is required.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="columns">
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Region</mat-label>
+                  <mat-select formControlName="regionCtrl" required>
+                    <mat-option *ngFor="let region of regionList" [value]="region.id">{{region.name}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="hasError('regionCtrl', 'required')">Region is required.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Languages</mat-label>
+                  <mat-select formControlName="langCtrl" multiple required>
+                    <mat-option *ngFor="let lang of langList" [value]="lang.id" data-name="lang.name">{{lang.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="hasError('langCtrl', 'required')">Select at least one language.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="columns">
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Password</mat-label>
+                  <input matInput id="password" [type]="hide ? 'password' : 'text' " formControlName="passCtrl"
+                    required>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 0">Password strength: weak</mat-hint>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 1">Password strength: medium</mat-hint>
+                  <mat-hint *ngIf="isStrong('passCtrl') == 2">Password strength: strong</mat-hint>
+                  <mat-error *ngIf="hasError('passCtrl', 'required')">Password is required.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="column is-half">
+                <mat-form-field>
+                  <mat-label>Verify Password</mat-label>
+                  <input matInput id="vpassword" [type]="hide ? 'password' : 'text' " formControlName="rpassCtrl"
+                    required>
 
-          <!-- Icon overrides. -->
-          <ng-template matStepperIcon="profile">
-            <mat-icon class="material-icons-outlined">account_circle</mat-icon>
-          </ng-template>
-          <ng-template matStepperIcon="games">
-            <mat-icon class="material-icons-outlined">games</mat-icon>
-          </ng-template>
-          <ng-template matStepperIcon="done_all">
-            <mat-icon class="material-icons-outlined">done_all</mat-icon>
-          </ng-template>
-        </mat-vertical-stepper>
-      </div>
-    </div>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="hasError('rpassCtrl', 'required')">Password is required.</mat-error>
+                  <mat-error *ngIf="hasError('rpassCtrl', 'compare')">Passwords don' t match.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+              [disabled]="profileForm.invalid">Next</button>
+          </div>
+        </form>
+
+      </mat-step>
+
+      <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
+        <form [formGroup]="gameForm" (ngSubmit)="onGameSubmit()">
+          <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
+          <div>
+            <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+              [disabled]="gameForm.invalid">Next</button>
+          </div>
+          <app-add-game [gameForm]="gameForm"></app-add-game>
+          <div>
+            <button mat-flat-button matStepperNext color="primary" type="submit"
+              [disabled]="gameForm.invalid">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step state="done_all">
+        <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+        <div>
+          <p>You are now done.</p>
+          <p>Enjoin your expierence on FAGB</p>
+        </div>
+      </mat-step>
+
+      <!-- Icon overrides. -->
+      <ng-template matStepperIcon="profile">
+        <mat-icon class="material-icons-outlined">account_circle</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="games">
+        <mat-icon class="material-icons-outlined">games</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="done_all">
+        <mat-icon class="material-icons-outlined">done_all</mat-icon>
+      </ng-template>
+    </mat-vertical-stepper>
   </div>
-</section>
+</div>
+<!--</div>
+</section> -->
