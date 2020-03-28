@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { Registration } from '../data_objects/registration';
-import { RegistrationResponse } from '../data_objects/registrationresponse';
-import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
-import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { Registration } from '../../data_objects/registration';
+import { RegistrationResponse } from '../../data_objects/registrationresponse';
+import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
 import { QueryObject } from 'src/data_objects/queryobject';
 import { Session } from 'src/data_objects/session';
@@ -15,24 +15,24 @@ import { Game } from 'src/data_objects/game';
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
-    @Post()
+    @Get()
     async handleRegistration(@Body() registration: Registration) {
 
-        // let randomNumber = Math.floor(Math.random() * 10000);
-        // registration = new Registration(
-        //     'test@test' + randomNumber + '.com',
-        //     'test123',
-        //     'Grimmig',
-        //     'Grimmig#1235',
-        //     new Date('1999-12-31T23:00:00.000Z'),
-        //     new Region(1, "EU"),
-        //     [
-        //         new Language(1)
-        //     ],
-        //     [
-        //         new Game(1)
-        //     ]
-        // );
+        let randomNumber = Math.floor(Math.random() * 10000);
+        registration = new Registration(
+            'test@test' + randomNumber + '.com',
+            'test123',
+            'Grimmig',
+            'Grimmig#1235',
+            new Date('1999-12-31T23:00:00.000Z'),
+            new Region(1, "EU"),
+            [
+                new Language(1)
+            ],
+            [
+                new Game(1)
+            ]
+        );
 
         // Validate User Input
         let temp = registration.birthdate;

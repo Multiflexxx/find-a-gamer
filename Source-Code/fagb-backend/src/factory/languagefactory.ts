@@ -2,6 +2,9 @@ import { Language } from "src/data_objects/language";
 import { User } from "src/data_objects/user";
 import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
 import { QueryBuilder } from "src/connecttodatabase/querybuilder";
+import { UserLanguagePair } from "src/data_objects/userlanguagepair";
+import { UserLanguagePairFactory } from "./userlanguagepairfactory";
+import { GameFactory } from "./gamefactory";
 
 export class LanguageFactory {
     // public static getLanguagesForUser(user: User): Language[] {
@@ -26,9 +29,75 @@ export class LanguageFactory {
                 });
             }, function(callbackValue) {
                 console.error("LanguageFactory getLanguagesForUser(): Promise rejected");
+                console.error(callbackValue);
                 reject(callbackValue);
             })
             resolve(languages);
         });
+    }
+
+    public static async updateLanguagesForUser(user: User, newLanguages: Language[]) {
+        return new Promise(async function(resolve, reject) {
+            let successful;
+            await UserLanguagePairFactory.updateUserLanguagePairs(user).then(function(callbackValue) {
+                successful = callbackValue;
+            }, function(callbackValue) {
+                console.error("LanguageFactory updateLanguagesForUser(): Couldn't update UserLanguagePairs");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            let languages;
+            // await GameFactory.delay(1000);
+            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+                languages = callbackValue;
+                console.log(languages);
+            }, function(callbackValue) {
+                console.error("LanguageFactory updateLanguagesForUser(): Couldn't get Languages for User");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!languages) {
+                return;
+            }
+
+            resolve(languages);
+        });
+    }
+
+    public static async deleteLanguagesForUser(user: User) {
+        return new Promise(async function(resolve, reject){
+            let successful;
+            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+                successful = callbackValue;
+            }, function(callbackValue) {
+                console.error("LanguageFactory deleteLanguagesForUser(): Couldn't delete Languages for User");
+                console.error(callbackValue);
+                reject(callbackValue);
+            });
+
+            if(!successful) {
+                return;
+            }
+
+            resolve(true);
+        });
+    }
+
+    public static async getAllLanguages() {
+        let query = QueryBuilder.getLanguages();
+        let languages;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            languages = callbackValue;
+        }, function(callbackValue) {
+            console.error("LanguageFactory getAllLanguages(): Couldn't get all Languages");
+        });
+
+        return languages;
     }
 }

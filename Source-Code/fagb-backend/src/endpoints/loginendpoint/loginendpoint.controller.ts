@@ -12,7 +12,9 @@ export class LoginendpointController {
     async handleLogin(@Body() login: Login) {
         
         login = new Login(
-            "b9117c5e-8c9e-4e5e-be97-717677c8ecfd",
+            null,
+            "test@test17.com",
+            "test123"
         );
 
         

@@ -6,10 +6,12 @@ import { ConnectToDatabaseService } from './connecttodatabase/connecttodatabase.
 import { RegistrationendpointController } from './registrationendpoint/registrationendpoint.controller';
 import { LoginendpointController } from './loginendpoint/loginendpoint.controller';
 import { ProfileUpdateEndpointController } from './profileupdateendpoint/profileupdateendpoint.controller';
+import { ProfileDeleteEndpointController } from './profiledeleteendpoint/profiledeleteendpoint.controller';
+import { DataendpointController } from './dataendpoint/dataendpoint.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController],
+  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, DataendpointController],
   providers: [AppService, ConnectToDatabaseService],
 })
 export class AppModule {}

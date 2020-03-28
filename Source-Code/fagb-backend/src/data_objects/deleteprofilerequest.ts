@@ -4,10 +4,10 @@ import { Session } from './session';
 export class DeleteProfileRequest {
 
     public user: User;
-    public session: Session;
+    public session_id: string;
 
-    constructor(user: User, session: Session) {
+    constructor( session_id: string, user: User) {
         this.user = user;
-        this.session = session;
+        this.session_id = session_id;
     }
 }
