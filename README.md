@@ -4,3 +4,8 @@ The idea can be found [here](https://github.com/Grimmig18/find-a-gamer/blob/mast
 The project shall be implemented in TypeScript using [NestJS](https://nestjs.com/) for the backend and the [Angular framework](https://angular.io/) for the frontend.
 
 Framework?
+
+> \"Now, with the most recent addition of Async/Await, writing JavaScript code is about to get even better!\"<br>~ [JavaScript Async/Await Explained in 10 Minutes](https://tutorialzine.com/2017/07/javascript-async-await-explained)
+
+
+> \"This is not correct\" <br>~ Marcel
