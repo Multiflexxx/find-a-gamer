@@ -13,8 +13,8 @@ export class ProfileDeleteEndpointController {
     @Get()
     async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest) {
         deleteProfileRequest = new DeleteProfileRequest(
-            "8bab0b42-565a-482b-b347-1ee6a2b333c2",
-            new User(17, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
+            "3e8de529-977b-4b2e-8bf8-c4aa007d6202",
+            new User(16, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
         );
 
         
@@ -61,12 +61,14 @@ export class ProfileDeleteEndpointController {
 
         // Delete User
 
+        console.log("Vor Delete User");
         await UserFactory.deleteUser(deleteProfileRequest.user).then(function(callbackValue){
             successful = true;
         }, function (callbackValue) {
             console.error("profiledeleteendpoint: Couldn't delete user");
             console.error(callbackValue);
         })
+        console.log("Nach Delete User");
 
         if (!successful) {
             return new DeleteProfileResponse(false, null);

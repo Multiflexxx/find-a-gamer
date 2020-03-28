@@ -10,6 +10,12 @@ import { Language } from 'src/data_objects/language';
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { ConnectToDatabaseService } from 'src/connecttodatabase/connecttodatabase.service';
 import { QueryObject } from 'src/data_objects/queryobject';
+import { UserGamePairFactory } from 'src/factory/usergamepairfactory';
+import { GameFactory } from 'src/factory/gamefactory';
+import { UserLanguagePair } from 'src/data_objects/userlanguagepair';
+import { UserLanguagePairFactory } from 'src/factory/userlanguagepairfactory';
+import { LanguageFactory } from 'src/factory/languagefactory';
+import { RegionFactory } from 'src/factory/regionfactory';
 
 @Controller('profileupdateendpoint')
 export class ProfileUpdateEndpointController {
@@ -59,7 +65,7 @@ export class ProfileUpdateEndpointController {
         // Fake Input from Frontend
         editProfileRequest = new EditProfileRequest(
             "b9117c5e-8c9e-4e5e-be97-717677c8ecfd",
-            new User(2, "benno.grimm@gmx.de", "updated Hash 5", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(3), new Game(1)], [new Language(10), new Language(11)])
+            new User(2, "benno.grimm@gmx.de", "updated Hash 6", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1), new Game(3)], [new Language(13), new Language(27)])
         );
 
         // check if session is valid and belongs to user to be edited
@@ -75,62 +81,121 @@ export class ProfileUpdateEndpointController {
             return new EditProfileResponse(false, null);
         }
 
-        // Delete old User Game Pairs
-        let query = QueryBuilder.deleteUserGamePairsByUser(editProfileRequest.user);
-        let successful;
-        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            successful = true;
-        }, function(callbackValue) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't delete UserGamePairs");
-            console.error(callbackValue);
-        });
+        // // Delete old User Game Pairs
+        // let query = QueryBuilder.deleteUserGamePairsByUser(editProfileRequest.user);
+        // let successful;
+        // await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+        //     successful = true;
+        // }, function(callbackValue) {
+        //     console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't delete UserGamePairs");
+        //     console.error(callbackValue);
+        // });
 
-        if(!successful) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after deleting UserGamePairs");
+        // if(!successful) {
+        //     console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after deleting UserGamePairs");
+        //     return new EditProfileResponse(false, null);
+        // }
+
+        // // Create new User Game Pairs
+        // for(let game of editProfileRequest.user.games) {
+        //     query = QueryBuilder.createUserGamePair(editProfileRequest.user, game);
+        //     successful = null;
+        //     await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+        //         successful = true;
+        //     }, function(callbackValue) {
+        //         console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't create UserGamePairs");
+        //         console.error(callbackValue);
+        //     });
+
+        //     if(!successful) {
+        //         console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after creating UserGamePairs for Game");
+        //         console.error(game);
+        //         return new EditProfileResponse(false, null);
+        //     }
+        // }
+
+        let success = await UserGamePairFactory.updateUserGamePairs(editProfileRequest.user);
+
+        if(!success) {
             return new EditProfileResponse(false, null);
+            console.error(success);
         }
 
-        // Create new User Game Pairs
-        for(let game of editProfileRequest.user.games) {
-            query = QueryBuilder.createUserGamePair(editProfileRequest.user, game);
-            successful = null;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                successful = true;
-            }, function(callbackValue) {
-                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't create UserGamePairs");
-                console.error(callbackValue);
-            });
-
-            if(!successful) {
-                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after creating UserGamePairs for Game");
-                console.error(game);
-                return new EditProfileResponse(false, null);
-            }
-        }
 
         // Get Updated Games
-        query = QueryBuilder.getGamesByUser(editProfileRequest.user);
-        let result;
-        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            result = callbackValue;
-            console.log(callbackValue);
+        // let query = QueryBuilder.getGamesByUser(editProfileRequest.user);
+        // let result;
+        // await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+        //     result = callbackValue;
+        //     console.log(callbackValue);
+        // }, function(callbackValue) {
+        //     console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get new UserGamePairs");
+        //     console.error(callbackValue);
+        // });
+
+        // if(!result || !result[0]) {
+        //     console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): result is empty or null after getting Games for User");
+        //     console.error(result);
+        //     return new EditProfileResponse(false, null);
+        // }
+
+        // let newGames: Game[] = [];
+        // for(let game of result) {
+        //     newGames.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
+        // }
+
+        let games;
+        await GameFactory.getGamesForUser(editProfileRequest.user).then(function(callbackValue) {
+            games = callbackValue;
         }, function(callbackValue) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get new UserGamePairs");
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get Games for User");
             console.error(callbackValue);
         });
+        editProfileRequest.user.games = games;
 
-        if(!result || !result[0]) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): result is empty or null after getting Games for User");
-            console.error(result);
+
+        // Update UserLanguagePairs
+        success = await UserLanguagePairFactory.updateUserLanguagePairs(editProfileRequest.user);
+
+        if(!success) {
             return new EditProfileResponse(false, null);
         }
 
-        let newGames: Game[] = [];
-        for(let game of result) {
-            newGames.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
+        let languages;
+        await LanguageFactory.getLanguagesForUser(editProfileRequest.user).then(function(callbackValue) {
+            languages = callbackValue;
+        }, function(callbackValue) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get Languages for User");
+            console.error(callbackValue);
+        });
+        editProfileRequest.user.languages = languages;
+
+        // Update other User Fields
+        let query = QueryBuilder.updateUser(editProfileRequest.user);
+        success = null;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            success = true;
+        }, function(callbackValue) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't update User");
+        });
+
+        if(!success) {
+            return new EditProfileResponse(false, null);
         }
 
-        return newGames;
+        return new EditProfileResponse(true, editProfileRequest.user);
 
     }
+
+
+    // private static validateUpdate(editProfileRequest: EditProfileRequest) {
+    //     // Validate Region
+    //     await RegionFactory.getRegionById(editProfileRequest.user.region.region_id).then(function(callbackValue) {
+
+    //     });
+    //     // Validate Games
+
+    //     // Validate Languages
+
+    // }
 }

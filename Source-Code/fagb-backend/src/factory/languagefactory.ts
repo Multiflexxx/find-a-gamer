@@ -39,7 +39,7 @@ export class LanguageFactory {
     public static async updateLanguagesForUser(user: User, newLanguages: Language[]) {
         return new Promise(async function(resolve, reject) {
             let successful;
-            await UserLanguagePairFactory.updateUserLanguagePairs(user, newLanguages).then(function(callbackValue) {
+            await UserLanguagePairFactory.updateUserLanguagePairs(user).then(function(callbackValue) {
                 successful = callbackValue;
             }, function(callbackValue) {
                 console.error("LanguageFactory updateLanguagesForUser(): Couldn't update UserLanguagePairs");
@@ -52,7 +52,7 @@ export class LanguageFactory {
             }
 
             let languages;
-            await GameFactory.delay(1000);
+            // await GameFactory.delay(1000);
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
                 languages = callbackValue;
                 console.log(languages);
@@ -87,5 +87,17 @@ export class LanguageFactory {
 
             resolve(true);
         });
+    }
+
+    public static async getAllLanguages() {
+        let query = QueryBuilder.getLanguages();
+        let languages;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            languages = callbackValue;
+        }, function(callbackValue) {
+            console.error("LanguageFactory getAllLanguages(): Couldn't get all Languages");
+        });
+
+        return languages;
     }
 }

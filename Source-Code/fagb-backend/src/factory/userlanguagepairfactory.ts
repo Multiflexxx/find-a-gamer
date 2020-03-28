@@ -61,37 +61,83 @@ export class UserLanguagePairFactory {
         });
     }
 
-    public static async updateUserLanguagePairs(user: User, newLanguages: Language[]) {
-        return new Promise(async function(resolve, reject) {
-            // Delete old User Language Pairs
-            let successful;
-            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
-                successful = callbackValue;
-            }, function(callbackValue) {
-                console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't delete UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    // public static async updateUserLanguagePairs(user: User, newLanguages: Language[]) {
+    //     return new Promise(async function(resolve, reject) {
+    //         // Delete old User Language Pairs
+    //         let successful;
+    //         await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+    //             successful = callbackValue;
+    //         }, function(callbackValue) {
+    //             console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't delete UserLanguagePairs");
+    //             console.error(callbackValue);
+    //             reject(callbackValue);
+    //         });
 
-            if(!successful) {
-                return;
-            }
+    //         if(!successful) {
+    //             return;
+    //         }
 
-            // Create new User Language Pairs
-            successful = null;
-            await UserLanguagePairFactory.createUserLanguagePairs(user, newLanguages).then(function(callbackValue) {
-                successful = callbackValue;
-            }, function(callbackValue) {
-                console.error("UserLanguagePairFactory updateUserLanguagePairs() Couldn't delete UserLanguagePair");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    //         // Create new User Language Pairs
+    //         successful = null;
+    //         await UserLanguagePairFactory.createUserLanguagePairs(user, newLanguages).then(function(callbackValue) {
+    //             successful = callbackValue;
+    //         }, function(callbackValue) {
+    //             console.error("UserLanguagePairFactory updateUserLanguagePairs() Couldn't delete UserLanguagePair");
+    //             console.error(callbackValue);
+    //             reject(callbackValue);
+    //         });
 
-            if(!successful) {
-                return
-            }
+    //         if(!successful) {
+    //             return
+    //         }
 
-            resolve(true);
+    //         resolve(true);
+    //     });
+    // }
+
+    public static async updateUserLanguagePairs(user: User) {
+        // Delete old User Language Pairs
+        let successful;
+        await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+            successful = callbackValue;
+        }, function(callbackValue) {
+            console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't delete UserLanguagePairs");
+            console.error(callbackValue);
         });
+
+        if(!successful) {
+            return false;
+        }
+
+        // Create new User Language Pairs
+        // successful = null;
+        // await UserLanguagePairFactory.createUserLanguagePairs(user, user.languages).then(function(callbackValue) {
+        //     successful = callbackValue;
+        // }, function(callbackValue) {
+        //     console.error("UserLanguagePairFactory updateUserLanguagePairs() Couldn't delete UserLanguagePair");
+        //     console.error(callbackValue);
+        // });
+
+        // if(!successful) {
+        //     return false;
+        // }
+
+        // Create new UserLanguagePairs
+        for(let language of user.languages) {
+            let successful;
+            let query = QueryBuilder.createUserLanguagePair(user, language);
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't create UserLanguagePairs");
+                console.error(callbackValue);
+            });
+
+            if(!successful) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

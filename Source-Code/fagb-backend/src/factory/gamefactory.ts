@@ -18,35 +18,61 @@ export class GameFactory {
     // }
 
 
-    public static async getGamesForUser(user: User): Promise<Game[]> {
-        return new Promise(async function (resolve, reject) {
-            let result;
-            let games: Game[] = [];
-            let query = QueryBuilder.getGamesByUser(user);
-            // query = new QueryObject("SELECT * From User_Game_Pair WHere user_id = ?;", [2]);
-            console.log(query);
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                // console.log("Callback value in getGamesForUser");
-                // console.log(callbackValue);
-                result = callbackValue;
-            }, function (callbackValue) {
-                console.error("ConnectToDatabaseService getPromise(): Promise rejected");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    // public static async getGamesForUser(user: User): Promise<Game[]> {
+    //     return new Promise(async function (resolve, reject) {
+    //         let result;
+    //         let games: Game[] = [];
+    //         let query = QueryBuilder.getGamesByUser(user);
+    //         // query = new QueryObject("SELECT * From User_Game_Pair WHere user_id = ?;", [2]);
+    //         console.log(query);
+    //         await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+    //             // console.log("Callback value in getGamesForUser");
+    //             // console.log(callbackValue);
+    //             result = callbackValue;
+    //         }, function (callbackValue) {
+    //             console.error("ConnectToDatabaseService getPromise(): Promise rejected");
+    //             console.error(callbackValue);
+    //             reject(callbackValue);
+    //         });
 
-            if (!result || !result[0]) {
-                console.log(result);
-                console.error("No Games for User");
-                reject(false);
-                return;
-            }
+    //         if (!result || !result[0]) {
+    //             console.log(result);
+    //             console.error("No Games for User");
+    //             reject(false);
+    //             return;
+    //         }
 
-            result.forEach(game => {
-                games.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
-            });
-            resolve(games);
+    //         result.forEach(game => {
+    //             games.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
+    //         });
+    //         resolve(games);
+    //     });
+    // }
+
+    public static async getGamesForUser(user: User) {
+        // Get Updated Games
+        let query = QueryBuilder.getGamesByUser(user);
+        let result;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            result = callbackValue;
+            console.log(callbackValue);
+        }, function(callbackValue) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get new UserGamePairs");
+            console.error(callbackValue);
         });
+
+        if(!result || !result[0]) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): result is empty or null after getting Games for User");
+            console.error(result);
+            return false;
+        }
+
+        let newGames: Game[] = [];
+        for(let game of result) {
+            newGames.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
+        }
+
+        return newGames;
     }
 
     public static async updateGamesForUser(user: User, newGames: Game[]) {
@@ -99,13 +125,26 @@ export class GameFactory {
         });
     }
 
+    public static async getAllGames() {
+        let query = QueryBuilder.getGames();
+        let games;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            games = callbackValue;
+        }, function(callbackValue) {
+            console.error("GameFactory getAllGames(): Couldn't get all Games");
+            console.error(callbackValue);
+        });
+
+        return games;
+    }
+
 
     // public static async updateGamesForUser(user: User, newGames: Game[]) {
     //     // Delete old User game Pairs
 
     // }
 
-    public static delay(ms: number) {
-        return new Promise( resolve => setTimeout(resolve, ms) );
-    }
+    // public static delay(ms: number) {
+    //     return new Promise( resolve => setTimeout(resolve, ms) );
+    // }
 }

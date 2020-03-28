@@ -142,14 +142,21 @@ export class UserFactory {
             user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
+            let games;
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
-                user.games = callbackValue;
+                games = callbackValue;
                 console.log(user.games);
             }, function(callbackValue) {
                 console.error("GameFactory getGamesForUser: Promise rejected");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!games) {
+                return false;
+            }
+
+            user.games = games;
 
             // Get Languages for User
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
@@ -192,13 +199,20 @@ export class UserFactory {
             user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
+            let games;
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
-                user.games = callbackValue;
+                games = callbackValue;
             }, function(callbackValue) {
                 console.error("GameFactory getGamesForUser: Promise rejected");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!games) {
+                return false;
+            }
+
+            user.games = games;
 
             // Get Languages for User
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
@@ -418,7 +432,9 @@ export class UserFactory {
             if (!successful) {
                 reject("UserFactory deleteUser(): couldn't delete user");
                 return;
-            }    
+            }
+            
+            resolve(user);
         });
     }
 }

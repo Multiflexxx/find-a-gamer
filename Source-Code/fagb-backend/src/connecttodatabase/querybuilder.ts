@@ -108,7 +108,7 @@ export class QueryBuilder {
     
     public static getRegions(): QueryObject {
         return new QueryObject(
-            "SELECT region_id FROM Region ORDER BY name ASC;"
+            "SELECT * FROM Region ORDER BY name ASC;"
         );
         
         // return 'SELECT region_id FROM Region;';
