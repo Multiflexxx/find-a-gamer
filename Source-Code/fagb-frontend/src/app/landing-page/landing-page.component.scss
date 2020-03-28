@@ -200,7 +200,7 @@
   margin: 10px 0;
   width: 75%;
   float: right;
-  visibility: hidden;
+  opacity: 0;
 }
 
 .darker {
@@ -241,7 +241,7 @@
   white-space: nowrap;
   overflow: hidden;
   float: left;
-  background-color: white;
+  background-color: #f4f4f4;
 }
 
 #message1 {
@@ -342,9 +342,9 @@
   }
 
   99% {
-    width: 75%;
+    width: 68%;
     height: 1.5rem;
-    border: 0;
+    border-right: 2px solid black;
   }
 
   100% {
@@ -372,8 +372,6 @@
   }
 }
 
-
-
 @keyframes type3 {
   0% {
     width: 0%;
@@ -400,35 +398,31 @@
 
   10%,
   90% {
-    visibility: inherit;
+    opacity: 1;
     transform: translate3d(-1px, 0, 0);
-    -webkit-transform: translate3d(-1px, 0, 0);
   }
 
   20%,
   80% {
-    visibility: inherit;
+    opacity: 1;
     transform: translate3d(2px, 0, 0);
-    -webkit-transform: translate3d(2px, 0, 0);
   }
 
   30%,
   50%,
   70% {
-    visibility: inherit;
+    opacity: 1;
     transform: translate3d(-2px, 0, 0);
-    -webkit-transform: translate3d(-2px, 0, 0);
   }
 
   40%,
   60% {
-    visibility: inherit;
+    opacity: 1;
     transform: translate3d(2px, 0, 0);
-    -webkit-transform: translate3d(2px, 0, 0);
   }
 
   100% {
-    visibility: inherit;
+    opacity: 1;
   }
 }
 @keyframes msgvanish {
