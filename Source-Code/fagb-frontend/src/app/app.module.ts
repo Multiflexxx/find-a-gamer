@@ -1,25 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from './material/material.module';
+
+import {AppRoutingModule} from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
-
-// Angular Material Components
-// import {MatCheckboxModule} from '@angular/material/checkbox';
-
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from './material/material.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AddGameComponent } from './add-game/add-game.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { HttpClientModule } from '@angular/common/http';
+import { BackgroundComponent } from './background/background.component';
+
 import { EmailValidatorDirective } from './shared/email-validator.directive';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
-import { BackgroundComponent } from './background/background.component';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -36,10 +35,11 @@ import { BackgroundComponent } from './background/background.component';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FormsModule, ReactiveFormsModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

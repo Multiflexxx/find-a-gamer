@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { Login } from '../data_objects/login'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
   }
-  
+
   createForm() {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
@@ -23,7 +25,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onLoginSubmit() {
+  private get loginValue() {
+    return this.loginForm.controls;
+  }
 
+  onLoginSubmit() {
+    var login = new Login(null, this.loginValue.email.value, this.loginValue.password.value, this.loginValue.check.value)
+    console.log(this.loginValue.email.value);
+    console.log(login);
   }
 }
