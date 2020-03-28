@@ -10,12 +10,8 @@
 }
 
 .mat-form-field {
-  margin-top: 16px;
+  margin-top: 1rem;
   width: 100%;
-}
-
-mat-form-field {
-  margin-right: 12px;
 }
 
 input::placeholder {
@@ -24,6 +20,10 @@ input::placeholder {
 
 .material-icons-outlined {
   color: hsl(0, 0%, 21%);
+}
+
+.mat-flat-button {
+  margin: 1rem 0;
 }
 
 /* Change Autocomplete styles in Chrome*/

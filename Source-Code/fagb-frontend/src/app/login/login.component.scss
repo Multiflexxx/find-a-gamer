@@ -3,9 +3,26 @@
 }
 
 .mat-flat-button {
-    width: 100%;
+  width: 100%;
 }
 
-.box{
-    background-color: hsl(0, 0, 21%);
+.checkb {
+  margin-bottom: 0.75rem;
+}
+
+mat-checkbox {
+  color: hsl(0, 0, 76%);
+}
+
+.box {
+  background-color: hsl(0, 0, 21%);
+}
+
+a {
+  color: hsl(217, 71%, 53%);
+}
+
+a:hover {
+  color: hsl(217, 71%, 53%);
+  text-decoration: underline;
 }
