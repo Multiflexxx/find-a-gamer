@@ -57,12 +57,12 @@ export class GameFactory {
             result = callbackValue;
             console.log(callbackValue);
         }, function(callbackValue) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get new UserGamePairs");
+            console.error("GameFactory getGamesForUser(): Couldn't get Games for User");
             console.error(callbackValue);
         });
 
-        if(!result || !result[0]) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): result is empty or null after getting Games for User");
+        if(!result) {
+            console.error("GameFactory getGamesForUser(): result is empty or null after getting Games for User");
             console.error(result);
             return false;
         }
@@ -84,7 +84,7 @@ export class GameFactory {
             await UserGamePairFactory.deleteUserGamePairsByUser(user).then(async function (callbackValue) {
                 successful = callbackValue;
             }, function (callbackValue) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs")
+                console.error("GameFactory updateGamesForUser(): Couldn't delete UserGamePairs")
                 console.error(callbackValue);
                 reject(callbackValue);
             });
@@ -98,7 +98,7 @@ export class GameFactory {
             await UserGamePairFactory.createUserGamePairs(user, newGames).then(async function (callbackValue) {
                 successful = callbackValue;
             }, function (callbackValue) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs")
+                console.error("GameFactory updateGamesForUser(): Couldn't create UserGamePairs")
                 console.error(callbackValue);
                 reject(callbackValue);
             });
@@ -112,7 +112,7 @@ export class GameFactory {
                 games = callbackValue2;
                 console.log(games);
             }, function (callbackValue2) {
-                console.error("GameFactory updateGamesForUser(): Couldn't get updated Games for User");
+                console.error("GameFactory updateGamesForUser(): Couldn't get get Games for User");
                 console.error(callbackValue2);
                 reject(callbackValue2);
             });
