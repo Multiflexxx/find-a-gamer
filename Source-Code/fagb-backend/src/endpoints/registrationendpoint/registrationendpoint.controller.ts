@@ -51,7 +51,7 @@ export class RegistrationendpointController {
 
         // return empty Session if User Input is invalid
         if (!isInputValid) {
-            return new RegistrationResponse(false, null);
+            return new RegistrationResponse(false, null, "User already exists");
         }
 
         // Create User using validated registration object
@@ -72,7 +72,7 @@ export class RegistrationendpointController {
         });
 
         if(!session) {
-            return new RegistrationResponse(false, null);
+            return new RegistrationResponse(false, null, "Something went wrong");
         }
 
         // Return Session
