@@ -19,10 +19,15 @@
                 <mat-checkbox color="primary" formControlName="check">Stay logged in
                 </mat-checkbox>
               </div>
-              <button mat-flat-button color="primary" class="button">Log In <i class="fa fa-sign-in"
-                  aria-hidden="true"></i></button>
+              <button mat-flat-button color="primary" class="button" [disabled]="loading || loginForm.invalid">
+                <mat-icon *ngIf="loading"><mat-spinner color="accent" diameter="20">
+                </mat-spinner></mat-icon>
+                Log In
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+              </button>
             </form>
-            <p class="has-text-grey">Do you need an account? <a [routerLink]="['/register']" routerLinkActive="router-link-active">Sign Up</a></p>
+            <p class="has-text-grey">Do you need an account? <a [routerLink]="['/register']"
+                routerLinkActive="router-link-active">Sign Up</a></p>
           </div>
         </div>
       </div>

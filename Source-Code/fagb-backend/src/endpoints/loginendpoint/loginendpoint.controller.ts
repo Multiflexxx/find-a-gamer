@@ -8,14 +8,14 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Get() 
+    @Post() 
     async handleLogin(@Body() login: Login) {
         
-        login = new Login(
-            "",
-            // "test@test17.com",
-            // "test123"
-        );
+        // login = new Login(
+        //     "",
+        //     // "test@test17.com",
+        //     // "test123"
+        // );
 
         
         // Check for validity?
