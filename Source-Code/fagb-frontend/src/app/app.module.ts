@@ -20,6 +20,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { EmailValidatorDirective } from './shared/email-validator.directive';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
 import { BackgroundComponent } from './background/background.component';
+import { LandingPageNavbarComponent } from './landing-page-navbar/landing-page-navbar.component';
+
+import { GamesearchComponent } from './gamesearch/gamesearch.component';
+import { NavbarGamesearchComponent } from './navbar-gamesearch/navbar-gamesearch.component';
+import { SearchComponent } from './search/search.component';
+import { ProfileComponent } from './profile/profile.component';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +39,17 @@ import { BackgroundComponent } from './background/background.component';
     LandingPageComponent,
     EmailValidatorDirective,
     CompareValidatorDirective,
-    BackgroundComponent
+    BackgroundComponent,
+    LandingPageNavbarComponent,
+
+    GamesearchComponent,
+
+    NavbarGamesearchComponent,
+
+    SearchComponent,
+
+    ProfileComponent,
+    
   ],
   imports: [
     BrowserModule,
