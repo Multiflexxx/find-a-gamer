@@ -24,9 +24,13 @@ export class PublicUser {
 
         if (biography) {
             this.biography = biography;
+        } else {
+            this.biography = null;
         }
         if (profile_picture) {
             this.profile_picture = profile_picture;
+        } else {
+            this.profile_picture = null;
         }
     }
 }
