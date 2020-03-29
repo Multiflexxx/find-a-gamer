@@ -95,6 +95,26 @@ Create Table User_Game_Pair (
     Primary Key (pair_id)
 );
 ```
+
+### MatchMakingRequest
+```sql
+Create Table MatchMakingRequest(
+    request_id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    game_id int NOT NULL,
+    searching_for int NOT NULL,
+    players_in_party int NOT NULL,
+    casual tinyint NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    match_id binary(16) DEFAULT NULL,
+    Primary Key (request_id),
+    Foreign Key (user_id) References User(user_id),
+    Foreign Key (game_id) References Game(game_id)  
+);
+```
+
+###
+
 ## Own Functions:
 
 ### UUID_TO_BIN
