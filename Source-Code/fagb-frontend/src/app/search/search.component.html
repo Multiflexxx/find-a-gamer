@@ -1,1 +1,29 @@
-<p>search works!</p>
+<div class="container">
+
+<!-- Main container -->
+
+
+  <div class="buttons has-addons">
+    <button class="button">Pro</button>
+    <button class="button">Casual</button>
+    
+  </div>
+<button class="button">GO!</button>
+</div>
+
+<mat-form-field>
+    <mat-label>Region</mat-label>
+    <mat-select formControlName="player" required>
+      <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+    </mat-select>
+    
+    <mat-error *ngIf="hasError('player', 'required')">Player is required.</mat-error>
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Region</mat-label>
+    <mat-select formControlName="player" required>
+      <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+    </mat-select>
+    
+    <mat-error *ngIf="hasError('player', 'required')">Player is required.</mat-error>
+</mat-form-field>
