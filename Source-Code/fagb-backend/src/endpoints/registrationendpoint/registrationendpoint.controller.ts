@@ -15,7 +15,7 @@ import { Game } from 'src/data_objects/game';
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
-    @Get()
+    @Post()
     async handleRegistration(@Body() registration: Registration) {
 
         let randomNumber = Math.floor(Math.random() * 10000);

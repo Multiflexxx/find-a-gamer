@@ -17,24 +17,25 @@ export class RegisterService {
 
   register(profileData, gameData) {
     var games: Array<Game> = [];
-    var gameids: Array<number> = JSON.parse(gameData.gameCtrl);
+    console.log(gameData.game.value);
+    var gameids: Array<number> = JSON.parse(gameData.game.value);
     for (let i = 0; i < gameids.length; i++) {
       games.push(new Game(gameids[i]));
     }
 
     var langs: Array<Language> = [];
-    for (let i = 0; i < profileData.langCtrl.length; i++) {
-      langs.push(new Language(profileData.langCtrl[i]));
+    for (let i = 0; i < profileData.lang.length; i++) {
+      langs.push(new Language(profileData.lang[i]));
     }
 
-    var region: Region = new Region(profileData.regionCtrl);
+    var region: Region = new Region(profileData.region.value);
 
     var registration: Registration = new Registration(
-      profileData.mailCtrl,
-      profileData.passCtrl,
-      profileData.nameCtrl,
-      profileData.tagCtrl,
-      profileData.dateCtrl,
+      profileData.email.value,
+      profileData.password.value,
+      profileData.name.value,
+      profileData.tag.value,
+      profileData.date.value,
       region,
       langs,
       games

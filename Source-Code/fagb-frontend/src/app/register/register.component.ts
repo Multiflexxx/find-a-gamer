@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormGroupDirective, NgForm, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 // Import Validator
 import { emailValidator } from '../shared/email-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { compareValidator } from '../shared/compare-validator.directive';
+
+import { RegisterService } from '../_services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -73,7 +75,10 @@ export class RegisterComponent implements OnInit {
     }
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private registerService: RegisterService) {
 
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
@@ -103,11 +108,11 @@ export class RegisterComponent implements OnInit {
   }
 
   private get profileValue() {
-    return this.profileForm;
+    return this.profileForm.controls;
   }
 
   private get gameValue() {
-    return this.gameForm;
+    return this.gameForm.controls;
   }
 
   public hasError = (controlName: string, errorName: string) => {
@@ -129,13 +134,25 @@ export class RegisterComponent implements OnInit {
 
   onProfileSubmit() {
     this.profileData = this.profileValue
+    console.log(this.profileValue);
   }
 
   onGameSubmit() {
     this.gameData = this.gameValue
+    console.log(this.gameData);
+    this.onSubmit();
   }
 
   onSubmit(): void {
+    this.registerService.register(this.profileData, this.gameData).subscribe(
+      (data)=>{
+        console.log(data);
+        this.router.navigate(['/login']);
+      },
+      (error)=>{
+        console.log("Shit");
+      }
+    )
 
   }
 }

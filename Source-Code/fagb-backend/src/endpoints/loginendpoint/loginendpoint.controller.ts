@@ -1,4 +1,4 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body, Post } from '@nestjs/common';
 import { Login } from 'src/data_objects/login';
 import { UserFactory } from 'src/factory/userfactory';
 import { LoginResponse } from 'src/data_objects/loginresponse';
@@ -8,7 +8,7 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Get() 
+    @Post() 
     async handleLogin(@Body() login: Login) {
         
         login = new Login(
