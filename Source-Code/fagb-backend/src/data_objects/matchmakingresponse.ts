@@ -3,8 +3,8 @@ import { MatchMakingRequest } from "./matchmakingrequest";
 import { User } from "./user";
 
 export class MatchMakingResponse {
-    users: PublicUser[];
-    matchmaking_request: MatchMakingRequest;
+    public users: PublicUser[];
+    public matchmaking_request: MatchMakingRequest;
 
     public constructor(users: User[], matchmaking_request: MatchMakingRequest) {
         this.users = users;

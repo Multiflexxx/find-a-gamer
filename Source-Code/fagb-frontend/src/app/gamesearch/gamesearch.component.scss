@@ -1,0 +1,32 @@
+.card-image {
+    position: relative;
+  }
+  
+  
+  .overlay:hover .text {
+    opacity: 1;
+  
+  }
+  
+  .overlay:hover .picture {
+    opacity: 10%;
+  }
+  
+  .text {
+    position: absolute;
+    line-height: 3rem;
+    font-size: 1.7rem;
+    top: 0%;
+    left: 0%;
+    opacity: 1;
+    // transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+  }
+  .button{
+      position: relative;
+  
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
+  }

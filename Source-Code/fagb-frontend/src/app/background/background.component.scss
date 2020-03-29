@@ -185,7 +185,7 @@
 //     position: absolute;
 //     animation: getBig 7s  14.3s infinite alternate;
 // }
-@media(min-width: 400px){ 
+@media(min-width: 769px){ 
     @keyframes getBig{
         0% { width: 15vh;
             height: 15vh;
@@ -219,7 +219,7 @@
     transform: rotate(200deg);
     
 }
-@media(min-width: 400px){ 
+@media(min-width: 769px){ 
 @keyframes moveup{
     0% {
         bottom: 2vh;
