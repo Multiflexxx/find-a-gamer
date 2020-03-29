@@ -10,10 +10,11 @@ import { ProfileDeleteEndpointController } from './endpoints/profiledeleteendpoi
 import { RegionEndpointController } from './endpoints/region-endpoint/region-endpoint.controller';
 import { GamesEndpointController } from './endpoints/games-endpoint/games-endpoint.controller';
 import { LanguagesEndpointController } from './endpoints/languages-endpoint/languages-endpoint.controller';
+import { MatchMakingRequestEndpointController } from './endpoints/match-making-request-endpoint/match-making-request-endpoint.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController],
+  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController, MatchMakingRequestEndpointController],
   providers: [AppService, ConnectToDatabaseService],
 })
 export class AppModule {}
