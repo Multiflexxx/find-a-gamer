@@ -4,6 +4,7 @@ import { Game } from '../data_objects/game';
 import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { QueryObject } from '../data_objects/queryobject';
+import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
 
 export class QueryBuilder {
     public static createUser(registration: Registration): QueryObject {
@@ -228,7 +229,7 @@ export class QueryBuilder {
         );
     }
 
-    public static deleteUserGamePairsByUser(user: User) {
+    public static deleteUserGamePairsByUser(user: User): QueryObject {
         return new QueryObject(
             "DELETE FROM User_Game_Pair WHERE user_id = ?;", 
             [
@@ -237,7 +238,7 @@ export class QueryBuilder {
         );
     }
 
-    public static deleteUserLanguagePairsByUser(user: User) {
+    public static deleteUserLanguagePairsByUser(user: User): QueryObject {
         return new QueryObject(
             "DELETE FROM User_Language_Pair WHERE user_id = ?;", 
             [
@@ -246,4 +247,31 @@ export class QueryBuilder {
         );
     }
 
+    public static createMatchMakingRequest(matchMakingRequest: MatchMakingRequest): QueryObject {
+        return new QueryObject(
+            "INSERT INTO MatchMakingRequest (user_id, game_id, searching_for, players_in_party, casual) VALUES (?, ?, ?, ?, ?);",
+            [
+                matchMakingRequest.user_id,
+                matchMakingRequest.game_id,
+                matchMakingRequest.searching_for,
+                matchMakingRequest.players_in_party,
+                matchMakingRequest.casual
+            ]
+        );
+    }
+
+    public static getMatchMakingRequestsByGame(game_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM MatchMakingRequest WHERE game_id = ?;",
+            [
+                game_id
+            ]
+        );
+    }
+
+    public static getNoOfMatchMakingRequestsByGame(): QueryObject {
+        return new QueryObject(
+            "SELECT game_id, sum(players_in_party) AS players_searching FROM MatchMakingRequest WHERE match_id IS NULL GROUP BY game_id;"
+        );
+    }
 }

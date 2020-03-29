@@ -10,11 +10,10 @@ export class GamesEndpointController {
         await GameFactory.getAllGames().then(function(callbackValue) {
             games = callbackValue;
         }, function(callbackValue) {
-            console.error("DataendpointController getAllRgamesEndpoint(): Couldn't get all Games");
+            console.error("DataEndpointController getAllGamesEndpoint(): Couldn't get all Games");
             console.error(callbackValue);
         });
 
         return games;
     }
-    
 }

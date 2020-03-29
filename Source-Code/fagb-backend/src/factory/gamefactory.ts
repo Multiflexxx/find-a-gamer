@@ -138,6 +138,28 @@ export class GameFactory {
         return games;
     }
 
+    public static async getGameById(game_id: number) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.getGameById(game_id);
+            let game;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                game = callbackValue;
+                console.log("callbackValue in getGameById");
+                console.log(callbackValue);
+            }, function(callbackValue) {
+                console.error("GameFactory getGameById(): Couldn't get game");
+                console.error("callbackValue");
+            });
+
+            if(!game) {
+                console.error("GameFactory getGameById(): No Game with game_id + " + game_id);
+                return false;
+            }
+
+            return game;
+        });
+    }
+
 
     // public static async updateGamesForUser(user: User, newGames: Game[]) {
     //     // Delete old User game Pairs
