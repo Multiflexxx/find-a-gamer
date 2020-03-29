@@ -1,5 +1,3 @@
-import { ifError } from "assert";
-
 export class Login {
     public session_id: string;
     public email: string;

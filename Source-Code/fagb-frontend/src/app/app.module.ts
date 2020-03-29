@@ -18,7 +18,18 @@ import { BackgroundComponent } from './background/background.component';
 
 import { EmailValidatorDirective } from './shared/email-validator.directive';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
+<<<<<<< HEAD
+import { BackgroundComponent } from './background/background.component';
+import { LandingPageNavbarComponent } from './landing-page-navbar/landing-page-navbar.component';
+
+import { GamesearchComponent } from './gamesearch/gamesearch.component';
+import { NavbarGamesearchComponent } from './navbar-gamesearch/navbar-gamesearch.component';
+import { SearchComponent } from './search/search.component';
+import { ProfileComponent } from './profile/profile.component';
+
+=======
 import { from } from 'rxjs';
+>>>>>>> c9c59d0b0eb684b4197fafc67a57ee184c772b3f
 
 @NgModule({
   declarations: [
@@ -31,7 +42,17 @@ import { from } from 'rxjs';
     LandingPageComponent,
     EmailValidatorDirective,
     CompareValidatorDirective,
-    BackgroundComponent
+    BackgroundComponent,
+    LandingPageNavbarComponent,
+
+    GamesearchComponent,
+
+    NavbarGamesearchComponent,
+
+    SearchComponent,
+
+    ProfileComponent,
+    
   ],
   imports: [
     BrowserModule,

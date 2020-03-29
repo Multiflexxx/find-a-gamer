@@ -11,11 +11,11 @@ export class LoginendpointController {
     @Post() 
     async handleLogin(@Body() login: Login) {
         
-        login = new Login(
-            null,
-            "test@test17.com",
-            "test123"
-        );
+        // login = new Login(
+        //     null,
+        //     "test@test17.com",
+        //     "test123"
+        // );
 
         
         // Check for validity?

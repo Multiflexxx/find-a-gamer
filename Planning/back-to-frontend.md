@@ -79,7 +79,7 @@ class Game {
 }
 ```
 
-### MatchRequest
+### MatchMakingRequest
 ```javascript
 class MatchMakingRequest {
   "session_id": "nlksfjom20ü4820-b5rw0er98nmw"
@@ -88,15 +88,121 @@ class MatchMakingRequest {
   "searching_for": 3,
   "players_in_party": 2,
   "casual": true, //false => Looking for Competitive
-  "timestamp": null //always null when incoming
+  "time_stamp": null //always null when incoming
 }
 ```
 
-### Match
+### MatchMakingResponse
 ```javascript
-class Match {
+class MatchMakinResponse {
   "users": [{PublicUser}],
   "matchMakingRequest": {MatchMakingRequest}
 }
 ```
 
+### DeleteProfilerRequest
+```javascript
+class DeleteProfileRequest {
+  "user": {User},
+  "session_id": "klkajsd-asdljiasdlkj-asdas"
+}
+```
+
+### DeleteProfileResponse
+```javascript
+class DeleteProfileResponse {
+  "successfull": true,
+  "user": {User}
+}
+```
+
+### EditProfileRequest
+```javascript
+class EditProfileRequest {
+  "user": {User},
+  "session_id": "lkjlkj-zuiizads-sdasda"
+}
+```
+
+### EditProfileResponse
+```javascript
+class EditProfileResponse {
+  "successfull": true,
+  "user": {User}
+}
+```
+
+### Login
+```javascript
+class Login {
+ "session_id": "lkkjlk-asdasd-asdasd",
+ "email": mail@mail.com,
+ "password_hash": "öylkyöxlck<yöxcyapsoddsyxcy",
+ "stay_logged_in": true
+}
+```
+
+### LoginResponse
+```javascript
+class LoginResponse {
+ "successful": true,
+ "session": {Session},
+ "user": {User}
+}
+```
+
+### NotifyMatch
+**TBD!**
+
+### QueryObject
+```javascript
+class QueryObject {
+ "query": "SELECT * FROM <TABLE>",
+ "parameter": [any]
+}
+```
+
+### Region
+```javascript
+class Region {
+ "region_id": 1,
+ "name": "Europe"
+}
+```
+
+### RegistrationResponse
+```javascript
+class RegistrationResponse {
+ "successful": true,
+ "session_object": {Session},
+ "message": "Message"
+}
+```
+
+### Session
+```javascript
+class Session {
+ "session_id": 42,
+ "user_id": 16,
+ "expiration_date": {Date},
+ "stay_logged_in": true
+}
+```
+
+### UserGamePair
+```javascript
+class UserGamePair {
+ "pair_id": 12,
+ "user_id": 15,
+ "game_id": 45
+}
+```
+
+### UserLanguagePair
+```javascript
+class UserLanguagePair {
+ "pair_id": 56,
+ "user_id": 13,
+ "language_id": 2
+}
+```
