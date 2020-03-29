@@ -262,14 +262,14 @@ export class QueryBuilder {
 
     public static getMatchMakingRequestsByGame(game_id: number): QueryObject {
         return new QueryObject(
-            "SELECT * FROM MatchMakingRequest WHERE game_id = ?;",
+            "SELECT * FROM MatchMakingRequest WHERE game_id = ? AND match_id IS NULL;",
             [
                 game_id
             ]
         );
     }
 
-    public static getNoOfMatchMakingRequestsByGame(): QueryObject {
+    public static getNumberOfMatchMakingRequestsByGame(): QueryObject {
         return new QueryObject(
             "SELECT game_id, sum(players_in_party) AS players_searching FROM MatchMakingRequest WHERE match_id IS NULL GROUP BY game_id;"
         );

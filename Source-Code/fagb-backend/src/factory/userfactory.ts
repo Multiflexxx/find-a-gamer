@@ -178,10 +178,12 @@ export class UserFactory {
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 result = callbackValue[0];
             }, function (callbackValue) {
-                console.error("");
+                console.error("UserFactory getUserBySessionID(): Couldn't get User");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            console.log(result);
 
             if(!result) {
                 reject("No User with that Session");

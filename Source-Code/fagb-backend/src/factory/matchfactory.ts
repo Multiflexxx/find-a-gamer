@@ -30,10 +30,16 @@ export class MatchFactory {
     private static async createMatch(game_id: number) {
         // Get Open MatchMakingRequests for Game
         let query = QueryBuilder.getMatchMakingRequestsByGame(game_id);
+        let result;
         await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            
+            result = callbackValue;
         }, function(callbackValue) {
-            
-        })
+           console.error("MatchFactory createMatch(): Couldn't get MatchMakingRequests");
+           console.error(callbackValue); 
+        });
+
+        if(!result || !result[0]) {
+            console.error("MatchFactory createMatch(): Result null or no MatchMakingRequests for Game: " + game_id);
+        }
     }
 }
