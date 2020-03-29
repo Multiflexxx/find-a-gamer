@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, HttpException, HttpStatus } from '@nestjs/common';
 import { Login } from 'src/data_objects/login';
 import { UserFactory } from 'src/factory/userfactory';
 import { LoginResponse } from 'src/data_objects/loginresponse';
@@ -8,14 +8,14 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Post() 
+    @Get() 
     async handleLogin(@Body() login: Login) {
         
-        // login = new Login(
-        //     null,
-        //     "test@test17.com",
-        //     "test123"
-        // );
+        login = new Login(
+            "",
+            // "test@test17.com",
+            // "test123"
+        );
 
         
         // Check for validity?
@@ -34,16 +34,20 @@ export class LoginendpointController {
             });
             
             if(!result) {
-                loginResponse = new LoginResponse(false);
-                return loginResponse
+                throw new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: 'No user with that Email',
+                }, HttpStatus.UNAUTHORIZED)
             }
 
             let user = result;
 
             // Check if password_hash is the same
             if(user.password_hash != login.password_hash) {
-                loginResponse = new LoginResponse(false);
-                return loginResponse
+                throw new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: 'Email and Password don\'t match',
+                }, HttpStatus.UNAUTHORIZED)
             }
 
             // Delete old user session
@@ -82,9 +86,12 @@ export class LoginendpointController {
                 console.error(callbackValue);
             });
             
+            
             if(!user) {
-                loginResponse = new LoginResponse(false);
-                return loginResponse
+                throw new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: 'Session expired',
+                }, HttpStatus.UNAUTHORIZED)
             }
 
             // Get Session
