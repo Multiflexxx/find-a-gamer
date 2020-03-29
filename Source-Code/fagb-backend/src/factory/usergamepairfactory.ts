@@ -4,6 +4,7 @@ import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { UserGamePair } from 'src/data_objects/usergamepair'
 import { rejects } from "assert";
+import { EditProfileResponse } from "src/data_objects/editprofileresponse";
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {
@@ -47,7 +48,6 @@ export class UserGamePairFactory {
             let successful = false;
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 successful = true;
-                console.log("user_id in deleteUserGamePairs: " + user.user_id);
             }, function (callbackValue) {
                 console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
                 console.error(callbackValue);
@@ -62,31 +62,74 @@ export class UserGamePairFactory {
         });
     }
 
-    public static async updateUserGamePairs(user: User, newGames: Game[]) {
-        return new Promise(async function (resolve, reject) {
-            // Delete old User Game pairs
-            let successful;
-            await UserGamePairFactory.deleteUserGamePairsByUser(user).then(function (callbackValue) {
-                successful = callbackValue;
-            }, function (callbackValue) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs")
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    // public static async updateUserGamePairs(user: User) {
+    //     return new Promise(async function (resolve, reject) {
+    //         // Delete old User Game pairs
+    //         let successful;
+    //         await UserGamePairFactory.deleteUserGamePairsByUser(user).then(function (callbackValue) {
+    //             successful = callbackValue;
+    //         }, function (callbackValue) {
+    //             console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs")
+    //             console.error(callbackValue);
+    //             reject(callbackValue);
+    //         });
 
-            if (!successful) {
-                return;
-            }
+    //         if (!successful) {
+    //             return;
+    //         }
 
-            // create new User Game Pairs
-            successful = null;
-            await UserGamePairFactory.createUserGamePairs(user, newGames).then(function (callbackValue) {
-                successful = callbackValue;
-            }, function (callbackValue) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs")
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    //         // create new User Game Pairs
+    //         successful = null;
+    //         await UserGamePairFactory.createUserGamePairs(user, user.games).then(function (callbackValue) {
+    //             successful = callbackValue;
+    //         }, function (callbackValue) {
+    //             console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs")
+    //             console.error(callbackValue);
+    //             reject(callbackValue);
+    //         });
+
+    //         if(!successful) {
+    //             return;
+    //         }
+
+    //         resolve(true);
+    //     });
+    // }
+
+    public static async updateUserGamePairs(user: User) {
+        // Delete old User Game Pairs
+        let query = QueryBuilder.deleteUserGamePairsByUser(user);
+        let successful;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            successful = true;
+        }, function(callbackValue) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't delete UserGamePairs");
+            console.error(callbackValue);
         });
+
+        if(!successful) {
+            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after deleting UserGamePairs");
+            return false;
+        }
+
+        // Create new User Game Pairs
+        for(let game of user.games) {
+            query = QueryBuilder.createUserGamePair(user, game);
+            successful = null;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't create UserGamePairs");
+                console.error(callbackValue);
+            });
+
+            if(!successful) {
+                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after creating UserGamePairs for Game");
+                console.error(game);
+                return false;
+            }
+        }
+
+        return true;
     }
 }

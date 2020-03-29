@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Body } from '@nestjs/common';
-import { NotifyMatch } from '../data_objects/notifymatch';
-import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
+import { NotifyMatch } from '../../data_objects/notifymatch';
+import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { User } from 'src/data_objects/user';
 import { Region } from 'src/data_objects/region';

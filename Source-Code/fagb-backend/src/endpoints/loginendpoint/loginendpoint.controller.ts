@@ -1,4 +1,4 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body, Post } from '@nestjs/common';
 import { Login } from 'src/data_objects/login';
 import { UserFactory } from 'src/factory/userfactory';
 import { LoginResponse } from 'src/data_objects/loginresponse';
@@ -8,12 +8,14 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Get() 
+    @Post() 
     async handleLogin(@Body() login: Login) {
         
-        login = new Login(
-            "855d6150-4975-4285-9b4d-3ca3f2c5aba0",
-        );
+        // login = new Login(
+        //     null,
+        //     "test@test17.com",
+        //     "test123"
+        // );
 
         
         // Check for validity?

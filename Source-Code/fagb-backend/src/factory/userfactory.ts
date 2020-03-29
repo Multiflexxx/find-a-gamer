@@ -142,13 +142,21 @@ export class UserFactory {
             user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
+            let games;
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
-                user.games = callbackValue;
+                games = callbackValue;
+                console.log(user.games);
             }, function(callbackValue) {
                 console.error("GameFactory getGamesForUser: Promise rejected");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!games) {
+                return false;
+            }
+
+            user.games = games;
 
             // Get Languages for User
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
@@ -191,13 +199,20 @@ export class UserFactory {
             user.region = new Region(result.region_id, result.name);
             
             // Get Games for user
+            let games;
             await GameFactory.getGamesForUser(user).then(function(callbackValue) {
-                user.games = callbackValue;
+                games = callbackValue;
             }, function(callbackValue) {
                 console.error("GameFactory getGamesForUser: Promise rejected");
                 console.error(callbackValue);
                 reject(callbackValue);
             });
+
+            if(!games) {
+                return false;
+            }
+
+            user.games = games;
 
             // Get Languages for User
             await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
@@ -216,6 +231,8 @@ export class UserFactory {
             // Get Query for updating user
             let newGames: Game[];
             newGames = user.games;
+            let newLanguages : Language[];
+            newLanguages = user.languages;
 
             let query = QueryBuilder.updateUser(user);
 
@@ -226,7 +243,6 @@ export class UserFactory {
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Couldn't update user");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             // If successful, return updated User Object
@@ -235,13 +251,17 @@ export class UserFactory {
                 return;
             }
 
+            
+
+
             let newUser = null;
             await UserFactory.getUserByEmail(user.email).then(function(callbackValue) {
                 newUser = callbackValue;
+                console.log("New User");
+                console.log(newUser);
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
             if(!newUser) {
@@ -256,9 +276,13 @@ export class UserFactory {
             }, function(callbackValue) {
                 console.error("UserFactory updateUser(): Failed to get Updated Games for User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
 
+            if(!result) {
+                reject(false);
+                return;
+            }
+            
             newUser.games = result;
             // successful = false;
             // await UserGamePairFactory.deleteUserGamePairsByUser(newUser).then(function(callbackValue) {
@@ -303,50 +327,59 @@ export class UserFactory {
 
             // newUser.games = result;
 
-            // Delete old UserLanguagePairs
-            successful = false;
-            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
-                successful = true;
-            }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't delete UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            })
-
-            if(!successful) {
-                return;
-            }
-
-            // Create new UserLanguagePairs
-            successful = false;
-            await UserLanguagePairFactory.createUserLanguagePairs(newUser, user.languages).then(function(callbackValue){
-                successful = true;
-            }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't create UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
-
-            if(!successful) {
-                return;
-            }
-
-            // Get newly created UserLanguagePairs
             result = null;
-            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+            await LanguageFactory.updateLanguagesForUser(newUser, newLanguages).then(function(callbackValue) {
                 result = callbackValue;
             }, function(callbackValue) {
-                console.error("UserFactory updateUser(): Couldn't get Languages for user");
+                console.error("UserFactory updateUser(): Failed to get Updated Languages for User");
                 console.error(callbackValue);
-                reject(callbackValue);
             });
-            
+
             if(!result) {
+                reject(false);
                 return;
             }
 
             newUser.languages = result;
+            
+            // // Delete old UserLanguagePairs
+            // successful = false;
+            // await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't delete UserLanguagePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // })
 
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Create new UserLanguagePairs
+            // successful = false;
+            // await UserLanguagePairFactory.createUserLanguagePairs(newUser, user.languages).then(function(callbackValue){
+            //     successful = true;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't create UserLanguagePairs");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+
+            // if(!successful) {
+            //     return;
+            // }
+
+            // // Get newly created UserLanguagePairs
+            // result = null;
+            // await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
+            //     result = callbackValue;
+            // }, function(callbackValue) {
+            //     console.error("UserFactory updateUser(): Couldn't get Languages for user");
+            //     console.error(callbackValue);
+            //     reject(callbackValue);
+            // });
+            
             resolve(newUser);
         });
     }
@@ -387,7 +420,6 @@ export class UserFactory {
             } 
 
             query = QueryBuilder.deleteUser(user);
-
             
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 successful = true;
@@ -400,7 +432,9 @@ export class UserFactory {
             if (!successful) {
                 reject("UserFactory deleteUser(): couldn't delete user");
                 return;
-            }    
+            }
+            
+            resolve(user);
         });
     }
 }

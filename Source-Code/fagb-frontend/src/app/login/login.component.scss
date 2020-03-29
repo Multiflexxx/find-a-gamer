@@ -27,3 +27,22 @@ a:hover {
   color: hsl(217, 71%, 53%);
   text-decoration: underline;
 }
+
+input::placeholder {
+  color: hsl(0, 0%, 71%);
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: hsl(217, 71%, 53%);
+  font-size: inherit;
+  transition: background-color 5000s ease-in-out 0s;
+}

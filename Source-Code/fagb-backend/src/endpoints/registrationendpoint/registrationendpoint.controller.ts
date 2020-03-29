@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { Registration } from '../data_objects/registration';
-import { RegistrationResponse } from '../data_objects/registrationresponse';
-import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
-import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { Registration } from '../../data_objects/registration';
+import { RegistrationResponse } from '../../data_objects/registrationresponse';
+import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
 import { QueryObject } from 'src/data_objects/queryobject';
 import { Session } from 'src/data_objects/session';
@@ -48,13 +48,10 @@ export class RegistrationendpointController {
             console.error(callbackValue);
         });
 
-        // TODO: CREATE SESSION 
-        // TODO: Validate Birthdate
-
 
         // return empty Session if User Input is invalid
         if (!isInputValid) {
-            return new RegistrationResponse(false, null);
+            return new RegistrationResponse(false, null, "User already exists");
         }
 
         // Create User using validated registration object
@@ -73,6 +70,10 @@ export class RegistrationendpointController {
         }, function (callbackValue) {
             console.error(callbackValue);
         });
+
+        if(!session) {
+            return new RegistrationResponse(false, null, "Something went wrong");
+        }
 
         // Return Session
         return session;
