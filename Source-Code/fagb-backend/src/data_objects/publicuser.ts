@@ -3,15 +3,15 @@ import { Game } from "./game";
 import { Language } from "./language";
 
 export class PublicUser {
-    user_id: number;
-    nickname: string;
-    discord_tag: string;
-    profile_picture: string;
-    cake_day: Date;
-    biography: string;
-    region: Region;
-    games: Game[];
-    languages: Language[];
+    public user_id: number;
+    public nickname: string;
+    public discord_tag: string;
+    public profile_picture: string;
+    public cake_day: Date;
+    public biography: string;
+    public region: Region;
+    public games: Game[];
+    public languages: Language[];
 
     public constructor(user_id: number, nickname: string, discord_tag: string, cake_day: Date, region: Region, games: Game[], languages: Language[], profile_picture?: string, biography?: string) {
         this.user_id = user_id;
