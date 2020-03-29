@@ -79,7 +79,7 @@ class Game {
 }
 ```
 
-### MatchRequest
+### MatchMakingRequest
 ```javascript
 class MatchMakingRequest {
   "session_id": "nlksfjom20ü4820-b5rw0er98nmw"
