@@ -25,13 +25,15 @@ export class AuthenticationService {
 
   login(loginValue) {
     var login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
-
-    console.log(login);
-
-    return this.http.post<Login>(this.url, login)
+    
+    return this.http.post<any>(this.url, login)
       .pipe(map(gamer => {
-        localStorage.setItem('currentGamer', JSON.stringify(gamer))
-        this.currentGamerSubject.next(gamer);
+        if (gamer && gamer.successful) {
+          localStorage.setItem('currentGamer', JSON.stringify(gamer))
+          this.currentGamerSubject.next(gamer);
+        }
+
+        return gamer;
       }))
   }
 }
