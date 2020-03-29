@@ -88,7 +88,7 @@ class MatchMakingRequest {
   "searching_for": 3,
   "players_in_party": 2,
   "casual": true, //false => Looking for Competitive
-  "timestamp": null //always null when incoming
+  "time_stamp": null //always null when incoming
 }
 ```
 
