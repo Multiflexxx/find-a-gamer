@@ -1,90 +1,112 @@
-.triangle{
-    color: red;
-    width: 0;
-    height: 0;
-    border-right: 10vh solid transparent;
-    border-top: 20vh solid;
-    
-}
-.circle{
-    background-color: blue;
-    width: 25em;
-    height: 20em;
-    border-radius: 50vh;
-}
-
-.quader{
-    background-color: green;
-    height: 15em;
-    width: 10em;
-    border-left: 20em;
-    bottom: -2em;
-    right: -1em;
-    position: absolute;
-    transform: rotate(10deg);
-}
 #shape1{
+    position: fixed;
     width: 20vh;
     height: 15vh;
-    background-color: yellow;
-    position: absolute;
-    top: -5vh;
-    right: 0;
+    background-color: #7395AE;
+    top: 0vh;
+    right: 0vw;
     transform: rotate(20deg);
 }
 
-// #shape1::before{
-// content: '';
-// position: absolute;
-// height: 0;
-// width: 0;
-// bottom: -2vh;
-
-// border-right: 9vh solid transparent;
-// border-left: 4vh solid transparent;
-// border-top: 2vh solid yellow;
-
-// }
-
 #shape2{
+    position: fixed;
     width: 13vh;
     height: 21vh;
-    position: absolute;
-    background-color: pink;
-    right: 20vw;
+    background-color: #7395AE ;
     top: 57vh;
-    transform: rotate(-9deg);
-    
-}
-
-@media(min-width: 769px){
-    #shape3{
-        width: 0;
-        height: 0;
-        border-left: 16vh solid transparent;
-        border-right: 6vh solid transparent;
-        border-bottom: 8vw solid coral;
-        position: absolute;
-        top: 25vh;
-        left: 23vw;
-        transform: rotate(7deg);
-    
-    }
+    right: 20vw;
+    transform: rotate(-9deg);  
 }
 
 #shape4{
     width: 15vh;
     height: 10vw;
-    position: absolute;
+    position: fixed;
     border-radius: 100vh 0vh 0vh 0vh /100vh 40vh 40vh 0vh;
-    background-color: green;
+    background-color: #85DCB0;
     top: 30vh;
     right: 30vw;
     transform: rotate(25deg);
     animation: rotate 2s linear 0s infinite alternate forwards;
-
 }
-@media(min-width: 769px){
+
+#shape6{
+    width: 8vw;
+    height: 30vh;
+    background-color: #85DCB0;
+    bottom: 0vh;
+    left: 0;
+    position: fixed;
+}
+
+#shape7{
+    width: 0;
+    height: 0;
+    border-left: 12vw solid #E8A87C;
+    border-bottom: 17vh solid transparent;
+    position: fixed;    
+}
+
+#shape8{
+    width: 20vh;
+    height: 20vh;
+    position: fixed;
+    border-radius: 0 0 50vh 50vh;
+    background-color: #C38D9E;
+    top: -10vh;
+    right: 40vw;
+    transform-origin: bottom center;
+}
+
+#shape9{
+    width: 15vh;
+    height: 15vh;
+    border-radius: 50%;
+    background: #C38D9E;
+    bottom: 20vh;
+    left: 18vw;
+    position: fixed;
+    animation: getBig 4s linear 0s infinite alternate forwards;
+}
+
+#shape10{
+    width: 0;
+    height: 0;
+    border-top: 20vh solid transparent;
+    border-right: 1.5vw solid transparent;
+    border-right: 10vw solid #B1A296;
+    position: fixed;
+    bottom: 2vh;
+    right: 0;
+    transform: rotate(8deg);
+    animation: moveup 4s linear 0s infinite alternate forwards;
+}
+
+#shape11{
+    width: 0;
+    height: 0;
+    border-left: 12vw solid #7395AE;
+    border-bottom: 17vh solid transparent;
+    bottom: -5vh;
+    right: 50vw;
+    position: fixed;
+    transform: rotate(200deg);
+    
+}
+
+@media(min-width: 769px){ 
+    #shape3{
+        width: 0;
+        height: 0;
+        border-left: 16vh solid transparent;
+        border-right: 6vh solid transparent;
+        border-bottom: 8vw solid #7395AE;
+        position: fixed;
+        top: 25vh;
+        left: 23vw;
+        transform: rotate(7deg);
+    
+    }
     @keyframes rotate{
         0%{
             transform: rotate(25deg);
@@ -93,99 +115,14 @@
             transform: rotate(31deg);
         }
     }
-}
-
-// #shape5{
-//     width: 8vw;
-//     height: 4vh;
-//     position: absolute;
-//     background-color: wheat;
-//     bottom: 0;
-//     right: 50vh;
-// }
-// #shape5::before{
-//     content: '';
-//     width: 0;
-//     height: 0;
-//     left: 8vh;
-//     border-bottom: 4vh solid transparent;
-//     border-right: 0vh solid transparent;
-//     border-left: 2vh solid wheat;
-//     position: absolute;
-// }
-// #shape5::after{
-//     content: '';
-//     width: 0;
-//     height: 0;
-//     right: 8vh;
-//     border-bottom: 4vh solid transparent;
-//     border-left: 0vh solid transparent;
-//     border-right: 3vh solid wheat;
-//     position: absolute;
-
-// }
-
-
-#shape6{
-    width: 8vw;
-    height: 30vh;
-    background-color: purple;
-    bottom: -8vh;
-    left: 0;
-    opacity: 40%;
-    position: absolute;
-}
-// #shape6::before{
-//     content: '';   
-//    position: absolute;
-//     height: 0;
-//     width: 0;
-//     top: -2vh;
-
-//     border-right: 2vh solid transparent;
-//     border-left: 3vh solid transparent;
-//     border-bottom: 2vh solid purple;
-// }
-
-#shape7{
-    width: 0;
-    height: 0;
-    border-left: 12vw solid lawngreen;
-    border-bottom: 17vh solid transparent;
-    position: absolute;
-    
-}
-#shape8{
-    width: 20vh;
-    height: 20vh;
-    position: absolute;
-    border-radius: 0 0 50vh 50vh;
-    background-color: white;
-    top: -10vh;
-    right: 40vw;
-    transform-origin: bottom center;
-}
-#shape9{
-    width: 15vh;
-    height: 15vh;
-    border-radius: 50%;
-    background: mediumaquamarine;
-    bottom: 20vh;
-    left: 18vw;
-    position: absolute;
-    animation: getBig 4s linear 0s infinite alternate forwards;
-}
-// #shape9_1{
-//     width: 15vh;
-//     height: 15vh;
-//     border-radius: 50%;
-//     background: #333;
-//     bottom: 20vh;
-//     left: 18vw;
-//     position: absolute;
-//     animation: getBig 7s  14.3s infinite alternate;
-// }
-@media(min-width: 769px){ 
+    @keyframes moveup{
+        0% {
+            bottom: 2vh;
+        }
+        50%{
+            bottom: 0vh;
+        }
+    }
     @keyframes getBig{
         0% { width: 15vh;
             height: 15vh;
@@ -196,69 +133,5 @@
     }
 }
 
-#shape10{
-    width: 0;
-    height: 0;
-    border-top: 20vh solid transparent;
-    border-right: 1.5vw solid transparent;
-    border-right: 10vw solid coral;
-    position: absolute;
-    bottom: 2vh;
-    right: 0;
-    transform: rotate(8deg);
-    animation: moveup 4s linear 0s infinite alternate forwards;
-}
-#shape11{
-    width: 0;
-    height: 0;
-    border-left: 12vw solid wheat;
-    border-bottom: 17vh solid transparent;
-    bottom: -5vh;
-    right: 50vw;
-    position: absolute;
-    transform: rotate(200deg);
-    
-}
-@media(min-width: 769px){ 
-@keyframes moveup{
-    0% {
-        bottom: 2vh;
-    }
-    50%{
-        bottom: 0vh;
-    }
-}
-}
-
-#shape12{
-    width: 5vw;
-    height: 7.5vw;
-    border-radius: 50%;
-    bottom: -80vh;
-    left: 42.5vw;
-    position: absolute;
-
-}
-
-// #shape13{
-//     width: 15vh;
-//     height: 15vh;
-//     border-radius: 50%;
-//     background: mediumaquamarine;
-//     bottom: 20vh;
-//     left: 18vw;
-//     position: absolute;
-
-// }
 
 
-// #shape14{
-//     width: 15vh;
-//     height: 15vh;
-//     border-radius: 50%;
-//     background: mediumaquamarine;
-//     bottom: 20vh;
-//     left: 18vw;
-//     position: absolute;
-
-// }
