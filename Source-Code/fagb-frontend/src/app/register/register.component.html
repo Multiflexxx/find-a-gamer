@@ -4,10 +4,10 @@
       <div class="box">
         <div id="stepper">
           <mat-vertical-stepper linear #stepper>
-            <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
+            <mat-step [stepControl]="profileForm" state="profile" [optional]=true [editable]="isEditable">
               <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
                 <div>
-                  <ng-template matStepLabel><span class="ng-template">Fill out your Profile</span></ng-template>
+                  <ng-template matStepLabel><span class="ng-template">Fill out your profile</span></ng-template>
                   <div class="columns">
                     <div class="column is-half">
                       <mat-form-field>
@@ -49,8 +49,8 @@
                     <div class="column is-half">
                       <mat-form-field>
                         <mat-label>Birthdate</mat-label>
-                        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
-                          formControlName="date" required>
+                        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="date"
+                          required>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
                         <mat-error *ngIf="hasError('date', 'required')">Birthdate is required.</mat-error>
@@ -64,7 +64,8 @@
                       <mat-form-field>
                         <mat-label>Region</mat-label>
                         <mat-select formControlName="region" required>
-                          <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}</mat-option>
+                          <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}
+                          </mat-option>
                         </mat-select>
                         <mat-error *ngIf="hasError('region', 'required')">Region is required.</mat-error>
                       </mat-form-field>
@@ -87,8 +88,7 @@
                     <div class="column is-half">
                       <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="password"
-                          required>
+                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="password" required>
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                           [attr.aria-pressed]="hide">
                           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -102,8 +102,7 @@
                     <div class="column is-half">
                       <mat-form-field>
                         <mat-label>Verify Password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="vpassword"
-                          required>
+                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="vpassword" required>
 
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                           [attr.aria-pressed]="hide">
@@ -125,14 +124,14 @@
 
             <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
               <form [formGroup]="gameForm" (ngSubmit)="onGameSubmit()">
-                <ng-template matStepLabel><span class="ng-template">Fill out</span></ng-template>
+                <ng-template matStepLabel><span class="ng-template">Choose your favorite games</span></ng-template>
                 <div>
                   <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
                     [disabled]="gameForm.invalid">Next</button>
                 </div>
                 <app-add-game [gameForm]="gameForm"></app-add-game>
                 <div>
-                  <button mat-flat-button matStepperNext color="primary" type="submit"
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
                     [disabled]="gameForm.invalid">Next</button>
                 </div>
               </form>

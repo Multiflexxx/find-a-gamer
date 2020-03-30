@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import { GameService } from '../_services';
+
 @Component({
   selector: 'app-add-game',
   templateUrl: './add-game.component.html',
@@ -9,64 +11,18 @@ import { FormGroup } from '@angular/forms';
 export class AddGameComponent implements OnInit {
 
   @Input() gameForm: FormGroup;
-
-  items = [
-    {
-      id: 0,
-      name: "Age of Empires 2",
-      img: "assets\\img\\Age-of-Empires-2.jpg"
-    },
-    {
-      id: 1,
-      name: "Rocket League",
-      img: "assets\\img\\Rocket-League.jpg"
-    },
-    {
-      id: 2,
-      name: "Apex Legends",
-      img: "assets\\img\\Apex-Legends.jpg"
-    },
-    {
-      id: 3,
-      name: "Age of Empires 2",
-      img: "assets\\img\\Age-of-Empires-2.jpg"
-    },
-    {
-      id: 4,
-      name: "Rocket League",
-      img: "assets\\img\\Rocket-League.jpg"
-    },
-    {
-      id: 5,
-      name: "Apex Legends",
-      img: "assets\\img\\Apex-Legends.jpg"
-    },
-    {
-      id: 5,
-      name: "Apex Legends",
-      img: "assets\\img\\Apex-Legends.jpg"
-    },
-    {
-      id: 5,
-      name: "Apex Legends",
-      img: "assets\\img\\Apex-Legends.jpg"
-    },
-    {
-      id: 5,
-      name: "Apex Legends",
-      img: "assets\\img\\Apex-Legends.jpg"
-    }
-  ];
+  gameList = [];
 
   public isSelected: Array<boolean> = [false, false, false];
   public selectedGames: Array<number> = [];
-  public selectedGamesString : String;
-  
+  public selectedGamesString: String;
 
-  constructor() { }
+
+  constructor(private gameService: GameService) { }
 
   addGame(id, name): void {
-    id = id;
+    // Array starts by index 0 
+    id = id - 1;
     this.isSelected[id] = !this.isSelected[id];
     this.createTag(id, name);
   }
@@ -116,6 +72,8 @@ export class AddGameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.gameService.getGame()
+      .subscribe(g => this.gameList = g);
   }
 
 }

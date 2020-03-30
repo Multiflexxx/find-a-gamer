@@ -21,16 +21,16 @@
 
 <div class="container">
   <div class="columns is-multiline is-mobile">
-    <div *ngFor="let item of items; let i = index" [attr.data-index]="i" class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
-      <a (click)="addGame(item.id, item.name)">
+    <div *ngFor="let game of gameList; let i = index" class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
+      <a (click)="addGame(game.game.game_id, game.game.name)">
         <div class="card" [ngClass]="isSelected[i] ? 'is-selected' : 'none'">
           <div class="card-image">
             <figure class="image is-2by1">
-              <img [src]="item.img">
+              <img [src]="game.game.cover_link">
             </figure>
           </div>
           <div class="card-header">
-            <p class="card-header-title">{{item.name}}</p>
+            <p class="card-header-title">{{game.game.name}}</p>
           </div>
         </div>
       </a>

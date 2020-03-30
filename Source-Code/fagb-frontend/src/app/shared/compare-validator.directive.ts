@@ -1,8 +1,6 @@
 import { Directive } from '@angular/core';
 import { ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import * as EmailValidator from 'email-validator';
-
 
 @Directive({
   selector: '[appCompareValidator]',

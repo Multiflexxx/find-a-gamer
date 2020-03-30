@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+
 // Import Validator
 import { emailValidator } from '../shared/email-validator.directive';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { compareValidator } from '../shared/compare-validator.directive';
+import { gameValidator } from '../shared/game-validator.directive';
 
 import { RegisterService, RegionService, LanguageService } from '../_services';
 
@@ -113,7 +115,7 @@ export class RegisterComponent implements OnInit {
     });
 
     this.gameForm = this.formBuilder.group({
-      game: ['', Validators.required]
+      game: ['', [Validators.required, gameValidator()]]
     });
   }
 

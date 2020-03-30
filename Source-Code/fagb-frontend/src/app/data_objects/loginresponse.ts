@@ -1,4 +1,4 @@
-import { Session } from "inspector";
+import { Session } from "./session";
 import { User } from "./user";
 
 export class LoginResponse {

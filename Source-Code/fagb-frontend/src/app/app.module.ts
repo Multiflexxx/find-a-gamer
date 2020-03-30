@@ -23,6 +23,7 @@ import { SearchComponent } from './search/search.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { from } from 'rxjs';
+import { GameValidatorDirective } from './shared/game-validator.directive';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { from } from 'rxjs';
     GamesearchComponent,
     SearchComponent,
     ProfileComponent,
+    GameValidatorDirective,
     
   ],
   imports: [

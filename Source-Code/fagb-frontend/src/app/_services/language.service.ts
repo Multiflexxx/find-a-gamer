@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { Language } from '../data_objects/language';
 
-
 @Injectable({
   providedIn: 'root'
 })
