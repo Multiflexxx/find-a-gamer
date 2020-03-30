@@ -153,12 +153,19 @@ export class GameFactory {
 
             if(!game) {
                 console.error("GameFactory getGameById(): No Game with game_id + " + game_id);
-                return false;
+                reject(false);
+                return;
             }
 
-            return game;
+            resolve(game);
         });
     }
+
+    // public static async getAllGameResponses() {
+    //     return new Promise(function(resolve, reject) {
+    //         await GameFactory.
+    //     });
+    // }
 
 
     // public static async updateGamesForUser(user: User, newGames: Game[]) {

@@ -269,9 +269,19 @@ export class QueryBuilder {
         );
     }
 
-    public static getNumberOfMatchMakingRequestsByGame(): QueryObject {
+    public static getNoOfMatchMakingRequestsByGame(): QueryObject {
         return new QueryObject(
-            "SELECT game_id, sum(players_in_party) AS players_searching FROM MatchMakingRequest WHERE match_id IS NULL GROUP BY game_id;"
+            "SELECT Game.*, sum(players_in_party) AS players_searching FROM MatchMakingRequest RIGHT JOIN Game ON (MatchMakingRequest.game_id = Game.game_id) WHERE match_id IS NULL GROUP BY game_id;"
         );
     }
+
+    public static getOpenMatchMakingRequestByUser(user_id): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM MatchMakingRequest WHERE user_id = ? AND match_id IS NULL;",
+            [
+                user_id
+            ]
+        );
+    }
+
 }

@@ -183,7 +183,7 @@ export class UserFactory {
                 reject(callbackValue);
             });
 
-            console.log(result);
+            // console.log(result);
 
             if(!result) {
                 reject("No User with that Session");
