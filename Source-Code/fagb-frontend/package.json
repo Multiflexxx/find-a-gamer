@@ -1,6 +1,7 @@
 {
   "name": "v1",
   "version": "0.0.0",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,6 +25,7 @@
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@material-ui/core": "^4.9.7",
     "email-validator": "^2.0.4",
+    "ngx-cookie-service": "^3.0.3",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

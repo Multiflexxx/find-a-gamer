@@ -19,12 +19,10 @@ import { EmailValidatorDirective } from './shared/email-validator.directive';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
 import { LandingPageNavbarComponent } from './landing-page-navbar/landing-page-navbar.component';
 import { GamesearchComponent } from './gamesearch/gamesearch.component';
-import { NavbarGamesearchComponent } from './navbar-gamesearch/navbar-gamesearch.component';
 import { SearchComponent } from './search/search.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { from } from 'rxjs';
-
 
 @NgModule({
   declarations: [
@@ -40,7 +38,6 @@ import { from } from 'rxjs';
     BackgroundComponent,
     LandingPageNavbarComponent,
     GamesearchComponent,
-    NavbarGamesearchComponent,
     SearchComponent,
     ProfileComponent,
     

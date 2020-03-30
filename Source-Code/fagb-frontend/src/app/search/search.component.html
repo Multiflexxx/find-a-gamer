@@ -1,1 +1,75 @@
-<p>search works!</p>
+<!-- <section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4 is-mobile">
+        <div class="box">
+          <div class="content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="box">
+        <div class="content">
+    
+          <div class="buttons has-addons">
+            <button class="button">Pro</button>
+            <button class="button">Casual</button>
+          </div>
+      
+        <form [formGroup]="playerForm">
+    
+          <mat-form-field>
+            <mat-label>Players in party</mat-label>
+            <mat-select formControlName="player" required>
+              <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+            </mat-select>
+            
+            <mat-error *ngIf="hasError('player', 'required')">Player in the party is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Party size</mat-label>
+            <mat-select formControlName="player" required>
+              <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+            </mat-select>
+            
+            <mat-error *ngIf="hasError('player', 'required')">Player is required.</mat-error>
+        </mat-form-field>
+        <button mat-flat-button color="primary" class="button">Go!</button>
+        </form>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+<!-- 
+  <div class="buttons has-addons">
+    <button class="button">Pro</button>
+    <button class="button">Casual</button>
+    
+  </div>
+<button class="button">GO!</button>
+
+
+<mat-form-field>
+    <mat-label>Players in party</mat-label>
+    <mat-select formControlName="player" required>
+      <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+    </mat-select>
+    
+    <mat-error *ngIf="hasError('player', 'required')">Player in the party is required</mat-error>
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Party size</mat-label>
+    <mat-select formControlName="player" required>
+      <mat-option *ngFor="let player of playerList" [value]="player.id">{{player.id}}</mat-option>
+    </mat-select>
+    
+    <mat-error *ngIf="hasError('player', 'required')">Player is required.</mat-error>
+</mat-form-field> -->
