@@ -15,5 +15,4 @@ export class GameService {
   getGame(): Observable<GameResponse[]> {
     return this.http.get<GameResponse[]>(this.url);
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { GameService } from '../_services';
@@ -9,20 +9,41 @@ import { GameService } from '../_services';
   styleUrls: ['./add-game.component.scss']
 })
 export class AddGameComponent implements OnInit {
-
   @Input() gameForm: FormGroup;
-  gameList = [];
 
-  public isSelected: Array<boolean> = [false, false, false];
+  gameList = [];
+  searchedGameList = [];
+
+  private searchTerm: string = "";
+
+  public isSelected: Array<boolean> = [];
   public selectedGames: Array<number> = [];
   public selectedGamesString: String;
 
 
   constructor(private gameService: GameService) { }
 
+  ngOnInit(): void {
+    this.gameService.getGame()
+      .subscribe(g => this.gameList = g);
+
+    this.gameService.getGame()
+      .subscribe(g => this.searchedGameList = g);
+  }
+
+  onKey(event: any) {
+    this.searchTerm = event.target.value;
+    this.searchedGameList = this.searchGame(this.searchTerm);
+  }
+
+  searchGame(searchString: string) {
+    return this.gameList.filter(g =>
+      g.game.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+  }
+
   addGame(id, name): void {
     // Array starts by index 0 
-    id = id - 1;
+    id = id;
     this.isSelected[id] = !this.isSelected[id];
     this.createTag(id, name);
   }
@@ -70,10 +91,4 @@ export class AddGameComponent implements OnInit {
     this.selectedGamesString = JSON.stringify(this.selectedGames);
     this.gameForm.get('game').setValue(this.selectedGamesString);
   }
-
-  ngOnInit(): void {
-    this.gameService.getGame()
-      .subscribe(g => this.gameList = g);
-  }
-
 }
