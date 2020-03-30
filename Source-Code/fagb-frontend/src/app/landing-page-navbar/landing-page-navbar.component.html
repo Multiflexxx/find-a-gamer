@@ -1,14 +1,36 @@
-<nav class="navbar is-dark">    
+  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        <strong>FAGB</strong>
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbar" class="navbar-menu is-dark">
+      <!-- <div class="navbar-start"></div> -->
+
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-sucess">
-              <strong>Sign up</strong>
+            <a class="button is-success" [routerLink]="['/register']" routerLinkActive="router-link-active" >
+              <span class="icon">
+                <i class="fas fa-sign-in-alt"></i>
+              </span>
+              <span>Sign Up</span>
             </a>
-            <a class="button is-light is-inverted">
-              Log in
+            <a class="button is-light is-inverted" [routerLink]="['/login']" routerLinkActive="router-link-active" >
+              <span class="icon">
+                <i class="far fa-user-circle"></i>
+              </span>
+              <span>Log in</span>
             </a>
           </div>
         </div>
       </div>
+    </div>
   </nav>
