@@ -24,8 +24,10 @@ export class RegisterService {
     }
 
     var langs: Array<Language> = [];
-    for (let i = 0; i < profileData.lang.length; i++) {
-      langs.push(new Language(profileData.lang[i]));
+    console.log(profileData.lang.value);
+    var langids: Array<number> = profileData.lang.value;
+    for (let i = 0; i < langids.length; i++) {
+      langs.push(new Language(langids[i]));
     }
 
     var region: Region = new Region(profileData.region.value);

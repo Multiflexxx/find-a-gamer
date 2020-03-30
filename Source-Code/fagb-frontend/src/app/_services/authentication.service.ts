@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private url = 'http://localhost:3000/loginendpoint';
+  private url: string = 'http://localhost:3000/loginendpoint';
 
   private currentGamerSubject: BehaviorSubject<Login>;
   public currentGamer: Observable<Login>;

@@ -7,7 +7,7 @@ import { emailValidator } from '../shared/email-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { compareValidator } from '../shared/compare-validator.directive';
 
-import { RegisterService } from '../_services/register.service';
+import { RegisterService, RegionService, LanguageService } from '../_services';
 
 @Component({
   selector: 'app-register',
@@ -41,44 +41,48 @@ export class RegisterComponent implements OnInit {
 
 
   // Backend input
-  regionList = [
-    {
-      id: 1,
-      name: 'Africa'
-    },
-    {
-      id: 2,
-      name: 'Asia'
-    },
-    {
-      id: 3,
-      name: 'Europa'
-    },
-    {
-      id: 4,
-      name: 'North America'
-    },
-    {
-      id: 5,
-      name: 'South America'
-    }
-  ];
+  regionList = [];
+  // regionList = [
+  //   {
+  //     id: 1,
+  //     name: 'Africa'
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Asia'
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Europa'
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'North America'
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'South America'
+  //   }
+  // ];
 
-  langList = [
-    {
-      id: 1,
-      name: 'English'
-    },
-    {
-      id: 2,
-      name: 'German'
-    }
-  ];
+  langList = [];
+  // langList = [
+  //   {
+  //     id: 1,
+  //     name: 'English'
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'German'
+  //   }
+  // ];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private registerService: RegisterService) {
+    private registerService: RegisterService,
+    private regionService: RegionService,
+    private languageService: LanguageService) {
 
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
@@ -88,6 +92,12 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+
+    this.regionService.getRegions()
+      .subscribe(r => this.regionList = r);
+
+      this.languageService.getLanguage()
+      .subscribe(l => this.langList = l);
   }
 
   createForm() {
