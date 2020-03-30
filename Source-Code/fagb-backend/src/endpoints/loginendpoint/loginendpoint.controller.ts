@@ -12,7 +12,7 @@ export class LoginendpointController {
     async handleLogin(@Body() login: Login) {
         
         login = new Login(
-            "",
+            "adadsd",
             // "test@test17.com",
             // "test123"
         );
@@ -90,7 +90,7 @@ export class LoginendpointController {
             if(!user) {
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
-                    error: 'Session expired',
+                    error: 'Invalid Session',
                 }, HttpStatus.UNAUTHORIZED)
             }
 
