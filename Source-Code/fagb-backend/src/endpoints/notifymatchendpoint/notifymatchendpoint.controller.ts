@@ -14,11 +14,11 @@ export class NotifymatchendpointController {
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
-        await ConnectToDatabaseService.testQuery("Select * from User WHERE email = 'test@test16.com';").then(function(callbackValue) {
-            console.log(callbackValue);
-        }, function(callbackValue) {
-            console.log(callbackValue);
-        })
+        // await ConnectToDatabaseService.testQuery("Select * from User WHERE email = 'test@test16.com';").then(function(callbackValue) {
+        //     console.log(callbackValue);
+        // }, function(callbackValue) {
+        //     console.log(callbackValue);
+        // });
 
         // let test;
 

@@ -6,6 +6,12 @@ import { Game } from '../data_objects/game';
 import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 
+import { Session } from '../data_objects/session';
+
+import { CookieService } from 'ngx-cookie-service';
+
+import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +19,7 @@ export class RegisterService {
 
   url = 'http://localhost:3000/registrationendpoint';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   register(profileData, gameData) {
     var games: Array<Game> = [];
@@ -47,7 +53,10 @@ export class RegisterService {
     console.log(registration);
     console.log(JSON.stringify(registration));
 
-
-    return this.http.post(this.url, registration);
+    return this.http.post<Session>(this.url, registration)
+      .pipe(map(regGamer => {
+        this.cookieService.set('gamer', regGamer.session_id);
+        return regGamer;
+      }))
   }
 }
