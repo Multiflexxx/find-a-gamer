@@ -11,11 +11,13 @@ import { AuthenticationGuard } from './_helpers/authentication.guard';
 
 const appRoutes: Routes = [
   {
-    path: 'profile', component: ProfileComponent,
-    canLoad: [AuthenticationGuard]
+    path: 'profile',
+    canActivate: [AuthenticationGuard],
+    component: ProfileComponent,
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'login', 
+    component: LoginComponent
   },
   {
     path: 'register', component: RegisterComponent

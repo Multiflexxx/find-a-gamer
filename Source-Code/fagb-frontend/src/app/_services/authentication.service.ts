@@ -46,14 +46,15 @@ export class AuthenticationService {
       }))
   }
 
-  public loginS(sessionId: string) {
+  loginS() {
+    let sessionId = this.cookieService.get('gamer');
     let loginS: Login = new Login(sessionId);
 
     return this.http.post<any>(this.url, loginS)
       .pipe(map(gamer => {
         if (gamer && gamer.successful) {
-          this.currentGamerSubject.next(gamer);
           this.isLoggedIn = true;
+          this.currentGamerSubject.next(gamer);
         }
         return gamer;
       }))

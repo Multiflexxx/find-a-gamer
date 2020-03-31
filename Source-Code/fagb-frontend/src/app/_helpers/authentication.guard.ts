@@ -10,11 +10,16 @@ import { Login } from '../data_objects/login';
 })
 export class AuthenticationGuard implements CanActivate {
 
-constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) {}
+  constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
     
+    console.log(url);
+    if (url == 'login') {
+      return !this.checkLogin(url);
+    }
+
     return this.checkLogin(url);
   }
 
@@ -36,27 +41,21 @@ constructor(private authenticationService: AuthenticationService, private router
     this.authenticationService.redirectUrl = url;
     let sessionId = this.cookieService.get('gamer');
 
-    if(sessionId == "" || null) {
+    if (sessionId == "" || null) {
       this.router.navigate(['/login']);
       return false;
     }
 
-    this.authenticationService.loginS(sessionId).subscribe(
+    this.authenticationService.loginS().subscribe(
       (data) => {
-        // console.log("Hier in guard by session");
-        // console.log(data);
         this.router.navigate([url]);
       },
       (error) => {
+        this.router.navigate(['/login']);
         console.log(error.error.error);
       }
     )
-
-    // console.log(gamer);
-    // this.router.navigate([url]);
-    // return gamer.successful.value;
-    this.router.navigate(['/login']);
     return false;
   }
-  
+
 }

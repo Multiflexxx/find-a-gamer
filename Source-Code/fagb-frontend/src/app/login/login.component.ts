@@ -38,11 +38,8 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     this.loading = true;
-    // let sessionId: string = '65ad0854-9858-4155-9ffd-80fd9ef6f2d8';
     this.authenticationService.login(this.loginValue).subscribe(
-    // this.authenticationService.loginS(sessionId).subscribe(
       (data) => {
-        console.log("Hier in login by session comp");
         console.log(data);
         this.router.navigate(['/profile']);
         this.loading = false;
