@@ -1,45 +1,54 @@
 <section class="hero">
-<div class="field has-addons is-small">
-  <div class="control is-expanded">
-    <input class="input is-info has-background-black-ter has-text-light" type="text" placeholder="Find your games">
-  </div>
-  <div class="control">
-    <a class="button is-info">
-      Search
-    </a>
-  </div>
-</div>
 
-<div class="field is-grouped is-grouped-multiline" id="gametags">
-  <div class="control" id="gametag">
-    <div class="tags are-small has-addons">
-      <span class="tag is-link">Your selected games ..</span>
-      <a class="tag is-delete"></a>
+  <mat-form-field class="example-full-width">
+    <mat-label>Find your games</mat-label>
+    <input (keyup)="onKey($event)" matInput type="text">
+    <mat-icon class="material-icons-outlined" matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- <div class="field has-addons is-small">
+    <div class="control is-expanded">
+      <input (keyup)="onKey($event)" class="input is-info has-background-black-ter has-text-light" type="text"
+        placeholder="Find your games">
     </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="columns is-multiline is-mobile">
-    <div *ngFor="let game of gameList; let i = index" class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
-      <a (click)="addGame(game.game.game_id, game.game.name)">
-        <div class="card" [ngClass]="isSelected[i] ? 'is-selected' : 'none'">
-          <div class="card-image">
-            <figure class="image is-2by1">
-              <img [src]="game.game.cover_link">
-            </figure>
-          </div>
-          <div class="card-header">
-            <p class="card-header-title">{{game.game.name}}</p>
-          </div>
-        </div>
+    <div class="control">
+      <a class="button is-info">
+        Search
       </a>
     </div>
-  </div>
-</div>
+  </div> -->
 
-<label for="test" [formGroup]="gameForm">
-  <input type="hidden" id="test" formControlName="game" required>
-</label>
+  <div class="field is-grouped is-grouped-multiline" id="gametags">
+    <div class="control" id="gametag">
+      <div class="tags are-small has-addons">
+        <span class="tag is-link">Your selected games ..</span>
+        <a class="tag is-delete"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="columns is-multiline is-mobile">
+      <div *ngFor="let game of searchedGameList"
+        class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
+        <a (click)="addGame(game.game.game_id, game.game.name)">
+          <div class="card" [ngClass]="isSelected[game.game.game_id] ? 'is-selected' : 'none'">
+            <div class="card-image">
+              <figure class="image is-2by1">
+                <img [src]="game.game.cover_link">
+              </figure>
+            </div>
+            <div class="card-header">
+              <p class="card-header-title">{{game.game.name}}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <label for="test" [formGroup]="gameForm">
+    <input type="hidden" id="test" formControlName="game" required>
+  </label>
 
 </section>

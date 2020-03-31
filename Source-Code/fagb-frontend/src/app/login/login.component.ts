@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private autenticationService: AuthenticationService
-    ) { }
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -38,12 +38,13 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     this.loading = true;
-    this.autenticationService.login(this.loginValue).subscribe(
-      (data)=>{
+    this.authenticationService.login(this.loginValue).subscribe(
+      (data) => {
         console.log(data);
         this.router.navigate(['/profile']);
+        this.loading = false;
       },
-      (error)=>{
+      (error) => {
         console.log(error.error.error);
         this.loading = false;
       }

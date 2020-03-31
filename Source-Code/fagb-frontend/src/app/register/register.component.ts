@@ -10,6 +10,7 @@ import { compareValidator } from '../shared/compare-validator.directive';
 import { gameValidator } from '../shared/game-validator.directive';
 
 import { RegisterService, RegionService, LanguageService } from '../_services';
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -44,45 +45,13 @@ export class RegisterComponent implements OnInit {
 
   // Backend input
   regionList = [];
-  // regionList = [
-  //   {
-  //     id: 1,
-  //     name: 'Africa'
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Asia'
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Europa'
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'North America'
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'South America'
-  //   }
-  // ];
-
   langList = [];
-  // langList = [
-  //   {
-  //     id: 1,
-  //     name: 'English'
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'German'
-  //   }
-  // ];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
+    private authenticationService: AuthenticationService,
     private regionService: RegionService,
     private languageService: LanguageService) {
 
@@ -155,11 +124,21 @@ export class RegisterComponent implements OnInit {
     this.onSubmit();
   }
 
+
+
   onSubmit(): void {
     this.registerService.register(this.profileData, this.gameData).subscribe(
       (data)=>{
         console.log(data);
-        this.router.navigate(['/login']);
+        console.log(data.session_id);
+        this.authenticationService.loginS().subscribe(
+          (data) => {
+            console.log(data);
+            this.router.navigate(['/profile']);
+          },
+          (error) => {
+            console.log(error.error.error);
+          })
       },
       (error)=>{
         console.log("Shit");
