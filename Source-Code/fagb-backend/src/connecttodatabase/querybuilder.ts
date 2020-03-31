@@ -260,11 +260,13 @@ export class QueryBuilder {
         );
     }
 
-    public static getOpenMatchMakingRequestsByGame(game_id: number): QueryObject {
+    public static getOpenMatchMakingRequestsByGame(game_id: number, region_id: number, casual: boolean): QueryObject {
         return new QueryObject(
-            "SELECT * FROM MatchMakingRequest WHERE game_id = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
+            "SELECT * FROM MatchMakingRequest JOIN User ON (MatchMakingRequest.user_id = User.user_id) WHERE game_id = ? AND region_id = ? AND casual = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
             [
-                game_id
+                game_id,
+                region_id,
+                casual
             ]
         );
     }
@@ -290,6 +292,15 @@ export class QueryBuilder {
             [
                 matchMakingRequest.match_id,
                 matchMakingRequest.request_id
+            ]
+        );
+    }
+
+    public static getUserByUserId(user_id): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM User WHERE user_id = ?;",
+            [
+                user_id
             ]
         );
     }
