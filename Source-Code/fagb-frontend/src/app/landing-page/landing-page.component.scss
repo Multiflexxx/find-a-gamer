@@ -1,5 +1,6 @@
 .container {
   align-items: center;
+  background-color: #333;
 }
 
 .animation {
@@ -28,7 +29,6 @@
   opacity: 0;
   animation-fill-mode: forwards;
 }
-
 
 #welcomeText:before {
   content: "";

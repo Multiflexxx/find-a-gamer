@@ -1,26 +1,163 @@
-<app-nav></app-nav>
-<section class="section">
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="box">
+        <div id="stepper">
+          <mat-vertical-stepper linear #stepper>
+            <mat-step [stepControl]="profileForm" state="profile" [optional]=true [editable]="isEditable">
+              <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
+                <div>
+                  <ng-template matStepLabel><span class="ng-template">Fill out your profile</span></ng-template>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Nickname</mat-label>
+                        <input matInput formControlName="name" required>
+                        <mat-error *ngIf="hasError('name', 'required')">Nickname is required test.</mat-error>
+                        <mat-error *ngIf="hasError('name', 'maxlength')">Nickname must be shorter than 32
+                          characters.
+                        </mat-error>
+                        <mat-error *ngIf="hasError('name', 'minlength')">Nickname must be at least 4 characters
+                          long.
+                        </mat-error>
+                        <mat-error *ngIf="profileForm.hasError('nameIsRequired')">
+                          Nickname is required!
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Discord Tag</mat-label>
+                        <input matInput formControlName="tag" required>
+                        <mat-error *ngIf="hasError('tag', 'required')">Discord Tag is required .</mat-error>
+                        <mat-error *ngIf="hasError('tag', 'pattern')">Discord Tag must be in this format: Name#1234.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>E-Mail</mat-label>
+                        <input matInput formControlName="email" required>
+                        <mat-error *ngIf="hasError('email', 'required')">Email is required.</mat-error>
+                        <mat-error *ngIf="hasError('email', 'forbiddenEmail')">Email is invalid.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Birthdate</mat-label>
+                        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="date"
+                          required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                        <mat-error *ngIf="hasError('date', 'required')">Birthdate is required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Region</mat-label>
+                        <mat-select formControlName="region" required>
+                          <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasError('region', 'required')">Region is required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Languages</mat-label>
+                        <mat-select formControlName="lang" multiple required>
+                          <mat-option *ngFor="let lang of langList" [value]="lang.language_id" data-name="lang.name">
+                            {{lang.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasError('lang', 'required')">Select at least one language.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="password" required>
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hide">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-hint *ngIf="isStrong('password') == 0">Password strength: weak</mat-hint>
+                        <mat-hint *ngIf="isStrong('password') == 1">Password strength: medium</mat-hint>
+                        <mat-hint *ngIf="isStrong('password') == 2">Password strength: strong</mat-hint>
+                        <mat-error *ngIf="hasError('password', 'required')">Password is required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Verify Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="vpassword" required>
 
-   
-<div class="container">
-    <div class="columns is-multiline is-mobile">
-        <div *ngFor="let item of items; let i = index" class="column is-full-tablet">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hide">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="hasError('vpassword', 'required')">Password is required.</mat-error>
+                        <mat-error *ngIf="hasError('vpassword', 'compare')">Passwords don' t match.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="profileForm.invalid">Next</button>
+                </div>
+              </form>
 
-          <div *ngIf="i<6" class="card-image">
+            </mat-step>
 
-            <div class="overlay">
+            <mat-step [stepControl]="gameForm" state="games" [editable]="isEditable">
+              <form [formGroup]="gameForm" (ngSubmit)="onGameSubmit()">
+                <ng-template matStepLabel><span class="ng-template">Choose your favorite games</span></ng-template>
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="gameForm.invalid">Next</button>
+                </div>
+                <app-add-game [gameForm]="gameForm"></app-add-game>
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="gameForm.invalid">Next</button>
+                </div>
+              </form>
+            </mat-step>
 
-              <figure class="image is-2by1">
-                <img class="picture" [src]="item.img">
-                <span class="text">Players online</span>
-                <button class="button is-large">Search </button>
-              </figure>
+            <mat-step state="done_all">
+              <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+              <div>
+                <p>You are now done.</p>
+                <p>Enjoin your expierence on FAGB</p>
+              </div>
+            </mat-step>
 
-
-            </div>
-          </div>
+            <!-- Icon overrides. -->
+            <ng-template matStepperIcon="profile">
+              <mat-icon class="material-icons-outlined">account_circle</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="games">
+              <mat-icon class="material-icons-outlined">games</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="done_all">
+              <mat-icon class="material-icons-outlined">done_all</mat-icon>
+            </ng-template>
+          </mat-vertical-stepper>
         </div>
       </div>
-</div>
-
+    </div>
+  </div>
 </section>
