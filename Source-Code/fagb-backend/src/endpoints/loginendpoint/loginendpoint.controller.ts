@@ -70,8 +70,7 @@ export class LoginendpointController {
             });
             
 
-            loginResponse = new LoginResponse(true, session, user);
-            console.log(loginResponse);
+            loginResponse = new LoginResponse(true, session, UserFactory.userToPublicUser(user));
             return loginResponse;
             
         } else if(login.session_id) {
