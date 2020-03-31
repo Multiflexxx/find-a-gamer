@@ -10,7 +10,7 @@ export class MatchMakingRequestEndpointController {
     @Get()
     public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest) {
 
-        // MatchFactory.createMatch(1);
+        //MatchFactory.createMatch(1, 1, true);
         // matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true);
         // // Check if Session is valid for User
         // let session;

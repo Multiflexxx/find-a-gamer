@@ -35,7 +35,7 @@ export class MatchFactory {
             });
 
             if (!result) {
-
+                console.error("MatchFactory createMatchMakingRequest(): Result null");
             }
 
             // Successfully created MatchMakingRequest
