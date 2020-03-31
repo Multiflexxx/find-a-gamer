@@ -3,6 +3,7 @@ import { QueryBuilder } from "src/connecttodatabase/querybuilder";
 import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
 import { GameResponse } from "src/data_objects/gameresponse";
 import { Game } from "src/data_objects/game";
+import { v4 as uuidv4 } from 'uuid';
 
 export class MatchFactory {
     public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
@@ -46,6 +47,7 @@ export class MatchFactory {
             });
 
             if (!result) {
+                resolve(false);
                 return;
             }
 
@@ -54,9 +56,9 @@ export class MatchFactory {
 
     }
 
-    private static async createMatch(game_id: number) {
+    public static async createMatch(game_id: number) {
         // Get Open MatchMakingRequests for Game
-        let query = QueryBuilder.getMatchMakingRequestsByGame(game_id);
+        let query = QueryBuilder.getOpenMatchMakingRequestsByGame(game_id);
         let result;
         await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
             result = callbackValue;
@@ -68,8 +70,96 @@ export class MatchFactory {
         if (!result || !result[0]) {
             console.error("MatchFactory createMatch(): Result null or no MatchMakingRequests for Game: " + game_id);
         }
+
+        // Transform Results into MatchMakingRequest Objects
+        let allRequests: MatchMakingRequest[] = [];
+        for(let request of result) {
+            allRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.time_stamp, request.request_id));
+        }
+
+        // Maybe i-- Loop?
+        for(let request of allRequests) {
+            allRequests = MatchFactory.findMatch([request], allRequests);
+            for(let i = allRequests.length - 1; i > -1; i--) {
+                if(allRequests[i].match_id) {
+                    // Update Entry on Database
+                    let successful;
+                    await MatchFactory.updateMatchMakingRequest(allRequests[i]).then(function(callbackValue) {
+                        successful = true;
+                    }, function(callbackValue) {
+                        console.error("MatchFactory createMatch(): Failed to update MatchMakingRequest");
+                        console.error(callbackValue);
+                    });
+
+                    if(!successful) {
+                        return;
+                    }
+
+                    // Remove element from allRequests Array
+                    // allRequests.splice(allRequests.findIndex(x => x.request_id == currentRequest.request_id), 1)
+                    allRequests.splice(i, 1);
+                    console.log(allRequests);
+                }
+            }
+        }
     }
 
+
+    private static findMatch(potentialMatch: MatchMakingRequest[], allRequests: MatchMakingRequest[]): MatchMakingRequest[] {
+
+        // console.log("New Iteration");
+        // console.log(potentialMatch);
+        // console.log(allRequests);
+        
+        let targetSum: number = potentialMatch[0].players_in_party + potentialMatch[0].searching_for;
+
+        // Remove elements in potential Match from allRequests array
+        for(let request of potentialMatch) {
+            allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
+        }
+
+        // Now potentialMatch contains a list of MatchMakingRequests that could be matched with a sum <= targetSum while allRequests contains all other requests
+
+        for(let request of allRequests) {
+            let currentSum: number = MatchFactory.matchPlayersCount(potentialMatch) + request.players_in_party;
+            if(currentSum == targetSum) {
+                // If adding request to the potentialMatch would add up the total player count to the target sum we have a match
+                potentialMatch.push(request);
+                allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
+                allRequests = MatchFactory.completeMatch(potentialMatch, allRequests);
+                return allRequests;
+            } else if (currentSum < targetSum) {
+                // Add request to potential Match and continue searching
+                potentialMatch.push(request);
+                allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
+                return MatchFactory.findMatch(potentialMatch, allRequests);
+            }
+        }
+
+        console.log("Hier sollte ich aber nicht ankommen");
+        return null;
+    }
+
+    private static matchPlayersCount(requests: MatchMakingRequest[]) {
+        let sum: number = 0;
+        for(let request of requests) {
+            sum += request.players_in_party;
+        }
+
+        return sum;
+    }
+
+
+    private static completeMatch(matchedRequests: MatchMakingRequest[], otherRequests: MatchMakingRequest[]): MatchMakingRequest[] {
+        let match_id: string = uuidv4();
+        for(let matchedRequest of matchedRequests) {
+            matchedRequest.match_id = match_id;
+            otherRequests.push(matchedRequest);
+        } 
+        // console.log("otherRequests:");
+        // console.log(otherRequests);
+        return otherRequests;
+    }
 
     public static async getMatchMakingCountForGames() {
         return new Promise(async function (resolve, reject) {
@@ -91,6 +181,28 @@ export class MatchFactory {
                 gameResponses.push(new GameResponse(new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published), !result.players_searching ? 0 : result.players_searching));
             }
             resolve(gameResponses);
+        });
+    }
+
+    private static async updateMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.updateMatchmakingRequest(matchMakingRequest);
+            let successful;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                successful = true;
+            }, function(callbackValue) {
+                console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
+                reject(callbackValue);
+                return;
+            });
+
+            if(!successful) {
+                console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
+                reject(false);
+                return
+            }
+
+            resolve(true);
         });
     }
 }

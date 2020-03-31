@@ -260,9 +260,9 @@ export class QueryBuilder {
         );
     }
 
-    public static getMatchMakingRequestsByGame(game_id: number): QueryObject {
+    public static getOpenMatchMakingRequestsByGame(game_id: number): QueryObject {
         return new QueryObject(
-            "SELECT * FROM MatchMakingRequest WHERE game_id = ? AND match_id IS NULL;",
+            "SELECT * FROM MatchMakingRequest WHERE game_id = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
             [
                 game_id
             ]
@@ -280,6 +280,16 @@ export class QueryBuilder {
             "SELECT * FROM MatchMakingRequest WHERE user_id = ? AND match_id IS NULL;",
             [
                 user_id
+            ]
+        );
+    }
+
+    public static updateMatchmakingRequest(matchMakingRequest: MatchMakingRequest): QueryObject {
+        return new QueryObject(
+            "UPDATE MatchMakingRequest SET match_id = UUID_TO_BIN(?) WHERE request_id = ?;",
+            [
+                matchMakingRequest.match_id,
+                matchMakingRequest.request_id
             ]
         );
     }
