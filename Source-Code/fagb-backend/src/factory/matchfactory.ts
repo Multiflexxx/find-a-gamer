@@ -4,6 +4,7 @@ import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabas
 import { GameResponse } from "src/data_objects/gameresponse";
 import { Game } from "src/data_objects/game";
 import { v4 as uuidv4 } from 'uuid';
+import { UserFactory } from "./userfactory";
 
 export class MatchFactory {
     public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
@@ -24,9 +25,23 @@ export class MatchFactory {
 
             resolve(true)
 
+            // Get User to figure out Region
+            let result;
+            await UserFactory.getUserByUserId(matchMakingRequest.user_id).then(function(callbackValue){
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("MatchFactory createMatchMakingRequest(): Couldn't get user");
+                console.error(callbackValue);
+            });
+
+            if (!result) {
+
+            }
+
             // Successfully created MatchMakingRequest
             // Now try to create a Match for that Game
-            MatchFactory.createMatch(matchMakingRequest.game_id);
+        
+            MatchFactory.createMatch(matchMakingRequest.game_id, result.region_id, matchMakingRequest.casual);
         });
     }
 
@@ -56,9 +71,9 @@ export class MatchFactory {
 
     }
 
-    public static async createMatch(game_id: number) {
+    public static async createMatch(game_id: number, region_id: number, casual: boolean) {
         // Get Open MatchMakingRequests for Game
-        let query = QueryBuilder.getOpenMatchMakingRequestsByGame(game_id);
+        let query = QueryBuilder.getOpenMatchMakingRequestsByGame(game_id, region_id, casual);
         let result;
         await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
             result = callbackValue;
@@ -79,7 +94,13 @@ export class MatchFactory {
 
         // Maybe i-- Loop?
         for(let request of allRequests) {
-            allRequests = MatchFactory.findMatch([request], allRequests);
+            let tempMatchmakingRequests: MatchMakingRequest[];
+            tempMatchmakingRequests = MatchFactory.findMatch([request], allRequests);
+            if(!tempMatchmakingRequests) {
+                continue;
+            } else {
+                allRequests = tempMatchmakingRequests;
+            }
             for(let i = allRequests.length - 1; i > -1; i--) {
                 if(allRequests[i].match_id) {
                     // Update Entry on Database
@@ -106,10 +127,6 @@ export class MatchFactory {
 
 
     private static findMatch(potentialMatch: MatchMakingRequest[], allRequests: MatchMakingRequest[]): MatchMakingRequest[] {
-
-        // console.log("New Iteration");
-        // console.log(potentialMatch);
-        // console.log(allRequests);
         
         let targetSum: number = potentialMatch[0].players_in_party + potentialMatch[0].searching_for;
 
@@ -122,7 +139,7 @@ export class MatchFactory {
 
         for(let request of allRequests) {
             let currentSum: number = MatchFactory.matchPlayersCount(potentialMatch) + request.players_in_party;
-            if(currentSum == targetSum) {
+            if(currentSum == targetSum && request.players_in_party + request.searching_for === targetSum) {
                 // If adding request to the potentialMatch would add up the total player count to the target sum we have a match
                 potentialMatch.push(request);
                 allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
@@ -135,8 +152,6 @@ export class MatchFactory {
                 return MatchFactory.findMatch(potentialMatch, allRequests);
             }
         }
-
-        console.log("Hier sollte ich aber nicht ankommen");
         return null;
     }
 
