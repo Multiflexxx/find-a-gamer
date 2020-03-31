@@ -7,8 +7,15 @@
 
 .gamername{
     text-align: center;
-    font-size: 10rem;
+    font-size: 10em;
+    color: white;
 }
 .is-anchor{
     position: fixed;
+}
+.box{
+    background-color: #333;
+}
+.text{
+    color: white;
 }

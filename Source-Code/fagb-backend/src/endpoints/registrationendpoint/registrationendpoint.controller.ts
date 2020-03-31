@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { Registration } from '../../data_objects/registration';
 import { RegistrationResponse } from '../../data_objects/registrationresponse';
 import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
@@ -20,7 +20,7 @@ export class RegistrationendpointController {
 
         // let randomNumber = Math.floor(Math.random() * 10000);
         // registration = new Registration(
-        //     'test@test' + randomNumber + '.com',
+        //     'mrsbody@sex.com',
         //     'test123',
         //     'Grimmig',
         //     'Grimmig#1235',
@@ -51,7 +51,10 @@ export class RegistrationendpointController {
 
         // return empty Session if User Input is invalid
         if (!isInputValid) {
-            return new RegistrationResponse(false, null, "User already exists");
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "Invalid user input"
+            }, HttpStatus.NOT_ACCEPTABLE)
         }
 
         // Create User using validated registration object
@@ -72,7 +75,10 @@ export class RegistrationendpointController {
         });
 
         if(!session) {
-            return new RegistrationResponse(false, null, "Something went wrong");
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Something went wrong"
+            }, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
         // Return Session
