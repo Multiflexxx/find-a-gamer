@@ -1,12 +1,12 @@
 import { Session } from "./session";
-import { User } from "./user";
+import { PublicUser } from "./publicuser";
 
 export class LoginResponse {
     public successful: boolean;
     public session: Session;
-    public user: User;
+    public user: PublicUser;
 
-    public constructor(successful: boolean, session?: Session, user?: User) {
+    public constructor(successful: boolean, session?: Session, user?: PublicUser) {
         this.successful = successful;
         if(session && user) {
             this.session = session;

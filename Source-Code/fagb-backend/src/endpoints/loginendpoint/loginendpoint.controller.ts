@@ -103,7 +103,7 @@ export class LoginendpointController {
                 console.error(callbackValue);
             })
             
-            loginResponse = new LoginResponse(true, session, user);
+            loginResponse = new LoginResponse(true, session, UserFactory.userToPublicUser(user));
             return loginResponse;
         }
     }

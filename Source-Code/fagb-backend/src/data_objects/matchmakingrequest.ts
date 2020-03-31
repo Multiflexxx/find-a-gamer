@@ -10,7 +10,7 @@ export class MatchMakingRequest {
     public time_stamp: Date;
     public match_id: string;
 
-    public constructor(session_id: string, user_id: number, game_id: number, searching_for: number, players_in_party: number, casual: boolean, time_stamp?: Date, request_id?: number) {
+    public constructor(session_id: string, user_id: number, game_id: number, searching_for: number, players_in_party: number, casual: boolean, match_id: string, time_stamp?: Date, request_id?: number) {
         this.session_id = session_id;
         this.user_id = user_id;
         this.game_id = game_id;

@@ -27,9 +27,9 @@ export class MatchFactory {
 
             // Get User to figure out Region
             let result;
-            await UserFactory.getUserByUserId(matchMakingRequest.user_id).then(function(callbackValue){
+            await UserFactory.getUserByUserId(matchMakingRequest.user_id).then(function (callbackValue) {
                 result = callbackValue;
-            }, function(callbackValue) {
+            }, function (callbackValue) {
                 console.error("MatchFactory createMatchMakingRequest(): Couldn't get user");
                 console.error(callbackValue);
             });
@@ -40,7 +40,7 @@ export class MatchFactory {
 
             // Successfully created MatchMakingRequest
             // Now try to create a Match for that Game
-        
+
             MatchFactory.createMatch(matchMakingRequest.game_id, result.region_id, matchMakingRequest.casual);
         });
     }
@@ -88,31 +88,31 @@ export class MatchFactory {
 
         // Transform Results into MatchMakingRequest Objects
         let allRequests: MatchMakingRequest[] = [];
-        for(let request of result) {
+        for (let request of result) {
             allRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.time_stamp, request.request_id));
         }
 
         // Maybe i-- Loop?
-        for(let request of allRequests) {
+        for (let request of allRequests) {
             let tempMatchmakingRequests: MatchMakingRequest[];
             tempMatchmakingRequests = MatchFactory.findMatch([request], allRequests);
-            if(!tempMatchmakingRequests) {
+            if (!tempMatchmakingRequests) {
                 continue;
             } else {
                 allRequests = tempMatchmakingRequests;
             }
-            for(let i = allRequests.length - 1; i > -1; i--) {
-                if(allRequests[i].match_id) {
+            for (let i = allRequests.length - 1; i > -1; i--) {
+                if (allRequests[i].match_id) {
                     // Update Entry on Database
                     let successful;
-                    await MatchFactory.updateMatchMakingRequest(allRequests[i]).then(function(callbackValue) {
+                    await MatchFactory.updateMatchMakingRequest(allRequests[i]).then(function (callbackValue) {
                         successful = true;
-                    }, function(callbackValue) {
+                    }, function (callbackValue) {
                         console.error("MatchFactory createMatch(): Failed to update MatchMakingRequest");
                         console.error(callbackValue);
                     });
 
-                    if(!successful) {
+                    if (!successful) {
                         return;
                     }
 
@@ -127,19 +127,19 @@ export class MatchFactory {
 
 
     private static findMatch(potentialMatch: MatchMakingRequest[], allRequests: MatchMakingRequest[]): MatchMakingRequest[] {
-        
+
         let targetSum: number = potentialMatch[0].players_in_party + potentialMatch[0].searching_for;
 
         // Remove elements in potential Match from allRequests array
-        for(let request of potentialMatch) {
+        for (let request of potentialMatch) {
             allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
         }
 
         // Now potentialMatch contains a list of MatchMakingRequests that could be matched with a sum <= targetSum while allRequests contains all other requests
 
-        for(let request of allRequests) {
+        for (let request of allRequests) {
             let currentSum: number = MatchFactory.matchPlayersCount(potentialMatch) + request.players_in_party;
-            if(currentSum == targetSum && request.players_in_party + request.searching_for === targetSum) {
+            if (currentSum == targetSum && request.players_in_party + request.searching_for === targetSum) {
                 // If adding request to the potentialMatch would add up the total player count to the target sum we have a match
                 potentialMatch.push(request);
                 allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
@@ -157,7 +157,7 @@ export class MatchFactory {
 
     private static matchPlayersCount(requests: MatchMakingRequest[]) {
         let sum: number = 0;
-        for(let request of requests) {
+        for (let request of requests) {
             sum += request.players_in_party;
         }
 
@@ -167,10 +167,10 @@ export class MatchFactory {
 
     private static completeMatch(matchedRequests: MatchMakingRequest[], otherRequests: MatchMakingRequest[]): MatchMakingRequest[] {
         let match_id: string = uuidv4();
-        for(let matchedRequest of matchedRequests) {
+        for (let matchedRequest of matchedRequests) {
             matchedRequest.match_id = match_id;
             otherRequests.push(matchedRequest);
-        } 
+        }
         // console.log("otherRequests:");
         // console.log(otherRequests);
         return otherRequests;
@@ -200,18 +200,18 @@ export class MatchFactory {
     }
 
     private static async updateMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
-        return new Promise(async function(resolve, reject) {
+        return new Promise(async function (resolve, reject) {
             let query = QueryBuilder.updateMatchmakingRequest(matchMakingRequest);
             let successful;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 successful = true;
-            }, function(callbackValue) {
+            }, function (callbackValue) {
                 console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
                 reject(callbackValue);
                 return;
             });
 
-            if(!successful) {
+            if (!successful) {
                 console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
                 reject(false);
                 return
@@ -219,5 +219,27 @@ export class MatchFactory {
 
             resolve(true);
         });
+    }
+
+    public static async getMostRecentRequestByUser(user_id: number) {
+        return new Promise(async function (resolve, reject) {
+            let query = QueryBuilder.getMostRecentRequestByUserId(user_id);
+            let result;
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+                result = callbackValue;
+            }, function (callbackValue) {
+                console.error("MatchFactory getMostRecentRequestByUser(): Couldn't get most recent MatchMakingRequest");
+                reject(callbackValue);
+            });
+
+            if(!result || result.length > 1) {
+                console.error("MatchFactory getMostRecentRequestByUser(): Result is null or multiple open Requests exist for User");
+                reject(false);
+                return;
+            }
+
+            resolve(new MatchMakingRequest(null, result[0].user_id, result[0].game_id, result[0].searching_for, result[0].players_in_party, result[0].casual, result[0].match_id, result[0].time_stamp, result[0].request_id));
+        });
+
     }
 }

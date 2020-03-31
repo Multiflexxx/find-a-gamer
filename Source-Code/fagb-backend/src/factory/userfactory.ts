@@ -12,6 +12,7 @@ import { UserGamePairFactory } from './usergamepairfactory';
 import { Game } from 'src/data_objects/game';
 import { UserLanguagePairFactory } from './userlanguagepairfactory';
 import { Language } from 'src/data_objects/language';
+import { PublicUser } from 'src/data_objects/publicuser';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
@@ -458,6 +459,10 @@ export class UserFactory {
             resolve(new User(result.user_id, result.email, result.password_hash, result.nickname, result.discrod_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region_id));
         });
 
+    }
+
+    public static userToPublicUser(user: User): PublicUser {
+        return new PublicUser(user.user_id, user.nickname, user.discord_tag, user.cake_day, user.region, user.games, user.languages, user.profile_picture, user.biography);
     }
 }
 

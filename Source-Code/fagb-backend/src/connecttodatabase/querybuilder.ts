@@ -305,4 +305,13 @@ export class QueryBuilder {
         );
     }
 
+    public static getMostRecentRequestByUserId(user_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM MatchMakingRequest WHERE user_id = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
+            [
+                user_id
+            ]
+        );
+    }
+
 }
