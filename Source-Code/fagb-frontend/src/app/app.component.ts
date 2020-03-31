@@ -9,6 +9,7 @@ import { Login } from './data_objects/login';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  
   title = 'FAGB';
   currentGamer: Login;
 
