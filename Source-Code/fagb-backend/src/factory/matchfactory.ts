@@ -8,7 +8,7 @@ import { UserFactory } from "./userfactory";
 
 export class MatchFactory {
     public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
-        return new Promise(async function (reject, resolve) {
+        return new Promise(async function (resolve, reject) {
             let query = QueryBuilder.createMatchMakingRequest(matchMakingRequest);
             let successful;
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
@@ -89,13 +89,14 @@ export class MatchFactory {
         // Transform Results into MatchMakingRequest Objects
         let allRequests: MatchMakingRequest[] = [];
         for (let request of result) {
-            allRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.time_stamp, request.request_id));
+            allRequests.push(new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
         }
 
         // Maybe i-- Loop?
         for (let request of allRequests) {
             let tempMatchmakingRequests: MatchMakingRequest[];
-            tempMatchmakingRequests = MatchFactory.findMatch([request], allRequests);
+            let cloned = allRequests.map(x => Object.assign({}, x))
+            tempMatchmakingRequests = MatchFactory.findMatch([request], cloned);
             if (!tempMatchmakingRequests) {
                 continue;
             } else {
@@ -132,7 +133,10 @@ export class MatchFactory {
 
         // Remove elements in potential Match from allRequests array
         for (let request of potentialMatch) {
-            allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
+            let index: number = allRequests.findIndex(x => x.request_id == request.request_id)
+            if (index != -1) {
+                allRequests.splice(index, 1);
+            }
         }
 
         // Now potentialMatch contains a list of MatchMakingRequests that could be matched with a sum <= targetSum while allRequests contains all other requests
@@ -145,7 +149,7 @@ export class MatchFactory {
                 allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
                 allRequests = MatchFactory.completeMatch(potentialMatch, allRequests);
                 return allRequests;
-            } else if (currentSum < targetSum) {
+            } else if (currentSum < targetSum && request.players_in_party + request.searching_for === targetSum) {
                 // Add request to potential Match and continue searching
                 potentialMatch.push(request);
                 allRequests.splice(allRequests.findIndex(x => x.request_id == request.request_id), 1);
@@ -244,11 +248,67 @@ export class MatchFactory {
     }
 
     /**
-     * Resolves with the MatchMakingRequest if a Match is found, otherwise resolves to null.
+     * Resolves to true if a Match is found, otherwise resolves to false.
      * Rejects when an error occurs
      * @param request_id Id of the Request to be checked
      */
-    public static async checkRequestForMatch(request_id: number) {
+    // public static async checkRequestForMatch(request_id: number) {
+    //     return new Promise(async function (resolve, reject) {
+    //         let query = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
+    //         let result;
+    //         await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+    //             result = callbackValue;
+    //         }, function (callbackValue) {
+    //             console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
+    //             reject(callbackValue);
+    //             return;
+    //         });
+
+    //         if(!result) {
+    //             reject("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
+    //             return;
+    //         }
+
+    //         if(!result.match_id) {
+    //             resolve(null);
+    //             return;
+    //         }
+
+    //         // resolve(true)
+
+    //         resolve(new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id))
+
+    //     });
+    // }
+
+    public static async getMatchMakingRequestsByMatchId(match_id) {
+        return new Promise(async function (resolve, reject) {
+            let query = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
+            let result;
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+                result = callbackValue;
+            }, function (callbackValue) {
+                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
+                reject(callbackValue);
+            });
+
+            // Check if we got an result containing at least to Elements (at least two are needed for a match)
+            if (!result || !result[0] || !result[1]) {
+                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
+                reject(false);
+                return;
+            }
+
+            let matchMakingRequests: MatchMakingRequest[] = [];
+            for (let request of result) {
+                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
+            }
+
+            resolve(matchMakingRequests);
+        });
+    }
+
+    public static async getMatchMakingRequestByRequestId(request_id: number) {
         return new Promise(async function (resolve, reject) {
             let query = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
             let result;
@@ -260,45 +320,13 @@ export class MatchFactory {
                 return;
             });
 
-            if(!result) {
+            if (!result) {
                 reject("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
-                return;
-            }
-
-            if(!result.match_id) {
-                resolve(null);
                 return;
             }
 
             resolve(new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id))
 
-        });
-    }
-
-    public static async getMatchMakingRequestsByMatchId(match_id) {
-        return new Promise(async function(resolve, reject) {
-            let query = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
-            let result;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                result = callbackValue;
-            }, function(callbackValue) {
-                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
-                reject(callbackValue);
-            });
-
-            // Check if we got an result containing at least to Elements (at least two are needed for a match)
-            if(!result || !result[0] || !result[1]) {
-                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
-                reject(false);
-                return;
-            }
-
-            let matchMakingRequests: MatchMakingRequest[] = [];
-            for(let request of result) {
-                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
-            }
-
-            resolve(matchMakingRequests);
         });
     }
 }

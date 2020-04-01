@@ -72,7 +72,7 @@ describe('Loginendpoint Controller', () => {
     expect(loginResponse1).toBeDefined();
     expect(loginResponse1).toBeInstanceOf(LoginResponse);
     expect(loginResponse1.session_id).toEqual(loginResponse.session_id);
-  });
+  }, 10000);
 
 
   afterAll( () => {
