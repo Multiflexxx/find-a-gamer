@@ -4,6 +4,7 @@ import { gameValidator } from 'src/app/shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { MatchService } from '../../_services'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-match-search',
@@ -40,7 +41,9 @@ export class MatchSearchComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private matchService: MatchService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +86,17 @@ export class MatchSearchComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.matchService.searchMatch(this.gameData, this.filterData);
+    this.matchService.searchMatch(this.gameData, this.filterData).subscribe(
+      (data) => {
+        console.log(data);
+        localStorage.setItem('matchRequest', JSON.stringify(data));
+        this.router.navigate(['/profile']);
+      },
+      (error) => {
+        console.log("Nein!");
+        console.log(error.error.error);
+      }
+    )
   }
-
+  
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Body, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
 import { SessionFactory } from '../../factory/sessionfactory';
 import { GameFactory } from '../../factory/gamefactory';
@@ -8,11 +8,11 @@ import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
-    @Get()
+    @Post()
     public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest) {
 
         // MatchFactory.createMatch(1);
-        matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);
+        // matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);
         // Check if Session is valid for User
         let session;
         await SessionFactory.getSessionBySessionId(matchmakingRequest.session_id).then(function(callbackValue) {

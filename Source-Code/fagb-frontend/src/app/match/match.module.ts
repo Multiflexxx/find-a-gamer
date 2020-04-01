@@ -6,11 +6,13 @@ import { SharedComponentsModule } from '../shared-components.module';
 
 import { MatchRoutingModule } from './match-routing.module';
 import { MatchSearchComponent } from './match-search/match-search.component';
+import { MatchProcessComponent } from './match-process/match-process.component';
 
 
 @NgModule({
   declarations: [
     MatchSearchComponent,
+    MatchProcessComponent,
   ],
   imports: [
     CommonModule,
