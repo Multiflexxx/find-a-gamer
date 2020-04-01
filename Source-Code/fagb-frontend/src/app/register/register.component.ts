@@ -23,7 +23,8 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class RegisterComponent implements OnInit {
   // Stepper values
   isEditable = false;
-  hide = true;
+  hideP = true;
+  hidePv = true;
 
   // ReactiveForms
   profileForm: FormGroup;
@@ -100,6 +101,16 @@ export class RegisterComponent implements OnInit {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
 
+  hidePw(event): void {
+    this.hideP = !this.hideP;
+    event.preventDefault();
+  }
+
+  hidePwV(event): void {
+    this.hidePv = !this.hidePv;
+    event.preventDefault();
+  }
+
   public isStrong(controlName: string): number {
     let strenght = -1;
     let pw = this.profileForm.controls[controlName].value;
@@ -144,6 +155,5 @@ export class RegisterComponent implements OnInit {
         console.log("Shit");
       }
     )
-
   }
 }

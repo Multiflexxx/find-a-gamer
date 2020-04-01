@@ -13,7 +13,11 @@
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" required>
+                <input matInput [type]="hide ? 'password' : 'text' " formControlName="password" required>
+                <button mat-icon-button matSuffix (click)="hidePw($event)" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
               </mat-form-field>
               <div class="checkb has-text-left">
                 <mat-checkbox color="primary" formControlName="check">Stay logged in

@@ -11,6 +11,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  hide: boolean = true;
   loading: boolean = false;
 
 
@@ -22,6 +23,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  hidePw(event): void {
+    this.hide = !this.hide;
+    event.preventDefault();
   }
 
   createForm() {

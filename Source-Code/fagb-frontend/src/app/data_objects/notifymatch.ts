@@ -1,7 +1,7 @@
 export class NotifyMatch {
-    public user_id: string;
+    public request_id: number;
 
-    public constructor (user_id: string) {
-        this.user_id = user_id;
+    public constructor (request_id: number) {
+        this.request_id = request_id;
     }
 }

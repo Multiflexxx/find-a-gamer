@@ -6,8 +6,8 @@
           <mat-vertical-stepper linear #stepper>
             <mat-step [stepControl]="profileForm" state="profile" [optional]=true [editable]="isEditable">
               <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
+                <ng-template matStepLabel><span class="ng-template">Fill out your profile</span></ng-template>
                 <div>
-                  <ng-template matStepLabel><span class="ng-template">Fill out your profile</span></ng-template>
                   <div class="columns">
                     <div class="column is-half">
                       <mat-form-field>
@@ -88,10 +88,10 @@
                     <div class="column is-half">
                       <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="password" required>
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                          [attr.aria-pressed]="hide">
-                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <input matInput [type]="hideP ? 'password' : 'text' " formControlName="password" required>
+                        <button mat-icon-button matSuffix (click)="hidePw($event)" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hideP">
+                          <mat-icon>{{hideP ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-hint *ngIf="isStrong('password') == 0">Password strength: weak</mat-hint>
                         <mat-hint *ngIf="isStrong('password') == 1">Password strength: medium</mat-hint>
@@ -102,11 +102,11 @@
                     <div class="column is-half">
                       <mat-form-field>
                         <mat-label>Verify Password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text' " formControlName="vpassword" required>
+                        <input matInput [type]="hidePv ? 'password' : 'text' " formControlName="vpassword" required>
 
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                          [attr.aria-pressed]="hide">
-                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <button mat-icon-button matSuffix (click)="hidePwV($event)" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hidePv">
+                          <mat-icon>{{hidePv ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-error *ngIf="hasError('vpassword', 'required')">Password is required.</mat-error>
                         <mat-error *ngIf="hasError('vpassword', 'compare')">Passwords don' t match.</mat-error>
