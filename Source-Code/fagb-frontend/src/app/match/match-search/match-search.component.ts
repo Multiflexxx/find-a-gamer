@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { gameValidator } from 'src/app/shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
+import { MatchService } from '../../_services'; 
 
 @Component({
   selector: 'app-match-search',
@@ -39,6 +40,7 @@ export class MatchSearchComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private matchService: MatchService,
   ) { }
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class MatchSearchComponent implements OnInit {
   }
 
   onSubmit(): void {
-
+    this.matchService.searchMatch(this.gameData, this.filterData);
   }
 
 }

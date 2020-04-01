@@ -17,11 +17,11 @@ export class MatchMakingRequest {
         this.searching_for = searching_for;
         this.players_in_party = players_in_party;
         this.casual = casual;
-        
+
         if(match_id) {
             this.match_id = match_id;
         }
-        
+
         if(time_stamp) {
             this.time_stamp = time_stamp;
         }

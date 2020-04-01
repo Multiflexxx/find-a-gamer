@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { AuthenticationService } from './_services';
-import { Login } from './data_objects/login';
 import { PublicUser } from './data_objects/publicuser';
 
 @Component({
@@ -10,13 +9,11 @@ import { PublicUser } from './data_objects/publicuser';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  
+
   title = 'FAGB';
   currentGamer: PublicUser;
 
-  constructor(
-    private authenticationService : AuthenticationService
-  ) {
+  constructor(private authenticationService: AuthenticationService) {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
 }
