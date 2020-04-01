@@ -98,5 +98,5 @@ export class MatchSearchComponent implements OnInit {
       }
     )
   }
-  
+
 }
