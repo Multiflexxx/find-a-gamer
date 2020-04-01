@@ -4,7 +4,7 @@ import { Game } from '../data_objects/game';
 import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { QueryObject } from '../data_objects/queryobject';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
+import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 
 export class QueryBuilder {
     public static createUser(registration: Registration): QueryObject {
@@ -262,7 +262,7 @@ export class QueryBuilder {
 
     public static getOpenMatchMakingRequestsByGame(game_id: number, region_id: number, casual: boolean): QueryObject {
         return new QueryObject(
-            "SELECT * FROM MatchMakingRequest JOIN User ON (MatchMakingRequest.user_id = User.user_id) WHERE game_id = ? AND region_id = ? AND casual = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
+            "SELECT MatchMakingRequest.* FROM MatchMakingRequest JOIN User ON (MatchMakingRequest.user_id = User.user_id) WHERE game_id = ? AND region_id = ? AND casual = ? AND match_id IS NULL ORDER BY time_stamp ASC;",
             [
                 game_id,
                 region_id,

@@ -1,22 +1,15 @@
 import { Controller, Get, Body, Post, HttpException, HttpStatus } from '@nestjs/common';
-import { Login } from 'src/data_objects/login';
-import { UserFactory } from 'src/factory/userfactory';
-import { LoginResponse } from 'src/data_objects/loginresponse';
-import { User } from 'src/data_objects/user';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { Session } from 'src/data_objects/session';
+import { Login } from '../../data_objects/login';
+import { UserFactory } from '../../factory/userfactory';
+import { LoginResponse } from '../../data_objects/loginresponse';
+import { User } from '../../data_objects/user';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { Session } from '../../data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Get()
+    @Post()
     async handleLogin(@Body() login: Login) {
-
-        login = new Login(
-            null,
-            "test@test3.com",
-            "test123"
-        );
-
 
         // Check for validity?
         let loginResponse = null;

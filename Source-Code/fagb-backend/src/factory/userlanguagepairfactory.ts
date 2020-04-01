@@ -1,8 +1,8 @@
-import { User } from "src/data_objects/user";
-import { Language } from "src/data_objects/language";
+import { User } from "../data_objects/user";
+import { Language } from "../data_objects/language";
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
-import { UserLanguagePair } from "src/data_objects/userlanguagepair";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
+import { UserLanguagePair } from "../data_objects/userlanguagepair";
 
 export class UserLanguagePairFactory {
     // public static createUserLanguagePairs(user: User, languages: Language[]): void {

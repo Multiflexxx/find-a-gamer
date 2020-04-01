@@ -1,10 +1,10 @@
-import { User } from "src/data_objects/user";
-import { Game } from "src/data_objects/game";
+import { User } from "../data_objects/user";
+import { Game } from "../data_objects/game";
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
-import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
-import { UserGamePair } from 'src/data_objects/usergamepair'
+import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { UserGamePair } from '../data_objects/usergamepair'
 import { rejects } from "assert";
-import { EditProfileResponse } from "src/data_objects/editprofileresponse";
+import { EditProfileResponse } from "../data_objects/editprofileresponse";
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {

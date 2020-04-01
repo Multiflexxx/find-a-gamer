@@ -1,13 +1,18 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { NotifyMatch } from '../../data_objects/notifymatch';
 import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
-import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
-import { User } from 'src/data_objects/user';
-import { Region } from 'src/data_objects/region';
-import { UserFactory } from 'src/factory/userfactory';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
+import { User } from '../../data_objects/user';
+import { Region } from '../../data_objects/region';
+import { UserFactory } from '../../factory/userfactory';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryObject } from 'src/data_objects/queryobject';
-import { SessionFactory } from 'src/factory/sessionfactory';
+import { QueryObject } from '../../data_objects/queryobject';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { MatchFactory } from '../../factory/matchfactory';
+import { match } from 'assert';
+import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
+import { GameFactory } from '../../factory/gamefactory';
+import { PublicUser } from '../../data_objects/publicuser';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
@@ -15,69 +20,83 @@ export class NotifymatchendpointController {
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
-        // let user = new User(6, "test@test3.com", "test123", "", "", "", null, null, "");
+        // Check whether matchMakingRequest has a match
+        let matchMakingRequest;
+        await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id).then(function(callbackValue) {
+            matchMakingRequest = callbackValue;
+        }, function(callbackValue) {
+            console.error("NotifymatchendpointController handleUpdate(): ");
+            console.error(callbackValue);
 
-        // for(let i = 0; i < 100; i++) {
-        //     console.log(i + " ---------------------------------------------------")
-        //     await SessionFactory.createSessionForUser(user, false);
-        // }
+        });
 
-        // Check if Match for request is found
+        if(!matchMakingRequest) {
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "No MatchMakingRequest with that ID"
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        // Get Game for MatchMakingRequest
+        let game;
+        await GameFactory.getGameById(matchMakingRequest.game_id).then(function(callbackValue) {
+            game = callbackValue;
+        }, function(callbackValue) {
+            console.error("NotifymatchendpointController handleUpdate():")
+            console.error(callbackValue);
+        })
 
-        // Get list of matched Requests
+        if(!game) {
+            console.error("NotifymatchendpointController handleUpdate(): Game is null");
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "No Game with that ID"
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        if(!matchMakingRequest.match_id) {
+            return new MatchMakingResponse(matchMakingRequest, game);
+        }
 
+        let matches;
+        await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id).then(function(callbackValue) {
+            matches = callbackValue;
+        }, function(callbackValue) {
+            console.error("NotifymatchendpointController handleUpdate(): Couldn't get Matches for Request");
+            console.error(callbackValue);
+        });
 
-        // await ConnectToDatabaseService.testQuery("Select * from User WHERE email = 'test@test16.com';").then(function(callbackValue) {
-        //     console.log(callbackValue);
-        // }, function(callbackValue) {
-        //     console.log(callbackValue);
-        // });
+        if(!matches || !matches[0] || !matches[1]) {
+            console.error("NotifymatchendpointController handleUpdate(): Match is null or contains to few elements");
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "No Game with that ID"
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
 
-        // let test;
+        // Create User Array from Matches
+        let users: PublicUser[] = [];
+        for(let match of matches) {
+            let user;
+            await UserFactory.getUserByUserId(match.user_id).then(function(callbackValue) {
+                user = callbackValue;
+            }, function(callbackValue) {
+                console.error("NotifymatchendpointController handleUpdate(): User with that ID: " + match.user_id);
+                console.error(callbackValue);
+            });
 
-        // for(let i = 0; i < 100; i++) {
-        //     test = i;
-        //     console.log(test);
-        // }
+            if(!user) {
+                console.error("NotifymatchendpointController handleUpdate(): user is null");
+                throw new HttpException({
+                    status: HttpStatus.NOT_ACCEPTABLE,
+                    error: "Matched user doesn't exist"
+                }, HttpStatus.NOT_ACCEPTABLE)
+            }
 
-        // UUID: b9117c5e-8c9e-4e5e-be97-717677c8ecfd
+            users.push(UserFactory.userToPublicUser(user));
+        }
 
-        // await ConnectToDatabaseService.getPromise(new QueryObject("Select BIN_TO_UUID((Select UUID_TO_BIN('b9117c5e-8c9e-4e5e-be97-717677c8ecfd')));")).then(function(callbackValue) {
-        //     console.log(callbackValue);
-        // }, function(callbackValue) {
-        //     console.error(callbackValue);
-        // })
-        // return uuidv4();
-      
-        // let result: any;
-        // let query = QueryBuilder.getLanguageById(1);
-       
-        // console.log(query);
+        return new MatchMakingResponse(matchMakingRequest, game, users);
 
-        // var myPromise = ConnectToDatabaseService.getPromise(query);
-        // await myPromise.then(function (callback_value) {
-        //     // Successfully got value
-        //     result = callback_value;
-        // }, function(callback_value) {
-        //     // Error Case of Promise
-        //     console.log(callback_value);
-        // });
-
-        // console.log(result.length);
-
-        // return result;
-        // for(let i = 0; i < 100; i++) {
-        //     console.log(uuidv4());
-        // }
-        // await UserFactory.getUserByEmail("benno.grimm@gmx.de").then(function(callbackValue) {
-        //     console.log(callbackValue);
-        //     return callbackValue;
-        // }, function(callbackValue) {
-        //     console.error(callbackValue);
-        //     return '{"id": "' +  uuidv4() + '"}';
-        // });
-        // return '{"id": "' +  uuidv4() + '"}';
     }
 }

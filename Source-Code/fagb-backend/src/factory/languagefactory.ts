@@ -1,8 +1,8 @@
-import { Language } from "src/data_objects/language";
-import { User } from "src/data_objects/user";
-import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
-import { UserLanguagePair } from "src/data_objects/userlanguagepair";
+import { Language } from "../data_objects/language";
+import { User } from "../data_objects/user";
+import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
+import { UserLanguagePair } from "../data_objects/userlanguagepair";
 import { UserLanguagePairFactory } from "./userlanguagepairfactory";
 import { GameFactory } from "./gamefactory";
 
