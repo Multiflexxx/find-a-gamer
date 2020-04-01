@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { LanguageFactory } from 'src/factory/languagefactory';
+import { LanguageFactory } from '../../factory/languagefactory';
 
 @Controller('languagesendpoint')
 export class LanguagesEndpointController {

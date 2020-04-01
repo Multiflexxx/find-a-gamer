@@ -1,7 +1,7 @@
-import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
-import { Session } from "src/data_objects/session";
-import { User } from "src/data_objects/user";
+import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
+import { Session } from "../data_objects/session";
+import { User } from "../data_objects/user";
 import { v4 as uuidv4 } from 'uuid';
 
 export class SessionFactory {

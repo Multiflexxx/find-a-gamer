@@ -1,21 +1,21 @@
 import { Controller, Body, Get } from '@nestjs/common';
-import { EditProfileRequest } from 'src/data_objects/editprofilerequest';
-import { EditProfileResponse } from 'src/data_objects/editprofileresponse';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { UserFactory } from 'src/factory/userfactory';
-import { User } from 'src/data_objects/user';
-import { Region } from 'src/data_objects/region';
-import { Game } from 'src/data_objects/game';
-import { Language } from 'src/data_objects/language';
-import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
-import { ConnectToDatabaseService } from 'src/connecttodatabase/connecttodatabase.service';
-import { QueryObject } from 'src/data_objects/queryobject';
-import { UserGamePairFactory } from 'src/factory/usergamepairfactory';
-import { GameFactory } from 'src/factory/gamefactory';
-import { UserLanguagePair } from 'src/data_objects/userlanguagepair';
-import { UserLanguagePairFactory } from 'src/factory/userlanguagepairfactory';
-import { LanguageFactory } from 'src/factory/languagefactory';
-import { RegionFactory } from 'src/factory/regionfactory';
+import { EditProfileRequest } from '../../data_objects/editprofilerequest';
+import { EditProfileResponse } from '../../data_objects/editprofileresponse';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { UserFactory } from '../../factory/userfactory';
+import { User } from '../../data_objects/user';
+import { Region } from '../../data_objects/region';
+import { Game } from '../../data_objects/game';
+import { Language } from '../../data_objects/language';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
+import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
+import { QueryObject } from '../../data_objects/queryobject';
+import { UserGamePairFactory } from '../../factory/usergamepairfactory';
+import { GameFactory } from '../../factory/gamefactory';
+import { UserLanguagePair } from '../../data_objects/userlanguagepair';
+import { UserLanguagePairFactory } from '../../factory/userlanguagepairfactory';
+import { LanguageFactory } from '../../factory/languagefactory';
+import { RegionFactory } from '../../factory/regionfactory';
 
 @Controller('profileupdateendpoint')
 export class ProfileUpdateEndpointController {

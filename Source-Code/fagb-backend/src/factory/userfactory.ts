@@ -7,12 +7,12 @@ import { UserGamePair } from '../data_objects/usergamepair';
 import { GameFactory } from './gamefactory';
 import { LanguageFactory } from './languagefactory';
 import { RegionFactory } from './regionfactory';
-import { Region } from 'src/data_objects/region';
+import { Region } from '../data_objects/region';
 import { UserGamePairFactory } from './usergamepairfactory';
-import { Game } from 'src/data_objects/game';
+import { Game } from '../data_objects/game';
 import { UserLanguagePairFactory } from './userlanguagepairfactory';
-import { Language } from 'src/data_objects/language';
-import { PublicUser } from 'src/data_objects/publicuser';
+import { Language } from '../data_objects/language';
+import { PublicUser } from '../data_objects/publicuser';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {

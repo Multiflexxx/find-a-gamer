@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { RegionFactory } from 'src/factory/regionfactory';
+import { RegionFactory } from '../../factory/regionfactory';
 
 @Controller('regionendpoint')
 export class RegionEndpointController {

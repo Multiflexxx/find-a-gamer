@@ -1,21 +1,21 @@
 import { Controller, Body, Get } from '@nestjs/common';
-import { DeleteProfileRequest } from 'src/data_objects/deleteprofilerequest';
-import { DeleteProfileResponse } from 'src/data_objects/deleteprofileresponse';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { UserFactory } from 'src/factory/userfactory';
-import { User } from 'src/data_objects/user';
-import { Region } from 'src/data_objects/region';
-import { Game } from 'src/data_objects/game';
-import { Language } from 'src/data_objects/language';
+import { DeleteProfileRequest } from '../../data_objects/deleteprofilerequest';
+import { DeleteProfileResponse } from '../../data_objects/deleteprofileresponse';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { UserFactory } from '../../factory/userfactory';
+import { User } from '../../data_objects/user';
+import { Region } from '../../data_objects/region';
+import { Game } from '../../data_objects/game';
+import { Language } from '../../data_objects/language';
 
 @Controller('profiledeleteendpoint') 
 export class ProfileDeleteEndpointController {
     @Get()
     async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest) {
-        deleteProfileRequest = new DeleteProfileRequest(
+        /*deleteProfileRequest = new DeleteProfileRequest(
             "3e8de529-977b-4b2e-8bf8-c4aa007d6202",
             new User(16, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
-        );
+        );*/
 
         
         // Check Session

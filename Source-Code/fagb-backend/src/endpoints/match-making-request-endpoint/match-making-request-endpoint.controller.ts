@@ -1,9 +1,9 @@
 import { Controller, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { GameFactory } from 'src/factory/gamefactory';
-import { Response } from 'src/data_objects/response';
-import { MatchFactory } from 'src/factory/matchfactory';
+import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { GameFactory } from '../../factory/gamefactory';
+import { Response } from '../../data_objects/response';
+import { MatchFactory } from '../../factory/matchfactory';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
