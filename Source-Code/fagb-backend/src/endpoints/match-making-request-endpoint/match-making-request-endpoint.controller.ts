@@ -4,6 +4,7 @@ import { SessionFactory } from 'src/factory/sessionfactory';
 import { GameFactory } from 'src/factory/gamefactory';
 import { Response } from 'src/data_objects/response';
 import { MatchFactory } from 'src/factory/matchfactory';
+import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
@@ -52,7 +53,6 @@ export class MatchMakingRequestEndpointController {
         let game;
         await GameFactory.getGameById(matchmakingRequest.game_id).then(function(callbackValue) {
             game = callbackValue;
-            console.log("Hier");
         }, function(callbackValue) {
             console.error("MatchMakingRequestEndpointController requestMatch(): Couldn't get Game");
             console.error(callbackValue);
@@ -84,21 +84,39 @@ export class MatchMakingRequestEndpointController {
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // Return the created 
-        let result;
+        // Get the created Request
+        let request;
         await MatchFactory.getMostRecentRequestByUser(matchmakingRequest.user_id).then(function(callbackValue) {
-            result = callbackValue;
+            request = callbackValue;
         }, function(callbackValue) {
-           
+           console.error("MatchMakingRequestEndpointController requestMatch(): Couldn't get created request");
         });
 
-        if(!result) {
+        if(!request) {
+            console.error("MatchMakingRequestEndpointController requestMatch(): request is null");
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
                 error: 'Couldn\'t get created Request',
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return result;
+        // Get Game Object for that Request
+        game = null;
+        await GameFactory.getGameById(request.game_id).then(function(callbackValue) {
+            game = callbackValue;
+        }, function(callbackValue) {
+            console.error("MatchMakingRequestEndpointController requestMatch(): Game is null");
+            console.error(callbackValue);
+        });
+
+        if (!game) {
+            console.error("MatchMakingRequestEndpointController requestMatch(): Game with Id: " + request.game_id + " is null")
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: 'Couldn\'t create MatchMakingRequest',
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new MatchMakingResponse(request, game);
     }
 }
