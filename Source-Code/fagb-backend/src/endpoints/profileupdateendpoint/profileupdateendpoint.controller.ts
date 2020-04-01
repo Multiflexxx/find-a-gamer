@@ -118,7 +118,6 @@ export class ProfileUpdateEndpointController {
 
         if(!success) {
             return new EditProfileResponse(false, null);
-            console.error(success);
         }
 
 
@@ -183,7 +182,7 @@ export class ProfileUpdateEndpointController {
             return new EditProfileResponse(false, null);
         }
 
-        return new EditProfileResponse(true, editProfileRequest.user);
+        return new EditProfileResponse(true, UserFactory.userToPublicUser(editProfileRequest.user));
 
     }
 

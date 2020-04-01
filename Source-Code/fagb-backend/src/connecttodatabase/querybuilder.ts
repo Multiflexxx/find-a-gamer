@@ -314,4 +314,22 @@ export class QueryBuilder {
         );
     }
 
+    public static getMatchMakingRequestByRequestId(request_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT request_id, user_id, game_id, searching_for, players_in_party, casual, time_stamp, BIN_TO_UUID(match_id) as match_id FROM MatchMakingRequest WHERE request_id = ?;",
+            [
+                request_id
+            ]
+        );
+    }
+
+    public static getMatchMakingRequestsByMatchId(match_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT request_id, user_id, game_id, searching_for, players_in_party, casual, time_stamp, BIN_TO_UUID(match_id) as match_id FROM MatchMakingRequest WHERE match_id = UUID_TO_BIN(?);",
+            [
+                match_id
+            ]
+        );
+    }
+
 }

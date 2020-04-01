@@ -232,7 +232,7 @@ export class MatchFactory {
                 reject(callbackValue);
             });
 
-            if(!result || result.length > 1) {
+            if (!result || result.length > 1) {
                 console.error("MatchFactory getMostRecentRequestByUser(): Result is null or multiple open Requests exist for User");
                 reject(false);
                 return;
@@ -241,5 +241,64 @@ export class MatchFactory {
             resolve(new MatchMakingRequest(null, result[0].user_id, result[0].game_id, result[0].searching_for, result[0].players_in_party, result[0].casual, result[0].match_id, result[0].time_stamp, result[0].request_id));
         });
 
+    }
+
+    /**
+     * Resolves with the MatchMakingRequest if a Match is found, otherwise resolves to null.
+     * Rejects when an error occurs
+     * @param request_id Id of the Request to be checked
+     */
+    public static async checkRequestForMatch(request_id: number) {
+        return new Promise(async function (resolve, reject) {
+            let query = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
+            let result;
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+                result = callbackValue;
+            }, function (callbackValue) {
+                console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
+                reject(callbackValue);
+                return;
+            });
+
+            if(!result) {
+                reject("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
+                return;
+            }
+
+            if(!result.match_id) {
+                resolve(null);
+                return;
+            }
+
+            resolve(new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id))
+
+        });
+    }
+
+    public static async getMatchMakingRequestsByMatchId(match_id) {
+        return new Promise(async function(resolve, reject) {
+            let query = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
+            let result;
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                result = callbackValue;
+            }, function(callbackValue) {
+                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
+                reject(callbackValue);
+            });
+
+            // Check if we got an result containing at least to Elements (at least two are needed for a match)
+            if(!result || !result[0] || !result[1]) {
+                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
+                reject(false);
+                return;
+            }
+
+            let matchMakingRequests: MatchMakingRequest[] = [];
+            for(let request of result) {
+                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
+            }
+
+            resolve(matchMakingRequests);
+        });
     }
 }

@@ -7,12 +7,27 @@ import { Region } from 'src/data_objects/region';
 import { UserFactory } from 'src/factory/userfactory';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryObject } from 'src/data_objects/queryobject';
+import { SessionFactory } from 'src/factory/sessionfactory';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
 
     @Get()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
+
+        // let user = new User(6, "test@test3.com", "test123", "", "", "", null, null, "");
+
+        // for(let i = 0; i < 100; i++) {
+        //     console.log(i + " ---------------------------------------------------")
+        //     await SessionFactory.createSessionForUser(user, false);
+        // }
+
+        // Check if Match for request is found
+
+
+        // Get list of matched Requests
+
+
 
         // await ConnectToDatabaseService.testQuery("Select * from User WHERE email = 'test@test16.com';").then(function(callbackValue) {
         //     console.log(callbackValue);
