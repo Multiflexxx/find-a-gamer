@@ -8,15 +8,8 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('loginendpoint')
 export class LoginendpointController {
-    @Get()
+    @Post()
     async handleLogin(@Body() login: Login) {
-
-        login = new Login(
-            null,
-            "test@test3.com",
-            "test123"
-        );
-
 
         // Check for validity?
         let loginResponse = null;
