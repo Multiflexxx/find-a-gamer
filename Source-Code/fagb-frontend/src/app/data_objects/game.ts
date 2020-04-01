@@ -1,3 +1,5 @@
+import { Registration } from "./registration";
+
 export class Game {
     public game_id: number;
     public name: string;

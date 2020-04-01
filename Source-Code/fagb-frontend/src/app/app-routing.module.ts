@@ -6,27 +6,28 @@ import { CommonModule } from '@angular/common';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ProfileComponent } from './profile/profile.component';
-import { AuthenticationGuard } from './_helpers/authentication.guard';
 
 const appRoutes: Routes = [
-  {
-    path: 'profile',
-    canActivate: [AuthenticationGuard],
-    component: ProfileComponent,
-  },
+  // {
+  //   path: 'profile',
+  //   canActivate: [AuthenticationGuard],
+  //   component: ProfileComponent,
+  // },
   {
     path: 'login', 
     component: LoginComponent
   },
   {
-    path: 'register', component: RegisterComponent
+    path: 'register', 
+    component: RegisterComponent
   },
   {
-    path: '', component: LandingPageComponent
+    path: '', 
+    component: LandingPageComponent
   },
   {
-    path: '**', redirectTo: ''
+    path: '**', 
+    redirectTo: ''
   }
 ];
 

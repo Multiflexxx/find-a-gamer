@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthenticationService } from './_services';
 import { Login } from './data_objects/login';
+import { PublicUser } from './data_objects/publicuser';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,11 @@ import { Login } from './data_objects/login';
 export class AppComponent {
   
   title = 'FAGB';
-  currentGamer: Login;
+  currentGamer: PublicUser;
 
   constructor(
     private authenticationService : AuthenticationService
   ) {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
-
 }

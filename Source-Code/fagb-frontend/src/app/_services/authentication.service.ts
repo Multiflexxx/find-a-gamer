@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Login } from '../data_objects/login'
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CookieService } from 'ngx-cookie-service';
+
+import { Login } from '../data_objects/login'
+import { PublicUser } from '../data_objects/publicuser'
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class AuthenticationService {
   isLoggedIn = false;
   redirectUrl: string;
 
-  private currentGamerSubject: BehaviorSubject<Login>;
-  public currentGamer: Observable<Login>;
+  private currentGamerSubject: BehaviorSubject<PublicUser>;
+  public currentGamer: Observable<PublicUser>;
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.currentGamerSubject = new BehaviorSubject<Login>(JSON.parse(localStorage.getItem('currentGamer')));
+    this.currentGamerSubject = new BehaviorSubject<PublicUser>(null);
     this.currentGamer = this.currentGamerSubject.asObservable();
   }
 
-  public get currentGamerValue(): Login {
+  public get currentGamerValue(): PublicUser {
     return this.currentGamerSubject.value;
   }
 
@@ -32,17 +33,26 @@ export class AuthenticationService {
     let login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
     console.log(login);
     return this.http.post<any>(this.url, login)
-      .pipe(map(gamer => {
-        if (gamer && gamer.successful) {
+      .pipe(map(data => {
+        if (data && data.successful) {
           let expiration: Date = null;
-          if (gamer.session.expiration_date != null) {
-            expiration = new Date(gamer.session.expiration_date);
+          if (data.session.expiration_date != null) {
+            expiration = new Date(data.session.expiration_date);
           }
           this.isLoggedIn = true;
-          this.cookieService.set('gamer', gamer.session.session_id, expiration);
-          this.currentGamerSubject.next(gamer);
+          this.cookieService.set('gamer', data.session.session_id, expiration);
+          this.currentGamerSubject.next(
+            new PublicUser(
+              data.user.user_id, 
+              data.user.nickname, 
+              data.user.discord_tag, 
+              data.user.cake_day, 
+              data.user.region, 
+              data.user.games,
+              data.user.languages)
+          );
         }
-        return gamer;
+        return data;
       }))
   }
 
@@ -51,12 +61,23 @@ export class AuthenticationService {
     let loginS: Login = new Login(sessionId);
 
     return this.http.post<any>(this.url, loginS)
-      .pipe(map(gamer => {
-        if (gamer && gamer.successful) {
+      .pipe(map(data => {
+        if (data && data.successful) {
           this.isLoggedIn = true;
-          this.currentGamerSubject.next(gamer);
+          this.currentGamerSubject.next(
+            new PublicUser(
+              data.user.user_id, 
+              data.user.nickname, 
+              data.user.discord_tag, 
+              data.user.cake_day, 
+              data.user.region, 
+              data.user.games,
+              data.user.languages)
+          );
         }
-        return gamer;
+        console.log(data);
+        console.log(this.currentGamerValue);
+        return data;
       }))
   }
 

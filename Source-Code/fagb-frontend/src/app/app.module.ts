@@ -20,10 +20,8 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
 import { LandingPageNavbarComponent } from './landing-page-navbar/landing-page-navbar.component';
 import { GamesearchComponent } from './gamesearch/gamesearch.component';
 import { SearchComponent } from './search/search.component';
-import { ProfileComponent } from './profile/profile.component';
-
-import { from } from 'rxjs';
 import { GameValidatorDirective } from './shared/game-validator.directive';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -40,17 +38,17 @@ import { GameValidatorDirective } from './shared/game-validator.directive';
     LandingPageNavbarComponent,
     GamesearchComponent,
     SearchComponent,
-    ProfileComponent,
     GameValidatorDirective,
     
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ProfileModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
