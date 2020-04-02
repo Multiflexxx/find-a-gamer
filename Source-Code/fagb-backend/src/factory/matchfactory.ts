@@ -313,7 +313,7 @@ export class MatchFactory {
             let query = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
             let result;
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue;
+                result = callbackValue[0];
             }, function (callbackValue) {
                 console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
                 reject(callbackValue);
