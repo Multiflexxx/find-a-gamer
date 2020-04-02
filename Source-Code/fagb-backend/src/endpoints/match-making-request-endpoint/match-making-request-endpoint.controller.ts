@@ -1,4 +1,4 @@
-import { Controller, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Body, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
 import { SessionFactory } from 'src/factory/sessionfactory';
 import { GameFactory } from 'src/factory/gamefactory';
@@ -8,7 +8,7 @@ import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
-    @Get()
+    @Post()
     public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest) {
 
         // MatchFactory.createMatch(1);

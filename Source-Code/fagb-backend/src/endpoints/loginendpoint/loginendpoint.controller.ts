@@ -76,7 +76,7 @@ export class LoginendpointController {
         } else if (login.session_id) {
             // Get User by session_id
             let user;
-            console.log("Hier sollte ich aber gar nicht sein");
+
             await UserFactory.getUserBySessionID(login.session_id).then(function (callbackValue) {
                 // Got User
                 user = callbackValue;
