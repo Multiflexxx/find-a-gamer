@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { interval } from 'rxjs';
 
 import { AuthenticationService } from '../_services';
 import { CookieService } from 'ngx-cookie-service';
@@ -48,7 +49,9 @@ export class MatchService {
   }
 
   notifyMatch(request_id): Observable<any> {
-    let notifyMatch =  new NotifyMatch(request_id);
+    let notifyMatch = new NotifyMatch(request_id);
+    // let subscription: Subscription;
+    // let  source = interval(5000);
     return this.http.post<any>(this.urlN, notifyMatch);
   }
 

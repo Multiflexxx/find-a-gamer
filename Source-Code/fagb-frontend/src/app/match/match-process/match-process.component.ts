@@ -12,19 +12,14 @@ export class MatchProcessComponent implements OnInit {
 
   public matchData: any;
   
-  // subscription: Subscription;
-
-  // public source = interval(5000);
-
   constructor(private matchService: MatchService,) { }
 
   ngOnInit(): void {
     this.matchData = JSON.parse(localStorage.getItem('matchRequest'));
     console.log(this.matchData);
-    // this.subscription = this.source.subscribe(data => console.log("Ausgeführt!"));
+    // this.subscription = this.source.subscribe(data => console.log(this.matchData.matchmaking_request.request_id));
 
-
-    this.matchService.notifyMatch(this.matchData.matchmakingRequest.request_id).subscribe(
+    this.matchService.notifyMatch(this.matchData.matchmaking_request.request_id).subscribe(
       (data) => {
         console.log("Notify?");
         console.log(data);
