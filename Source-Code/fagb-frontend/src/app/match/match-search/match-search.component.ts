@@ -90,7 +90,7 @@ export class MatchSearchComponent implements OnInit {
       (data) => {
         console.log(data);
         localStorage.setItem('matchRequest', JSON.stringify(data));
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/match-process']);
       },
       (error) => {
         console.log("Nein!");
@@ -98,5 +98,4 @@ export class MatchSearchComponent implements OnInit {
       }
     )
   }
-
 }
