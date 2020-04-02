@@ -1,38 +1,78 @@
-<section class="hero">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          You have a match with those players!
-        </h1>
+<!-- <section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        You have a match with those players!
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container center">
+    <div class="columns is-mobile is-centered is-multiline">
+      <div class="column  is-full-tablet is-full-mobile">
+        <figure is-256x256>
+          <img src="https://bulma.io/images/placeholders/128x128.png">
+        </figure>
       </div>
     </div>
-  </section>
-<section class="section">
-    <div class="container center">
-        <div class="columns is-mobile is-centered is-multiline">
-            <div class="column  is-full-tablet is-full-mobile">
-             
-                    <figure is-256x256>
-                        <img src="https://bulma.io/images/placeholders/128x128.png">
-                      </figure>
-                
-            </div>
-            
-
-        </div>
-    </div>
-
+  </div>
 </section>
-<section class="section">
-    <div class="container">
-        <div class="columns is-mobile is-centered is-multiline">
-            <!-- <div *ngFor="let game of gamer.games; let i = index" class="column is-one-third-tablet is-full-mobile"> -->
-            <div class="column is-one-third-tablet is-full-mobile">
 
-                <div class="box">
-                   <div class="text">You found a Match with here are your discord contacts bra</div> 
-                </div>
-            </div>
+<section class="section">
+  <div class="container">
+    <div class="columns is-mobile is-centered is-multiline">
+      <div *ngFor="let matchUser of matchUsers; let i = index" class="column is-one-third-tablet is-full-mobile">
+        <div class="column is-one-third-tablet is-full-mobile">
+          <div class="box">
+            <div class="text">{{matchUser.nickname}}</div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+</section>
+
+-->
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-mobile is-centered is-multiline">
+      <div class="column is-full-mobile">
+        <div class="box">
+          <div class="content has-text-centered">
+            <h1 class="title">You have a match with those players!</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline is-mobile">
+      <div *ngFor="let matchUser of matchUsers; let i = index" class="column is-half-tablet is-full-mobile">
+        <div class="box">
+          <h3 class="title infos">Nickname:</h3>
+          <p class="text">{{matchUser.nickname}}</p>
+          <br>
+          <h3 class="title infos">Discord-Tag:</h3>
+          <p class="text">{{matchUser.discord_tag}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-mobile is-centered is-multiline">
+      <div class="column is-full-mobile">
+        <div class="card-image">
+          <div class="overlay">
+            <figure class="image is-2by1">
+              <img class="picture" [src]="matchGame.cover_link">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

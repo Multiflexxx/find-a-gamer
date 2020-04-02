@@ -31,10 +31,7 @@ export class MatchProcessComponent implements OnInit {
         num = num + 1;
         this.matchService.notifyMatch(this.matchData.matchmaking_request.request_id).subscribe(
           (data) => {
-            console.log("Notify?");
-            console.log(data);
             if (!!data.users) {
-            // if (num == 4) {
               this.subscription.unsubscribe();
               this.router.navigate(['/match-success']);
             }
