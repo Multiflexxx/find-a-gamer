@@ -8,11 +8,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 import { PublicUser } from '../data_objects/publicuser';
 
+import { NotifyMatch } from '../data_objects/notifymatch';
+
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
-  private url: string = 'http://localhost:3000/matchmakingrequestendpoint';
+  private urlS: string = 'http://localhost:3000/matchmakingrequestendpoint';
+  private urlN: string = 'http://localhost:3000/notifymatchendpoint';
   private currentGamer: PublicUser;
 
   // private currentMatchSubject: BehaviorSubject<MatchMakingRequest>;
@@ -41,7 +44,12 @@ export class MatchService {
       filterData.playstyle.value == "true" ? true : false
     );
     console.log(requestMatch);
-    return this.http.post<any>(this.url, requestMatch);
+    return this.http.post<any>(this.urlS, requestMatch);
+  }
+
+  notifyMatch(request_id): Observable<any> {
+    let notifyMatch =  new NotifyMatch(request_id);
+    return this.http.post<any>(this.urlN, notifyMatch);
   }
 
 }

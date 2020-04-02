@@ -17,7 +17,7 @@ import { PublicUser } from '../../data_objects/publicuser';
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
 
-    @Get()
+    @Post()
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
         // Check whether matchMakingRequest has a match
