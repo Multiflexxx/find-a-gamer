@@ -446,7 +446,7 @@ export class UserFactory {
             let query = QueryBuilder.getUserByUserId(user_id);
             let result;
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue;
+                result = callbackValue[0];
             }, function (callbackValue) {
                 console.error("UserFactory getUserByUserId(): Couldn't get User");
                 reject(callbackValue)
@@ -456,7 +456,7 @@ export class UserFactory {
                 return;
             }
 
-            resolve(new User(result.user_id, result.email, result.password_hash, result.nickname, result.discrod_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region_id));
+            resolve(new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region_id));
         });
 
     }
