@@ -30,6 +30,9 @@ export class NotifymatchendpointController {
 
         });
 
+        console.log("ToString");
+        console.log(matchMakingRequest.match_id.toString());
+
         if(!matchMakingRequest) {
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
@@ -54,11 +57,13 @@ export class NotifymatchendpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if(!matchMakingRequest.match_id) {
+        if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "") {
             return new MatchMakingResponse(matchMakingRequest, game);
         }
 
         let matches;
+        console.log("MatchMaking Request in Endpoint");
+        console.log(matchMakingRequest);
         await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id).then(function(callbackValue) {
             matches = callbackValue;
         }, function(callbackValue) {
@@ -70,7 +75,7 @@ export class NotifymatchendpointController {
             console.error("NotifymatchendpointController handleUpdate(): Match is null or contains to few elements");
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
-                error: "No Game with that ID"
+                error: "Match Process failed"
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
