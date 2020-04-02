@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
 
-import {AppRoutingModule} from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -21,6 +21,8 @@ import { GameValidatorDirective } from './shared/game-validator.directive';
 import { ProfileModule } from './profile/profile.module';
 import { MatchModule } from './match/match.module';
 import { SharedComponentsModule } from './shared-components.module';
+
+import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,13 @@ import { SharedComponentsModule } from './shared-components.module';
     MatchModule,
     AppRoutingModule,
     SharedComponentsModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      disableTimeOut: true,
+      positionClass: 'toast-bottom-full-width',
+      tapToDismiss: false
+    }),
+    ToastContainerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

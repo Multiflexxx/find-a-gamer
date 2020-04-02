@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../_services/authentication.service';
+
+import { ToastrService, ToastContainerDirective  } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastrService: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +56,7 @@ export class LoginComponent implements OnInit {
       (error) => {
         this.loading = false;
         console.log(error.error.error);
+        this.toastrService.error(error.error.error, 'Login failed');
       }
     )
   }
