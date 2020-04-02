@@ -41,7 +41,7 @@ export class MatchFactory {
             // Successfully created MatchMakingRequest
             // Now try to create a Match for that Game
 
-            MatchFactory.createMatch(matchMakingRequest.game_id, result.region, matchMakingRequest.casual);
+            await MatchFactory.createMatch(matchMakingRequest.game_id, result.region, matchMakingRequest.casual);
         });
     }
 

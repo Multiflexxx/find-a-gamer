@@ -27,11 +27,11 @@ export class NotifymatchendpointController {
         }, function(callbackValue) {
             console.error("NotifymatchendpointController handleUpdate(): ");
             console.error(callbackValue);
-
         });
 
         console.log("ToString");
         console.log(matchMakingRequest.match_id.toString());
+        console.log(Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString())
 
         if(!matchMakingRequest) {
             throw new HttpException({
@@ -57,7 +57,7 @@ export class NotifymatchendpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "") {
+        if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "" || Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString() == matchMakingRequest.match_id.toString()) {
             return new MatchMakingResponse(matchMakingRequest, game);
         }
 
