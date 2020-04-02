@@ -1,18 +1,18 @@
 import { Controller, Post, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { NotifyMatch } from '../../data_objects/notifymatch';
 import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
-import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
-import { User } from 'src/data_objects/user';
-import { Region } from 'src/data_objects/region';
-import { UserFactory } from 'src/factory/userfactory';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
+import { User } from '../../data_objects/user';
+import { Region } from '../../data_objects/region';
+import { UserFactory } from '../../factory/userfactory';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryObject } from 'src/data_objects/queryobject';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { MatchFactory } from 'src/factory/matchfactory';
+import { QueryObject } from '../../data_objects/queryobject';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { MatchFactory } from '../../factory/matchfactory';
 import { match } from 'assert';
-import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
-import { GameFactory } from 'src/factory/gamefactory';
-import { PublicUser } from 'src/data_objects/publicuser';
+import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
+import { GameFactory } from '../../factory/gamefactory';
+import { PublicUser } from '../../data_objects/publicuser';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {

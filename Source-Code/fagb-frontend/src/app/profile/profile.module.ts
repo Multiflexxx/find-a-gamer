@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material/material.module';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileOverviewComponent } from './profile-overview/profile-overview.component';
@@ -10,7 +11,8 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
   declarations: [ProfileOverviewComponent, ProfileUpdateComponent],
   imports: [
     CommonModule,
-    ProfileRoutingModule
+    ProfileRoutingModule,
+    MaterialModule  
   ]
 })
 export class ProfileModule { }

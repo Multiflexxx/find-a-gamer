@@ -1,10 +1,10 @@
 import { Controller, Get, Body, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { GameFactory } from 'src/factory/gamefactory';
-import { Response } from 'src/data_objects/response';
-import { MatchFactory } from 'src/factory/matchfactory';
-import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
+import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { GameFactory } from '../../factory/gamefactory';
+import { Response } from '../../data_objects/response';
+import { MatchFactory } from '../../factory/matchfactory';
+import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
@@ -12,7 +12,7 @@ export class MatchMakingRequestEndpointController {
     public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest) {
 
         // MatchFactory.createMatch(1);
-        matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);
+        // matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);
         // Check if Session is valid for User
         let session;
         await SessionFactory.getSessionBySessionId(matchmakingRequest.session_id).then(function(callbackValue) {

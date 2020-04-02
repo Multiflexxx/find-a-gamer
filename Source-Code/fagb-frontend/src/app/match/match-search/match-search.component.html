@@ -1,0 +1,93 @@
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="box">
+        <div id="stepper">
+          <mat-vertical-stepper linear #stepper>
+            <mat-step [stepControl]="gameForm" state="games" [optional]=true [editable]="isEditable">
+              <form [formGroup]="gameForm" (ngSubmit)="onMatchGameSubmit()">
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="gameForm.invalid">Next</button>
+                </div>
+                <app-add-game [gameForm]="gameForm"></app-add-game>
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="gameForm.invalid">Next</button>
+                </div>
+              </form>
+            </mat-step>
+
+            <mat-step [stepControl]="matchFilterForm" state="filter" [editable]="isEditable">
+              <form [formGroup]="matchFilterForm" (ngSubmit)="onMatchFilterSubmit()">
+                <ng-template matStepLabel><span class="ng-template">Set up your filters</span></ng-template>
+                <div>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Number of players being already in the party</mat-label>
+                        <mat-select formControlName="playerParty" required>
+                          <mat-option *ngFor="let player of playerList" [value]="player">{{player}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasError('playerParty', 'required')">Select a number of players.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Number of players to join the party</mat-label>
+                        <mat-select formControlName="playerSearch" required>
+                          <mat-option *ngFor="let player of playerList" [value]="player">
+                            {{player}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasError('playerSearch', 'required')">Select a number of players.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="columns">
+                    <div class="column is-half">
+                      <mat-form-field>
+                        <mat-label>Choose your your playstyle</mat-label>
+                        <mat-select formControlName="playstyle" required>
+                          <mat-option *ngFor="let playstyle of playstyleList" [value]="playstyle.value">{{playstyle.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasError('playstyle', 'required')">Select a playstyle.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button mat-flat-button matStepperNext class="button" color="primary" type="submit"
+                    [disabled]="matchFilterForm.invalid">Next</button>
+                </div>
+              </form>
+            </mat-step>
+
+            <mat-step state="done_all">
+              <ng-template matStepLabel><span class="ng-template">Done</span></ng-template>
+              <div>
+                <p>You are now done.</p>
+                <p>FAGB' ll find a match for you!</p>
+              </div>
+            </mat-step>
+
+            <!-- Icon overrides. -->
+            <ng-template matStepperIcon="games">
+              <mat-icon class="material-icons-outlined">games</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="filter">
+              <mat-icon class="material-icons-outlined">settings</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="done_all">
+              <mat-icon class="material-icons-outlined">done_all</mat-icon>
+            </ng-template>
+          </mat-vertical-stepper>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

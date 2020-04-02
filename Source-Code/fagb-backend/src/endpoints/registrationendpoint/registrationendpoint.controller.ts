@@ -4,13 +4,13 @@ import { RegistrationResponse } from '../../data_objects/registrationresponse';
 import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
 import { QueryBuilder } from '../../connecttodatabase/querybuilder';
 import * as EmailValidator from 'email-validator';
-import { QueryObject } from 'src/data_objects/queryobject';
-import { Session } from 'src/data_objects/session';
-import { UserFactory } from 'src/factory/userfactory';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { Region } from 'src/data_objects/region';
-import { Language } from 'src/data_objects/language';
-import { Game } from 'src/data_objects/game';
+import { QueryObject } from '../../data_objects/queryobject';
+import { Session } from '../../data_objects/session';
+import { UserFactory } from '../../factory/userfactory';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { Region } from '../../data_objects/region';
+import { Language } from '../../data_objects/language';
+import { Game } from '../../data_objects/game';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {

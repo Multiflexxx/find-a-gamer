@@ -4,7 +4,7 @@ import { Game } from '../data_objects/game';
 import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { QueryObject } from '../data_objects/queryobject';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
+import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 
 export class QueryBuilder {
     public static createUser(registration: Registration): QueryObject {

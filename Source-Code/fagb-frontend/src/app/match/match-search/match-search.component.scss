@@ -1,0 +1,32 @@
+.ng-template {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .mat-stepper-horizontal,
+  .mat-stepper-vertical {
+    margin-top: 8px;
+    // background-color: hsla(0, 0%, 21%, 0.9);
+  }
+  
+  .mat-form-field {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  input::placeholder {
+    color: hsl(0, 0%, 71%);
+  }
+  
+  .material-icons-outlined {
+    color: hsl(0, 0%, 21%);
+  }
+  
+  .mat-flat-button {
+    margin: 1rem 0;
+  }
+  
+  .box {
+    color: hsl(0, 0%, 96%);
+    background-color: hsl(0, 0, 21%);
+  }

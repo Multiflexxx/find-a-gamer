@@ -1,7 +1,7 @@
 import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
 import { Region } from '../data_objects/region';
-import { User } from 'src/data_objects/user';
+import { User } from '../data_objects/user';
 
 export class RegionFactory {
 

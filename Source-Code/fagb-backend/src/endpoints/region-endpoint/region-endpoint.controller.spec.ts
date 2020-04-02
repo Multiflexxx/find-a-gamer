@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegionEndpointController } from './region-endpoint.controller';
+import { Region } from '../../data_objects/region';
 
 describe('RegionEndpoint Controller', () => {
   let controller: RegionEndpointController;
@@ -12,7 +13,13 @@ describe('RegionEndpoint Controller', () => {
     controller = module.get<RegionEndpointController>(RegionEndpointController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it("Should return a Regionresponse if successfull", async () => {
+    const gamesGameResponse = await controller.getAllRegionsEndpoint();
+    
+    expect(gamesGameResponse[0]).toBeInstanceOf(Region);
+  });
+
+  afterAll( () => {
+    jest.resetAllMocks();
   });
 });

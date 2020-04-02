@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { QueryObject } from 'src/data_objects/queryobject';
+import { QueryObject } from '../data_objects/queryobject';
 
 // See https://www.npmjs.com/package/mysql
 

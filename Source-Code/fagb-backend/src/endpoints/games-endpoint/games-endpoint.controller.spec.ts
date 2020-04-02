@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GamesEndpointController } from './games-endpoint.controller';
+import { GameResponse } from '../../data_objects/gameresponse';
 
 describe('GamesEndpoint Controller', () => {
   let controller: GamesEndpointController;
@@ -12,7 +13,13 @@ describe('GamesEndpoint Controller', () => {
     controller = module.get<GamesEndpointController>(GamesEndpointController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it("Should return a Gameresponse if successfull", async () => {
+    const gamesGameResponse = await controller.getAllGamesEndpoint();
+    
+    expect(gamesGameResponse[0]).toBeInstanceOf(GameResponse);
+  });
+
+  afterAll( () => {
+    jest.resetAllMocks();
   });
 });

@@ -1,8 +1,8 @@
-import { MatchMakingRequest } from "src/data_objects/matchmakingrequest";
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
-import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
-import { GameResponse } from "src/data_objects/gameresponse";
-import { Game } from "src/data_objects/game";
+import { MatchMakingRequest } from "../data_objects/matchmakingrequest";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
+import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
+import { GameResponse } from "../data_objects/gameresponse";
+import { Game } from "../data_objects/game";
 import { v4 as uuidv4 } from 'uuid';
 import { UserFactory } from "./userfactory";
 

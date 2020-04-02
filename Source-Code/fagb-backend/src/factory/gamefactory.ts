@@ -1,9 +1,9 @@
-import { Game } from "src/data_objects/game";
-import { User } from "src/data_objects/user";
-import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
+import { Game } from "../data_objects/game";
+import { User } from "../data_objects/user";
+import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
 import { UserGamePairFactory } from "./usergamepairfactory";
-import { QueryObject } from "src/data_objects/queryobject";
+import { QueryObject } from "../data_objects/queryobject";
 export class GameFactory {
     // public static async getGamesForUser(user: User): Game[] {
     //     let c = new ConnectToDatabaseService();
