@@ -41,7 +41,7 @@ export class MatchFactory {
             // Successfully created MatchMakingRequest
             // Now try to create a Match for that Game
 
-            MatchFactory.createMatch(matchMakingRequest.game_id, result.region, matchMakingRequest.casual);
+            await MatchFactory.createMatch(matchMakingRequest.game_id, result.region, matchMakingRequest.casual);
         });
     }
 
@@ -285,6 +285,9 @@ export class MatchFactory {
         return new Promise(async function (resolve, reject) {
             let query = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
             let result;
+            console.log("MATCHFACTORY");
+            console.log(query);
+            console.log(match_id);
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 result = callbackValue;
             }, function (callbackValue) {
@@ -294,6 +297,7 @@ export class MatchFactory {
 
             // Check if we got an result containing at least to Elements (at least two are needed for a match)
             if (!result || !result[0] || !result[1]) {
+                console.log(result);
                 console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
                 reject(false);
                 return;
@@ -324,6 +328,9 @@ export class MatchFactory {
                 reject("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
                 return;
             }
+
+            console.log("Result in getMatchMakingRequestByRequestId");
+            console.log(result);
 
             resolve(new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id))
 

@@ -144,8 +144,8 @@ export class GameFactory {
             let game;
             await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
                 game = callbackValue;
-                console.log("callbackValue in getGameById");
-                console.log(callbackValue);
+                // console.log("callbackValue in getGameById");
+                // console.log(callbackValue);
             }, function(callbackValue) {
                 console.error("GameFactory getGameById(): Couldn't get game");
                 console.error("callbackValue");
