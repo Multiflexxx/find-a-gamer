@@ -50,8 +50,8 @@ export class MatchService {
 
   notifyMatch(request_id): Observable<any> {
     let notifyMatch = new NotifyMatch(request_id);
-    // let subscription: Subscription;
-    // let  source = interval(5000);
+    let subscription: Subscription;
+    let  source = interval(5000);
     return this.http.post<any>(this.urlN, notifyMatch);
   }
 
