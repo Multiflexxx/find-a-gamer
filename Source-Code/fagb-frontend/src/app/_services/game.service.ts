@@ -12,7 +12,7 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  getGame(): Observable<GameResponse[]> {
+  public getGame(): Observable<GameResponse[]> {
     return this.http.get<GameResponse[]>(this.url);
   }
 }

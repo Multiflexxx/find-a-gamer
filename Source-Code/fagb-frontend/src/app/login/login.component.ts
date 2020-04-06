@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ControlContainer, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../_services/authentication.service';
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     event.preventDefault();
   }
 
-  createForm() {
+  createForm(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onLoginSubmit() {
+  onLoginSubmit(): void {
     this.loading = true;
     this.authenticationService.login(this.loginValue).subscribe(
       (data) => {

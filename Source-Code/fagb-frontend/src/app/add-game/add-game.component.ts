@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { GameService } from '../_services';
+import { GameResponse } from '../data_objects/gameresponse';
 
 @Component({
   selector: 'app-add-game',
@@ -11,8 +12,8 @@ import { GameService } from '../_services';
 export class AddGameComponent implements OnInit {
   @Input() gameForm: FormGroup;
 
-  gameList = [];
-  searchedGameList = [];
+  public gameList: Array<GameResponse> = [];
+  public searchedGameList: Array<GameResponse> = [];
 
   private searchTerm: string = "";
 
@@ -26,12 +27,12 @@ export class AddGameComponent implements OnInit {
   ngOnInit(): void {
     this.gameService.getGame()
       .subscribe(g => this.gameList = g);
-
+    
     this.gameService.getGame()
       .subscribe(g => this.searchedGameList = g);
   }
 
-  onKey(event: any) {
+  onKey(event: any) { // without type info @https://angular.io/guide/user-input
     this.searchTerm = event.target.value;
     this.searchedGameList = this.searchGame(this.searchTerm);
   }
@@ -41,32 +42,31 @@ export class AddGameComponent implements OnInit {
       g.game.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
   }
 
-  addGame(id, name): void {
-    // Array starts by index 0 
-    id = id;
+  addGame(id: number, name: string): void {
+    // id = id;
     this.isSelected[id] = !this.isSelected[id];
     this.createTag(id, name);
   }
 
-  createTag(id, name): void {
+  createTag(id: number, name: string): void {
     let index: number = this.selectedGames.indexOf(id);
     if (index == -1) {
       // Add game id to array
       this.selectedGames.push(id);
 
       // Create tag-component
-      var control = document.createElement("DIV");
+      let control: HTMLElement = document.createElement("DIV");
       control.classList.add("control");
       control.id = "gametag" + id;
 
-      var tags = document.createElement("DIV");
+      let tags: HTMLElement = document.createElement("DIV");
       tags.classList.add("tags", "are-small", "has-addons");
 
-      var span = document.createElement("SPAN");
+      let span: HTMLElement = document.createElement("SPAN");
       span.classList.add("tag", "is-link");
-      var text = document.createTextNode(name);
+      let text: Text = document.createTextNode(name);
 
-      var adelete = document.createElement("A");
+      let adelete: HTMLElement = document.createElement("A");
       adelete.classList.add("tag", "is-delete");
       adelete.addEventListener("click", (e: Event) => this.addGame(id, name))
 
