@@ -10,82 +10,82 @@ import { GameResponse } from '../data_objects/gameresponse';
   styleUrls: ['./add-game.component.scss']
 })
 export class AddGameComponent implements OnInit {
-  @Input() gameForm: FormGroup;
+  @Input() public gameForm: FormGroup;
 
   public gameList: Array<GameResponse> = [];
   public searchedGameList: Array<GameResponse> = [];
 
-  private searchTerm: string = "";
-
   public isSelected: Array<boolean> = [];
   public selectedGames: Array<number> = [];
-  public selectedGamesString: String;
+  public selectedGamesString: string;
+
+  private searchTerm: string = '';
 
 
-  constructor(private gameService: GameService) { }
+  public constructor(private gameService: GameService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.gameService.getGame()
       .subscribe(g => this.gameList = g);
-    
+
     this.gameService.getGame()
       .subscribe(g => this.searchedGameList = g);
   }
 
-  onKey(event: any) { // without type info @https://angular.io/guide/user-input
+  public onKey(event: any): void { // without type info @https://angular.io/guide/user-input
     this.searchTerm = event.target.value;
     this.searchedGameList = this.searchGame(this.searchTerm);
   }
 
-  searchGame(searchString: string) {
+  public searchGame(searchString: string): Array<GameResponse> {
     return this.gameList.filter(g =>
       g.game.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
   }
 
-  addGame(id: number, name: string): void {
+  public addGame(id: number, name: string): void {
     // id = id;
     this.isSelected[id] = !this.isSelected[id];
     this.createTag(id, name);
   }
 
-  createTag(id: number, name: string): void {
-    let index: number = this.selectedGames.indexOf(id);
-    if (index == -1) {
+  public createTag(id: number, name: string): void {
+    const index: number = this.selectedGames.indexOf(id);
+    if (index === -1) {
       // Add game id to array
       this.selectedGames.push(id);
 
       // Create tag-component
-      let control: HTMLElement = document.createElement("DIV");
-      control.classList.add("control");
-      control.id = "gametag" + id;
+      const control: HTMLElement = document.createElement('DIV');
+      control.classList.add('control');
+      control.id = 'gametag' + id;
 
-      let tags: HTMLElement = document.createElement("DIV");
-      tags.classList.add("tags", "are-small", "has-addons");
+      const tags: HTMLElement = document.createElement('DIV');
+      tags.classList.add('tags', 'are-small', 'has-addons');
 
-      let span: HTMLElement = document.createElement("SPAN");
-      span.classList.add("tag", "is-link");
-      let text: Text = document.createTextNode(name);
+      const span: HTMLElement = document.createElement('SPAN');
+      span.classList.add('tag', 'is-link');
+      const text: Text = document.createTextNode(name);
 
-      let adelete: HTMLElement = document.createElement("A");
-      adelete.classList.add("tag", "is-delete");
-      adelete.addEventListener("click", (e: Event) => this.addGame(id, name))
+      const adelete: HTMLElement = document.createElement('A');
+      adelete.classList.add('tag', 'is-delete');
+      adelete.addEventListener('click', (e: Event) => this.addGame(id, name));
 
       span.appendChild(text);
       tags.appendChild(span);
       tags.appendChild(adelete);
       control.appendChild(tags);
 
-      document.getElementById("gametags").appendChild(control);
+      document.getElementById('gametags').appendChild(control);
 
-      if (this.selectedGames.length == 1) {
-        document.getElementById("gametag").style.display = "none";
+      if (this.selectedGames.length === 1) {
+        document.getElementById('gametag').style.display = 'none';
       }
     } else {
       // Remove game id from array
       this.selectedGames.splice(index, 1);
-      document.getElementById("gametag" + id).remove();
-      if (this.selectedGames.length == 0) {
-        document.getElementById("gametag").style.display = "inherit";
+      document.getElementById('gametag' + id).remove();
+      if (this.selectedGames.length === 0) {
+        document.getElementById('gametag').style.display = 'inherit';
       }
     }
     this.selectedGamesString = JSON.stringify(this.selectedGames);

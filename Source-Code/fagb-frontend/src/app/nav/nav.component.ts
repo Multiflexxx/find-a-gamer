@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LoginComponent } from '../login/login.component';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../_services'
+import { AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-nav',
@@ -11,15 +11,15 @@ import { AuthenticationService } from '../_services'
 })
 export class NavComponent implements OnInit {
 
-  @Input() login: LoginComponent;
+  @Input() public login: LoginComponent;
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
+  public constructor(private authenticationService: AuthenticationService, private router: Router) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
-  onLogout() {
+  public onLogout(): void {
     this.authenticationService.logout();
     this.router.navigate(['']);
   }

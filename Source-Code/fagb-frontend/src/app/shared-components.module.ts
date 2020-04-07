@@ -15,7 +15,7 @@ import { AddGameComponent } from './add-game/add-game.component';
     CommonModule,
     ReactiveFormsModule,
     MaterialModule
-  ], 
+  ],
   exports: [
     AddGameComponent
   ]

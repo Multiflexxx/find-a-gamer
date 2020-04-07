@@ -1,4 +1,4 @@
-import { Registration } from "./registration";
+import { Registration } from './registration';
 
 export class Game {
     public game_id: number;

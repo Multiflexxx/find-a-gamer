@@ -12,28 +12,28 @@ import { ToastrService, ToastContainerDirective  } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
-  hide: boolean = true;
-  loading: boolean = false;
+  public loginForm: FormGroup;
+  public hide: boolean = true;
+  public loading: boolean = false;
 
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.createForm();
   }
 
-  hidePw(event): void {
+  public hidePw(event: any): void { // without type info @https://angular.io/guide/user-input
     this.hide = !this.hide;
     event.preventDefault();
   }
 
-  createForm(): void {
+  public createForm(): void {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onLoginSubmit(): void {
+  public onLoginSubmit(): void {
     this.loading = true;
     this.authenticationService.login(this.loginValue).subscribe(
       (data) => {
@@ -58,6 +58,6 @@ export class LoginComponent implements OnInit {
         console.log(error.error.error);
         this.toastrService.error(error.error.error, 'Login failed');
       }
-    )
+    );
   }
 }

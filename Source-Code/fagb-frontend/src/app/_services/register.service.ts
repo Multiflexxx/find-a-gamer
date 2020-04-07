@@ -11,34 +11,40 @@ import { Session } from '../data_objects/session';
 import { CookieService } from 'ngx-cookie-service';
 
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  url = 'http://localhost:3000/registrationendpoint';
+  public url: string = 'http://localhost:3000/registrationendpoint';
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  public constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  register(profileData, gameData) {
-    var games: Array<Game> = [];
+  public register(profileData, gameData): Observable<Session> {
+    const games: Array<Game> = [];
     console.log(gameData.game.value);
-    var gameids: Array<number> = JSON.parse(gameData.game.value);
-    for (let i = 0; i < gameids.length; i++) {
-      games.push(new Game(gameids[i]));
+    const gameids: Array<number> = JSON.parse(gameData.game.value);
+    for (const gameid of gameids) {
+      games.push(new Game(gameid));
     }
-
-    var langs: Array<Language> = [];
+    // for (let i = 0; i < gameids.length; i++) {
+    //   games.push(new Game(gameids[i]));
+    // }
+    const langs: Array<Language> = [];
     console.log(profileData.lang.value);
-    var langids: Array<number> = profileData.lang.value;
-    for (let i = 0; i < langids.length; i++) {
-      langs.push(new Language(langids[i]));
+    const langids: Array<number> = profileData.lang.value;
+    for (const langid of langids) {
+      langs.push(new Language(langid));
     }
+    // for (let i = 0; i < langids.length; i++) {
+    //   langs.push(new Language(langids[i]));
+    // }
 
-    var region: Region = new Region(profileData.region.value);
+    const region: Region = new Region(profileData.region.value);
 
-    var registration: Registration = new Registration(
+    const registration: Registration = new Registration(
       profileData.email.value,
       profileData.password.value,
       profileData.name.value,
@@ -49,7 +55,7 @@ export class RegisterService {
       games
     );
 
-    registration.birthdate.toJSON;
+    // registration.birthdate.toJSON;
     console.log(registration);
     console.log(JSON.stringify(registration));
 
@@ -57,6 +63,6 @@ export class RegisterService {
       .pipe(map(regGamer => {
         this.cookieService.set('gamer', regGamer.session_id);
         return regGamer;
-      }))
+      }));
   }
 }

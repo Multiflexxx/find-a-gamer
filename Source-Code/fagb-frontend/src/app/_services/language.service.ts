@@ -10,9 +10,9 @@ import { Language } from '../data_objects/language';
 export class LanguageService {
   private url: string = 'http://localhost:3000/languagesendpoint';
 
-  constructor(private http: HttpClient) { }
+  public constructor(private http: HttpClient) { }
 
-  getLanguage(): Observable<Language[]> {
+  public getLanguage(): Observable<Language[]> {
     return this.http.get<Language[]>(this.url);
   }
 

@@ -14,19 +14,19 @@ const appRoutes: Routes = [
   //   component: ProfileComponent,
   // },
   {
-    path: 'login', 
+    path: 'login',
     component: LoginComponent
   },
   {
-    path: 'register', 
+    path: 'register',
     component: RegisterComponent
   },
   {
-    path: '', 
+    path: '',
     component: LandingPageComponent
   },
   {
-    path: '**', 
+    path: '**',
     redirectTo: ''
   }
 ];

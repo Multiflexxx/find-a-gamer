@@ -11,6 +11,8 @@ import { gameValidator } from '../shared/game-validator.directive';
 
 import { RegisterService, RegionService, LanguageService } from '../_services';
 import { AuthenticationService } from '../_services/authentication.service';
+import { Region } from '../data_objects/region';
+import { Language } from '../data_objects/language';
 
 @Component({
   selector: 'app-register',
@@ -22,33 +24,33 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class RegisterComponent implements OnInit {
   // Stepper values
-  isEditable = false;
-  hideP = true;
-  hidePv = true;
+  public isEditable: boolean = false;
+  public hideP: boolean = true;
+  public hidePv: boolean = true;
 
   // ReactiveForms
-  profileForm: FormGroup;
-  gameForm: FormGroup;
+  public profileForm: FormGroup;
+  public gameForm: FormGroup;
 
-  profileData;
-  gameData;
+  public profileData;
+  public gameData;
 
   // Datepicker values
-  public startDate = new Date(2000, 0, 1);
+  public startDate: Date = new Date(2000, 0, 1);
   public minDate: Date;
   public maxDate: Date;
 
   // RegExp
-  regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
-  strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+  public regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
+  public strongRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+  public mediumRegex: RegExp = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
 
   // Backend input
-  regionList = [];
-  langList = [];
+  public regionList: Array<Region> = [];
+  public langList: Array<Language> = [];
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
@@ -62,17 +64,17 @@ export class RegisterComponent implements OnInit {
     this.maxDate = new Date(currentYear - 6, 11, 31);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.createForm();
 
     this.regionService.getRegions()
       .subscribe(r => this.regionList = r);
 
-      this.languageService.getLanguage()
+    this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
   }
 
-  createForm() {
+  public createForm(): void {
     this.profileForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       tag: ['', [Validators.required, Validators.pattern(this.regDisTag)]],
@@ -101,59 +103,57 @@ export class RegisterComponent implements OnInit {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
 
-  hidePw(event): void {
+  public hidePw(event: any): void { // without type info @https://angular.io/guide/user-input
     this.hideP = !this.hideP;
     event.preventDefault();
   }
 
-  hidePwV(event): void {
+  public hidePwV(event: any): void { // without type info @https://angular.io/guide/user-input
     this.hidePv = !this.hidePv;
     event.preventDefault();
   }
 
   public isStrong(controlName: string): number {
     let strenght = -1;
-    let pw = this.profileForm.controls[controlName].value;
+    const pw = this.profileForm.controls[controlName].value;
     if (this.strongRegex.test(pw)) {
       strenght = 2;
     } else if (this.mediumRegex.test(pw)) {
       strenght = 1;
-    } else if (pw != "") {
+    } else if (pw !== '') {
       strenght = 0;
     }
     return strenght;
   }
 
-  onProfileSubmit() {
-    this.profileData = this.profileValue
+  public onProfileSubmit(): void {
+    this.profileData = this.profileValue;
     console.log(this.profileValue);
   }
 
-  onGameSubmit() {
-    this.gameData = this.gameValue
+  public onGameSubmit(): void {
+    this.gameData = this.gameValue;
     console.log(this.gameData);
     this.onSubmit();
   }
 
 
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.registerService.register(this.profileData, this.gameData).subscribe(
-      (data)=>{
-        console.log(data);
-        console.log(data.session_id);
+      (data) => {
         this.authenticationService.loginS().subscribe(
-          (data) => {
-            console.log(data);
+          (dataL) => {
+            console.log(dataL);
             this.router.navigate(['/profile']);
           },
           (error) => {
             console.log(error.error.error);
-          })
+          });
       },
-      (error)=>{
-        console.log("Shit");
+      (error) => {
+        console.log(error.error.error);
       }
-    )
+    );
   }
 }

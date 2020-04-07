@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { gameValidator } from 'src/app/shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
-import { MatchService } from '../../_services'; 
+import { MatchService } from '../../_services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,19 +16,19 @@ import { Router } from '@angular/router';
 })
 export class MatchSearchComponent implements OnInit {
   // Stepper values
-  isEditable = false;
+  public isEditable: boolean = false;
 
 
   // ReactiveForms
-  gameForm: FormGroup;
-  matchFilterForm: FormGroup;
+  public gameForm: FormGroup;
+  public matchFilterForm: FormGroup;
 
-  gameData;
-  filterData;
+  public gameData;
+  public filterData;
 
   // Backend input
-  playerList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  playstyleList = [
+  public playerList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  public playstyleList = [
     {
       name: 'Casual',
       value: 'true'
@@ -39,18 +39,18 @@ export class MatchSearchComponent implements OnInit {
     }
   ];
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
-    
+
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.createForm();
   }
 
-  createForm() {
+  public createForm(): void {
     this.gameForm = this.formBuilder.group({
       game: ['', [Validators.required, gameValidator()]]
     });
@@ -74,18 +74,18 @@ export class MatchSearchComponent implements OnInit {
     return this.matchFilterForm.controls;
   }
 
-  onMatchGameSubmit() {
+  public onMatchGameSubmit(): void {
     this.gameData = this.gameValue;
     console.log(this.gameData);
   }
 
-  onMatchFilterSubmit() {
+  public onMatchFilterSubmit(): void {
     this.filterData = this.filterValue;
     console.log(this.filterData);
     this.onSubmit();
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.matchService.searchMatch(this.gameData, this.filterData).subscribe(
       (data) => {
         console.log(data);
@@ -93,9 +93,9 @@ export class MatchSearchComponent implements OnInit {
         this.router.navigate(['/match-process']);
       },
       (error) => {
-        console.log("Nein!");
+        console.log('Nein!');
         console.log(error.error.error);
       }
-    )
+    );
   }
 }

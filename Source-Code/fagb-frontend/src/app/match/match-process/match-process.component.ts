@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../../_services';
 import { Router } from '@angular/router';
 
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-match-process',
@@ -14,13 +14,13 @@ export class MatchProcessComponent implements OnInit {
   public matchData: any;
 
   private subscription: Subscription;
-  private i = interval(1000);
+  private i: Observable<number> = interval(1000);
 
-  constructor(
+  public constructor(
     private matchService: MatchService,
     private router: Router, ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.matchData = JSON.parse(localStorage.getItem('matchRequest'));
     console.log(this.matchData);
     console.log(this.matchData.matchmaking_request.request_id);
@@ -37,10 +37,10 @@ export class MatchProcessComponent implements OnInit {
             }
           },
           (error) => {
-            console.log("Nein!");
+            console.log('Nein!');
             console.log(error.error.error);
           }
-        )
+        );
       }
     );
   }

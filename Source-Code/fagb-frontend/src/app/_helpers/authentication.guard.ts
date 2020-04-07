@@ -10,38 +10,38 @@ import { Login } from '../data_objects/login';
 })
 export class AuthenticationGuard implements CanActivate {
 
-  constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
+  public constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
-    
+  public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const url: string = state.url;
+
     console.log(url);
-    if (url == 'login') {
+    if (url === 'login') {
       return !this.checkLogin(url);
     }
 
     return this.checkLogin(url);
   }
 
-  canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(next, state);
   }
 
-  canLoad(route: Route): boolean {
-    let url = '/${route.path}'
+  public canLoad(route: Route): boolean {
+    const url = '/${route.path}';
 
     return this.checkLogin(url);
   }
 
-  checkLogin(url: string): boolean {
+  public checkLogin(url: string): boolean {
     if (this.authenticationService.isLoggedIn) {
       return true;
     }
 
     this.authenticationService.redirectUrl = url;
-    let sessionId = this.cookieService.get('gamer');
+    const sessionId = this.cookieService.get('gamer');
 
-    if (sessionId == "" || null) {
+    if (sessionId === '' || null) {
       this.router.navigate(['/login']);
       return false;
     }
@@ -54,7 +54,7 @@ export class AuthenticationGuard implements CanActivate {
         this.router.navigate(['/login']);
         console.log(error.error.error);
       }
-    )
+    );
     return false;
   }
 
