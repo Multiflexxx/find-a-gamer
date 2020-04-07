@@ -30,6 +30,7 @@
             "styles": [
               "./node_modules/bulma/css/bulma.min.css",
               "src/mat-theme-fagb.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -99,6 +100,7 @@
             "styles": [
               "./node_modules/bulma/css/bulma.min.css",
               "src/mat-theme-fagb.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
             "scripts": [

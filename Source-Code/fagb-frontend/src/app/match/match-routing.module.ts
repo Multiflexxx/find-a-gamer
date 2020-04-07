@@ -20,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'match-success',
-    // canActivate: [AuthenticationGuard],
+    canActivate: [AuthenticationGuard],
     component: MatchSuccessComponent
   }
 ];

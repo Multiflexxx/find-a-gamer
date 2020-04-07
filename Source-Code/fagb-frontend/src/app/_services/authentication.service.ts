@@ -4,17 +4,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CookieService } from 'ngx-cookie-service';
-
 import { Login } from '../data_objects/login'
 import { PublicUser } from '../data_objects/publicuser'
+import { LoginResponse } from '../data_objects/loginresponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   private url: string = 'http://localhost:3000/loginendpoint';
-  isLoggedIn = false;
-  redirectUrl: string;
+  public isLoggedIn: boolean = false;
+  public redirectUrl: string;
 
   private currentGamerSubject: BehaviorSubject<PublicUser>;
   public currentGamer: Observable<PublicUser>;
@@ -30,9 +30,8 @@ export class AuthenticationService {
 
   login(loginValue) {
     console.log(loginValue);
-    let login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
-    console.log(login);
-    return this.http.post<any>(this.url, login)
+    let login: Login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
+    return this.http.post<LoginResponse>(this.url, login)
       .pipe(map(data => {
         if (data && data.successful) {
           let expiration: Date = null;
@@ -57,10 +56,10 @@ export class AuthenticationService {
   }
 
   loginS() {
-    let sessionId = this.cookieService.get('gamer');
+    let sessionId: string = this.cookieService.get('gamer');
     let loginS: Login = new Login(sessionId);
 
-    return this.http.post<any>(this.url, loginS)
+    return this.http.post<LoginResponse>(this.url, loginS)
       .pipe(map(data => {
         if (data && data.successful) {
           this.isLoggedIn = true;
@@ -75,8 +74,6 @@ export class AuthenticationService {
               data.user.languages)
           );
         }
-        console.log(data);
-        console.log(this.currentGamerValue);
         return data;
       }))
   }
