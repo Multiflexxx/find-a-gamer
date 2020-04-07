@@ -10,7 +10,7 @@ import { GameResponse } from '../data_objects/gameresponse';
 export class GameService {
   private url: string = 'http://localhost:3000/gamesendpoint';
 
-  constructor(private http: HttpClient) { }
+  public constructor(private http: HttpClient) { }
 
   public getGame(): Observable<GameResponse[]> {
     return this.http.get<GameResponse[]>(this.url);

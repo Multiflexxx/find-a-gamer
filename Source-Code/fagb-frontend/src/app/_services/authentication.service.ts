@@ -23,12 +23,12 @@ export class AuthenticationService {
 
   private currentGamerSubject: BehaviorSubject<PublicUser>;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
+  public constructor(private http: HttpClient, private cookieService: CookieService) {
     this.currentGamerSubject = new BehaviorSubject<PublicUser>(null);
     this.currentGamer = this.currentGamerSubject.asObservable();
   }
 
-  login(loginValue): Observable<LoginResponse> {
+  public login(loginValue): Observable<LoginResponse> {
     console.log(loginValue);
     const login: Login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
     return this.http.post<LoginResponse>(this.url, login)
@@ -55,7 +55,7 @@ export class AuthenticationService {
       }));
   }
 
-  loginS(): Observable<LoginResponse> {
+  public loginS(): Observable<LoginResponse> {
     const sessionId: string = this.cookieService.get('gamer');
     const loginS: Login = new Login(sessionId);
 
@@ -78,7 +78,7 @@ export class AuthenticationService {
       }));
   }
 
-  logout(): void {
+  public logout(): void {
     this.cookieService.delete('gamer');
     this.isLoggedIn = false;
     this.currentGamerSubject.next(null);

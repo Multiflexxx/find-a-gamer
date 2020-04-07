@@ -10,10 +10,10 @@ import { PublicUser } from './data_objects/publicuser';
 })
 export class AppComponent {
 
-  title = 'FAGB';
-  currentGamer: PublicUser;
+  public title: string = 'FAGB';
+  public currentGamer: PublicUser;
 
-  constructor(private authenticationService: AuthenticationService) {
+  public constructor(private authenticationService: AuthenticationService) {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
 }

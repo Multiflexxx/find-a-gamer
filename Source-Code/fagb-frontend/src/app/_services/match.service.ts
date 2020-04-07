@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { AuthenticationService } from '../_services';
+import { AuthenticationService } from '../_services/authentication.service';
 import { CookieService } from 'ngx-cookie-service';
 
 import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 import { PublicUser } from '../data_objects/publicuser';
 import { Game } from '../data_objects/game';
-
 import { NotifyMatch } from '../data_objects/notifymatch';
-import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class MatchService {
   // Game
   private currentMatchGameSubject: BehaviorSubject<Game>;
 
-  constructor(
+  public constructor(
     private http: HttpClient,
     private cookieService: CookieService,
     private authenticationService: AuthenticationService
@@ -42,7 +42,7 @@ export class MatchService {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
 
-  searchMatch(gameData, filterData): Observable<any> {
+  public searchMatch(gameData, filterData): Observable<any> {
     const sessionId = this.cookieService.get('gamer');
     const requestMatch = new MatchMakingRequest(
       sessionId,
@@ -58,7 +58,7 @@ export class MatchService {
     return this.http.post<any>(this.urlS, requestMatch);
   }
 
-  notifyMatch(requestId: number): Observable<any> {
+  public notifyMatch(requestId: number): Observable<any> {
     const notifyMatch = new NotifyMatch(requestId);
     return this.http.post<any>(this.urlN, notifyMatch)
       .pipe(map(data => {

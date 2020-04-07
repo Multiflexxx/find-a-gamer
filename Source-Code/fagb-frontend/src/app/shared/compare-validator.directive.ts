@@ -8,12 +8,13 @@ import { Subscription } from 'rxjs';
 })
 export class CompareValidatorDirective {
 
-  constructor() { }
+  public constructor() { }
 
 }
 
 export function compareValidator(controlNameToCompare: string): ValidatorFn {
-  return function(control: AbstractControl): { [key: string]: any } | null {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+  // return function(control: AbstractControl): { [key: string]: any } | null {
     if (control.value === null || control.value.lenght === 0) {
       return null;
     }

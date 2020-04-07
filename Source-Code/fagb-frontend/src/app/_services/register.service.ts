@@ -11,17 +11,18 @@ import { Session } from '../data_objects/session';
 import { CookieService } from 'ngx-cookie-service';
 
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  url: string = 'http://localhost:3000/registrationendpoint';
+  public url: string = 'http://localhost:3000/registrationendpoint';
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  public constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  register(profileData, gameData) {
+  public register(profileData, gameData): Observable<Session> {
     const games: Array<Game> = [];
     console.log(gameData.game.value);
     const gameids: Array<number> = JSON.parse(gameData.game.value);

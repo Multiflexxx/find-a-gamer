@@ -11,6 +11,8 @@ import { gameValidator } from '../shared/game-validator.directive';
 
 import { RegisterService, RegionService, LanguageService } from '../_services';
 import { AuthenticationService } from '../_services/authentication.service';
+import { Region } from '../data_objects/region';
+import { Language } from '../data_objects/language';
 
 @Component({
   selector: 'app-register',
@@ -22,33 +24,33 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class RegisterComponent implements OnInit {
   // Stepper values
-  isEditable = false;
-  hideP = true;
-  hidePv = true;
+  public isEditable: boolean = false;
+  public hideP: boolean = true;
+  public hidePv: boolean = true;
 
   // ReactiveForms
-  profileForm: FormGroup;
-  gameForm: FormGroup;
+  public profileForm: FormGroup;
+  public gameForm: FormGroup;
 
-  profileData;
-  gameData;
+  public profileData;
+  public gameData;
 
   // Datepicker values
-  public startDate = new Date(2000, 0, 1);
+  public startDate: Date = new Date(2000, 0, 1);
   public minDate: Date;
   public maxDate: Date;
 
   // RegExp
-  regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
-  strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
-  mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
+  public regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
+  public strongRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+  public mediumRegex: RegExp = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
 
   // Backend input
-  regionList = [];
-  langList = [];
+  public regionList: Array<Region> = [];
+  public langList: Array<Language> = [];
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
@@ -62,7 +64,7 @@ export class RegisterComponent implements OnInit {
     this.maxDate = new Date(currentYear - 6, 11, 31);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.createForm();
 
     this.regionService.getRegions()
@@ -72,7 +74,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(l => this.langList = l);
   }
 
-  createForm() {
+  public createForm(): void {
     this.profileForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       tag: ['', [Validators.required, Validators.pattern(this.regDisTag)]],
@@ -101,12 +103,12 @@ export class RegisterComponent implements OnInit {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
 
-  hidePw(event): void {
+  public hidePw(event: any): void { // without type info @https://angular.io/guide/user-input
     this.hideP = !this.hideP;
     event.preventDefault();
   }
 
-  hidePwV(event): void {
+  public hidePwV(event: any): void { // without type info @https://angular.io/guide/user-input
     this.hidePv = !this.hidePv;
     event.preventDefault();
   }
@@ -118,18 +120,18 @@ export class RegisterComponent implements OnInit {
       strenght = 2;
     } else if (this.mediumRegex.test(pw)) {
       strenght = 1;
-    } else if (pw != '') {
+    } else if (pw !== '') {
       strenght = 0;
     }
     return strenght;
   }
 
-  onProfileSubmit() {
+  public onProfileSubmit(): void {
     this.profileData = this.profileValue;
     console.log(this.profileValue);
   }
 
-  onGameSubmit() {
+  public onGameSubmit(): void {
     this.gameData = this.gameValue;
     console.log(this.gameData);
     this.onSubmit();
@@ -137,14 +139,12 @@ export class RegisterComponent implements OnInit {
 
 
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.registerService.register(this.profileData, this.gameData).subscribe(
       (data) => {
-        console.log(data);
-        console.log(data.session_id);
         this.authenticationService.loginS().subscribe(
-          (data) => {
-            console.log(data);
+          (dataL) => {
+            console.log(dataL);
             this.router.navigate(['/profile']);
           },
           (error) => {
@@ -152,7 +152,7 @@ export class RegisterComponent implements OnInit {
           });
       },
       (error) => {
-        console.log('Shit');
+        console.log(error.error.error);
       }
     );
   }

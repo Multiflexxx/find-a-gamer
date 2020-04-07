@@ -10,7 +10,7 @@ import { GameResponse } from '../data_objects/gameresponse';
   styleUrls: ['./add-game.component.scss']
 })
 export class AddGameComponent implements OnInit {
-  @Input() gameForm: FormGroup;
+  @Input() public gameForm: FormGroup;
 
   public gameList: Array<GameResponse> = [];
   public searchedGameList: Array<GameResponse> = [];
@@ -22,9 +22,9 @@ export class AddGameComponent implements OnInit {
   private searchTerm: string = '';
 
 
-  constructor(private gameService: GameService) { }
+  public constructor(private gameService: GameService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.gameService.getGame()
       .subscribe(g => this.gameList = g);
 
@@ -32,23 +32,23 @@ export class AddGameComponent implements OnInit {
       .subscribe(g => this.searchedGameList = g);
   }
 
-  onKey(event: any): void { // without type info @https://angular.io/guide/user-input
+  public onKey(event: any): void { // without type info @https://angular.io/guide/user-input
     this.searchTerm = event.target.value;
     this.searchedGameList = this.searchGame(this.searchTerm);
   }
 
-  searchGame(searchString: string): Array<GameResponse> {
+  public searchGame(searchString: string): Array<GameResponse> {
     return this.gameList.filter(g =>
       g.game.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
   }
 
-  addGame(id: number, name: string): void {
+  public addGame(id: number, name: string): void {
     // id = id;
     this.isSelected[id] = !this.isSelected[id];
     this.createTag(id, name);
   }
 
-  createTag(id: number, name: string): void {
+  public createTag(id: number, name: string): void {
     const index: number = this.selectedGames.indexOf(id);
     if (index === -1) {
       // Add game id to array

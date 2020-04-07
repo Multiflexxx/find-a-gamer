@@ -33,6 +33,7 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
+// tslint:disable-next-line: variable-name
 const MaterialComponents = [
   MatButtonModule,
     MatInputModule,

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService, RegionService, LanguageService } from '../../_services';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PublicUser } from 'src/app/data_objects/publicuser';
+import { Language } from 'src/app/data_objects/language';
+import { Region } from 'src/app/data_objects/region';
 
 @Component({
   selector: 'app-profile-update',
@@ -10,25 +13,25 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class ProfileUpdateComponent implements OnInit {
 
-  profileUpdateForm: FormGroup;
+  public profileUpdateForm: FormGroup;
 
-  public gamer;
+  public gamer: PublicUser;
   public lang: string;
 
-  regionList = [];
-  regionSelected: string;
-  langList = [];
-  languageSelected: string[] = [];
+  public regionList: Array<Region> = [];
+  public regionSelected: number;
+  public langList: Array<Language> = [];
+  public languageSelected: Array<number> = [];
 
 
-  constructor(
+  public constructor(
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
     private regionService: RegionService,
     private languageService: LanguageService) { }
 
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.authenticationService.currentGamer.subscribe(gamer => this.gamer = gamer);
     this.lang = this.getLanguages(this.gamer.languages);
     this.regionSelected = this.gamer.region.region_id;
@@ -44,7 +47,7 @@ export class ProfileUpdateComponent implements OnInit {
 
   }
 
-  getLanguages(arr): string {
+  public getLanguages(arr: Language[]): string {
     let langString: string = '';
     for (let i = 0; i < arr.length; i++) {
       langString += arr[i].name;
@@ -56,7 +59,7 @@ export class ProfileUpdateComponent implements OnInit {
     return langString;
   }
 
-  getSelectedLanguages(arr): string[] {
+  public getSelectedLanguages(arr: Array<Language>): Array<number> {
     for (let i = 0; i < arr.length; i++) {
       this.languageSelected[i] = arr[i].language_id;
 
@@ -65,7 +68,7 @@ export class ProfileUpdateComponent implements OnInit {
     return this.languageSelected;
   }
 
-  createForm() {
+  public createForm(): void {
     this.profileUpdateForm = this.formBuilder.group({
       cakeday: ['', [Validators.required]],
       region: ['', [Validators.required]],

@@ -7,12 +7,13 @@ import { NG_VALIDATORS, ValidatorFn, AbstractControl } from '@angular/forms';
 })
 export class GameValidatorDirective {
 
-  constructor() { }
+  public constructor() { }
 
 }
 
 export function gameValidator(): ValidatorFn {
-  return function(control: AbstractControl): { [key: string]: any } | null {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+  // return function(control: AbstractControl): { [key: string]: any } | null {
     let forbidden = true;
     console.log(control.value);
     if (control.value !== '[]') {

@@ -20,15 +20,15 @@ export class MatchSearchComponent implements OnInit {
 
 
   // ReactiveForms
-  gameForm: FormGroup;
-  matchFilterForm: FormGroup;
+  public gameForm: FormGroup;
+  public matchFilterForm: FormGroup;
 
-  gameData;
-  filterData;
+  public gameData;
+  public filterData;
 
   // Backend input
-  playerList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  playstyleList = [
+  public playerList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  public playstyleList = [
     {
       name: 'Casual',
       value: 'true'
@@ -39,18 +39,18 @@ export class MatchSearchComponent implements OnInit {
     }
   ];
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
 
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.createForm();
   }
 
-  createForm(): void {
+  public createForm(): void {
     this.gameForm = this.formBuilder.group({
       game: ['', [Validators.required, gameValidator()]]
     });
@@ -74,18 +74,18 @@ export class MatchSearchComponent implements OnInit {
     return this.matchFilterForm.controls;
   }
 
-  onMatchGameSubmit(): void {
+  public onMatchGameSubmit(): void {
     this.gameData = this.gameValue;
     console.log(this.gameData);
   }
 
-  onMatchFilterSubmit(): void {
+  public onMatchFilterSubmit(): void {
     this.filterData = this.filterValue;
     console.log(this.filterData);
     this.onSubmit();
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.matchService.searchMatch(this.gameData, this.filterData).subscribe(
       (data) => {
         console.log(data);

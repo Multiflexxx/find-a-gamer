@@ -55,11 +55,11 @@
   <div>
     <div class="container">
       <div class="columns is-gapless is-multiline is-mobile">
-        <div *ngFor="let item of items; let i = index" class="column is-half-tablet is-full-mobile">
+        <div *ngFor="let game of gameList; let i = index" class="column is-half-tablet is-full-mobile">
           <div *ngIf="i<6" class="card-image">
             <div class="overlay">
               <figure class="image is-2by1">
-                <img class="picture" [src]="item.img">
+                <img class="picture" [src]="game.game.cover_link">
                 <span class="text">find a game in cereal and get the best player in the world</span>
               </figure>
             </div>

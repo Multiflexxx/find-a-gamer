@@ -10,9 +10,9 @@ import { Login } from '../data_objects/login';
 })
 export class AuthenticationGuard implements CanActivate {
 
-  constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
+  public constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url: string = state.url;
 
     console.log(url);
@@ -23,17 +23,17 @@ export class AuthenticationGuard implements CanActivate {
     return this.checkLogin(url);
   }
 
-  canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(next, state);
   }
 
-  canLoad(route: Route): boolean {
+  public canLoad(route: Route): boolean {
     const url = '/${route.path}';
 
     return this.checkLogin(url);
   }
 
-  checkLogin(url: string): boolean {
+  public checkLogin(url: string): boolean {
     if (this.authenticationService.isLoggedIn) {
       return true;
     }

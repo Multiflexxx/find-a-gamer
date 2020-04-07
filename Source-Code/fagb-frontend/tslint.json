@@ -1,7 +1,12 @@
 {
   "extends": "tslint:recommended",
   "rules": {
-    "typedef": [true, "call-signature", "parameter", "member-variable-declaration"],
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "member-variable-declaration"
+    ],
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
@@ -30,9 +35,14 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      240
     ],
-    "member-access": false,
+    "member-access": [
+      true,
+      "check-accessor",
+      "check-constructor",
+      "check-parameter-property"
+    ],
     "member-ordering": [
       true,
       {
@@ -74,6 +84,12 @@
     "quotemark": [
       true,
       "single"
+    ],
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-snake-case",
+      "allow-leading-underscore"
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,
