@@ -58,6 +58,6 @@ export class LoginComponent implements OnInit {
         console.log(error.error.error);
         this.toastrService.error(error.error.error, 'Login failed');
       }
-    )
+    );
   }
 }

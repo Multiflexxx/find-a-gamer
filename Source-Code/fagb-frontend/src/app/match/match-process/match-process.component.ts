@@ -37,10 +37,10 @@ export class MatchProcessComponent implements OnInit {
             }
           },
           (error) => {
-            console.log("Nein!");
+            console.log('Nein!');
             console.log(error.error.error);
           }
-        )
+        );
       }
     );
   }

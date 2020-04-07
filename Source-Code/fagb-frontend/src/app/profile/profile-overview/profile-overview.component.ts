@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../../_services'
+import { AuthenticationService } from '../../_services';
 
 @Component({
   selector: 'app-profile-overview',
@@ -16,14 +16,14 @@ export class ProfileOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.authenticationService.currentGamer.subscribe(gamer => this.gamer = gamer);
     this.lang = this.getLanguages(this.gamer.languages);
-  } 
+  }
 
   getLanguages(arr): string {
-    let langString: string = "";
-    for(let i=0; i<arr.length; i++) {
+    let langString: string = '';
+    for (let i = 0; i < arr.length; i++) {
       langString += arr[i].name;
-      if(i < arr.length - 1) {
-        langString += ", "
+      if (i < arr.length - 1) {
+        langString += ', ';
       }
     }
     console.log(langString);

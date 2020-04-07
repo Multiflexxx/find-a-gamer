@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService, RegionService, LanguageService } from '../../_services'
+import { AuthenticationService, RegionService, LanguageService } from '../../_services';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -18,9 +18,9 @@ export class ProfileUpdateComponent implements OnInit {
   regionList = [];
   regionSelected: string;
   langList = [];
-  languageSelected: string[]=[];
+  languageSelected: string[] = [];
 
-  
+
   constructor(
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
@@ -42,26 +42,26 @@ export class ProfileUpdateComponent implements OnInit {
     this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
 
-  } 
+  }
 
   getLanguages(arr): string {
-    let langString: string = "";
-    for(let i=0; i<arr.length; i++) {
+    let langString: string = '';
+    for (let i = 0; i < arr.length; i++) {
       langString += arr[i].name;
-      if(i < arr.length - 1) {
-        langString += ", "
+      if (i < arr.length - 1) {
+        langString += ', ';
       }
     }
     console.log(langString);
     return langString;
   }
 
-  getSelectedLanguages(arr): string[]{
-    for(let i=0; i<arr.length; i++) {
-      this.languageSelected[i]=arr[i].language_id;
-      
+  getSelectedLanguages(arr): string[] {
+    for (let i = 0; i < arr.length; i++) {
+      this.languageSelected[i] = arr[i].language_id;
+
     }
-    console.log(this.languageSelected)
+    console.log(this.languageSelected);
     return this.languageSelected;
   }
 
@@ -71,7 +71,7 @@ export class ProfileUpdateComponent implements OnInit {
       region: ['', [Validators.required]],
       lang: ['', [Validators.required]],
       bio: ['', [Validators.required], [Validators.maxLength(100)]],
-    })
+    });
   }
   public hasError = (controlName: string, errorName: string) => {
     return this.profileUpdateForm.controls[controlName].hasError(errorName);

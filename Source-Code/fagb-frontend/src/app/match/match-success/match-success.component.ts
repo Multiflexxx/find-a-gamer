@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MatchService } from '../../_services'
+import { MatchService } from '../../_services';
 
 import { PublicUser } from '../../data_objects/publicuser';
 

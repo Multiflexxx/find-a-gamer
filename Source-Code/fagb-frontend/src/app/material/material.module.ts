@@ -65,7 +65,7 @@ const MaterialComponents = [
     MatPaginatorModule,
     MatNativeDateModule,
     MatCheckboxModule
-]
+];
 @NgModule({
   imports: [MaterialComponents],
   exports: [MaterialComponents]

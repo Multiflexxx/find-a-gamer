@@ -16,17 +16,17 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MatchService {
+  public currentMatchUsers: Observable<PublicUser[]>;
+  public currentMatchGame: Observable<Game>;
   private urlS: string = 'http://localhost:3000/matchmakingrequestendpoint';
   private urlN: string = 'http://localhost:3000/notifymatchendpoint';
   private currentGamer: PublicUser;
 
   // Users
   private currentMatchUsersSubject: BehaviorSubject<PublicUser[]>;
-  public currentMatchUsers: Observable<PublicUser[]>;
 
   // Game
   private currentMatchGameSubject: BehaviorSubject<Game>;
-  public currentMatchGame: Observable<Game>;
 
   constructor(
     private http: HttpClient,
@@ -43,27 +43,28 @@ export class MatchService {
   }
 
   searchMatch(gameData, filterData): Observable<any> {
-    let sessionId = this.cookieService.get('gamer');
-    let requestMatch = new MatchMakingRequest(
+    const sessionId = this.cookieService.get('gamer');
+    const requestMatch = new MatchMakingRequest(
       sessionId,
       this.currentGamer.user_id,
-      //first game_id of string array as num
+      // first game_id of string array as num
       +gameData.game.value[1],
       filterData.playerParty.value,
       filterData.playerSearch.value,
       // String to bool
-      filterData.playstyle.value == "true" ? true : false
+      filterData.playstyle.value === 'true' ? true : false
     );
     console.log(requestMatch);
     return this.http.post<any>(this.urlS, requestMatch);
   }
 
-  notifyMatch(request_id): Observable<any> {
-    let notifyMatch = new NotifyMatch(request_id);
+  notifyMatch(requestId: number): Observable<any> {
+    const notifyMatch = new NotifyMatch(requestId);
     return this.http.post<any>(this.urlN, notifyMatch)
       .pipe(map(data => {
         if (data && !!data.users) {
-          let matchUseres: PublicUser[] = [];
+          const matchUseres: PublicUser[] = [];
+          // tslint:disable-next-line: prefer-for-of
           for (let i = 0; i < data.users.length; i++) {
             matchUseres.push(new PublicUser(
               data.users[i].user_id,
@@ -73,7 +74,7 @@ export class MatchService {
               data.users[i].region,
               null,
               null)
-            )
+            );
           }
           this.currentMatchUsersSubject.next(matchUseres);
 
@@ -89,7 +90,7 @@ export class MatchService {
           );
         }
         return data;
-      }))
+      }));
   }
 
 }

@@ -1,5 +1,5 @@
-import { Session } from "./session";
-import { PublicUser } from "./publicuser";
+import { Session } from './session';
+import { PublicUser } from './publicuser';
 
 export class LoginResponse {
     public successful: boolean;
@@ -8,7 +8,7 @@ export class LoginResponse {
 
     public constructor(successful: boolean, session?: Session, user?: PublicUser) {
         this.successful = successful;
-        if(session && user) {
+        if (session && user) {
             this.session = session;
             this.user = user;
         }

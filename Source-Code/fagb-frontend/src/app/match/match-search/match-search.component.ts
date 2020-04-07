@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { gameValidator } from 'src/app/shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
-import { MatchService } from '../../_services'; 
+import { MatchService } from '../../_services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class MatchSearchComponent implements OnInit {
   // Stepper values
-  isEditable = false;
+  public isEditable: boolean = false;
 
 
   // ReactiveForms
@@ -27,7 +27,7 @@ export class MatchSearchComponent implements OnInit {
   filterData;
 
   // Backend input
-  playerList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  playerList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   playstyleList = [
     {
       name: 'Casual',
@@ -43,14 +43,14 @@ export class MatchSearchComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
-    
+
   ) { }
 
   ngOnInit(): void {
     this.createForm();
   }
 
-  createForm() {
+  createForm(): void {
     this.gameForm = this.formBuilder.group({
       game: ['', [Validators.required, gameValidator()]]
     });
@@ -74,12 +74,12 @@ export class MatchSearchComponent implements OnInit {
     return this.matchFilterForm.controls;
   }
 
-  onMatchGameSubmit() {
+  onMatchGameSubmit(): void {
     this.gameData = this.gameValue;
     console.log(this.gameData);
   }
 
-  onMatchFilterSubmit() {
+  onMatchFilterSubmit(): void {
     this.filterData = this.filterValue;
     console.log(this.filterData);
     this.onSubmit();
@@ -93,9 +93,9 @@ export class MatchSearchComponent implements OnInit {
         this.router.navigate(['/match-process']);
       },
       (error) => {
-        console.log("Nein!");
+        console.log('Nein!');
         console.log(error.error.error);
       }
-    )
+    );
   }
 }

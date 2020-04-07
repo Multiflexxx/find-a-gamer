@@ -12,12 +12,12 @@ export class GameValidatorDirective {
 }
 
 export function gameValidator(): ValidatorFn {
-  return function (control: AbstractControl): { [key: string]: any } | null {
+  return function(control: AbstractControl): { [key: string]: any } | null {
     let forbidden = true;
     console.log(control.value);
-    if (control.value !== "[]") {
+    if (control.value !== '[]') {
       forbidden = false;
     }
-    return forbidden ? { 'forbiddenGame': { value: control.value } } : null;
+    return forbidden ? { forbiddenGame: { value: control.value } } : null;
   };
 }

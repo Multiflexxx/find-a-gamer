@@ -12,7 +12,7 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
   imports: [
     CommonModule,
     ProfileRoutingModule,
-    MaterialModule  
+    MaterialModule
   ]
 })
 export class ProfileModule { }

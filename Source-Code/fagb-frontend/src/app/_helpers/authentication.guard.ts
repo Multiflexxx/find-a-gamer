@@ -13,10 +13,10 @@ export class AuthenticationGuard implements CanActivate {
   constructor(private authenticationService: AuthenticationService, private router: Router, private cookieService: CookieService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
-    
+    const url: string = state.url;
+
     console.log(url);
-    if (url == 'login') {
+    if (url === 'login') {
       return !this.checkLogin(url);
     }
 
@@ -28,7 +28,7 @@ export class AuthenticationGuard implements CanActivate {
   }
 
   canLoad(route: Route): boolean {
-    let url = '/${route.path}'
+    const url = '/${route.path}';
 
     return this.checkLogin(url);
   }
@@ -39,9 +39,9 @@ export class AuthenticationGuard implements CanActivate {
     }
 
     this.authenticationService.redirectUrl = url;
-    let sessionId = this.cookieService.get('gamer');
+    const sessionId = this.cookieService.get('gamer');
 
-    if (sessionId == "" || null) {
+    if (sessionId === '' || null) {
       this.router.navigate(['/login']);
       return false;
     }
@@ -54,7 +54,7 @@ export class AuthenticationGuard implements CanActivate {
         this.router.navigate(['/login']);
         console.log(error.error.error);
       }
-    )
+    );
     return false;
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LoginComponent } from '../login/login.component';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../_services'
+import { AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-nav',

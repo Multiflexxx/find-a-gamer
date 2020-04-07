@@ -13,7 +13,7 @@ export class CompareValidatorDirective {
 }
 
 export function compareValidator(controlNameToCompare: string): ValidatorFn {
-  return function (control: AbstractControl): { [key: string]: any } | null {
+  return function(control: AbstractControl): { [key: string]: any } | null {
     if (control.value === null || control.value.lenght === 0) {
       return null;
     }
@@ -25,6 +25,6 @@ export function compareValidator(controlNameToCompare: string): ValidatorFn {
         subscription.unsubscribe();
       });
     }
-      return (controlToCompare && (controlToCompare.value !== control.value)) ? { 'compare': true } : null;
+    return (controlToCompare && (controlToCompare.value !== control.value)) ? { compare: true } : null;
     };
   }

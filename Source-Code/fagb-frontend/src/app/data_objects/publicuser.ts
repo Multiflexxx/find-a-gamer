@@ -1,6 +1,6 @@
-import { Region } from "./region";
-import { Game } from "./game";
-import { Language } from "./language";
+import { Region } from './region';
+import { Game } from './game';
+import { Language } from './language';
 
 export class PublicUser {
     public user_id: number;

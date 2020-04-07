@@ -40,8 +40,8 @@ export class RegisterComponent implements OnInit {
 
   // RegExp
   regDisTag: string = '[a-zA-Z0-9]{2,32}#[0-9]{4}';
-  strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+  strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+  mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
 
   // Backend input
@@ -68,7 +68,7 @@ export class RegisterComponent implements OnInit {
     this.regionService.getRegions()
       .subscribe(r => this.regionList = r);
 
-      this.languageService.getLanguage()
+    this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
   }
 
@@ -113,24 +113,24 @@ export class RegisterComponent implements OnInit {
 
   public isStrong(controlName: string): number {
     let strenght = -1;
-    let pw = this.profileForm.controls[controlName].value;
+    const pw = this.profileForm.controls[controlName].value;
     if (this.strongRegex.test(pw)) {
       strenght = 2;
     } else if (this.mediumRegex.test(pw)) {
       strenght = 1;
-    } else if (pw != "") {
+    } else if (pw != '') {
       strenght = 0;
     }
     return strenght;
   }
 
   onProfileSubmit() {
-    this.profileData = this.profileValue
+    this.profileData = this.profileValue;
     console.log(this.profileValue);
   }
 
   onGameSubmit() {
-    this.gameData = this.gameValue
+    this.gameData = this.gameValue;
     console.log(this.gameData);
     this.onSubmit();
   }
@@ -139,7 +139,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     this.registerService.register(this.profileData, this.gameData).subscribe(
-      (data)=>{
+      (data) => {
         console.log(data);
         console.log(data.session_id);
         this.authenticationService.loginS().subscribe(
@@ -149,11 +149,11 @@ export class RegisterComponent implements OnInit {
           },
           (error) => {
             console.log(error.error.error);
-          })
+          });
       },
-      (error)=>{
-        console.log("Shit");
+      (error) => {
+        console.log('Shit');
       }
-    )
+    );
   }
 }

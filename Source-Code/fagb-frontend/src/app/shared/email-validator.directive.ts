@@ -14,13 +14,13 @@ export class EmailValidatorDirective {
 
 export function emailValidator(): ValidatorFn {
   // return (control: AbstractControl): {[key: string]: any} | null => {
-  return function (control: AbstractControl): { [key: string]: any } | null {
+  return function(control: AbstractControl): { [key: string]: any } | null {
     let forbidden;
-    if (!EmailValidator.validate(control.value) && control.value !== "") {
+    if (!EmailValidator.validate(control.value) && control.value !== '') {
       forbidden = true;
     } else {
       forbidden = false;
     }
-    return forbidden ? { 'forbiddenEmail': { value: control.value } } : null;
+    return forbidden ? { forbiddenEmail: { value: control.value } } : null;
   };
 }
