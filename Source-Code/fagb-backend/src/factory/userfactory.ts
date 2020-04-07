@@ -456,7 +456,19 @@ export class UserFactory {
                 return;
             }
 
-            resolve(new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography, result.region_id));
+            let user;
+            await UserFactory.getUserByEmail(result.email).then(function(callbackValue) {
+                user = callbackValue;
+            }, function(callbackValue) {
+                console.error("UserFactory getUserByUserId: Couldn't get User by Email");
+                reject(callbackValue)
+            });
+
+            if(!user) {
+                return;
+            }
+
+            resolve(user);
         });
 
     }
