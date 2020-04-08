@@ -5,44 +5,42 @@ import { GameResponse } from "../data_objects/gameresponse";
 import { Game } from "../data_objects/game";
 import { v4 as uuidv4 } from 'uuid';
 import { UserFactory } from "./userfactory";
+import { QueryObject } from "src/data_objects/queryobject";
+import { match } from "assert";
+import { UploadedFile } from "@nestjs/common";
+import { throwError } from "rxjs";
+import { User } from "src/data_objects/user";
 
 export class MatchFactory {
-    public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.createMatchMakingRequest(matchMakingRequest);
-            let successful;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                successful = true;
-            }, function (callbackValue) {
-                console.error("MatchFactory createMatchMakingRequest(): Couldn't create MatchMakingRequest");
-                console.error(callbackValue);
-            });
-
-            if (!successful) {
-                reject(false);
-                return;
-            }
-
-            resolve(true)
-
-            // Get User to figure out Region
-            let result;
-            await UserFactory.getUserByUserId(matchMakingRequest.user_id).then(function (callbackValue) {
-                result = callbackValue;
-            }, function (callbackValue) {
-                console.error("MatchFactory createMatchMakingRequest(): Couldn't get user");
-                console.error(callbackValue);
-            });
-
-            if (!result) {
-                console.error("MatchFactory createMatchMakingRequest(): Result null");
-            }
-
-            // Successfully created MatchMakingRequest
-            // Now try to create a Match for that Game
-
-            await MatchFactory.createMatch(matchMakingRequest.game_id, result.region, matchMakingRequest.casual);
+    public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.createMatchMakingRequest(matchMakingRequest);
+        let successful: boolean = false;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            successful = true;
+        }, function (callbackValue) {
+            console.error("MatchFactory createMatchMakingRequest(): Couldn't create MatchMakingRequest");
+            console.error(callbackValue);
         });
+
+        if (!successful) {
+            return false;
+        }
+
+
+        // Get User to figure out Region
+        let user: User = await UserFactory.getUserByUserId(matchMakingRequest.user_id);
+        if (!user) {
+            console.error("MatchFactory createMatchMakingRequest(): Couldn't get user");
+            return false;
+        }
+
+        // Successfully created MatchMakingRequest
+        // Now try to create a Match for that Game
+
+        // TODO: await?
+        MatchFactory.createMatch(matchMakingRequest.game_id, user.region.region_id, matchMakingRequest.casual);
+
+        return true;
     }
 
 
@@ -50,25 +48,25 @@ export class MatchFactory {
      * Checks if a User has open MatchMakingRequest. Returns true if User has open MatchMakingRequest, else returns false
      * @param user_id ID of User to be checked
      */
-    public static async checkOpenMatchMakingRequest(user_id: number) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.getOpenMatchMakingRequestByUser(user_id);
-            let result;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue[0];
-            }, function (callbackValue) {
-                console.error("MatchFactory checkOpenMatchMakingRequest(): Couldn't get Open MatchMakingRequests");
-                reject(callbackValue);
-            });
-
-            if (!result) {
-                resolve(false);
-                return;
+    public static async checkOpenMatchMakingRequest(user_id: number): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.getOpenMatchMakingRequestByUser(user_id);
+        let successful: boolean = true;
+        let throwErr: boolean = false;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            if(!callbackValue[0]) {
+                successful = false;
             }
+        }, function (callbackValue) {
+            console.error("MatchFactory checkOpenMatchMakingRequest(): Couldn't get Open MatchMakingRequests");
+            console.error(callbackValue);
+            throwErr = true;
+        });
 
-            resolve(true);
-        })
+        if(throwErr) {
+            throw new Error("Couldn't get Open MatchMakingRequests");
+        }
 
+        return successful;
     }
 
     public static async createMatch(game_id: number, region_id: number, casual: boolean) {
@@ -180,71 +178,59 @@ export class MatchFactory {
         return otherRequests;
     }
 
-    public static async getMatchMakingCountForGames() {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.getNoOfMatchMakingRequestsByGame();
-            let results;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                results = callbackValue;
-            }, function (callbackValue) {
-                console.error("MatchFactory getMatchMakingCountForGames(): Couldn't get ")
-                reject(callbackValue);
-            });
-
-            if (!results) {
-                reject(false);
-                return;
-            }
-            let gameResponses: GameResponse[] = [];
-            for (let result of results) {
+    public static async getMatchMakingCountForGames(): Promise<GameResponse[]> {
+        let query: QueryObject = QueryBuilder.getNoOfMatchMakingRequestsByGame();
+        let gameResponses: GameResponse[] = [];
+        await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
+            await callbackValue.forEach(result => {
                 gameResponses.push(new GameResponse(new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published), !result.players_searching ? 0 : result.players_searching));
-            }
-            resolve(gameResponses);
+            });
+        }, function (callbackValue) {
+            console.error("MatchFactory getMatchMakingCountForGames(): Couldn't get GameResponses");
+            console.error(callbackValue);
         });
+
+        if(!gameResponses || !gameResponses[0]) {
+            console.error("MatchFactory getMatchMakingCountForGames(): Couldn't build GameResponses")
+            return null;
+        }
+        return gameResponses;
     }
 
-    private static async updateMatchMakingRequest(matchMakingRequest: MatchMakingRequest) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.updateMatchmakingRequest(matchMakingRequest);
-            let successful;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                successful = true;
-            }, function (callbackValue) {
-                console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
-                reject(callbackValue);
-                return;
-            });
-
-            if (!successful) {
-                console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
-                reject(false);
-                return
-            }
-
-            resolve(true);
+    private static async updateMatchMakingRequest(matchMakingRequest: MatchMakingRequest): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.updateMatchmakingRequest(matchMakingRequest);
+        let successful: boolean = false;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            successful = true;
+        }, function (callbackValue) {
+            console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
+            console.error(callbackValue);
         });
+
+        if (!successful) {
+            console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
+            return false;
+        }
+
+        return true;
     }
 
-    public static async getMostRecentRequestByUser(user_id: number) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.getMostRecentRequestByUserId(user_id);
-            let result;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue;
-            }, function (callbackValue) {
-                console.error("MatchFactory getMostRecentRequestByUser(): Couldn't get most recent MatchMakingRequest");
-                reject(callbackValue);
-            });
-
-            if (!result || result.length > 1) {
-                console.error("MatchFactory getMostRecentRequestByUser(): Result is null or multiple open Requests exist for User");
-                reject(false);
-                return;
-            }
-
-            resolve(new MatchMakingRequest(null, result[0].user_id, result[0].game_id, result[0].searching_for, result[0].players_in_party, result[0].casual, result[0].match_id, result[0].time_stamp, result[0].request_id));
+    public static async getMostRecentRequestByUser(user_id: number): Promise<MatchMakingRequest> {
+        let query: QueryObject = QueryBuilder.getMostRecentRequestByUserId(user_id);
+        let matchMakingRequest: MatchMakingRequest;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            matchMakingRequest = new MatchMakingRequest(null, callbackValue[0].user_id, callbackValue[0].game_id, callbackValue[0].searching_for, callbackValue[0].players_in_party, callbackValue[0].casual, callbackValue[0].match_id, callbackValue[0].time_stamp, callbackValue[0].request_id)
+        }, function (callbackValue) {
+            console.error("MatchFactory getMostRecentRequestByUser(): Failed to get data from Database");
+            console.error(callbackValue);
         });
 
+        if(!matchMakingRequest) {
+            console.error("MatchFactory getMostRecentRequestByUser(): Couldn't get most recent MatchMakingRequest")
+            return null;
+        }
+
+        return matchMakingRequest;
     }
 
     /**
@@ -281,59 +267,54 @@ export class MatchFactory {
     //     });
     // }
 
-    public static async getMatchMakingRequestsByMatchId(match_id) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
-            let result;
-            console.log("MATCHFACTORY");
-            console.log(query);
-            console.log(match_id);
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue;
-            }, function (callbackValue) {
-                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
-                reject(callbackValue);
+    public static async getMatchMakingRequestsByMatchId(match_id): Promise<MatchMakingRequest[]> {
+        let query: QueryObject = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
+        let matchMakingRequests: MatchMakingRequest[] = [];
+        await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
+            await callbackValue.forEach(request => {
+                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id))
             });
-
-            // Check if we got an result containing at least to Elements (at least two are needed for a match)
-            if (!result || !result[0] || !result[1]) {
-                console.log(result);
-                console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
-                reject(false);
-                return;
-            }
-
-            let matchMakingRequests: MatchMakingRequest[] = [];
-            for (let request of result) {
-                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
-            }
-
-            resolve(matchMakingRequests);
+        }, function (callbackValue) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
+            console.error(callbackValue);
         });
+
+        if(!matchMakingRequests) {
+            return null;
+        }
+
+        return matchMakingRequests;
+
+        // Check if we got an result containing at least to Elements (at least two are needed for a match)
+        // if (!result || !result[0] || !result[1]) {
+        //     console.log(result);
+        //     console.error("MatchFactory getMatchMakingRequestsByMatchId(): Impossible result");
+        //     reject(false);
+        //     return;
+        // }
+
+        
+        // for (let request of result) {
+        //     matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
+        // }
+
     }
 
-    public static async getMatchMakingRequestByRequestId(request_id: number) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
-            let result;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                result = callbackValue[0];
-            }, function (callbackValue) {
-                console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
-                reject(callbackValue);
-                return;
-            });
-
-            if (!result) {
-                reject("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
-                return;
-            }
-
-            console.log("Result in getMatchMakingRequestByRequestId");
-            console.log(result);
-
-            resolve(new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id))
-
+    public static async getMatchMakingRequestByRequestId(request_id: number): Promise<MatchMakingRequest> {
+        let query: QueryObject = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
+        let matchMakingRequest: MatchMakingRequest;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            matchMakingRequest = new MatchMakingRequest( callbackValue[0].session_id,  callbackValue[0].user_id,  callbackValue[0].game_id,  callbackValue[0].searching_for,  callbackValue[0].players_in_party,  callbackValue[0].casual,  callbackValue[0].match_id,  callbackValue[0].time_stamp,  callbackValue[0].request_id);
+        }, function (callbackValue) {
+            console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
+            console.error(callbackValue);
         });
+
+        if (!matchMakingRequest) {
+            console.error("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
+            return null;
+        }
+
+        return matchMakingRequest;
     }
 }

@@ -5,6 +5,7 @@ import { QueryBuilder } from "../connecttodatabase/querybuilder";
 import { UserLanguagePair } from "../data_objects/userlanguagepair";
 import { UserLanguagePairFactory } from "./userlanguagepairfactory";
 import { GameFactory } from "./gamefactory";
+import { QueryObject } from "src/data_objects/queryobject";
 
 export class LanguageFactory {
     // public static getLanguagesForUser(user: User): Language[] {
@@ -20,84 +21,85 @@ export class LanguageFactory {
     // }
     
     public static async getLanguagesForUser(user: User): Promise<Language[]> {
-        return new Promise(async function(resolve, reject) {
-            let query = QueryBuilder.getLanguagesByUser(user);
-            let languages: Language[] = [];
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                callbackValue.forEach(language => {
-                    languages.push(new Language(language.language_id, language.name, language.language_code));
-                });
-            }, function(callbackValue) {
-                console.error("LanguageFactory getLanguagesForUser(): Promise rejected");
-                console.error(callbackValue);
-                reject(callbackValue);
-            })
-            resolve(languages);
+        let query: QueryObject = QueryBuilder.getLanguagesByUser(user);
+        let languages: Language[] = [];
+        await ConnectToDatabaseService.getPromise(query).then(callbackValue => {
+            callbackValue.forEach(language => {
+                languages.push(new Language(language.language_id, language.name, language.language_code));
+            });
+        }, callbackValue => {
+            console.error("LanguageFactory getLanguagesForUser(): Promise rejected");
+            console.error(callbackValue);
+            return null;
         });
+        return languages;
     }
 
-    public static async updateLanguagesForUser(user: User, newLanguages: Language[]) {
-        return new Promise(async function(resolve, reject) {
-            let successful;
-            await UserLanguagePairFactory.updateUserLanguagePairs(user).then(function(callbackValue) {
-                successful = callbackValue;
-            }, function(callbackValue) {
-                console.error("LanguageFactory updateLanguagesForUser(): Couldn't update UserLanguagePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    public static async updateLanguagesForUser(user: User): Promise<boolean> {
 
-            if(!successful) {
-                return;
-            }
+        let successful: boolean = await UserLanguagePairFactory.updateUserLanguagePairs(user);
 
-            let languages;
-            // await GameFactory.delay(1000);
-            await LanguageFactory.getLanguagesForUser(user).then(function(callbackValue) {
-                languages = callbackValue;
-                console.log(languages);
-            }, function(callbackValue) {
-                console.error("LanguageFactory updateLanguagesForUser(): Couldn't get Languages for User");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+        if(!successful) {
+            console.error("LanguageFactory updateLanguagesForUser(): Couldn't update UserLanguagePairs");
+            return false;
+        }
 
-            if(!languages) {
-                return;
-            }
+        let languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
 
-            resolve(languages);
-        });
+        if(!languages) {
+            console.error("LanguageFactory updateLanguagesForUser(): Couldn't get Languages for User");
+            return false;
+        }
+
+        return true;
+
     }
 
-    public static async deleteLanguagesForUser(user: User) {
-        return new Promise(async function(resolve, reject){
-            let successful;
-            await UserLanguagePairFactory.deleteUserLanguagePairs(user).then(function(callbackValue) {
-                successful = callbackValue;
-            }, function(callbackValue) {
-                console.error("LanguageFactory deleteLanguagesForUser(): Couldn't delete Languages for User");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+    public static async deleteLanguagesForUser(user: User): Promise<boolean> {
+        let successful: boolean = await UserLanguagePairFactory.deleteUserLanguagePairs(user);
 
-            if(!successful) {
-                return;
-            }
+        if(!successful) {
+            console.error("LanguageFactory deleteLanguagesForUser(): Couldn't delete Languages for User");
+            return false;
+        }
 
-            resolve(true);
-        });
+        return true;
     }
 
-    public static async getAllLanguages() {
-        let query = QueryBuilder.getLanguages();
-        let languages;
-        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            languages = callbackValue;
-        }, function(callbackValue) {
+    public static async getAllLanguages(): Promise<Language[]> {
+        let query: QueryObject = QueryBuilder.getLanguages();
+        let languages: Language[] = [];
+        await ConnectToDatabaseService.getPromise(query).then(async callbackValue => {
+            await callbackValue.forEach(language => {
+                languages.push(new Language(language.language_id, language.name, language.language_code));
+            });
+        }, callbackValue => {
             console.error("LanguageFactory getAllLanguages(): Couldn't get all Languages");
+            return null;
         });
 
         return languages;
+    }
+
+    public static async getLanguageById(language_id: number): Promise<Language> {
+        let query: QueryObject = QueryBuilder.getLanguageById(language_id);
+        let language: Language;
+        await ConnectToDatabaseService.getPromise(query).then(callbackValue => {
+            if(!callbackValue[0]) {
+                language = new Language(callbackValue.language_id, callbackValue.name, callbackValue.language_code);
+            } else {
+                language = new Language(callbackValue[0].language_id, callbackValue[0].name, callbackValue[0].language_code);
+            }
+        }, callbackValue => {
+            console.error("LanguageFactory getLanguageById(): Couldn't get Language");
+            console.error(callbackValue);
+        });
+
+        if(!language) {
+            console.error("LanguageFactory getLanguageById(): No language with that ID");
+            return null;
+        }
+
+        return language;
     }
 }

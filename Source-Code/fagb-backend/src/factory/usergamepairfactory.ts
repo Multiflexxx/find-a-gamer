@@ -5,6 +5,7 @@ import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { UserGamePair } from '../data_objects/usergamepair'
 import { rejects } from "assert";
 import { EditProfileResponse } from "../data_objects/editprofileresponse";
+import { QueryObject } from "src/data_objects/queryobject";
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {
@@ -26,40 +27,69 @@ export class UserGamePairFactory {
     //     return userGamesPairs;
     // }
 
-    public static async createUserGamePairs(user: User, games: Game[]) {
-        return new Promise(function (resolve, reject) {
-            games.forEach(async game => {
-                let query = QueryBuilder.createUserGamePair(user, game);
-                await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                    // Successfully created
-                }, function (callbackValue) {
-                    console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs")
-                    console.error(callbackValue);
-                    reject(callbackValue);
-                });
+    public static async createUserGamePairs(user: User, games: Game[]): Promise<boolean> {
+        games.forEach(async game => {
+            let query: QueryObject = QueryBuilder.createUserGamePair(user, game);
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+                // Successfully created
+            }, function (callbackValue) {
+                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs")
+                console.error(callbackValue);
+                return false;
             });
-            resolve(true);
         });
+        return true;
+
+
+        // return new Promise(function (resolve, reject) {
+        //     games.forEach(async game => {
+        //         let query = QueryBuilder.createUserGamePair(user, game);
+        //         await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        //             // Successfully created
+        //         }, function (callbackValue) {
+        //             console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs")
+        //             console.error(callbackValue);
+        //             reject(callbackValue);
+        //         });
+        //     });
+        //     resolve(true);
+        // });
     }
 
-    public static async deleteUserGamePairsByUser(user: User) {
-        return new Promise(async function (resolve, reject) {
-            let query = QueryBuilder.deleteUserGamePairsByUser(user);
-            let successful = false;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                successful = true;
-            }, function (callbackValue) {
-                console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
-
-            if (!successful) {
-                return;
-            }
-
-            resolve(true);
+    public static async deleteUserGamePairsByUser(user: User): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
+        let successful: boolean = false;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            successful = true;
+        }, function (callbackValue) {
+            console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
+            console.error(callbackValue);
+            return false;
         });
+
+        if (!successful) {
+            return false;
+        }
+
+        return true;
+
+        // return new Promise(async function (resolve, reject) {
+        //     let query = QueryBuilder.deleteUserGamePairsByUser(user);
+        //     let successful = false;
+        //     await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        //         successful = true;
+        //     }, function (callbackValue) {
+        //         console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
+        //         console.error(callbackValue);
+        //         reject(callbackValue);
+        //     });
+
+        //     if (!successful) {
+        //         return;
+        //     }
+
+        //     resolve(true);
+        // });
     }
 
     // public static async updateUserGamePairs(user: User) {
@@ -96,34 +126,34 @@ export class UserGamePairFactory {
     //     });
     // }
 
-    public static async updateUserGamePairs(user: User) {
+    public static async updateUserGamePairs(user: User): Promise<boolean> {
         // Delete old User Game Pairs
-        let query = QueryBuilder.deleteUserGamePairsByUser(user);
-        let successful;
-        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+        let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
+        let successful: boolean;
+        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
             successful = true;
-        }, function(callbackValue) {
+        }, function (callbackValue) {
             console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't delete UserGamePairs");
             console.error(callbackValue);
         });
 
-        if(!successful) {
+        if (!successful) {
             console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after deleting UserGamePairs");
             return false;
         }
 
         // Create new User Game Pairs
-        for(let game of user.games) {
+        for (let game of user.games) {
             query = QueryBuilder.createUserGamePair(user, game);
             successful = null;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 successful = true;
-            }, function(callbackValue) {
+            }, function (callbackValue) {
                 console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't create UserGamePairs");
                 console.error(callbackValue);
             });
 
-            if(!successful) {
+            if (!successful) {
                 console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after creating UserGamePairs for Game");
                 console.error(game);
                 return false;

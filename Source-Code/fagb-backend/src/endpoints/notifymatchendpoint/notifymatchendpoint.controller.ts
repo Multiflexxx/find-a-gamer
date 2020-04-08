@@ -13,6 +13,7 @@ import { match } from 'assert';
 import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 import { GameFactory } from '../../factory/gamefactory';
 import { PublicUser } from '../../data_objects/publicuser';
+import { Game } from 'src/data_objects/game';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
@@ -29,9 +30,9 @@ export class NotifymatchendpointController {
             console.error(callbackValue);
         });
 
-        console.log("ToString");
-        console.log(matchMakingRequest.match_id.toString());
-        console.log(Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString())
+        // console.log("ToString");
+        // console.log(matchMakingRequest.match_id.toString());
+        // console.log(Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString())
 
         if(!matchMakingRequest) {
             throw new HttpException({
@@ -41,14 +42,7 @@ export class NotifymatchendpointController {
         }
 
         // Get Game for MatchMakingRequest
-        let game;
-        await GameFactory.getGameById(matchMakingRequest.game_id).then(function(callbackValue) {
-            game = callbackValue;
-        }, function(callbackValue) {
-            console.error("NotifymatchendpointController handleUpdate():")
-            console.error(callbackValue);
-        })
-
+        let game: Game = await GameFactory.getGameById(matchMakingRequest.game_id);
         if(!game) {
             console.error("NotifymatchendpointController handleUpdate(): Game is null");
             throw new HttpException({
@@ -57,6 +51,12 @@ export class NotifymatchendpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
+        // Don't question it
+        //
+        //
+        // okay you wanna know?
+        // UUIDs are stored as binary on the database. Performing BIN_TO_UUID on null fields to convert to string returns the same buffer that Buffer.from([...]) returns, which apparently isn't the same as a null buffer
+        // Until now it's the only possibility we have found to check if the ID is null
         if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "" || Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString() == matchMakingRequest.match_id.toString()) {
             return new MatchMakingResponse(matchMakingRequest, game);
         }
@@ -82,14 +82,7 @@ export class NotifymatchendpointController {
         // Create User Array from Matches
         let users: PublicUser[] = [];
         for(let match of matches) {
-            let user;
-            await UserFactory.getUserByUserId(match.user_id).then(function(callbackValue) {
-                user = callbackValue;
-            }, function(callbackValue) {
-                console.error("NotifymatchendpointController handleUpdate(): User with that ID: " + match.user_id);
-                console.error(callbackValue);
-            });
-
+            let user: User = await UserFactory.getUserByUserId(match.user_id);
             if(!user) {
                 console.error("NotifymatchendpointController handleUpdate(): user is null");
                 throw new HttpException({
@@ -97,7 +90,6 @@ export class NotifymatchendpointController {
                     error: "Matched user doesn't exist"
                 }, HttpStatus.NOT_ACCEPTABLE)
             }
-
             users.push(UserFactory.userToPublicUser(user));
         }
 

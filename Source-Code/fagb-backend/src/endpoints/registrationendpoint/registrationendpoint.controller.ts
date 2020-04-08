@@ -11,6 +11,8 @@ import { SessionFactory } from '../../factory/sessionfactory';
 import { Region } from '../../data_objects/region';
 import { Language } from '../../data_objects/language';
 import { Game } from '../../data_objects/game';
+import { LanguageFactory } from 'src/factory/languagefactory';
+import { User } from 'src/data_objects/user';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
@@ -58,27 +60,23 @@ export class RegistrationendpointController {
         }
 
         // Create User using validated registration object
-        let user;
-        await UserFactory.createUser(registration).then(function (callbackValue) {
-            user = callbackValue;
-        }, function (callbackValue) {
-            console.error(callbackValue);
-        })
+        let user: User = await UserFactory.createUser(registration);
+        if(!user) {
+            console.error("RegistrationEndpoint handleRegistration(): Couldn't create User");
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Something went wrong"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         // Create Session using created user
         // stay_logged_in for Session is false by default
-        let session;
-        await SessionFactory.createSessionForUser(user, false).then(function (callbackValue) {
-            session = callbackValue;
-        }, function (callbackValue) {
-            console.error(callbackValue);
-        });
-
+        let session: Session = await SessionFactory.createSessionForUser(user, false);
         if(!session) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: "Something went wrong"
-            }, HttpStatus.INTERNAL_SERVER_ERROR)
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Return Session
@@ -159,21 +157,8 @@ export class RegistrationendpointController {
             queryResult = null; // reset Result
 
             registration.languages.forEach(async language => {
-
-                let languageQueryObject: QueryObject = QueryBuilder.getLanguageById(language.language_id);
-
-                let languagePromise = ConnectToDatabaseService.getPromise(languageQueryObject);
-                await languagePromise.then(function (callback_value) {
-                    // Successfully got value
-                    queryResult = callback_value;
-                }, function (callback_value) {
-                    // Error Case of Promise
-                    console.error("Failed to get Language");
-                    console.error(callback_value);
-                });
-
-                if (queryResult.length == 0) {
-                    reject("language fail");
+                if(!(await LanguageFactory.getLanguageById(language.language_id))) {
+                    reject("language fail")
                 }
             });
 

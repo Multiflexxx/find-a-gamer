@@ -49,13 +49,12 @@ export class GameFactory {
     //     });
     // }
 
-    public static async getGamesForUser(user: User) {
+    public static async getGamesForUser(user: User): Promise<Game[]> {
         // Get Updated Games
-        let query = QueryBuilder.getGamesByUser(user);
-        let result;
+        let query: QueryObject = QueryBuilder.getGamesByUser(user);
+        let result: any;
         await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
             result = callbackValue;
-            console.log(callbackValue);
         }, function(callbackValue) {
             console.error("GameFactory getGamesForUser(): Couldn't get Games for User");
             console.error(callbackValue);
@@ -63,8 +62,7 @@ export class GameFactory {
 
         if(!result) {
             console.error("GameFactory getGamesForUser(): result is empty or null after getting Games for User");
-            console.error(result);
-            return false;
+            return null;
         }
 
         let newGames: Game[] = [];
@@ -75,90 +73,71 @@ export class GameFactory {
         return newGames;
     }
 
-    public static async updateGamesForUser(user: User, newGames: Game[]) {
-        return new Promise(async function (resolve, reject) {
+    /**
+     * Updates games for User and returns new Games as Game[] array
+     * @param user User to be updated
+     * @param newGames Games to be update user with
+     */
+    public static async updateGamesForUser(user: User, newGames: Game[]): Promise<Game[]> {
             // Update UserGamePairs
-            let successful;
-            let games;
-            
-            await UserGamePairFactory.deleteUserGamePairsByUser(user).then(async function (callbackValue) {
-                successful = callbackValue;
-            }, function (callbackValue) {
-                console.error("GameFactory updateGamesForUser(): Couldn't delete UserGamePairs")
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+        let successful: boolean = await UserGamePairFactory.deleteUserGamePairsByUser(user);
+        if (!successful) {
+            console.error("GameFactory updateGamesForUser(): Couldn't delete UserGamePairs");
+            return null;
+        }
 
-            if (!successful) {
-                return;
-            }
+        // create new User Game Pairs
+        successful = await UserGamePairFactory.createUserGamePairs(user, newGames);
+        if(!successful) {
+            console.error("GameFactory updateGamesForUser(): Couldn't create new UserGamePairs");
+            return null;
+        }
+        
 
-            // create new User Game Pairs
-            successful = null;
-            await UserGamePairFactory.createUserGamePairs(user, newGames).then(async function (callbackValue) {
-                successful = callbackValue;
-            }, function (callbackValue) {
-                console.error("GameFactory updateGamesForUser(): Couldn't create UserGamePairs")
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
+        // Get Updated Games for User
+        let games: Game[] = await GameFactory.getGamesForUser(user);
+        if (!games) {
+            console.error("GameFactory updateGamesForUser(): Couldn't get Games for User");
+            return null;
+        }
 
-            if(!successful) {
-                return;
-            }
-
-             // Get Updated Games for User
-            await GameFactory.getGamesForUser(user).then(async function (callbackValue2) {
-                games = callbackValue2;
-                console.log(games);
-            }, function (callbackValue2) {
-                console.error("GameFactory updateGamesForUser(): Couldn't get get Games for User");
-                console.error(callbackValue2);
-                reject(callbackValue2);
-            });
-
-            if (!games) {
-                return;
-            }
-
-            resolve(games);
-        });
+        return games;
     }
 
-    public static async getAllGames() {
-        let query = QueryBuilder.getGames();
-        let games;
+    public static async getAllGames(): Promise<Game[]> {
+        let query: QueryObject = QueryBuilder.getGames();
+        let games: Game[];
         await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            games = callbackValue;
+            callbackValue.forEach(game => {
+                games.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
+            });
         }, function(callbackValue) {
             console.error("GameFactory getAllGames(): Couldn't get all Games");
             console.error(callbackValue);
         });
 
+        if(!games) {
+            console.error("GameFactory getAllGames(): Couldn't get all Games");
+            return null;
+        }
+
         return games;
     }
 
-    public static async getGameById(game_id: number) {
-        return new Promise(async function(resolve, reject) {
-            let query = QueryBuilder.getGameById(game_id);
-            let game;
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                game = callbackValue;
-                // console.log("callbackValue in getGameById");
-                // console.log(callbackValue);
-            }, function(callbackValue) {
-                console.error("GameFactory getGameById(): Couldn't get game");
-                console.error("callbackValue");
-            });
-
-            if(!game) {
-                console.error("GameFactory getGameById(): No Game with game_id + " + game_id);
-                reject(false);
-                return;
-            }
-
-            resolve(game);
+    public static async getGameById(game_id: number): Promise<Game> {
+        let query: QueryObject = QueryBuilder.getGameById(game_id);
+        let game: Game;
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            game = new Game(callbackValue.game_id, callbackValue.name, callbackValue.cover_link, callbackValue.game_description, callbackValue.publisher, callbackValue.published);
+        }, function(callbackValue) {
+            console.error("GameFactory getGameById(): Couldn't get game");
         });
+
+        if(!game) {
+            console.error("GameFactory getGameById(): Couldn't get Game with game_id + " + game_id);
+            return null;
+        }
+        return game;
     }
 
     // public static async getAllGameResponses() {

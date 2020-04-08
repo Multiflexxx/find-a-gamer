@@ -1,20 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { LanguageFactory } from '../../factory/languagefactory';
+import { Language } from 'src/data_objects/language';
 
 @Controller('languagesendpoint')
 export class LanguagesEndpointController {
 
     @Get()
     public async getAllLanguagesEndpoint() {
-        let languages;
-        await LanguageFactory.getAllLanguages().then(function(callbackValue) {
-            languages = callbackValue;
-        }, function(callbackValue) {
-            console.error("DataendpointController getAllRgamesEndpoint(): Couldn't get all Games");
-            console.error(callbackValue);
-        });
+        let languages: Language[] = await LanguageFactory.getAllLanguages();
+
+        if(!languages) {
+            console.error("DataendpointController getAllGamesEndpoint(): Couldn't get all Games");
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Couldn't get all Languages"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return languages;
     }
-    
 }

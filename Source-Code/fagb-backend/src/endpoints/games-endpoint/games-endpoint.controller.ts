@@ -9,14 +9,9 @@ import { GameResponse } from 'src/data_objects/gameresponse';
 export class GamesEndpointController {
 
     @Get()
-    public async getAllGamesEndpoint(): Promise<GameResponse> {
+    public async getAllGamesEndpoint(): Promise<GameResponse[]> {
 
-        let games;
-        await MatchFactory.getMatchMakingCountForGames().then(function(callbackValue) {
-            games = callbackValue;
-        }, function(callbackValue) {
-            console.error("GamesEndpointController getAllGamesEndpoint(): ")
-        });
+        let games: GameResponse[] = await MatchFactory.getMatchMakingCountForGames();
 
         if(!games) {
             throw new HttpException({

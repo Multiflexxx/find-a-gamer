@@ -1,4 +1,4 @@
-import { Controller, Body, Get } from '@nestjs/common';
+import { Controller, Body, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { EditProfileRequest } from '../../data_objects/editprofilerequest';
 import { EditProfileResponse } from '../../data_objects/editprofileresponse';
 import { SessionFactory } from '../../factory/sessionfactory';
@@ -16,6 +16,7 @@ import { UserLanguagePair } from '../../data_objects/userlanguagepair';
 import { UserLanguagePairFactory } from '../../factory/userlanguagepairfactory';
 import { LanguageFactory } from '../../factory/languagefactory';
 import { RegionFactory } from '../../factory/regionfactory';
+import { Session } from 'src/data_objects/session';
 
 @Controller('profileupdateendpoint')
 export class ProfileUpdateEndpointController {
@@ -69,16 +70,12 @@ export class ProfileUpdateEndpointController {
         );
 
         // check if session is valid and belongs to user to be edited
-        let session;
-        await SessionFactory.getSessionBySessionId(editProfileRequest.session_id).then(function(callbackValue) {
-            session = callbackValue;
-        }, function(callbackValue) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): couldn't get Session")
-            console.error(callbackValue);
-        });
-
+        let session: Session = await SessionFactory.getSessionBySessionId(editProfileRequest.session_id);
         if(!session || session.user_id != editProfileRequest.user.user_id) {
-            return new EditProfileResponse(false, null);
+            throw new HttpException({
+                status: HttpStatus.UNAUTHORIZED,
+                error: "Session not authorized to update Profile"
+            }, HttpStatus.UNAUTHORIZED);
         }
 
         // // Delete old User Game Pairs
@@ -114,10 +111,13 @@ export class ProfileUpdateEndpointController {
         //     }
         // }
 
-        let success = await UserGamePairFactory.updateUserGamePairs(editProfileRequest.user);
+        let success: boolean = await UserGamePairFactory.updateUserGamePairs(editProfileRequest.user);
 
         if(!success) {
-            return new EditProfileResponse(false, null);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Couldn't update games"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 
@@ -143,30 +143,31 @@ export class ProfileUpdateEndpointController {
         //     newGames.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
         // }
 
-        let games;
-        await GameFactory.getGamesForUser(editProfileRequest.user).then(function(callbackValue) {
-            games = callbackValue;
-        }, function(callbackValue) {
+        let games: Game[] = await GameFactory.getGamesForUser(editProfileRequest.user);
+        if(!games) {
             console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get Games for User");
-            console.error(callbackValue);
-        });
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Couldn't get updated Games"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         editProfileRequest.user.games = games;
 
 
         // Update UserLanguagePairs
         success = await UserLanguagePairFactory.updateUserLanguagePairs(editProfileRequest.user);
-
         if(!success) {
-            return new EditProfileResponse(false, null);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Couldn't update Languages"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        let languages;
-        await LanguageFactory.getLanguagesForUser(editProfileRequest.user).then(function(callbackValue) {
-            languages = callbackValue;
-        }, function(callbackValue) {
+        let languages: Language[] = await LanguageFactory.getLanguagesForUser(editProfileRequest.user);
+        if(!languages) {
             console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't get Languages for User");
-            console.error(callbackValue);
-        });
+            return false;
+        }
         editProfileRequest.user.languages = languages;
 
         // Update other User Fields
