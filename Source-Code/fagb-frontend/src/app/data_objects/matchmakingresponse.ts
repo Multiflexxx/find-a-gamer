@@ -1,7 +1,6 @@
-import { PublicUser } from "./publicuser";
-import { MatchMakingRequest } from "./matchmakingrequest";
-import { User } from "./user";
-import { Game } from "./game";
+import { PublicUser } from './publicuser';
+import { MatchMakingRequest } from './matchmakingrequest';
+import { Game } from './game';
 
 export class MatchMakingResponse {
     public users: PublicUser[];

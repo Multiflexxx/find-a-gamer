@@ -1,4 +1,4 @@
-export class UserGamePair{
+export class UserGamePair {
     public pair_id: number;
     public user_id: number;
     public game_id: number;

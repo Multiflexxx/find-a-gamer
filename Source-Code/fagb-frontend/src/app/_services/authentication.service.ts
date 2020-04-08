@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CookieService } from 'ngx-cookie-service';
+
 import { Login } from '../data_objects/login';
 import { PublicUser } from '../data_objects/publicuser';
 import { LoginResponse } from '../data_objects/loginresponse';
+import { ControlsMap } from '../interface/controls-map';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +31,9 @@ export class AuthenticationService {
     this.currentGamer = this.currentGamerSubject.asObservable();
   }
 
-  public login(loginValue): Observable<LoginResponse> {
-    console.log(loginValue);
+  public login(loginValue: ControlsMap<AbstractControl>): Observable<LoginResponse> {
     const login: Login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
+    console.log(login);
     return this.http.post<LoginResponse>(this.url, login)
       .pipe(map(data => {
         if (data && data.successful) {

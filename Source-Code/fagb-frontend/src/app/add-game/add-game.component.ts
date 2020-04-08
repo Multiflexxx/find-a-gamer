@@ -11,14 +11,12 @@ import { GameResponse } from '../data_objects/gameresponse';
 })
 export class AddGameComponent implements OnInit {
   @Input() public gameForm: FormGroup;
-
-  public gameList: Array<GameResponse> = [];
   public searchedGameList: Array<GameResponse> = [];
-
   public isSelected: Array<boolean> = [];
-  public selectedGames: Array<number> = [];
-  public selectedGamesString: string;
 
+  private gameList: Array<GameResponse> = [];
+  private selectedGames: Array<number> = [];
+  private selectedGamesString: string;
   private searchTerm: string = '';
 
 
@@ -48,7 +46,7 @@ export class AddGameComponent implements OnInit {
     this.createTag(id, name);
   }
 
-  public createTag(id: number, name: string): void {
+  private createTag(id: number, name: string): void {
     const index: number = this.selectedGames.indexOf(id);
     if (index === -1) {
       // Add game id to array

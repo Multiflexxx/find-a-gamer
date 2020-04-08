@@ -1,5 +1,4 @@
-import { User } from "./user";
-import { PublicUser } from "./publicuser";
+import { PublicUser } from './publicuser';
 
 export class EditProfileResponse {
     public successful: boolean;
@@ -7,8 +6,8 @@ export class EditProfileResponse {
 
     public constructor(successful: boolean, user?: PublicUser) {
         this.successful = successful;
-        
-        if(user) {
+
+        if (user) {
             this.user = user;
         } else {
             this.user = null;

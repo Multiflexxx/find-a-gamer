@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 
 import { ToastrService, ToastContainerDirective  } from 'ngx-toastr';
+import { ControlsMap } from '../interface/controls-map';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private get loginValue() {
+  private get loginValue(): ControlsMap<AbstractControl> {
     return this.loginForm.controls;
   }
 
