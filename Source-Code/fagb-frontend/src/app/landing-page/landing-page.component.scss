@@ -112,12 +112,12 @@
   opacity: 1;
 }
 
+
 .smartphone {
   position: absolute;
   width: 320px;
   height: 640px;
   top: 50%;
-  
   left: 50%;
  
   transform: translate(-50%, -50%);
@@ -125,7 +125,7 @@
   border-top-width: 10px;
   border-bottom-width: 10px;
   border-radius: 36px;
-  animation: movePhone 3s 11.5s linear forwards;
+  animation: movePhone 1s linear forwards;
 }
 
 
@@ -166,7 +166,7 @@
     top: 50%;
     right: 0%;
     transform: translate(0%, -50%);
-    animation: moveReg 1.5s 13s linear forwards;
+    animation: moveReg 1s linear forwards;
     opacity: 0;
   }
  
@@ -246,47 +246,47 @@
 
 #message1 {
   animation:
-    type1 2.3s 0.75s steps(23) forwards,
-    msgvanish 0.3s 3.35s forwards;
+    type1 2.3s 1.75s steps(23) forwards,
+    msgvanish 0.3s 4.35s forwards;
   height: 0;
 }
 
 #message2 {
   animation:
-    type2 4.1s 5.1s steps(41) forwards,
-    msgvanish 0.3s 10.3s forwards;
+    type2 4.1s 6.1s steps(41) forwards,
+    msgvanish 0.3s 11.3s forwards;
   height: 0;
 }
 
 #message3 {
   animation:
-    type3 0.8s 9.2s steps(8) forwards,
-    msgvanish 0.3s 10.3s forwards;
+    type3 0.8s 10.2s steps(8) forwards,
+    msgvanish 0.3s 11.3s forwards;
   height: 0;
 }
 
 
-#test1 {
+#send1 {
   animation: popup 0.5s steps(50) forwards;
   // animation-delay: 8s;
   animation-fill-mode: forwards;
 }
 
-#test2 {
+#send2 {
   animation: popup 0.5s steps(50) forwards;
-  animation-delay: 3.35s;
+  animation-delay: 4.35s;
   animation-fill-mode: forwards;
 }
 
-#test3 {
+#send3 {
   animation: popup 0.5s steps(50) forwards;
-  animation-delay: 4.8s;
+  animation-delay: 5.8s;
   animation-fill-mode: forwards;
 }
 
-#test4 {
+#send4 {
   animation: popup 0.5s steps(50) forwards;
-  animation-delay: 10.3s;
+  animation-delay: 11.3s;
   animation-fill-mode: forwards;
 }
 
@@ -434,7 +434,8 @@
 // Animationen
 @media(min-width: 769px){
 .smartphone{
-  left: 50vw;
+  left: 10vw;
+  opacity: 0;
 }
 @keyframes ccircle {
   from { transform: rotateZ(0deg) }
@@ -486,6 +487,7 @@
     top: 50%;
     left: 20%;
     transform: translate(-20%, -50%);
+    opacity: 1;
   }
 }
 
