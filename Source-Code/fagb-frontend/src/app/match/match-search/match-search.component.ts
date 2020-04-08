@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { gameValidator } from 'src/app/shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { MatchService } from '../../_services';
-import { Router } from '@angular/router';
+import { ControlsMap } from 'src/app/interface/controls-map';
 
 @Component({
   selector: 'app-match-search',
@@ -23,8 +24,8 @@ export class MatchSearchComponent implements OnInit {
   public gameForm: FormGroup;
   public matchFilterForm: FormGroup;
 
-  public gameData;
-  public filterData;
+  public gameData: ControlsMap<AbstractControl>;
+  public filterData: ControlsMap<AbstractControl>;
 
   // Backend input
   public playerList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -66,11 +67,11 @@ export class MatchSearchComponent implements OnInit {
     return this.matchFilterForm.controls[controlName].hasError(errorName);
   }
 
-  private get gameValue() {
+  private get gameValue(): ControlsMap<AbstractControl> {
     return this.gameForm.controls;
   }
 
-  private get filterValue() {
+  private get filterValue(): ControlsMap<AbstractControl> {
     return this.matchFilterForm.controls;
   }
 

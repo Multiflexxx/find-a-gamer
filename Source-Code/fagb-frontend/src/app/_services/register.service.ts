@@ -1,46 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Registration } from '../data_objects/registration';
-import { Game } from '../data_objects/game';
-import { Language } from '../data_objects/language';
-import { Region } from '../data_objects/region';
-
-import { Session } from '../data_objects/session';
+import { AbstractControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie-service';
 
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Game } from '../data_objects/game';
+import { Language } from '../data_objects/language';
+import { Region } from '../data_objects/region';
+import { Registration } from '../data_objects/registration';
+import { Session } from '../data_objects/session';
+import { ControlsMap } from '../interface/controls-map';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  public url: string = 'http://localhost:3000/registrationendpoint';
+  private url: string = 'http://localhost:3000/registrationendpoint';
 
   public constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  public register(profileData, gameData): Observable<Session> {
+  public register(profileData: ControlsMap<AbstractControl>, gameData: ControlsMap<AbstractControl>): Observable<Session> {
     const games: Array<Game> = [];
     console.log(gameData.game.value);
     const gameids: Array<number> = JSON.parse(gameData.game.value);
     for (const gameid of gameids) {
       games.push(new Game(gameid));
     }
-    // for (let i = 0; i < gameids.length; i++) {
-    //   games.push(new Game(gameids[i]));
-    // }
     const langs: Array<Language> = [];
     console.log(profileData.lang.value);
     const langids: Array<number> = profileData.lang.value;
     for (const langid of langids) {
       langs.push(new Language(langid));
     }
-    // for (let i = 0; i < langids.length; i++) {
-    //   langs.push(new Language(langids[i]));
-    // }
 
     const region: Region = new Region(profileData.region.value);
 
@@ -55,7 +49,6 @@ export class RegisterService {
       games
     );
 
-    // registration.birthdate.toJSON;
     console.log(registration);
     console.log(JSON.stringify(registration));
 

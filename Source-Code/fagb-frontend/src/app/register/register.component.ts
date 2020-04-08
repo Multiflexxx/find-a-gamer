@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -13,6 +13,7 @@ import { RegisterService, RegionService, LanguageService } from '../_services';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Region } from '../data_objects/region';
 import { Language } from '../data_objects/language';
+import { ControlsMap } from '../interface/controls-map';
 
 @Component({
   selector: 'app-register',
@@ -32,8 +33,8 @@ export class RegisterComponent implements OnInit {
   public profileForm: FormGroup;
   public gameForm: FormGroup;
 
-  public profileData;
-  public gameData;
+  public profileData: ControlsMap<AbstractControl>;
+  public gameData: ControlsMap<AbstractControl>;
 
   // Datepicker values
   public startDate: Date = new Date(2000, 0, 1);
@@ -91,11 +92,11 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private get profileValue() {
+  private get profileValue(): ControlsMap<AbstractControl> {
     return this.profileForm.controls;
   }
 
-  private get gameValue() {
+  private get gameValue(): ControlsMap<AbstractControl> {
     return this.gameForm.controls;
   }
 
