@@ -10,6 +10,8 @@ import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 import { PublicUser } from '../data_objects/publicuser';
 import { Game } from '../data_objects/game';
 import { NotifyMatch } from '../data_objects/notifymatch';
+import { AbstractControl } from '@angular/forms';
+import { ControlsMap } from '../interface/controls-map';
 
 
 @Injectable({
@@ -42,7 +44,7 @@ export class MatchService {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
 
-  public searchMatch(gameData, filterData): Observable<any> {
+  public searchMatch(gameData: ControlsMap<AbstractControl>, filterData: ControlsMap<AbstractControl>): Observable<any> {
     const sessionId = this.cookieService.get('gamer');
     const requestMatch = new MatchMakingRequest(
       sessionId,

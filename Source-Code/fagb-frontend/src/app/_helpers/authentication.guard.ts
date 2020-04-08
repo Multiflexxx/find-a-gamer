@@ -3,7 +3,6 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 
 import { AuthenticationService } from '../_services';
 import { CookieService } from 'ngx-cookie-service';
-import { Login } from '../data_objects/login';
 
 @Injectable({
   providedIn: 'root'
