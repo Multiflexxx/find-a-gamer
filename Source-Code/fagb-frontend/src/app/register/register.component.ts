@@ -5,15 +5,15 @@ import { Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 // Import Validator
-import { emailValidator } from '../shared/email-validator.directive';
-import { compareValidator } from '../shared/compare-validator.directive';
-import { gameValidator } from '../shared/game-validator.directive';
+import { emailValidator } from '../_shared/email-validator.directive';
+import { compareValidator } from '../_shared/compare-validator.directive';
+import { gameValidator } from '../_shared/game-validator.directive';
 
-import { RegisterService, RegionService, LanguageService } from '../_services';
+import { RegisterService, RegionService, LanguageService, GameService } from '../_services';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Region } from '../data_objects/region';
 import { Language } from '../data_objects/language';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Component({
   selector: 'app-register',
@@ -57,7 +57,8 @@ export class RegisterComponent implements OnInit {
     private registerService: RegisterService,
     private authenticationService: AuthenticationService,
     private regionService: RegionService,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private gameService: GameService) {
 
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();

@@ -9,7 +9,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Login } from '../data_objects/login';
 import { PublicUser } from '../data_objects/publicuser';
 import { LoginResponse } from '../data_objects/loginresponse';
-import { ControlsMap } from '../interface/controls-map';
+import { Session } from '../data_objects/session';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,11 @@ export class AuthenticationService {
   }
   public isLoggedIn: boolean = false;
   public redirectUrl: string;
+
+  public session: Session;
+
   public currentGamer: Observable<PublicUser>;
-  private url: string = 'http://localhost:3000/loginendpoint';
+  private url: string = '/loginendpoint';
 
   private currentGamerSubject: BehaviorSubject<PublicUser>;
 
@@ -33,7 +37,7 @@ export class AuthenticationService {
 
   public login(loginValue: ControlsMap<AbstractControl>): Observable<LoginResponse> {
     const login: Login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
-    console.log(login);
+
     return this.http.post<LoginResponse>(this.url, login)
       .pipe(map(data => {
         if (data && data.successful) {
@@ -42,7 +46,8 @@ export class AuthenticationService {
             expiration = new Date(data.session.expiration_date);
           }
           this.isLoggedIn = true;
-          this.cookieService.set('gamer', data.session.session_id, expiration);
+          this.session = data.session;
+          this.cookieService.set('gamer', this.session.session_id, expiration);
           this.currentGamerSubject.next(
             new PublicUser(
               data.user.user_id,
@@ -69,6 +74,7 @@ export class AuthenticationService {
       .pipe(map(data => {
         if (data && data.successful) {
           this.isLoggedIn = true;
+          this.session = data.session;
           this.currentGamerSubject.next(
             new PublicUser(
               data.user.user_id,

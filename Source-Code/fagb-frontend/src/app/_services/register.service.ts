@@ -11,14 +11,14 @@ import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { Session } from '../data_objects/session';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  private url: string = 'http://localhost:3000/registrationendpoint';
+  private url: string = '/registrationendpoint';
 
   public constructor(private http: HttpClient, private cookieService: CookieService) { }
 

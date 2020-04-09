@@ -8,9 +8,8 @@ import { GameResponse } from '../data_objects/gameresponse';
   providedIn: 'root'
 })
 export class GameService {
-  public selectGame: number;
-
-  private url: string = 'http://localhost:3000/gamesendpoint';
+  private url: string = '/gamesendpoint';
+  private compState: number;
 
   public constructor(private http: HttpClient) { }
 
@@ -18,5 +17,11 @@ export class GameService {
     return this.http.get<GameResponse[]>(this.url);
   }
 
+  public setCompState(num: number): void {
+    this.compState = num;
+  }
 
+  public getCompState(): number {
+    return this.compState;
+  }
 }

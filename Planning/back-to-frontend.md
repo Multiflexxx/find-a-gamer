@@ -206,3 +206,5 @@ class UserLanguagePair {
  "language_id": 2
 }
 ```
+
+Info how to serve frontend with backend [here](https://docs.nestjs.com/recipes/serve-static)

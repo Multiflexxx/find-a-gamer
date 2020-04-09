@@ -8,7 +8,7 @@ import { Language } from '../data_objects/language';
   providedIn: 'root'
 })
 export class LanguageService {
-  private url: string = 'http://localhost:3000/languagesendpoint';
+  private url: string = '/languagesendpoint';
 
   public constructor(private http: HttpClient) { }
 
