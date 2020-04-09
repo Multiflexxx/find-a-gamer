@@ -4,6 +4,10 @@ import { Session } from './session';
 import { Language } from './language';
 import { Game } from './game';
 import { UserGamePair } from './usergamepair';
+import { GameResponse } from './gameresponse';
+import { Region } from './region';
+import { Registration } from './registration';
+import { Response } from './response';
 
 // unit tests done for:
 // login
@@ -11,6 +15,10 @@ import { UserGamePair } from './usergamepair';
 // language
 // game
 // usergamepair
+// gameresponse
+// region
+// registration
+// response
 
 
 describe('Check Login-object', () => {
@@ -125,5 +133,54 @@ describe('Check UserGamePair-object', () => {
         expect(userGamePair.pair_id).toEqual(2);
         expect(userGamePair.user_id).toEqual(3);
         expect(userGamePair.game_id).toEqual(4);
+    });
+});
+
+describe('Check GameResponse-object', () => {
+    let testGame: Game = new Game(12);
+    let gameResponse: GameResponse = new GameResponse(testGame, 15);
+
+    it('should be a valid GameResponse with game_id == 12', () => {
+        expect(gameResponse.game).toBeDefined();
+        expect(gameResponse.game.game_id).toEqual(12);
+        expect(gameResponse.counter).toEqual(15);
+    });
+});
+
+describe('Check Region-object', () => {
+    let region: Region = new Region(3, 'Asia');
+
+    it('should be a valid region', () => {
+        expect(region.region_id).toEqual(3);
+        expect(region.name).toEqual('Asia');
+    });
+});
+
+describe('Check Registration-object', () => {
+    let testDate: Date = new Date();
+    let testRegion: Region = new Region(3, 'Asia');
+    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    let testGames: Game[] = [new Game(2), new Game(3)];
+    let registration: Registration = new Registration('mail@mail.com', 'hash123', 'nickname', 'nickname#1234', testDate, testRegion, testLanguages, testGames);
+
+    it('should be a valid registration', () => {
+        expect(registration.email).toEqual('mail@mail.com');
+        expect(registration.password_hash).toEqual('hash123');
+        expect(registration.nickname).toEqual('nickname');
+        expect(registration.birthdate).toEqual(testDate);
+        expect(registration.region).toEqual(testRegion);
+        expect(registration.languages).toHaveLength(2);
+        expect(registration.languages[0].language_id).toEqual(1);
+        expect(registration.games).toHaveLength(2);
+        expect(registration.games[0].game_id).toEqual(2);
+    });
+});
+
+describe('Check general Response-object', () => { 
+    let response: Response = new Response(true, 'message');
+
+    it('should be a valid response', () => {
+        expect(response.successful).toBeTruthy();
+        expect(response.message).toEqual('message');
     });
 });
