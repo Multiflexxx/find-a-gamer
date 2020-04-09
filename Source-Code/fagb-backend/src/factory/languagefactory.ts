@@ -30,9 +30,9 @@ export class LanguageFactory {
         return languages;
     }
 
-    public static async updateLanguagesForUser(user: User): Promise<boolean> {
+    public static async updateLanguagesForUser(user: User, newLanguages: Language[]): Promise<boolean> {
 
-        let successful: boolean = await UserLanguagePairFactory.updateUserLanguagePairs(user);
+        let successful: boolean = await UserLanguagePairFactory.updateUserLanguagePairs(user, newLanguages);
 
         if(!successful) {
             console.error("LanguageFactory updateLanguagesForUser(): Couldn't update UserLanguagePairs");

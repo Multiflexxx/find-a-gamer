@@ -101,7 +101,7 @@ export class UserLanguagePairFactory {
     //     });
     // }
 
-    public static async updateUserLanguagePairs(user: User): Promise<boolean> {
+    public static async updateUserLanguagePairs(user: User, newLanguages: Language[]): Promise<boolean> {
         // Delete old User Language Pairs
         let successful: boolean = await UserLanguagePairFactory.deleteUserLanguagePairs(user);
 
@@ -112,7 +112,7 @@ export class UserLanguagePairFactory {
 
 
         // Create new UserLanguagePairs
-        for(let language of user.languages) {
+        for(let language of newLanguages) {
             let query = QueryBuilder.createUserLanguagePair(user, language);
             let successful: boolean = false;
             

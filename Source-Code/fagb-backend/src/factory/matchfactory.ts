@@ -216,7 +216,8 @@ export class MatchFactory {
         let query: QueryObject = QueryBuilder.getMostRecentRequestByUserId(user_id);
         let matchMakingRequest: MatchMakingRequest;
         try {
-            let result: any = ConnectToDatabaseService.executeQuery(query)[0];
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            console.log(result);
             matchMakingRequest = new MatchMakingRequest(null, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id)
         } catch (e) {
             console.error("MatchFactory getMostRecentRequestByUser(): Database query threw exception");

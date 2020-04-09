@@ -14,6 +14,7 @@ import { UserLanguagePairFactory } from './userlanguagepairfactory';
 import { Language } from '../data_objects/language';
 import { PublicUser } from '../data_objects/publicuser';
 import { QueryObject } from 'src/data_objects/queryobject';
+import { EditProfileRequest } from 'src/data_objects/editprofilerequest';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
@@ -266,8 +267,70 @@ export class UserFactory {
         return user;
     }
 
+    public static async updateUser(editProfileRequest: EditProfileRequest): Promise<PublicUser> {
+        // Get user to be updated
+        let user: User = await UserFactory.getUserBySessionID(editProfileRequest.session_id);
+
+        // Check for Public User
+        if(!!editProfileRequest.publicUser) {
+            // Update Public User
+            // Update Games
+            let newGames = await GameFactory.updateGamesForUser(user, editProfileRequest.publicUser.games);
+            if(!newGames) {
+                console.error("UserFactory updateUser(): Couldn't update games");
+                return null;
+            }
+
+            // Update Languages
+            let newLanguages = await LanguageFactory.updateLanguagesForUser(user, editProfileRequest.publicUser.languages);
+            if(!newLanguages) {
+                console.error("UserFactory updateUser(): Couldn't update languages");
+                return null;
+            }
+
+            // Update Biography, ProfilePicture & Region
+            // Direct attributes of User, so they can be updated right away
+            let query: QueryObject = QueryBuilder.updateUser(user.user_id, editProfileRequest.nPassword, editProfileRequest.publicUser.biography, editProfileRequest.publicUser.profile_picture, editProfileRequest.publicUser.region.region_id);
+            let successful: boolean = false;
+            try {
+                await ConnectToDatabaseService.executeQuery(query);
+                successful = true;
+            } catch(e) {
+                console.error("UserFactory updateUser(): Database Query threw exception");
+                console.error(e);
+            }
+            
+            if(!successful) {
+                console.error("UserFactory updateUser(): Couldn't update user");
+                return null;
+            }
+        }
+
+        // Check for new Password
+        if(!!editProfileRequest.nPassword) {
+            // Update password 
+            let query: QueryObject = QueryBuilder.updatePasswordForUser(user.user_id, editProfileRequest.nPassword);
+            let successful: boolean = false;
+            try {
+                await ConnectToDatabaseService.executeQuery(query);
+                successful = true;
+            } catch(e) {
+                console.error("UserFactory updateUser(): Database Query threw exception");
+                console.error(e);
+            }
+
+            if(!successful) {
+                console.error("UserFactory updateUser(): Couldn't update password for user");
+                return null;
+            }
+        }
+
+        return UserFactory.userToPublicUser(await UserFactory.getUserBySessionID(editProfileRequest.session_id));
+    }
+
     public static userToPublicUser(user: User): PublicUser {
         return new PublicUser(user.user_id, user.nickname, user.discord_tag, user.cake_day, user.region, user.games, user.languages, user.profile_picture, user.biography);
     }
+
 }
 

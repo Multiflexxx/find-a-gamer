@@ -1,13 +1,18 @@
-import { User } from "./user";
-import { Session } from "./session";
+import { PublicUser } from './publicuser';
 
 export class EditProfileRequest {
-
-    public user: User;
     public session_id: string;
+    public publicUser: PublicUser;
+    public oPassword: string;
+    public nPassword: string;
 
-    constructor(session_id: string, user: User) {
-        this.user = user;
+    public constructor(session_id: string, publicUser: PublicUser, oPassword?: string, nPassword?: string) {
         this.session_id = session_id;
+        this.publicUser = publicUser;
+
+        if (!(!oPassword || !nPassword)) {
+            this.oPassword = oPassword;
+            this.nPassword = nPassword;
+        }
     }
 }
