@@ -84,6 +84,13 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
   public onProfileUpdateSubmit(): void {
-    this.profileService.updateProfile(this.profileUpdateValue);
+    this.profileService.updateProfile(this.profileUpdateValue).subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error.error.error);
+      }
+    );
   }
 }
