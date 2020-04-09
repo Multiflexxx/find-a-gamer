@@ -4,24 +4,29 @@ import { SessionFactory } from 'src/factory/sessionfactory';
 import { MatchFactory } from 'src/factory/matchfactory';
 import { match } from 'assert';
 import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
+import { ConnectToDatabaseService } from 'src/connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
     @Get()
     public async testMatchMaking() {
-        let matchMakingRequest = new MatchMakingRequest(null, 9, 1, 1, 1, true);
+        // let matchMakingRequest = new MatchMakingRequest(null, 9, 1, 1, 1, true);
 
-        await MatchFactory.createMatchMakingRequest(matchMakingRequest);
+        // await MatchFactory.createMatchMakingRequest(matchMakingRequest);
 
-        let request;
-        await MatchFactory.getMatchMakingRequestByRequestId(64).then(function(callbackValue) {
-            request = callbackValue;
-        }, function(callbackValue) {
-            console.error("NotifymatchendpointController handleUpdate(): ");
-            console.error(callbackValue);
-        });
-
-        console.log(request);
+        let result;
+        try {
+            result = await ConnectToDatabaseService.executeQuery(QueryBuilder.getNoOfMatchMakingRequestsByGame());
+            console.log(result)
+        } catch(e) {
+            console.error(e);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Something went wrong"
+            }, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return result;
 
         // matchMakingRequest = null;
         // await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id).then(function(callbackValue) {

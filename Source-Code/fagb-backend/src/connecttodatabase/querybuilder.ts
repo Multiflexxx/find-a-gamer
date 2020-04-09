@@ -273,7 +273,8 @@ export class QueryBuilder {
 
     public static getNoOfMatchMakingRequestsByGame(): QueryObject {
         return new QueryObject(
-            "SELECT Game.*, sum(players_in_party) AS players_searching FROM MatchMakingRequest RIGHT JOIN Game ON (MatchMakingRequest.game_id = Game.game_id) WHERE match_id IS NULL GROUP BY game_id;"
+            // "SELECT Game.*, sum(players_in_party) AS players_searching FROM MatchMakingRequest RIGHT JOIN Game ON (MatchMakingRequest.game_id = Game.game_id) WHERE match_id IS NULL GROUP BY game_id;"
+            "Select sum(CASE WHEN match_id IS NULL THEN players_in_party ELSE 0 END) as players_count, match_id, Game.* FROM Game LEFT JOIN MatchMakingRequest ON Game.game_id = MatchMakingRequest.game_id GROUP BY game_id;"
         );
     }
 

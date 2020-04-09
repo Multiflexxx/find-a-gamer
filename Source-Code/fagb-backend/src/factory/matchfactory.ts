@@ -183,7 +183,7 @@ export class MatchFactory {
         let gameResponses: GameResponse[] = [];
         await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
             await callbackValue.forEach(result => {
-                gameResponses.push(new GameResponse(new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published), !result.players_searching ? 0 : result.players_searching));
+                gameResponses.push(new GameResponse(new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published), !result.players_count ? 0 : result.players_count));
             });
         }, function (callbackValue) {
             console.error("MatchFactory getMatchMakingCountForGames(): Couldn't get GameResponses");
