@@ -18,3 +18,17 @@ h5 {
 input::placeholder {
   color: hsl(0, 0%, 71%);
 }
+
+.game-header-content {
+  background-color: hsl(217, 71%, 53%);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.game-p-content {
+  height: 100%;
+}
+
+.game-icon {
+  margin-left: 5px;
+}

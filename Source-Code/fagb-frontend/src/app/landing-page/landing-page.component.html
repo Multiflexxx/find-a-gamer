@@ -60,7 +60,11 @@
             <div class="overlay">
               <figure class="image is-2by1">
                 <img class="picture" [src]="game.game.cover_link">
-                <span class="text">find a game in cereal and get the best player in the world</span>
+                <span class="text">
+                  {{game.game.game_description}}
+                  <br>
+                  {{game.counter}} player(s) currently searching 
+                </span>
               </figure>
             </div>
           </div>
