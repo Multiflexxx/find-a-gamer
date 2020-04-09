@@ -15,7 +15,7 @@ import { Region } from '../data_objects/region';
 })
 export class ProfileService {
 
-  private url: string = 'http://localhost:3000/profileupdateendpoint';
+  private url: string = '/profileupdateendpoint';
   private currentGamer: PublicUser;
 
   public constructor(

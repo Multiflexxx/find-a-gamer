@@ -20,8 +20,8 @@ import { ControlsMap } from '../interface/controls-map';
 export class MatchService {
   public currentMatchUsers: Observable<PublicUser[]>;
   public currentMatchGame: Observable<Game>;
-  private urlS: string = 'http://localhost:3000/matchmakingrequestendpoint';
-  private urlN: string = 'http://localhost:3000/notifymatchendpoint';
+  private urlS: string = '/matchmakingrequestendpoint';
+  private urlN: string = '/notifymatchendpoint';
   private currentGamer: PublicUser;
 
   // Users

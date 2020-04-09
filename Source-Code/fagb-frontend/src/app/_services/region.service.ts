@@ -8,7 +8,7 @@ import { Region } from '../data_objects/region';
   providedIn: 'root'
 })
 export class RegionService {
-  private url: string = 'http://localhost:3000/regionendpoint';
+  private url: string = '/regionendpoint';
 
   public constructor(private http: HttpClient) { }
 

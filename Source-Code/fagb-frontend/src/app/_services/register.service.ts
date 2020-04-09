@@ -18,7 +18,7 @@ import { ControlsMap } from '../interface/controls-map';
 })
 export class RegisterService {
 
-  private url: string = 'http://localhost:3000/registrationendpoint';
+  private url: string = '/registrationendpoint';
 
   public constructor(private http: HttpClient, private cookieService: CookieService) { }
 

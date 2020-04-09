@@ -22,7 +22,7 @@ export class AuthenticationService {
   public isLoggedIn: boolean = false;
   public redirectUrl: string;
   public currentGamer: Observable<PublicUser>;
-  private url: string = 'http://localhost:3000/loginendpoint';
+  private url: string = '/loginendpoint';
 
   private currentGamerSubject: BehaviorSubject<PublicUser>;
 
