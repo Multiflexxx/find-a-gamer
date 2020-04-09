@@ -1,4 +1,4 @@
-import { Controller, Body, Get } from '@nestjs/common';
+import { Controller, Body, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { DeleteProfileRequest } from '../../data_objects/deleteprofilerequest';
 import { DeleteProfileResponse } from '../../data_objects/deleteprofileresponse';
 import { SessionFactory } from '../../factory/sessionfactory';
@@ -7,6 +7,7 @@ import { User } from '../../data_objects/user';
 import { Region } from '../../data_objects/region';
 import { Game } from '../../data_objects/game';
 import { Language } from '../../data_objects/language';
+import { Session } from 'src/data_objects/session';
 
 @Controller('profiledeleteendpoint') 
 export class ProfileDeleteEndpointController {
@@ -19,30 +20,23 @@ export class ProfileDeleteEndpointController {
 
         
         // Check Session
-        let session1;
-        await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id).then(function(callbackValue) {
-            session1 = callbackValue;
-        }, function(callbackValue) {
-            console.error("ProfileDeleteEndpointController handleProfileDeleteRequest(): Couldn't get Session for session_id");
-            console.error(callbackValue);
-        });
+        let session: Session = await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id);
         
         // If is invalid or doesn't belong to user, reject
-        if(!session1 || session1.user_id != deleteProfileRequest.user.user_id) {
-            return new DeleteProfileResponse(false, null);
+        if(!session || session.user_id != deleteProfileRequest.user.user_id) {
+            throw new HttpException({
+                status: HttpStatus.UNAUTHORIZED,
+                error: "Session not authorized to delete User"
+            }, HttpStatus.UNAUTHORIZED);
         }
 
         //Delete Session
-        let successful = false;
-        await SessionFactory.deleteSessionByUser(deleteProfileRequest.user).then(function(callbackValue) {
-           successful = true;
-        }, function(callbackValue) {
-            console.error("Couldn't delete Session");
-            console.error(callbackValue);
-        });
-
+        let successful: boolean = await SessionFactory.deleteSessionByUser(deleteProfileRequest.user);
         if (!successful) {
-            return new DeleteProfileResponse(false, null);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Failed to delete old User sessions"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // // Get User By Session ID
@@ -61,16 +55,10 @@ export class ProfileDeleteEndpointController {
 
         // Delete User
 
-        console.log("Vor Delete User");
-        await UserFactory.deleteUser(deleteProfileRequest.user).then(function(callbackValue){
-            successful = true;
-        }, function (callbackValue) {
-            console.error("profiledeleteendpoint: Couldn't delete user");
-            console.error(callbackValue);
-        })
-        console.log("Nach Delete User");
+        let user: User = await UserFactory.deleteUser(deleteProfileRequest.user);
 
-        if (!successful) {
+        if (!user) {
+            console.error("ProfileDeleteEndpoint: Couldn't delete user");
             return new DeleteProfileResponse(false, null);
         }
 

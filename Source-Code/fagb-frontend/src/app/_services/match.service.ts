@@ -82,15 +82,17 @@ export class MatchService {
 
           this.currentMatchGameSubject.next(
             new Game(
-              data.game[0].game_id,
-              data.game[0].name,
-              data.game[0].cover_link,
-              data.game[0].game_description,
-              data.game[0].publisher,
-              data.game[0].published
+              data.game.game_id,
+              data.game.name,
+              data.game.cover_link,
+              data.game.game_description,
+              data.game.publisher,
+              data.game.published
             )
           );
         }
+        console.log("data");
+        console.log(data);
         return data;
       }));
   }

@@ -2,30 +2,16 @@ import { Controller, Get, HttpException, HttpStatus, Injectable } from '@nestjs/
 import { GameFactory } from '../../factory/gamefactory';
 import { Game } from '../../data_objects/game';
 import { MatchFactory } from '../../factory/matchfactory';
+import { GameResponse } from 'src/data_objects/gameresponse';
 
 @Injectable()
 @Controller('gamesendpoint')
 export class GamesEndpointController {
 
     @Get()
-    public async getAllGamesEndpoint() {
-        // let games;
-        // await GameFactory.getAllGames().then(function(callbackValue) {
-        //     games = callbackValue;
-        // }, function(callbackValue) {
-        //     console.error("DataEndpointController getAllGamesEndpoint(): Couldn't get all Games");
-        //     console.error(callbackValue);
-        // });
+    public async getAllGamesEndpoint(): Promise<GameResponse[]> {
 
-        // return games;
-        // // return games;
-
-        let games;
-        await MatchFactory.getMatchMakingCountForGames().then(function(callbackValue) {
-            games = callbackValue;
-        }, function(callbackValue) {
-            console.error("GamesEndpointController getAllGamesEndpoint(): ")
-        });
+        let games: GameResponse[] = await MatchFactory.getMatchMakingCountForGames();
 
         if(!games) {
             throw new HttpException({

@@ -3,6 +3,7 @@ import { Language } from "../data_objects/language";
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
 import { QueryBuilder } from "../connecttodatabase/querybuilder";
 import { UserLanguagePair } from "../data_objects/userlanguagepair";
+import { QueryObject } from "src/data_objects/queryobject";
 
 export class UserLanguagePairFactory {
     // public static createUserLanguagePairs(user: User, languages: Language[]): void {
@@ -25,40 +26,36 @@ export class UserLanguagePairFactory {
     // }
 
     public static async createUserLanguagePairs(user: User, languages: Language[]) {
-        return new Promise(function(resolve, reject) {
-            languages.forEach(async language => {
-                let query = QueryBuilder.createUserLanguagePair(user, language);
-                await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                    // Successfully created Pairs
-                }, function(callbackValue) {
-                    console.error(callbackValue);
-                    reject(callbackValue);
-                });
+        languages.forEach(async language => {
+            let query: QueryObject = QueryBuilder.createUserLanguagePair(user, language);
+            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+                // Successfully created Pairs
+            }, function(callbackValue) {
+                console.error(callbackValue);
+                return false;
             });
-            resolve(true);
         });
+        return true;
     }
 
 
-    public static async deleteUserLanguagePairs(user: User) {
-        return new Promise(async function(resolve, reject) {
-            let query = QueryBuilder.deleteUserLanguagePairsByUser(user);
-            let successful = false;
+    public static async deleteUserLanguagePairs(user: User): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.deleteUserLanguagePairsByUser(user);
+        let successful: boolean = false;
 
-            await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-                successful = true;
-            }, function(callbackValue) {
-                console.error("UserLanguagePairFactory deleteUserLanguagePairs(): Couldn't delete UserLanguagePair");
-                console.error(callbackValue);
-                reject(callbackValue);
-            });
-
-            if (!successful) {
-                return;
-            }
-
-            resolve(true);
+        await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
+            successful = true;
+        }, function(callbackValue) {
+            console.error("UserLanguagePairFactory deleteUserLanguagePairs(): Couldn't delete UserLanguagePair");
+            console.error(callbackValue);
+            return false;
         });
+
+        if (!successful) {
+            return false;
+        }
+
+        return true;
     }
 
     // public static async updateUserLanguagePairs(user: User, newLanguages: Language[]) {

@@ -12,28 +12,16 @@ export class LoginendpointController {
     async handleLogin(@Body() login: Login) {
 
         // Check for validity?
-        let loginResponse = null;
         // Get User via Session OR email & password_hash
         if (login.email && login.password_hash) {
             // Get User by email and password
-            let result = null;
-            await UserFactory.getUserByEmail(login.email).then(function (callbackValue) {
-                // Got User
-                result = callbackValue;
-            }, function (callbackValue) {
-                // No user with that Email
-                console.error("LoginEndpoint: No user with that Email");
-                console.error(callbackValue);
-            });
-
-            if (!result) {
+            let user: User = await UserFactory.getUserByEmail(login.email);
+            if (!user) {
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: 'No user with that Email',
                 }, HttpStatus.UNAUTHORIZED)
             }
-
-            let user = result;
 
             // Check if password_hash is the same
             if (user.password_hash != login.password_hash) {
@@ -44,50 +32,32 @@ export class LoginendpointController {
             }
 
             // Delete old user session
-            let successful = false;
-            await SessionFactory.deleteSessionByUser(user).then(async function (callbackValue) {
-                // Successfully deleted Session
-                successful = true;
-
-            }, function (callbackValue) {
-                console.error("LoginEndpoint handleLogin: Failed to delete old user session");
-                console.error(callbackValue);
-            });
+            let successful: boolean = await SessionFactory.deleteSessionByUser(user);
+            if (!successful) {
+                console.error("LoginEndpointController handleLogin(): Couldn't delete old session");
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: "Couldn't delete old session",
+                }, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
             // Create new Session for User
-            let session;
-            await SessionFactory.createSessionForUser(user, login.stay_logged_in).then(function (callbackValue) {
-                session = callbackValue;
-            }, function (callbackValue) {
-                console.error("LoginEndpoint handleLogin(): Couldn't create session");
-                console.error(callbackValue);
-            });
-
+            let session: Session = await SessionFactory.createSessionForUser(user, login.stay_logged_in);
             if (!session) {
+                console.error("LoginEndpointController handleLogin(): Couldn't create new session");
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
                     error: "Couldn't create Session"
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
+                }, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            loginResponse = new LoginResponse(true, session, UserFactory.userToPublicUser(user));
-            return loginResponse;
+            return new LoginResponse(true, session, UserFactory.userToPublicUser(user));
 
         } else if (login.session_id) {
             // Get User by session_id
-            let user;
-
-            await UserFactory.getUserBySessionID(login.session_id).then(function (callbackValue) {
-                // Got User
-                user = callbackValue;
-            }, function (callbackValue) {
-                // No user with that SessionID
-                console.error("LoginEndpoint: No user with that SessionID");
-                console.error(callbackValue);
-            });
-
-
+            let user: User = await UserFactory.getUserBySessionID(login.session_id);
             if (!user) {
+                console.error("LoginEndpoint: No user with that SessionID");
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: 'Invalid Session',
@@ -95,16 +65,15 @@ export class LoginendpointController {
             }
 
             // Get Session
-            let session;
-            await SessionFactory.getSessionBySessionId(login.session_id).then(function (callbackValue) {
-                session = callbackValue;
-            }, function (callbackValue) {
-                console.error("LoginEndpoint handleLogin(): Couldn't get Session");
-                console.error(callbackValue);
-            })
+            let session: Session = await SessionFactory.getSessionBySessionId(login.session_id);
+            if (!session) {
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Failed to get Session for session_id',
+                }, HttpStatus.INTERNAL_SERVER_ERROR)
+            }
 
-            loginResponse = new LoginResponse(true, session, UserFactory.userToPublicUser(user));
-            return loginResponse;
+            return new LoginResponse(true, session, UserFactory.userToPublicUser(user));
         }
     }
 }
