@@ -17,6 +17,7 @@ export class ProfileOverviewComponent implements OnInit {
 
   public ngOnInit(): void {
     this.authenticationService.currentGamer.subscribe(gamer => this.gamer = gamer);
+    console.log(this.gamer);
     this.lang = this.getLanguages(this.gamer.languages);
   }
 

@@ -51,7 +51,10 @@ export class AuthenticationService {
               data.user.cake_day,
               data.user.region,
               data.user.games,
-              data.user.languages)
+              data.user.languages,
+              data.user.profile_picture,
+              data.user.biography
+            )
           );
         }
         return data;
@@ -74,7 +77,10 @@ export class AuthenticationService {
               data.user.cake_day,
               data.user.region,
               data.user.games,
-              data.user.languages)
+              data.user.languages,
+              data.user.profile_picture,
+              data.user.biography
+            )
           );
         }
         return data;

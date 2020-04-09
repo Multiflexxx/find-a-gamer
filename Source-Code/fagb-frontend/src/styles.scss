@@ -56,5 +56,9 @@ $card-background-color: $black-ter;
 $tag-color: $light;
 $tag-background-color: $black-ter;
 
+.img-shadow{
+  box-shadow: 0 10px 10px $black-ter;
+}
+
 // Import whole Bulma sass
 @import "../node_modules/bulma/bulma.sass";

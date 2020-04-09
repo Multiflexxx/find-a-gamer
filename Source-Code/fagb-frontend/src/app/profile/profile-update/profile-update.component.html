@@ -1,34 +1,46 @@
 <section class="section">
-    <div class="container">
-      <div class="columns is-mobile is-centered is-multiline">
-        <div class="column is-three-quarters-tablet is-full-mobile">
-          <div class="box">
-            <div class="content has-text-centered">
-              <h1 class="title">{{gamer.nickname}}</h1>
-              <p class="text">{{gamer.discord_tag}}</p>
-  
-            </div>
-          </div>
-        </div>
-        <div class="column is-one-quarter-tablet is-half-mobile">
-          <div class="media-right">
-            <figure>
-              <img src="https://bulma.io/images/placeholders/128x128.png">
-            </figure>
+  <div class="container">
+    <div class="columns is-mobile is-centered is-vcentered is-multiline">
+      <div class="column is-one-fifths-tablet is-half-mobile">
+        <figure class="image">
+          <img class="is-rounded img-shadow" src="../../../assets/img/profile/B.png">
+        </figure>
+      </div>
+      <div class="column is-four-fifths-tablet is-full-mobile">
+        <div class="box">
+          <div class="content has-text-centered">
+            <h1 class="title">{{gamer.nickname}}</h1>
+            <p class="text">{{gamer.discord_tag}}</p>
           </div>
         </div>
       </div>
+      <div class="column is-one-fifths-tablet is-half-mobile">
+        <div class="buttons">
+          <a class="button is-link is-fullwidth" [routerLink]="['/profile']" routerLinkActive="router-link-active">
+            <span class="icon">
+              <i class="far fa-trash-alt"></i>
+            </span>
+            <span>Cancel</span>
+          </a>
+          <a class="button is-link is-fullwidth" [routerLink]="['/profile']" routerLinkActive="router-link-active">
+            <span class="icon">
+              <i class="far fa-user-circle"></i>
+            </span>
+            <span>Save</span>
+          </a>
+        </div>
+      </div>
     </div>
-  </section>
-  
-  <section class="section">
-    <div class="container">
-      <!-- <form [formGroup]="profileUpdateForm"> -->
-        <form >
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form [formGroup]="profileUpdateForm" (ngSubmit)="onProfileUpdateSubmit()">
       <div class="columns is-multiline is-mobile">
         <div class="column is-one-third-tablet is-full-mobile">
           <div class="box">
-            <h1 class="title"> cakeday:</h1>
+            <h1 class="title">Cakeday:</h1>
             <p class="text">{{gamer.cake_day | date}}</p>
           </div>
         </div>
@@ -36,62 +48,56 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Region</mat-label>
-              <mat-select formControlName="region" [(value)]="regionSelected" required>
+              <mat-select formControlName="region" required>
                 <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="hasError('region', 'required')">Region is required.</mat-error>
             </mat-form-field>
-            <!-- <h1 class="title"> Region:</h1>
-            <p class="text">{{gamer.region.name}}</p> -->
           </div>
         </div>
         <div class="column is-one-third-tablet is-full-mobile">
           <div class="box">
             <mat-form-field>
               <mat-label>Languages</mat-label>
-              <mat-select formControlName="lang"[(value)]="languageSelected" multiple required>
+              <mat-select formControlName="lang" multiple required>
                 <mat-option *ngFor="let lang of langList" [value]="lang.language_id" data-name="lang.name">
                   {{lang.name}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="hasError('lang', 'required')">Select at least one language.</mat-error>
             </mat-form-field>
-            <!-- <h1 class="title"> Languages:</h1>
-            <p class="text">{{lang}}</p> -->
           </div>
         </div>
         <div class="column is-half-mobile ">
           <div class="box">
             <mat-form-field>
               <mat-label>Password old:</mat-label>
-              <input matInput formControlName="bio" value="" placeholder="" required>
+              <input matInput formControlName="oPassword" value="" placeholder="" required>
             </mat-form-field>
           </div>
         </div>
-          <div class="column is-half-mobile ">
-            <div class="box">
-              <mat-form-field>
-                <mat-label>Password new:</mat-label>
-                <input matInput formControlName="bio" value="" placeholder="" required>
-              </mat-form-field>
-            </div>
+        <div class="column is-half-mobile ">
+          <div class="box">
+            <mat-form-field>
+              <mat-label>Password new:</mat-label>
+              <input matInput formControlName="nPassword" value="" placeholder="" required>
+            </mat-form-field>
           </div>
+        </div>
         <div class="column is-full">
           <div class="box">
             <mat-form-field>
-              <mat-label>Bio:</mat-label>
-              <input matInput formControlName="bio" value="{{gamer.cake_day | date}}" placeholder="" required>
+              <mat-label>Biography:</mat-label>
+              <input matInput formControlName="biography" value="{{gamer.cake_day | date}}" placeholder="" required>
             </mat-form-field>
-
           </div>
         </div>
       </div>
     </form>
-    </div>
-  </section>
-  
-  <section class="section">
-   
-  </section>
-  
+  </div>
+</section>
+
+<section class="section">
+  Games
+</section>

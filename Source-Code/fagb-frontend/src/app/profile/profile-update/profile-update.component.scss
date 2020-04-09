@@ -1,57 +1,36 @@
-.color{
-    background-color: red;
-}
-.color2{
-    background-color: blue;
+.box {
+  color: hsl(0, 0%, 96%);
+  background-color: hsl(0, 0, 21%);
 }
 
-.gamername{
-    text-align: center;
-    font-size: 10em;
-    color: white;
+.text,
+.title {
+  color: hsl(0, 0%, 96%);
 }
-.is-anchor{
-    position: fixed;
-}
-.box{
-    background-color: #333;
-}
-.text{
-    color: white;
 
+.has-image-centerd {
+  margin-left: auto;
+  margin-right: auto;
 }
-.title{
-    color: white;
-}
-.has-image-centerd{
-    margin-left: auto;
-    margin-right: auto;
-}
+
 .ng-template {
-    margin: 0;
-    padding: 0;
-  }
-  
+  margin: 0;
+  padding: 0;
+}
 
-  
-  .mat-form-field {
-    margin-top: 1rem;
-    width: 100%;
-  }
-  
-  input::placeholder {
-    color: hsl(0, 0%, 71%);
-  }
-  
-  .material-icons-outlined {
-    color: hsl(0, 0%, 21%);
-  }
-  
-  .mat-flat-button {
-    margin: 1rem 0;
-  }
-  
-//   .box {
-//     color: hsl(0, 0%, 96%);
-//     background-color: hsl(0, 0, 21%);
-//   }
+.mat-form-field {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+input::placeholder {
+  color: hsl(0, 0%, 71%);
+}
+
+.material-icons-outlined {
+  color: hsl(0, 0%, 21%);
+}
+
+.mat-flat-button {
+  margin: 1rem 0;
+}

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -11,6 +12,7 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
   declarations: [ProfileOverviewComponent, ProfileUpdateComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     ProfileRoutingModule,
     MaterialModule
   ]
