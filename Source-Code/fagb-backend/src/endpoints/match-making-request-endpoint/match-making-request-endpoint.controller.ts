@@ -56,7 +56,6 @@ export class MatchMakingRequestEndpointController {
 
         // Create MatchmakingRequest on Database
         let successful: boolean = await MatchFactory.createMatchMakingRequest(matchmakingRequest);
-
         if(!successful) {
             console.error("MatchMakingRequestEndpointController requestMatch(): Couldn't create MatchMakingRequest");
             throw new HttpException({
@@ -67,7 +66,6 @@ export class MatchMakingRequestEndpointController {
 
         // Get the created Request
         let request: MatchMakingRequest = await MatchFactory.getMostRecentRequestByUser(matchmakingRequest.user_id);
-
         if(!request) {
             console.error("MatchMakingRequestEndpointController requestMatch(): request is null");
             throw new HttpException({
@@ -75,16 +73,6 @@ export class MatchMakingRequestEndpointController {
                 error: 'Couldn\'t get created Request',
             }, HttpStatus.NOT_ACCEPTABLE);
         }
-
-        // Get Game Object for that Request
-        // game = await GameFactory.getGameById(request.game_id);
-        // if (!game) {
-        //     console.error("MatchMakingRequestEndpointController requestMatch(): Game with Id: " + request.game_id + " is null")
-        //     throw new HttpException({
-        //         status: HttpStatus.NOT_ACCEPTABLE,
-        //         error: 'Couldn\'t create MatchMakingRequest',
-        //     }, HttpStatus.NOT_ACCEPTABLE);
-        // }
 
         return new MatchMakingResponse(request, game);
     }

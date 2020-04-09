@@ -14,7 +14,7 @@ export class MatchProcessComponent implements OnInit {
   public matchData: any;
 
   private subscription: Subscription;
-  private i: Observable<number> = interval(1000);
+  private i: Observable<number> = interval(10000);
 
   public constructor(
     private matchService: MatchService,
@@ -38,7 +38,7 @@ export class MatchProcessComponent implements OnInit {
           },
           (error) => {
             console.log('Nein!');
-            console.log(error.error.error);
+            console.log(error);
           }
         );
       }

@@ -118,7 +118,7 @@ export class MatchFactory {
                     // Remove element from allRequests Array
                     // allRequests.splice(allRequests.findIndex(x => x.request_id == currentRequest.request_id), 1)
                     allRequests.splice(i, 1);
-                    console.log(allRequests);
+                    // console.log(allRequests);
                 }
             }
         }

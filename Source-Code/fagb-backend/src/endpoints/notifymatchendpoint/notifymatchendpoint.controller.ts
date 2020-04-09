@@ -14,6 +14,7 @@ import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 import { GameFactory } from '../../factory/gamefactory';
 import { PublicUser } from '../../data_objects/publicuser';
 import { Game } from 'src/data_objects/game';
+import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {
@@ -22,17 +23,7 @@ export class NotifymatchendpointController {
     async handleUpdate(@Body() notifyMatch: NotifyMatch) {
 
         // Check whether matchMakingRequest has a match
-        let matchMakingRequest;
-        await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id).then(function(callbackValue) {
-            matchMakingRequest = callbackValue;
-        }, function(callbackValue) {
-            console.error("NotifymatchendpointController handleUpdate(): ");
-            console.error(callbackValue);
-        });
-
-        // console.log("ToString");
-        // console.log(matchMakingRequest.match_id.toString());
-        // console.log(Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString())
+        let matchMakingRequest: MatchMakingRequest = await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id);
 
         if(!matchMakingRequest) {
             throw new HttpException({
@@ -40,6 +31,7 @@ export class NotifymatchendpointController {
                 error: "No MatchMakingRequest with that ID"
             }, HttpStatus.NOT_ACCEPTABLE);
         }
+        
 
         // Get Game for MatchMakingRequest
         let game: Game = await GameFactory.getGameById(matchMakingRequest.game_id);
@@ -50,6 +42,7 @@ export class NotifymatchendpointController {
                 error: "No Game with that ID"
             }, HttpStatus.NOT_ACCEPTABLE);
         }
+        
 
         // Don't question it
         //
@@ -61,16 +54,9 @@ export class NotifymatchendpointController {
             return new MatchMakingResponse(matchMakingRequest, game);
         }
 
-        let matches;
-        console.log("MatchMaking Request in Endpoint");
-        console.log(matchMakingRequest);
-        await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id).then(function(callbackValue) {
-            matches = callbackValue;
-        }, function(callbackValue) {
-            console.error("NotifymatchendpointController handleUpdate(): Couldn't get Matches for Request");
-            console.error(callbackValue);
-        });
+        
 
+        let matches = await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id);
         if(!matches || !matches[0] || !matches[1]) {
             console.error("NotifymatchendpointController handleUpdate(): Match is null or contains to few elements");
             throw new HttpException({
@@ -88,12 +74,15 @@ export class NotifymatchendpointController {
                 throw new HttpException({
                     status: HttpStatus.NOT_ACCEPTABLE,
                     error: "Matched user doesn't exist"
-                }, HttpStatus.NOT_ACCEPTABLE)
+                }, HttpStatus.NOT_ACCEPTABLE);
             }
             users.push(UserFactory.userToPublicUser(user));
         }
 
-        return new MatchMakingResponse(matchMakingRequest, game, users);
+        // console.log(matchMakingRequest);
+        // console.log(game);
+        // console.log(users);
 
+        return new MatchMakingResponse(matchMakingRequest, game, users);
     }
 }

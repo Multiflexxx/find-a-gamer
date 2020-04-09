@@ -128,7 +128,7 @@ export class GameFactory {
         let query: QueryObject = QueryBuilder.getGameById(game_id);
         let game: Game;
         await ConnectToDatabaseService.getPromise(query).then(function(callbackValue) {
-            game = new Game(callbackValue.game_id, callbackValue.name, callbackValue.cover_link, callbackValue.game_description, callbackValue.publisher, callbackValue.published);
+            game = new Game(callbackValue[0].game_id, callbackValue[0].name, callbackValue[0].cover_link, callbackValue[0].game_description, callbackValue[0].publisher, callbackValue[0].published);
         }, function(callbackValue) {
             console.error("GameFactory getGameById(): Couldn't get game");
         });
