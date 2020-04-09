@@ -2,11 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Login } from './login';
 import { Session } from './session';
 import { Language } from './language';
+import { Game } from './game';
+import { UserGamePair } from './usergamepair';
 
 // unit tests done for:
 // login
 // session
 // language
+// game
+// usergamepair
 
 
 describe('Check Login-object', () => {
@@ -87,5 +91,39 @@ describe('Check Language-object', () => {
         expect(languageCode.language_id).toEqual(3);
         expect(languageCode.name).toBeNull();
         expect(languageCode.language_code).toEqual('US');
+    });
+});
+
+describe('Check Game-object', () => { 
+
+    let testDate: Date = new Date;
+    let gameFull: Game = new Game(1, 'Minecraft', '/image/img.png', 'A lego like game.', 'Mojang', testDate);
+    let gameNull: Game = new Game(2);
+
+    it('should be a Game-object with all set', () => {
+        expect(gameFull.game_id).toEqual(1);
+        expect(gameFull.name).toEqual('Minecraft');
+        expect(gameFull.cover_link).toEqual('/image/img.png');
+        expect(gameFull.publisher).toEqual('Mojang');
+        expect(gameFull.published).toEqual(testDate);
+    });
+
+    it('should be a Game-object with all null execpt id', () => {
+        expect(gameNull.game_id).toEqual(2);
+        expect(gameNull.name).toBeNull();
+        expect(gameNull.cover_link).toBeNull();
+        expect(gameNull.publisher).toBeNull();
+        expect(gameNull.published).toBeNull();
+    });
+});
+
+describe('Check UserGamePair-object', () => { 
+
+    let userGamePair: UserGamePair = new UserGamePair(2, 3, 4);
+
+    it('should be a valid User-Game-Pair', () => {
+        expect(userGamePair.pair_id).toEqual(2);
+        expect(userGamePair.user_id).toEqual(3);
+        expect(userGamePair.game_id).toEqual(4);
     });
 });
