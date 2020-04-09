@@ -159,8 +159,8 @@
 }
 
 
-@media(min-width: 769px) {
-  .registration {
+@media(min-width: 1023px) {
+  .login {
     position: absolute;
     width: 50%;
     top: 50%;
@@ -172,8 +172,8 @@
 
 }
 
-@media(max-width: 769px) {
-  .registration {
+@media(max-width: 1023px) {
+  .login {
     position: relative;
 
     opacity: 1;
@@ -319,7 +319,7 @@
   color: white;
 }
 
-@media(max-width: 769px) {
+@media(max-width: 1023px) {
   .text {
     line-height: 1.5rem;
     font-size: 1rem;
@@ -429,7 +429,7 @@
 }
 
 // Animationen
-@media(min-width: 769px) {
+@media(min-width: 1023px) {
   .smartphone {
     left: 10vw;
     opacity: 0;

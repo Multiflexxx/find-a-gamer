@@ -15,8 +15,8 @@
   </div>
 
   <div class="container">
-    <div class="columns is-multiline is-mobile">
-      <div *ngFor="let game of searchedGameList" class="column is-one-quarter-desktop is-half-tablet is-full-mobile">
+    <div class="columns is-multiline is-tablet">
+      <div *ngFor="let game of searchedGameList" class="column is-one-quarter-fullhd is-one-quarter-widescreen is-half-desktop is-half-tablet is-full-mobile">
         <a (click)="addGame(game.game.game_id, game.game.name)">
           <div class="card" [ngClass]="isSelected[game.game.game_id] ? 'is-selected' : 'none'">
             <div class="card-image">
