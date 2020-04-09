@@ -203,19 +203,42 @@ export class QueryBuilder {
         );
     }
 
-    public static updateUser(user: User): QueryObject {
+    // public static updateUser(user: User): QueryObject {
+    //     return new QueryObject(
+    //         "UPDATE User SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?;",
+    //         [
+    //             user.email,
+    //             user.password_hash,
+    //             user.nickname,
+    //             user.discord_tag,
+    //             user.profile_picture,
+    //             user.birthdate, 
+    //             user.biography,
+    //             user.region.region_id,
+    //             user.user_id
+    //         ]
+    //     );
+    // }
+
+    public static updateUser(user_id: number, password_hash: string, biography: string, profile_picture: string, region_id: number): QueryObject {
         return new QueryObject(
-            "UPDATE User SET email = ?, password_hash = ?, nickname = ?, discord_tag = ?, profile_picture = ?, birthdate = ?, biography = ?, region_id = ? WHERE user_id = ?;",
+            "UPDATE User SET password_hash = ?, biography = ?, profile_picture = ?, region_id = ? WHERE user_id = ?",
             [
-                user.email,
-                user.password_hash,
-                user.nickname,
-                user.discord_tag,
-                user.profile_picture,
-                user.birthdate, 
-                user.biography,
-                user.region.region_id,
-                user.user_id
+                password_hash,
+                biography,
+                profile_picture,
+                region_id,
+                user_id
+            ]
+        );
+    }
+
+    public static updatePasswordForUser(user_id: number, password_hash: string): QueryObject {
+        return new QueryObject(
+            "UPDATE User SET password_hash = ? WHERE user_id = ?",
+            [
+                password_hash,
+                user_id
             ]
         );
     }

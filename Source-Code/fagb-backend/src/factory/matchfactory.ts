@@ -15,17 +15,19 @@ export class MatchFactory {
     public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest): Promise<boolean> {
         let query: QueryObject = QueryBuilder.createMatchMakingRequest(matchMakingRequest);
         let successful: boolean = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            successful = true;
-        }, function (callbackValue) {
-            console.error("MatchFactory createMatchMakingRequest(): Couldn't create MatchMakingRequest");
-            console.error(callbackValue);
-        });
 
-        if (!successful) {
-            return false;
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
+            successful = true;
+        } catch(e) {
+            console.error("MatchFactory createMatchMakingRequest(): Database Query threw exception");
+            console.error(e);
         }
 
+        if (!successful) {
+            console.error("MatchFactory createMatchMakingRequest(): Couldn't create MatchMakingRequest");
+            return false;
+        }
 
         // Get User to figure out Region
         let user: User = await UserFactory.getUserByUserId(matchMakingRequest.user_id);
@@ -50,44 +52,40 @@ export class MatchFactory {
      */
     public static async checkOpenMatchMakingRequest(user_id: number): Promise<boolean> {
         let query: QueryObject = QueryBuilder.getOpenMatchMakingRequestByUser(user_id);
-        let successful: boolean = true;
-        let throwErr: boolean = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            if(!callbackValue[0]) {
-                successful = false;
-            }
-        }, function (callbackValue) {
-            console.error("MatchFactory checkOpenMatchMakingRequest(): Couldn't get Open MatchMakingRequests");
-            console.error(callbackValue);
-            throwErr = true;
-        });
+        let hasOpen: boolean = true;
 
-        if(throwErr) {
+        try {
+            let result = (await ConnectToDatabaseService.executeQuery(query))[0];
+            if(!result) {
+                hasOpen = false;
+            }
+        } catch(e) {
+            console.error("MatchFactory checkOpenMatchMakingRequest(): Database Query threw exception");
+            console.error(e);
             throw new Error("Couldn't get Open MatchMakingRequests");
         }
 
-        return successful;
+        return hasOpen;
     }
 
-    public static async createMatch(game_id: number, region_id: number, casual: boolean) {
+    public static async createMatch(game_id: number, region_id: number, casual: boolean): Promise<void> {
         // Get Open MatchMakingRequests for Game
         let query = QueryBuilder.getOpenMatchMakingRequestsByGame(game_id, region_id, casual);
-        let result;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            result = callbackValue;
-        }, function (callbackValue) {
-            console.error("MatchFactory createMatch(): Couldn't get MatchMakingRequests");
-            console.error(callbackValue);
-        });
-
-        if (!result || !result[0]) {
-            console.error("MatchFactory createMatch(): Result null or no MatchMakingRequests for Game: " + game_id);
+        let allRequests: MatchMakingRequest[] = [];
+        
+        try {
+            let result: any[] = await ConnectToDatabaseService.executeQuery(query);
+            result.forEach(request => {
+                allRequests.push(new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
+            });
+        } catch(e) {
+            console.error("MatchFactory createMatch(): Database Query threw exception");
+            console.error(e);
         }
 
-        // Transform Results into MatchMakingRequest Objects
-        let allRequests: MatchMakingRequest[] = [];
-        for (let request of result) {
-            allRequests.push(new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
+        if(!allRequests || !allRequests[0]) {
+            console.error("MatchFactory createMatch(): Couldn't get MatchMakingRequests");
+            return;
         }
 
         // Maybe i-- Loop?
@@ -103,15 +101,9 @@ export class MatchFactory {
             for (let i = allRequests.length - 1; i > -1; i--) {
                 if (allRequests[i].match_id) {
                     // Update Entry on Database
-                    let successful;
-                    await MatchFactory.updateMatchMakingRequest(allRequests[i]).then(function (callbackValue) {
-                        successful = true;
-                    }, function (callbackValue) {
-                        console.error("MatchFactory createMatch(): Failed to update MatchMakingRequest");
-                        console.error(callbackValue);
-                    });
-
+                    let successful: boolean = await MatchFactory.updateMatchMakingRequest(allRequests[i]);
                     if (!successful) {
+                        console.error("MatchFactory createMatch(): Failed to update MatchMakingRequest");
                         return;
                     }
 
@@ -157,7 +149,7 @@ export class MatchFactory {
         return null;
     }
 
-    private static matchPlayersCount(requests: MatchMakingRequest[]) {
+    private static matchPlayersCount(requests: MatchMakingRequest[]): number {
         let sum: number = 0;
         for (let request of requests) {
             sum += request.players_in_party;
@@ -181,31 +173,36 @@ export class MatchFactory {
     public static async getMatchMakingCountForGames(): Promise<GameResponse[]> {
         let query: QueryObject = QueryBuilder.getNoOfMatchMakingRequestsByGame();
         let gameResponses: GameResponse[] = [];
-        await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
-            await callbackValue.forEach(result => {
+
+        try {
+            let results: any[] = await ConnectToDatabaseService.executeQuery(query);
+            results.forEach(result => {
                 gameResponses.push(new GameResponse(new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published), !result.players_count ? 0 : result.players_count));
             });
-        }, function (callbackValue) {
-            console.error("MatchFactory getMatchMakingCountForGames(): Couldn't get GameResponses");
-            console.error(callbackValue);
-        });
+        } catch(e) {
+            console.error("MatchFactory getMatchMakingCountForGames(): Database query threw exception");
+            console.error(e);
+        }
 
         if(!gameResponses || !gameResponses[0]) {
             console.error("MatchFactory getMatchMakingCountForGames(): Couldn't build GameResponses")
             return null;
         }
+
         return gameResponses;
     }
 
     private static async updateMatchMakingRequest(matchMakingRequest: MatchMakingRequest): Promise<boolean> {
         let query: QueryObject = QueryBuilder.updateMatchmakingRequest(matchMakingRequest);
         let successful: boolean = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
-            console.error(callbackValue);
-        });
+        } catch(e) {
+            console.error("MatchFactory updateMatchMakingRequest(): Database query threw exception");
+            console.error(e);
+        }
 
         if (!successful) {
             console.error("MatchFactory updateMatchMakingRequest(): Couldn't update MatchMakingRequest");
@@ -218,12 +215,14 @@ export class MatchFactory {
     public static async getMostRecentRequestByUser(user_id: number): Promise<MatchMakingRequest> {
         let query: QueryObject = QueryBuilder.getMostRecentRequestByUserId(user_id);
         let matchMakingRequest: MatchMakingRequest;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            matchMakingRequest = new MatchMakingRequest(null, callbackValue[0].user_id, callbackValue[0].game_id, callbackValue[0].searching_for, callbackValue[0].players_in_party, callbackValue[0].casual, callbackValue[0].match_id, callbackValue[0].time_stamp, callbackValue[0].request_id)
-        }, function (callbackValue) {
-            console.error("MatchFactory getMostRecentRequestByUser(): Failed to get data from Database");
-            console.error(callbackValue);
-        });
+        try {
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            console.log(result);
+            matchMakingRequest = new MatchMakingRequest(null, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id)
+        } catch (e) {
+            console.error("MatchFactory getMostRecentRequestByUser(): Database query threw exception");
+            console.error(e);
+        }
 
         if(!matchMakingRequest) {
             console.error("MatchFactory getMostRecentRequestByUser(): Couldn't get most recent MatchMakingRequest")
@@ -270,16 +269,18 @@ export class MatchFactory {
     public static async getMatchMakingRequestsByMatchId(match_id): Promise<MatchMakingRequest[]> {
         let query: QueryObject = QueryBuilder.getMatchMakingRequestsByMatchId(match_id);
         let matchMakingRequests: MatchMakingRequest[] = [];
-        await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
-            await callbackValue.forEach(request => {
-                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id))
+        try {
+            let result: any[] = await ConnectToDatabaseService.executeQuery(query);
+            result.forEach(request => {
+                matchMakingRequests.push(new MatchMakingRequest(request.session_id, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id));
             });
-        }, function (callbackValue) {
-            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Database query threw exception");
+            console.error(e);            
+        }
 
-        if(!matchMakingRequests) {
+        if(!matchMakingRequests || !matchMakingRequests[0] || !matchMakingRequests[1]) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Couldn't get MatchMakingRequests");
             return null;
         }
 
@@ -303,15 +304,16 @@ export class MatchFactory {
     public static async getMatchMakingRequestByRequestId(request_id: number): Promise<MatchMakingRequest> {
         let query: QueryObject = QueryBuilder.getMatchMakingRequestByRequestId(request_id);
         let matchMakingRequest: MatchMakingRequest;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            matchMakingRequest = new MatchMakingRequest( callbackValue[0].session_id,  callbackValue[0].user_id,  callbackValue[0].game_id,  callbackValue[0].searching_for,  callbackValue[0].players_in_party,  callbackValue[0].casual,  callbackValue[0].match_id,  callbackValue[0].time_stamp,  callbackValue[0].request_id);
-        }, function (callbackValue) {
-            console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
-            console.error(callbackValue);
-        });
+        try {
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            matchMakingRequest = new MatchMakingRequest(result.session_id, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id);
+        } catch (e) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Database query threw exception");
+            console.error(e);                 
+        }
 
         if (!matchMakingRequest) {
-            console.error("MatchFactory checkRequestForMatch(): No MatchMakingRequest with that ID: " + request_id)
+            console.error("MatchFactory checkRequestForMatch(): Couldn't get MatchMakingRequest from Database");
             return null;
         }
 

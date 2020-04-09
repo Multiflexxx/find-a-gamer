@@ -9,14 +9,16 @@ export class RegionFactory {
     public static async getRegionById(id: number): Promise<Region> {
         let region: Region;
         let query = QueryBuilder.getRegionById(id);
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            region = new Region(callbackValue[0].region_id, callbackValue[0].name);
-        }, function (callbackValue) {
-            console.error("ConnectToDatabaseService getPromise(): Promise rejected");
-            console.error(callbackValue);
-        });
+        try {
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            region = new Region(result.region_id, result.name);
+        } catch (e) {
+            console.error("regionFactory getRegionById(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if(!region) {
+            console.error("regionFactory getRegionById(): Couldn't get Region");
             return null;
         }
 
@@ -26,17 +28,18 @@ export class RegionFactory {
     public static async getAllRegions(): Promise<Region[]> {
         let query: QueryObject = QueryBuilder.getRegions();
         let regions: Region[] = [];
-        await ConnectToDatabaseService.getPromise(query).then(async function (callbackValue) {
-            await callbackValue.forEach(region => {
+        try {
+            let result: any[] = await ConnectToDatabaseService.executeQuery(query);
+            result.forEach(region => {
                 regions.push(new Region(region.region_id, region.name));
             });
-        }, function (callbackValue) {
-            console.error("ConnectToDatabaseService getPromise(): Failed to get regions from database");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("RegionFactory getAllRegions(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if(!regions) {
-            console.error("ConnectToDatabaseService getPromise(): Couldn't get regions");
+            console.error("RegionFactory getAllRegions(): Couldn't get regions");
             return null;
         }
         

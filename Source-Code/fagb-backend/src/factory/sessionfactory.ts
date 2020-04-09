@@ -10,12 +10,13 @@ export class SessionFactory {
         let query: QueryObject = QueryBuilder.getSessionBySessionId(session_id);
         let session: Session;
 
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            session = new Session(callbackValue[0].session_id.toString('utf8'), callbackValue[0].user_id, callbackValue[0].stay_logged_in, callbackValue[0].expiration_date);
-        }, function (callbackValue) {
-            console.error("SessionFactory getSessionBySessionId(): Couldn't get Session");
-            console.error(callbackValue);
-        });
+        try {
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
+        } catch (e) {
+            console.error("SessionFactory getSessionBySessionId(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if (!session) {
             console.error("SessionFactory getSessionBySessionId(): No Session with that ID: " + session_id);
@@ -48,11 +49,13 @@ export class SessionFactory {
         let query: QueryObject = QueryBuilder.getSessionByUserId(user);
         let session: Session;
 
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            session = new Session(callbackValue[0].session_id.toString('utf8'), callbackValue[0].user_id, callbackValue[0].stay_logged_in, callbackValue[0].expiration_date);
-        }, function (callbackValue) {
-            console.error("SessionFactory getSessionByUser(): Couldn't get session for user");
-        });
+        try {
+            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
+        } catch (e) {
+            console.error("SessionFactory getSessionByUser(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if (!session) {
             console.error("SessionFactory getSessionByUser(): Failed to get session for User");
@@ -65,14 +68,15 @@ export class SessionFactory {
     public static async createSessionForUser(user: User, stay_logged_in: boolean): Promise<Session> {
         let session_id = uuidv4();
         let query: QueryObject = QueryBuilder.createSession(session_id, user, !stay_logged_in ? false : true);
-        let successful: boolean;
+        let successful: boolean = false;
 
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("SessionFactory createSessionForUser(): Database failed to create Session");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("SessionFactory createSessionForUser(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if (!successful) {
             console.error("Session createSessionForUser(): Couldn't create session");
@@ -93,12 +97,13 @@ export class SessionFactory {
         let query: QueryObject = QueryBuilder.deleteSessionByUserId(user);
         let successful: boolean = false;
 
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("SessionFactory deleteSessionByUser(): Database failed to delete Session");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("SessionFactory deleteSessionByUser(): Database Query threw Exception");
+            console.error(e);
+        }
 
         if(!successful) {
             console.error("SessionFactory deleteSessionByUser(): Couldn't delete Session");
