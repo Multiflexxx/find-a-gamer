@@ -27,7 +27,7 @@ export class ConnectToDatabaseService {
             c.query(queryObject.createQueryObject(), function (error, results, fields) {
                 if (error) {
                     reject(error);
-                    throw error;
+                    // throw error;
                 }
                 resolve(results);
             });
@@ -39,22 +39,31 @@ export class ConnectToDatabaseService {
      * Not Type Safe because it cant be
      * @param queryObject 
      */
-    public static async executeQuery(queryObject: QueryObject): Promise<any> {
-        let c = ConnectToDatabaseService.getConnection();
-        let err;
+    public static async executeQuery(queryObject: QueryObject): Promise<any[]> {
+        // let c = ConnectToDatabaseService.getConnection();
+        // let outerError;
+        // let outerResults;
+        // let outerFields;
+        // await c.query(queryObject.createQueryObject(), async function (error, results, fields) {
+        //     if (error) {
+        //         outerError = error;
+        //     }
+        //     outerFields = fields;
+        //     outerResults = results;
+        //     console.log(outerResults);
+        // });
+        // c.end();
+        // if(outerError) {
+        //     throw outerError;
+        // }
+        // console.log(outerResults);
+        // return outerResults;
         let result;
-        let field;
-        await c.query(queryObject.createQueryObject(), function (error, results, fields) {
-            if (error) {
-                err = error;
-            }
-            field = fields;
-            result = results;
-        });
-        c.end();
-        if(err) {
+        await ConnectToDatabaseService.getPromise(queryObject).then(callbackValue => {
+            result = callbackValue;
+        }, err => {
             throw err;
-        }
+        });
         return result;
     } 
 

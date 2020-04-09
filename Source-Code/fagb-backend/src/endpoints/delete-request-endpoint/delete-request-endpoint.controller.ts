@@ -6,6 +6,9 @@ import { match } from 'assert';
 import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
 import { ConnectToDatabaseService } from 'src/connecttodatabase/connecttodatabase.service';
 import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
+import { Language } from 'src/data_objects/language';
+import { LanguageFactory } from 'src/factory/languagefactory';
+import { UserFactory } from 'src/factory/userfactory';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
@@ -15,18 +18,19 @@ export class DeleteRequestEndpointController {
 
         // await MatchFactory.createMatchMakingRequest(matchMakingRequest);
 
-        let result;
-        try {
-            result = await ConnectToDatabaseService.executeQuery(QueryBuilder.getNoOfMatchMakingRequestsByGame());
-            console.log(result)
-        } catch(e) {
-            console.error(e);
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Something went wrong"
-            }, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-        return result;
+        return await UserFactory.getUserByEmail("mrsbody@sex190.com");
+        // let result;
+        // try {
+        //     result = await ConnectToDatabaseService.executeQuery(QueryBuilder.getNoOfMatchMakingRequestsByGame());
+        //     // console.log(result)
+        // } catch(e) {
+        //     console.error(e);
+        //     throw new HttpException({
+        //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+        //         error: "Something went wrong"
+        //     }, HttpStatus.INTERNAL_SERVER_ERROR)
+        // }
+        // return result;
 
         // matchMakingRequest = null;
         // await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id).then(function(callbackValue) {

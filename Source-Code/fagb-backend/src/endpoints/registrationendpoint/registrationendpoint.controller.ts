@@ -17,24 +17,25 @@ import { User } from 'src/data_objects/user';
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
-    @Post()
+    @Get()
     async handleRegistration(@Body() registration: Registration) {
 
-        // let randomNumber = Math.floor(Math.random() * 10000);
-        // registration = new Registration(
-        //     'mrsbody@sex.com',
-        //     'test123',
-        //     'Grimmig',
-        //     'Grimmig#1235',
-        //     new Date('1999-12-31T23:00:00.000Z'),
-        //     new Region(1, "EU"),
-        //     [
-        //         new Language(1)
-        //     ],
-        //     [
-        //         new Game(1)
-        //     ]
-        // );
+        let randomNumber = Math.floor(Math.random() * 10000);
+        registration = new Registration(
+            'mrsbody@sex' + randomNumber + '.com',
+            'test123',
+            'Grimmig',
+            'Grimmig#1235',
+            new Date('1999-12-31T23:00:00.000Z'),
+            new Region(1, null),
+            [
+                new Language(1)
+            ],
+            [
+                new Game(1)
+            ]
+        );
+        console.log(registration.email);
 
         // Validate User Input
         let temp = registration.birthdate;
@@ -75,7 +76,7 @@ export class RegistrationendpointController {
         if(!session) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Something went wrong"
+                error: "Couldn't log in user"
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -106,7 +107,7 @@ export class RegistrationendpointController {
                 }
             }
 
-            console.log(registration);
+            // console.log(registration);
 
             var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
             if (!regex.test(registration.discord_tag)) {
