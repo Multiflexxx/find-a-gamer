@@ -1,12 +1,12 @@
-import { User } from './user';
+import { PublicUser } from './publicuser';
 
 export class EditProfileRequest {
 
-    public user: User;
+    public publicuser: PublicUser;
     public session_id: string;
 
-    public constructor(session_id: string, user: User) {
-        this.user = user;
+    public constructor(session_id: string, publicuser: PublicUser) {
+        this.publicuser = publicuser;
         this.session_id = session_id;
     }
 }

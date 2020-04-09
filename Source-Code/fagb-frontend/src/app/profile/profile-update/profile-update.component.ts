@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService, RegionService, LanguageService } from '../../_services';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthenticationService, RegionService, LanguageService, ProfileService } from '../../_services';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { PublicUser } from 'src/app/data_objects/publicuser';
 import { Language } from 'src/app/data_objects/language';
 import { Region } from 'src/app/data_objects/region';
+import { ControlsMap } from 'src/app/interface/controls-map';
 
 @Component({
   selector: 'app-profile-update',
@@ -12,21 +13,21 @@ import { Region } from 'src/app/data_objects/region';
   styleUrls: ['./profile-update.component.scss']
 })
 export class ProfileUpdateComponent implements OnInit {
-
   public profileUpdateForm: FormGroup;
 
   public gamer: PublicUser;
   public lang: string;
 
   public regionList: Array<Region> = [];
-  public regionSelected: number;
   public langList: Array<Language> = [];
-  public languageSelected: Array<number> = [];
+  private regionSelected: number;
+  private languageSelected: Array<number> = [];
 
 
   public constructor(
-    private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private profileService: ProfileService,
     private regionService: RegionService,
     private languageService: LanguageService) { }
 
@@ -37,14 +38,29 @@ export class ProfileUpdateComponent implements OnInit {
     this.regionSelected = this.gamer.region.region_id;
     this.languageSelected = this.getSelectedLanguages(this.gamer.languages);
 
-    this.createForm();
-
     this.regionService.getRegions()
       .subscribe(r => this.regionList = r);
 
     this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
 
+    console.log(this.regionSelected);
+    console.log(this.languageSelected);
+
+    this.createForm();
+  }
+
+  public createForm(): void {
+    this.profileUpdateForm = this.formBuilder.group({
+      region: [this.regionSelected, Validators.required],
+      lang: [this.languageSelected, Validators.required],
+      oPassword: ['', Validators.required],
+      nPassword: ['', Validators.required],
+      biography: [this.gamer.biography, [Validators.required, Validators.maxLength(100)]],
+    });
+  }
+  public hasError = (controlName: string, errorName: string) => {
+    return this.profileUpdateForm.controls[controlName].hasError(errorName);
   }
 
   public getLanguages(arr: Language[]): string {
@@ -64,20 +80,14 @@ export class ProfileUpdateComponent implements OnInit {
       this.languageSelected[i] = arr[i].language_id;
 
     }
-    console.log(this.languageSelected);
     return this.languageSelected;
   }
 
-  public createForm(): void {
-    this.profileUpdateForm = this.formBuilder.group({
-      cakeday: ['', [Validators.required]],
-      region: ['', [Validators.required]],
-      lang: ['', [Validators.required]],
-      bio: ['', [Validators.required], [Validators.maxLength(100)]],
-    });
-  }
-  public hasError = (controlName: string, errorName: string) => {
-    return this.profileUpdateForm.controls[controlName].hasError(errorName);
+  private get profileUpdateValue(): ControlsMap<AbstractControl> {
+    return this.profileUpdateForm.controls;
   }
 
+  public onProfileUpdateSubmit(): void {
+    this.profileService.updateProfile(this.profileUpdateValue);
+  }
 }
