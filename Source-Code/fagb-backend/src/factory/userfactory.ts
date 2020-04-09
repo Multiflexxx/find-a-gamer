@@ -20,11 +20,14 @@ export class UserFactory {
         // Create User
         let query: QueryObject = QueryBuilder.createUser(registration);
         let successful: boolean = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("UserFactory createUser(): Database Query threw exception");
+            console.error(e);
+        }
 
         if(!successful) {
             console.error("UserFactory createUser(): Couldn't create User");
@@ -97,21 +100,20 @@ export class UserFactory {
     // }
 
     public static async getUserByEmail(email: string): Promise<User> {
-
+        let result: any = null;
         let query: QueryObject = QueryBuilder.getUserByEmail(email);
-        let result;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            result = callbackValue[0];
-        }, function (callbackValue) {
-            console.error("");
-            console.error(callbackValue);
-        });
-
-        if (!result) {
-            return null;
+        let user: User;
+        try {
+            result = (await ConnectToDatabaseService.executeQuery(query))[0];
+            user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+        } catch(e) {
+            console.error("UserFactory getUserByEmail(): Database Query threw exception");
+            console.error(e);
         }
 
-        let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+        if (!user) {
+            return null;
+        }
 
         let region: Region = await RegionFactory.getRegionById(result.region_id);
         if(!region) {
@@ -142,20 +144,21 @@ export class UserFactory {
     public static async getUserBySessionID(session_id: string): Promise<User> {
 
         let query: QueryObject = QueryBuilder.getUserBySessionID(session_id);
-        let result;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            result = callbackValue[0];
-        }, function (callbackValue) {
-            console.error("UserFactory getUserBySessionID(): Couldn't get User");
-            console.error(callbackValue);
-        });
+        let result: any;
+        let user: User;
 
-        if (!result) {
+        try {
+           result = (await ConnectToDatabaseService.executeQuery(query))[0];
+           user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
+        } catch (e) {
+            console.error("UserFactory getUserBySessionID(): Database Query threw exception");
+            console.error(e);
+        }
+
+        if (!user) {
             console.error("UserFactory getUserBySessionID(): No User with that Session");
             return null;
         }
-
-        let user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
 
         // Get region for User
         let region: Region = await RegionFactory.getRegionById(result.region_id);
@@ -189,12 +192,13 @@ export class UserFactory {
         let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
         let successful: boolean = false;
 
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            successful = true;
-        }, function (callbackValue) {
-            console.error("UserFactory deleteUser(): Couldn't delete User Game Pair");
-            console.error(callbackValue);
-        });
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
+                successful = true;
+        } catch(e) {
+            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error(e);
+        }
 
         if (!successful) {
             console.error("UserFactory deleteUser(): couldn't delete user game pair");
@@ -204,12 +208,13 @@ export class UserFactory {
         // Delete UserLanguagePair
         query = QueryBuilder.deleteUserLanguagePairsByUser(user);
         successful = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("UserFactory deleteUser(): Couldn't delete user language pair");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error(e);
+        }
 
         if (!successful) {
             console.error("UserFactory deleteUser(): couldn't delete user language pair");
@@ -218,12 +223,13 @@ export class UserFactory {
 
         query = QueryBuilder.deleteUser(user);
         successful = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("UserFactory deleteUser(): Couldn't delete user");
-            console.error(callbackValue);
-        });
+        } catch (e) {
+            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error(e);
+        }
 
         if (!successful) {
             console.error("UserFactory deleteUser(): couldn't delete user");
@@ -236,12 +242,14 @@ export class UserFactory {
     public static async getUserByUserId(user_id): Promise<User> {
         let query: QueryObject = QueryBuilder.getUserByUserId(user_id);
         let user: User;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-            user = new User(callbackValue[0].user_id, callbackValue[0].email, callbackValue[0].password_hash, callbackValue[0].nickname, callbackValue[0].discord_tag, callbackValue[0].profile_picture, callbackValue[0].cake_day, callbackValue[0].birthdate, callbackValue[0].biography);
-        }, function (callbackValue) {
-            console.error("UserFactory getUserByUserId(): Couldn't get user from database");
-            console.error(callbackValue);
-        });
+        let result: any;
+        try {
+            result = await ConnectToDatabaseService.executeQuery(query);
+            user = new User(result[0].user_id, result[0].email, result[0].password_hash, result[0].nickname, result[0].discord_tag, result[0].profile_picture, result[0].cake_day, result[0].birthdate, result[0].biography);
+        } catch (e) {
+            console.error("UserFactory getUserByUserId(): Database Query threw exception");
+            console.error(e);
+        }
 
         if(!user) {
             console.error("UserFactory getUserByUserId(): Couldn't get User")

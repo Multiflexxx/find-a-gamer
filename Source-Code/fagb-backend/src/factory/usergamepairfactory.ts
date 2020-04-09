@@ -30,14 +30,20 @@ export class UserGamePairFactory {
     public static async createUserGamePairs(user: User, games: Game[]): Promise<boolean> {
         await games.forEach(async game => {
             let query: QueryObject = QueryBuilder.createUserGamePair(user, game);
+            let successful: boolean = false;
             
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
-                // Successfully created
-            }, function (callbackValue) {
-                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs")
-                console.error(callbackValue);
+            try {
+                await ConnectToDatabaseService.executeQuery(query);
+                successful = true;
+            } catch(e) {
+                console.error("UserGamePairFactory createUserGamePairs(): Database Query threw exception");
+                console.error(e);
+            }
+
+            if (!successful) {
+                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs");
                 return false;
-            });
+            }
         });
         return true;
 
@@ -59,16 +65,17 @@ export class UserGamePairFactory {
 
     public static async deleteUserGamePairsByUser(user: User): Promise<boolean> {
         let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
-        let successful: boolean = false;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        let successful: boolean = false; 
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("UserGamePairFactory deleteUserGamePairsByUser(): Couldn't delete UserGamePairs");
-            console.error(callbackValue);
-            return false;
-        });
-
+        } catch (e) {
+            console.error("UserGamePairFactory deleteUserGamePairs(): Database Query threw exception");
+            console.error(e);
+        }
+        
         if (!successful) {
+            console.error("UserGamePairFactory deleteUserGamePairs(): Couldn't delete UserGamePairs")
             return false;
         }
 
@@ -130,33 +137,36 @@ export class UserGamePairFactory {
     public static async updateUserGamePairs(user: User): Promise<boolean> {
         // Delete old User Game Pairs
         let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
-        let successful: boolean;
-        await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+        let successful: boolean = false;
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
             successful = true;
-        }, function (callbackValue) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't delete UserGamePairs");
-            console.error(callbackValue);
-        });
+        } catch(e) {
+            console.error("UserGamePairFactory updateUserGamePairs(): Database Query threw exception");
+            console.error(e);
+        }
+        
 
         if (!successful) {
-            console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after deleting UserGamePairs");
+            console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs");
             return false;
         }
 
         // Create new User Game Pairs
         for (let game of user.games) {
             query = QueryBuilder.createUserGamePair(user, game);
-            successful = null;
-            await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
+            let successful: boolean;
+            try {
+                await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
-            }, function (callbackValue) {
-                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Couldn't create UserGamePairs");
-                console.error(callbackValue);
-            });
-
+            }catch(e) {
+                console.error("UserGamePairFactory updateUserGamePairs(): Database Query threw exception");
+                console.error(e);
+            }
+            
             if (!successful) {
-                console.error("ProfileUpdateEndpoint handleProfileUpdateRequest(): Value successful false or null after creating UserGamePairs for Game");
-                console.error(game);
+                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs");
+                // console.error(game);
                 return false;
             }
         }
