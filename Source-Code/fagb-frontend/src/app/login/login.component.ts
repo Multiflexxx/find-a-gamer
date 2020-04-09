@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ControlContainer, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../_services/authentication.service';
 
-import { ToastrService, ToastContainerDirective  } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { ControlsMap } from '../interface/controls-map';
 
 @Component({

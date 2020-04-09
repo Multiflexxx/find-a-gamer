@@ -15,7 +15,6 @@ export function gameValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
   // return function(control: AbstractControl): { [key: string]: any } | null {
     let forbidden = true;
-    console.log(control.value);
     if (control.value !== '[]') {
       forbidden = false;
     }

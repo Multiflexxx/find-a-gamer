@@ -22,7 +22,8 @@
             </span>
             <span>Cancel</span>
           </a>
-          <a class="button is-link is-fullwidth" [routerLink]="['/profile']" routerLinkActive="router-link-active">
+          <a class="button is-link is-fullwidth" type="submit" (click)="onProfileUpdateSubmit()"
+            [routerLink]="['/profile']" routerLinkActive="router-link-active">
             <span class="icon">
               <i class="far fa-user-circle"></i>
             </span>
@@ -36,7 +37,7 @@
 
 <section class="section">
   <div class="container">
-    <form [formGroup]="profileUpdateForm" (ngSubmit)="onProfileUpdateSubmit()">
+    <form [formGroup]="profileUpdateForm" id="profileUpdateForm" (ngSubmit)="onProfileUpdateSubmit()">
       <div class="columns is-multiline is-mobile">
         <div class="column is-one-third-tablet is-full-mobile">
           <div class="box">

@@ -29,7 +29,6 @@ export class ProfileOverviewComponent implements OnInit {
         langString += ', ';
       }
     }
-    console.log(langString);
     return langString;
   }
 
