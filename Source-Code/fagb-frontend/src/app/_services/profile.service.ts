@@ -16,6 +16,7 @@ export class ProfileService {
   ) { }
 
   public updateProfile(profileUpdateValue): void {
+    console.log(profileUpdateValue);
     // const publicUser: PublicUser = new PublicUser(
     //   profileUpdateValue.user_id,
     //   profileUpdateValue.nickname,

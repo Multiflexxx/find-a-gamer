@@ -11,8 +11,8 @@ import { PublicUser } from '../data_objects/publicuser';
 import { Game } from '../data_objects/game';
 import { NotifyMatch } from '../data_objects/notifymatch';
 import { AbstractControl } from '@angular/forms';
+import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
 import { ControlsMap } from '../interface/controls-map';
-
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class MatchService {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
 
-  public searchMatch(gameData: ControlsMap<AbstractControl>, filterData: ControlsMap<AbstractControl>): Observable<any> {
+  public searchMatch(gameData: ControlsMap<AbstractControl>, filterData: ControlsMap<AbstractControl>): Observable<MatchMakingResponse> {
     const sessionId = this.cookieService.get('gamer');
     const requestMatch = new MatchMakingRequest(
       sessionId,
@@ -57,12 +57,12 @@ export class MatchService {
       filterData.playstyle.value === 'true' ? true : false
     );
     console.log(requestMatch);
-    return this.http.post<any>(this.urlS, requestMatch);
+    return this.http.post<MatchMakingResponse>(this.urlS, requestMatch);
   }
 
-  public notifyMatch(requestId: number): Observable<any> {
+  public notifyMatch(requestId: number): Observable<MatchMakingResponse> {
     const notifyMatch = new NotifyMatch(requestId);
-    return this.http.post<any>(this.urlN, notifyMatch)
+    return this.http.post<MatchMakingResponse>(this.urlN, notifyMatch)
       .pipe(map(data => {
         if (data && !!data.users) {
           const matchUseres: PublicUser[] = [];
@@ -91,7 +91,6 @@ export class MatchService {
             )
           );
         }
-        console.log("data");
         console.log(data);
         return data;
       }));
