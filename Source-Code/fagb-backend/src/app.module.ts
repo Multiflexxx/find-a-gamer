@@ -12,9 +12,13 @@ import { GamesEndpointController } from './endpoints/games-endpoint/games-endpoi
 import { LanguagesEndpointController } from './endpoints/languages-endpoint/languages-endpoint.controller';
 import { MatchMakingRequestEndpointController } from './endpoints/match-making-request-endpoint/match-making-request-endpoint.controller';
 import { DeleteRequestEndpointController } from './endpoints/delete-request-endpoint/delete-request-endpoint.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [],
+  imports: [ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '../../fagb-frontend/', 'dist'),
+  }),],
   controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController, MatchMakingRequestEndpointController, DeleteRequestEndpointController],
   providers: [AppService, ConnectToDatabaseService],
 })

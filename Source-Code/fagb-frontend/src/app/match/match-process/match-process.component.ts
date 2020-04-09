@@ -11,10 +11,10 @@ import { interval, Subscription, Observable } from 'rxjs';
 })
 export class MatchProcessComponent implements OnInit {
 
-  public matchData: any;
+  public matchData;
 
   private subscription: Subscription;
-  private i: Observable<number> = interval(10000);
+  private i: Observable<number> = interval(1000);
 
   public constructor(
     private matchService: MatchService,

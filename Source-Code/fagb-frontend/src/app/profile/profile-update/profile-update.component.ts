@@ -44,9 +44,6 @@ export class ProfileUpdateComponent implements OnInit {
     this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
 
-    console.log(this.regionSelected);
-    console.log(this.languageSelected);
-
     this.createForm();
   }
 
@@ -71,7 +68,6 @@ export class ProfileUpdateComponent implements OnInit {
         langString += ', ';
       }
     }
-    console.log(langString);
     return langString;
   }
 
