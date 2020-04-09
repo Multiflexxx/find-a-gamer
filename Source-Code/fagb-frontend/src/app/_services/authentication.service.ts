@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Login } from '../data_objects/login';
 import { PublicUser } from '../data_objects/publicuser';
 import { LoginResponse } from '../data_objects/loginresponse';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EditProfileResponse } from '../data_objects/editprofileresponse';
 import { PublicUser } from '../data_objects/publicuser';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 import { AbstractControl } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
 import { Game } from '../data_objects/game';

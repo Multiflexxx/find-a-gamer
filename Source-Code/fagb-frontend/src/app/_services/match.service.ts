@@ -12,7 +12,7 @@ import { Game } from '../data_objects/game';
 import { NotifyMatch } from '../data_objects/notifymatch';
 import { AbstractControl } from '@angular/forms';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Injectable({
   providedIn: 'root'

@@ -5,15 +5,15 @@ import { Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 // Import Validator
-import { emailValidator } from '../shared/email-validator.directive';
-import { compareValidator } from '../shared/compare-validator.directive';
-import { gameValidator } from '../shared/game-validator.directive';
+import { emailValidator } from '../_shared/email-validator.directive';
+import { compareValidator } from '../_shared/compare-validator.directive';
+import { gameValidator } from '../_shared/game-validator.directive';
 
 import { RegisterService, RegionService, LanguageService, GameService } from '../_services';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Region } from '../data_objects/region';
 import { Language } from '../data_objects/language';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Component({
   selector: 'app-register',

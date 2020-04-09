@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 
 import { ToastrService } from 'ngx-toastr';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Component({
   selector: 'app-login',
