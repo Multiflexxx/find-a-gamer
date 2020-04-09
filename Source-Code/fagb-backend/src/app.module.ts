@@ -17,7 +17,7 @@ import { join } from 'path';
 
 @Module({
   imports: [ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '../../fagb-frontend/', 'dist'),
+    rootPath: join(__dirname, '../../fagb-frontend/dist/', 'FAGB'),
   }),],
   controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController, MatchMakingRequestEndpointController, DeleteRequestEndpointController],
   providers: [AppService, ConnectToDatabaseService],
