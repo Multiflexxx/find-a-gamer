@@ -17,7 +17,7 @@ export class GamesEndpointController {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: "Failed to get games"
-            }, HttpStatus.INTERNAL_SERVER_ERROR)
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return games;

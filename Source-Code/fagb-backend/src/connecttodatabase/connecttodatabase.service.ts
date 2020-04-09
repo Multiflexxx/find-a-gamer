@@ -33,27 +33,30 @@ export class ConnectToDatabaseService {
             });
             c.end();
         });
-
-        // let myPromise = new Promise(function (resolve, reject) {
-        //     let c = ConnectToDatabaseService.getConnection();
-        //     c.query(queryObject.createQueryObject(), function (error, results, fields) {
-        //         if (error) {
-        //             reject(error);
-        //             throw error;
-        //         }
-        //         resolve(results);
-        //     });
-        //     c.end();
-        // });
-
-        // await myPromise.then(function(callbackValue) {
-        //     return callbackValue;
-        // }, function(callbackValue) {
-        //     console.error("ConnectToDatabaseService getResult(): Promise<any> rejected");
-        //     console.error(callbackValue);
-        //     return null; // TBD: Error Object
-        // })
     }
+
+    /**
+     * Not Type Safe because it cant be
+     * @param queryObject 
+     */
+    public static async executeQuery(queryObject: QueryObject): Promise<any> {
+        let c = ConnectToDatabaseService.getConnection();
+        let err;
+        let result;
+        let field;
+        await c.query(queryObject.createQueryObject(), function (error, results, fields) {
+            if (error) {
+                err = error;
+            }
+            field = fields;
+            result = results;
+        });
+        c.end();
+        if(err) {
+            throw err;
+        }
+        return result;
+    } 
 
     public static async testQuery(query: String) {
         return new Promise(function(resolve, reject) {

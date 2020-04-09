@@ -28,8 +28,9 @@ export class UserGamePairFactory {
     // }
 
     public static async createUserGamePairs(user: User, games: Game[]): Promise<boolean> {
-        games.forEach(async game => {
+        await games.forEach(async game => {
             let query: QueryObject = QueryBuilder.createUserGamePair(user, game);
+            
             await ConnectToDatabaseService.getPromise(query).then(function (callbackValue) {
                 // Successfully created
             }, function (callbackValue) {
