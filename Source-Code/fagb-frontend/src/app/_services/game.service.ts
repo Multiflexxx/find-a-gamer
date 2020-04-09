@@ -8,6 +8,8 @@ import { GameResponse } from '../data_objects/gameresponse';
   providedIn: 'root'
 })
 export class GameService {
+  public selectGame: number;
+
   private url: string = 'http://localhost:3000/gamesendpoint';
 
   public constructor(private http: HttpClient) { }
@@ -15,4 +17,6 @@ export class GameService {
   public getGame(): Observable<GameResponse[]> {
     return this.http.get<GameResponse[]>(this.url);
   }
+
+
 }
