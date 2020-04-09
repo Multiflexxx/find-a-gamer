@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { gameValidator } from 'src/app/shared/game-validator.directive';
+import { gameValidator } from 'src/app/_shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { MatchService } from '../../_services';
-import { ControlsMap } from 'src/app/interface/controls-map';
+import { ControlsMap } from 'src/app/_interface/controls-map';
 
 @Component({
   selector: 'app-match-search',

@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { PublicUser } from 'src/app/data_objects/publicuser';
 import { Language } from 'src/app/data_objects/language';
 import { Region } from 'src/app/data_objects/region';
-import { ControlsMap } from 'src/app/interface/controls-map';
+import { ControlsMap } from 'src/app/_interface/controls-map';
 
 @Component({
   selector: 'app-profile-update',

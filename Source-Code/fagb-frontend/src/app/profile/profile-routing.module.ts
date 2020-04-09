@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProfileOverviewComponent } from './profile-overview/profile-overview.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 
-import { AuthenticationGuard } from '../_helpers/authentication.guard';
+import { AuthenticationGuard } from '../_guards/authentication.guard';
 
 const routes: Routes = [
   {

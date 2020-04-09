@@ -12,7 +12,7 @@ import { Game } from '../data_objects/game';
 import { NotifyMatch } from '../data_objects/notifymatch';
 import { AbstractControl } from '@angular/forms';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
-import { ControlsMap } from '../interface/controls-map';
+import { ControlsMap } from '../_interface/controls-map';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ import { ControlsMap } from '../interface/controls-map';
 export class MatchService {
   public currentMatchUsers: Observable<PublicUser[]>;
   public currentMatchGame: Observable<Game>;
-  private urlS: string = 'http://localhost:3000/matchmakingrequestendpoint';
-  private urlN: string = 'http://localhost:3000/notifymatchendpoint';
+  private urlS: string = '/matchmakingrequestendpoint';
+  private urlN: string = '/notifymatchendpoint';
   private currentGamer: PublicUser;
 
   // Users
