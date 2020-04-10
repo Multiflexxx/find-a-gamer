@@ -1,5 +1,5 @@
 export class GameSelectStatus {
-    public static COMP_REGISTER: number = 0;
-    public static COMP_MACH: number = 1;
-    public static COMP_PROFILE: number = 2;
+    public static readonly COMP_REGISTER: number = 0;
+    public static readonly COMP_MATCH: number = 1;
+    public static readonly COMP_PROFILE: number = 2;
 }

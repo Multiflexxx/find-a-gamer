@@ -4,6 +4,8 @@ import { FormGroup } from '@angular/forms';
 import { GameService } from '../_services';
 import { GameResponse } from '../data_objects/gameresponse';
 
+import { GameSelectStatus } from '../_classes/game-select-status';
+
 @Component({
   selector: 'app-add-game',
   templateUrl: './add-game.component.html',
@@ -20,7 +22,8 @@ export class AddGameComponent implements OnInit {
   private searchTerm: string = '';
 
 
-  public constructor(private gameService: GameService) { }
+  public constructor(
+    private gameService: GameService) { }
 
   public ngOnInit(): void {
     this.gameService.getGame()
@@ -41,9 +44,12 @@ export class AddGameComponent implements OnInit {
   }
 
   public addGame(id: number, name: string): void {
-    // id = id;
-    this.isSelected[id] = !this.isSelected[id];
-    this.createTag(id, name);
+    if (this.gameService.getCompState() === GameSelectStatus.COMP_REGISTER) {
+      this.isSelected[id] = !this.isSelected[id];
+      this.createTag(id, name);
+    } else if (this.gameService.getCompState() === GameSelectStatus.COMP_MATCH) {
+      console.log('Penis');
+    }
   }
 
   private createTag(id: number, name: string): void {

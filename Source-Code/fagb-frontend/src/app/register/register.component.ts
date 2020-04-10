@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 // Import Validator
@@ -14,6 +13,8 @@ import { AuthenticationService } from '../_services/authentication.service';
 import { Region } from '../data_objects/region';
 import { Language } from '../data_objects/language';
 import { ControlsMap } from '../_interface/controls-map';
+
+import { GameSelectStatus } from '../_classes/game-select-status';
 
 @Component({
   selector: 'app-register',
@@ -74,6 +75,8 @@ export class RegisterComponent implements OnInit {
 
     this.languageService.getLanguage()
       .subscribe(l => this.langList = l);
+
+    this.gameService.setCompState(GameSelectStatus.COMP_REGISTER);
   }
 
   public createForm(): void {

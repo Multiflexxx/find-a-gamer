@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { gameValidator } from 'src/app/_shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
-import { MatchService } from '../../_services';
+import { MatchService, GameService } from '../../_services';
 import { ControlsMap } from 'src/app/_interface/controls-map';
+
+import { GameSelectStatus } from '../../_classes/game-select-status';
 
 @Component({
   selector: 'app-match-search',
@@ -44,11 +46,12 @@ export class MatchSearchComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
-
+    private gameService: GameService
   ) { }
 
   public ngOnInit(): void {
     this.createForm();
+    this.gameService.setCompState(GameSelectStatus.COMP_MATCH);
   }
 
   public createForm(): void {
