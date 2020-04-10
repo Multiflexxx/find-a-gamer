@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
       date: ['', Validators.required],
       region: ['', Validators.required],
       lang: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       vpassword: ['', [Validators.required, compareValidator('password')]]
     });
 
@@ -138,8 +138,6 @@ export class RegisterComponent implements OnInit {
     console.log(this.gameData);
     this.onSubmit();
   }
-
-
 
   public onSubmit(): void {
     this.registerService.register(this.profileData, this.gameData).subscribe(

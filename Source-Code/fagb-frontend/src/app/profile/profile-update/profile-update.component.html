@@ -22,11 +22,14 @@
             </span>
             <span>Cancel</span>
           </a>
-          <a class="button is-link is-fullwidth" type="submit" (click)="onProfileUpdateSubmit()"
-            [routerLink]="['/profile']" routerLinkActive="router-link-active">
+          <a class="button is-link is-fullwidth" type="submit" (click)="onProfileUpdateSubmit()">
             <span class="icon">
-              <i class="far fa-user-circle"></i>
+              <i *ngIf="!loading" class="far fa-user-circle"></i>
             </span>
+            <mat-icon *ngIf="loading">
+              <mat-spinner color="accent" diameter="20">
+              </mat-spinner>
+            </mat-icon>
             <span>Save</span>
           </a>
         </div>
@@ -49,11 +52,10 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Region</mat-label>
-              <mat-select formControlName="region" required>
+              <mat-select formControlName="region">
                 <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="hasError('region', 'required')">Region is required.</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -61,12 +63,11 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Languages</mat-label>
-              <mat-select formControlName="lang" multiple required>
+              <mat-select formControlName="lang" multiple>
                 <mat-option *ngFor="let lang of langList" [value]="lang.language_id" data-name="lang.name">
                   {{lang.name}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="hasError('lang', 'required')">Select at least one language.</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -74,7 +75,11 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Password old:</mat-label>
-              <input matInput formControlName="oPassword" value="" placeholder="" required>
+              <input matInput [type]="hidePo ? 'password' : 'text' " formControlName="oPassword">
+              <button mat-icon-button matSuffix (click)="hidePwO($event)" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePo">
+                <mat-icon>{{hidePo ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
             </mat-form-field>
           </div>
         </div>
@@ -82,7 +87,14 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Password new:</mat-label>
-              <input matInput formControlName="nPassword" value="" placeholder="" required>
+              <input matInput [type]="hidePn ? 'password' : 'text' " formControlName="nPassword">
+              <button mat-icon-button matSuffix (click)="hidePwN($event)" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePn">
+                <mat-icon>{{hidePn ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-hint *ngIf="isStrong('nPassword') == 0">Password strength: weak</mat-hint>
+              <mat-hint *ngIf="isStrong('nPassword') == 1">Password strength: medium</mat-hint>
+              <mat-hint *ngIf="isStrong('nPassword') == 2">Password strength: strong</mat-hint>
             </mat-form-field>
           </div>
         </div>
@@ -90,7 +102,7 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Biography:</mat-label>
-              <input matInput formControlName="biography" value="{{gamer.cake_day | date}}" placeholder="" required>
+              <input matInput formControlName="biography" value="{{gamer.cake_day | date}}">
             </mat-form-field>
           </div>
         </div>

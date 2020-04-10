@@ -10,6 +10,7 @@ import { Game } from '../data_objects/game';
 import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 import { EditProfileRequest } from '../data_objects/editprofilerequest';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class ProfileService {
   }
 
   public updateProfile(profileUpdateValue: ControlsMap<AbstractControl>): Observable<EditProfileResponse> {
+    console.log(profileUpdateValue);
     // const games: Array<Game> = [];
     // const gameids: Array<number> = JSON.parse(profileUpdateValue.game.value);
     // for (const gameid of gameids) {
@@ -58,12 +60,28 @@ export class ProfileService {
       publicUser = null;
     }
 
+    let oPassword: string = null;
+    let nPassword: string = null;
+
+    if (profileUpdateValue.oPassword.value !== '' && profileUpdateValue.nPassword.value !== '') {
+      oPassword = profileUpdateValue.oPassword.value;
+      nPassword = profileUpdateValue.nPassword.value;
+    }
+
     const editprofileRequest: EditProfileRequest = new EditProfileRequest(
       this.authenticationService.session.session_id,
       publicUser,
+      oPassword,
+      nPassword
     );
-    console.log(editprofileRequest);
-    return this.http.post<EditProfileResponse>(this.url, editprofileRequest);
+
+    return this.http.post<EditProfileResponse>(this.url, editprofileRequest)
+      .pipe(map(data => {
+        if (data && data.successful) {
+          this.authenticationService.currentGamerSubject.next(data.publicUser);
+        }
+        return data;
+      }));
   }
 
   private equalLang(nLangs: Array<Language>, oLangs: Array<Language>): boolean {

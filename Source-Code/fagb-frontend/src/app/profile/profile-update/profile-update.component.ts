@@ -6,6 +6,7 @@ import { PublicUser } from 'src/app/data_objects/publicuser';
 import { Language } from 'src/app/data_objects/language';
 import { Region } from 'src/app/data_objects/region';
 import { ControlsMap } from 'src/app/_interface/controls-map';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-update',
@@ -13,9 +14,15 @@ import { ControlsMap } from 'src/app/_interface/controls-map';
   styleUrls: ['./profile-update.component.scss']
 })
 export class ProfileUpdateComponent implements OnInit {
-  public profileUpdateForm: FormGroup;
+  // RegExp
+  public strongRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+  public mediumRegex: RegExp = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
+  public profileUpdateForm: FormGroup;
   public gamer: PublicUser;
+  public loading: boolean = false;
+  public hidePo: boolean = true;
+  public hidePn: boolean = true;
   public lang: string;
 
   public regionList: Array<Region> = [];
@@ -29,7 +36,8 @@ export class ProfileUpdateComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private profileService: ProfileService,
     private regionService: RegionService,
-    private languageService: LanguageService) { }
+    private languageService: LanguageService,
+    private router: Router) { }
 
 
   public ngOnInit(): void {
@@ -49,15 +57,38 @@ export class ProfileUpdateComponent implements OnInit {
 
   public createForm(): void {
     this.profileUpdateForm = this.formBuilder.group({
-      region: [this.regionSelected, Validators.required],
-      lang: [this.languageSelected, Validators.required],
-      oPassword: ['', Validators.required],
-      nPassword: ['', Validators.required],
-      biography: [this.gamer.biography, [Validators.required, Validators.maxLength(100)]],
+      region: [this.regionSelected],
+      lang: [this.languageSelected],
+      oPassword: [''],
+      nPassword: ['', Validators.minLength(6)],
+      biography: [this.gamer.biography, Validators.maxLength(100)],
     });
   }
   public hasError = (controlName: string, errorName: string) => {
     return this.profileUpdateForm.controls[controlName].hasError(errorName);
+  }
+
+  public hidePwO(event: any): void { // without type info @https://angular.io/guide/user-input
+    this.hidePo = !this.hidePo;
+    event.preventDefault();
+  }
+
+  public hidePwN(event: any): void { // without type info @https://angular.io/guide/user-input
+    this.hidePn = !this.hidePn;
+    event.preventDefault();
+  }
+
+  public isStrong(controlName: string): number {
+    let strenght = -1;
+    const pw = this.profileUpdateForm.controls[controlName].value;
+    if (this.strongRegex.test(pw)) {
+      strenght = 2;
+    } else if (this.mediumRegex.test(pw)) {
+      strenght = 1;
+    } else if (pw !== '') {
+      strenght = 0;
+    }
+    return strenght;
   }
 
   public getLanguages(arr: Language[]): string {
@@ -84,11 +115,15 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
   public onProfileUpdateSubmit(): void {
+    this.loading = true;
     this.profileService.updateProfile(this.profileUpdateValue).subscribe(
       (data) => {
         console.log(data);
+        this.router.navigate(['/profile']);
+        this.loading = false;
       },
       (error) => {
+        this.loading = false;
         console.log(error.error.error);
       }
     );

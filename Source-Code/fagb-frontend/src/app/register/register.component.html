@@ -103,7 +103,6 @@
                       <mat-form-field>
                         <mat-label>Verify Password</mat-label>
                         <input matInput [type]="hidePv ? 'password' : 'text' " formControlName="vpassword" required>
-
                         <button mat-icon-button matSuffix (click)="hidePwV($event)" [attr.aria-label]="'Hide password'"
                           [attr.aria-pressed]="hidePv">
                           <mat-icon>{{hidePv ? 'visibility_off' : 'visibility'}}</mat-icon>

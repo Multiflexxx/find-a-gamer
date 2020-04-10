@@ -25,10 +25,11 @@ export class AuthenticationService {
 
   public session: Session;
 
+  public currentGamerSubject: BehaviorSubject<PublicUser>;
   public currentGamer: Observable<PublicUser>;
   private url: string = '/loginendpoint';
 
-  private currentGamerSubject: BehaviorSubject<PublicUser>;
+
 
   public constructor(private http: HttpClient, private cookieService: CookieService) {
     this.currentGamerSubject = new BehaviorSubject<PublicUser>(null);
