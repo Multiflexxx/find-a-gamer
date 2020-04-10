@@ -10,6 +10,7 @@ import { GameResponse } from '../data_objects/gameresponse';
 export class GameService {
   private url: string = '/gamesendpoint';
   private compState: number;
+  private formState: string;
 
   public constructor(private http: HttpClient) { }
 
@@ -23,5 +24,13 @@ export class GameService {
 
   public getCompState(): number {
     return this.compState;
+  }
+
+  public setFormState(str: string): void {
+    this.formState = str;
+  }
+
+  public getFormState(): string {
+    return this.formState;
   }
 }

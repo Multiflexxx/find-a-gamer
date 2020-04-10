@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService, RegionService, LanguageService, ProfileService } from '../../_services';
+import { AuthenticationService, RegionService, LanguageService, ProfileService, GameService } from '../../_services';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { PublicUser } from 'src/app/data_objects/publicuser';
 import { Language } from 'src/app/data_objects/language';
 import { Region } from 'src/app/data_objects/region';
 import { ControlsMap } from 'src/app/_interface/controls-map';
 import { Router } from '@angular/router';
+
+import { GameSelectStatus } from '../../_classes/game-select-status';
+import { gameValidator } from 'src/app/_shared/game-validator.directive';
+import { AddGameComponent } from 'src/app/add-game/add-game.component';
 
 @Component({
   selector: 'app-profile-update',
@@ -37,6 +41,7 @@ export class ProfileUpdateComponent implements OnInit {
     private profileService: ProfileService,
     private regionService: RegionService,
     private languageService: LanguageService,
+    private gameService: GameService,
     private router: Router) { }
 
 
@@ -53,6 +58,9 @@ export class ProfileUpdateComponent implements OnInit {
       .subscribe(l => this.langList = l);
 
     this.createForm();
+
+    this.gameService.setCompState(GameSelectStatus.COMP_PROFILE);
+    this.gameService.setFormState(GameSelectStatus.FORM_PROFILE);
   }
 
   public createForm(): void {
@@ -62,6 +70,7 @@ export class ProfileUpdateComponent implements OnInit {
       oPassword: [''],
       nPassword: ['', Validators.minLength(6)],
       biography: [this.gamer.biography, Validators.maxLength(100)],
+      game: ['', gameValidator()],
     });
   }
   public hasError = (controlName: string, errorName: string) => {

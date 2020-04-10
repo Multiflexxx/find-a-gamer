@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { GameService } from '../_services';
+import { GameService, AuthenticationService } from '../_services';
 import { GameResponse } from '../data_objects/gameresponse';
 
 import { GameSelectStatus } from '../_classes/game-select-status';
+import { Game } from '../data_objects/game';
+import { PublicUser } from '../data_objects/publicuser';
 
 @Component({
   selector: 'app-add-game',
@@ -15,14 +17,16 @@ export class AddGameComponent implements OnInit {
   @Input() public gameForm: FormGroup;
   public searchedGameList: Array<GameResponse> = [];
   public isSelected: Array<boolean> = [];
+  public formGroupString: string;
 
+  private gamer: PublicUser;
   private gameList: Array<GameResponse> = [];
   private selectedGames: Array<number> = [];
   private selectedGamesString: string;
   private searchTerm: string = '';
 
-
   public constructor(
+    private authenticationService: AuthenticationService,
     private gameService: GameService) { }
 
   public ngOnInit(): void {
@@ -31,6 +35,13 @@ export class AddGameComponent implements OnInit {
 
     this.gameService.getGame()
       .subscribe(g => this.searchedGameList = g);
+
+    this.formGroupString = this.gameService.getFormState();
+
+    if (this.gameService.getCompState() === GameSelectStatus.COMP_PROFILE) {
+      this.authenticationService.currentGamer.subscribe(gamer => this.gamer = gamer);
+      this.selectChoosenGame(this.gamer.games);
+    }
   }
 
   public onKey(event: any): void { // without type info @https://angular.io/guide/user-input
@@ -44,7 +55,7 @@ export class AddGameComponent implements OnInit {
   }
 
   public addGame(id: number, name: string): void {
-    if (this.gameService.getCompState() === GameSelectStatus.COMP_REGISTER) {
+    if (this.gameService.getCompState() === GameSelectStatus.COMP_REGISTER || this.gameService.getCompState() === GameSelectStatus.COMP_PROFILE) {
       this.isSelected[id] = !this.isSelected[id];
       this.createTag(id, name);
     } else if (this.gameService.getCompState() === GameSelectStatus.COMP_MATCH) {
@@ -55,7 +66,14 @@ export class AddGameComponent implements OnInit {
         this.isSelected[id] = !this.isSelected[id];
         this.createTag(id, name);
       }
-      console.log(this.isSelected);
+    }
+  }
+
+  public selectChoosenGame(games: Array<Game>): void {
+    console.log('Bin ich hier wirklich gelandet?');
+    for (const game of games) {
+      this.isSelected[game.game_id] = !this.isSelected[game.game_id];
+      this.createTag(game.game_id, game.name);
     }
   }
 

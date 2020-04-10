@@ -40,7 +40,7 @@
 
 <section class="section">
   <div class="container">
-    <form [formGroup]="profileUpdateForm" id="profileUpdateForm" (ngSubmit)="onProfileUpdateSubmit()">
+    <form [formGroup]="profileUpdateForm" (ngSubmit)="onProfileUpdateSubmit()">
       <div class="columns is-multiline is-mobile">
         <div class="column is-one-third-tablet is-full-mobile">
           <div class="box">
@@ -107,10 +107,11 @@
           </div>
         </div>
       </div>
+
+      <div class="box">
+        <app-add-game [gameForm]="profileUpdateForm"></app-add-game>
+      </div>
+
     </form>
   </div>
-</section>
-
-<section class="section">
-  Games
 </section>

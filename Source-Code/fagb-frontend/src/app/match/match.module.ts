@@ -20,8 +20,8 @@ import { MatchSuccessComponent } from './match-success/match-success.component';
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
+    SharedComponentsModule,
     MatchRoutingModule,
-    SharedComponentsModule
   ]
 })
 export class MatchModule { }

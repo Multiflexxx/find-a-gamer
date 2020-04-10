@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
     private regionService: RegionService,
     private languageService: LanguageService,
     private gameService: GameService,
-    private toastrService: ToastrService,) {
+    private toastrService: ToastrService, ) {
 
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
@@ -81,6 +81,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(l => this.langList = l);
 
     this.gameService.setCompState(GameSelectStatus.COMP_REGISTER);
+    this.gameService.setFormState(GameSelectStatus.FORM_REGISTER);
   }
 
   public createForm(): void {
@@ -156,12 +157,12 @@ export class RegisterComponent implements OnInit {
           },
           (error) => {
             console.log(error.error.error);
-            this.stepper.reset();
-            this.toastrService.error(error.error.error, 'Registration failed');
           });
       },
       (error) => {
         console.log(error.error.error);
+        this.stepper.reset();
+        this.toastrService.error(error.error.error, 'Registration failed');
       }
     );
   }

@@ -53,7 +53,9 @@ export class MatchSearchComponent implements OnInit {
 
   public ngOnInit(): void {
     this.createForm();
+
     this.gameService.setCompState(GameSelectStatus.COMP_MATCH);
+    this.gameService.setFormState(GameSelectStatus.FORM_MATCH);
   }
 
   public createForm(): void {

@@ -13,7 +13,6 @@ export class GameValidatorDirective {
 
 export function gameValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
-  // return function(control: AbstractControl): { [key: string]: any } | null {
     let forbidden = true;
     if (control.value !== '[]') {
       forbidden = false;
