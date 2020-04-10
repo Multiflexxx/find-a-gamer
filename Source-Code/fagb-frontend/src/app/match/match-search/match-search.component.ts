@@ -5,6 +5,7 @@ import { gameValidator } from 'src/app/_shared/game-validator.directive';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { MatchService, GameService } from '../../_services';
+import { ToastrService } from 'ngx-toastr';
 import { ControlsMap } from 'src/app/_interface/controls-map';
 
 import { GameSelectStatus } from '../../_classes/game-select-status';
@@ -46,7 +47,8 @@ export class MatchSearchComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
-    private gameService: GameService
+    private gameService: GameService,
+    private toastrService: ToastrService,
   ) { }
 
   public ngOnInit(): void {
@@ -97,8 +99,9 @@ export class MatchSearchComponent implements OnInit {
         this.router.navigate(['/match-process']);
       },
       (error) => {
-        console.log('Nein!');
         console.log(error.error.error);
+        this.toastrService.error(error.error.error, 'Matchmaking failed');
+        this.router.navigate(['/match-process']);
       }
     );
   }

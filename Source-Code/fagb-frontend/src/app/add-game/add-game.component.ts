@@ -48,7 +48,14 @@ export class AddGameComponent implements OnInit {
       this.isSelected[id] = !this.isSelected[id];
       this.createTag(id, name);
     } else if (this.gameService.getCompState() === GameSelectStatus.COMP_MATCH) {
-      console.log('Penis');
+      if (this.selectedGames.length === 0) {
+        this.isSelected[id] = !this.isSelected[id];
+        this.createTag(id, name);
+      } else if (this.isSelected[id]) {
+        this.isSelected[id] = !this.isSelected[id];
+        this.createTag(id, name);
+      }
+      console.log(this.isSelected);
     }
   }
 
