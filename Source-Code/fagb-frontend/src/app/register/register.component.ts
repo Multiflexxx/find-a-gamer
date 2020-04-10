@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -15,6 +15,7 @@ import { Language } from '../data_objects/language';
 import { ControlsMap } from '../_interface/controls-map';
 
 import { GameSelectStatus } from '../_classes/game-select-status';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-register',
@@ -51,6 +52,8 @@ export class RegisterComponent implements OnInit {
   // Backend input
   public regionList: Array<Region> = [];
   public langList: Array<Language> = [];
+
+  @ViewChild('stepper') private stepper: MatStepper;
 
   public constructor(
     private formBuilder: FormBuilder,
@@ -153,6 +156,7 @@ export class RegisterComponent implements OnInit {
           },
           (error) => {
             console.log(error.error.error);
+            this.stepper.reset();
             this.toastrService.error(error.error.error, 'Registration failed');
           });
       },
