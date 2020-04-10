@@ -220,11 +220,10 @@ export class QueryBuilder {
     //     );
     // }
 
-    public static updateUser(user_id: number, password_hash: string, biography: string, profile_picture: string, region_id: number): QueryObject {
+    public static updateUser(user_id: number, biography: string, profile_picture: string, region_id: number): QueryObject {
         return new QueryObject(
-            "UPDATE User SET password_hash = ?, biography = ?, profile_picture = ?, region_id = ? WHERE user_id = ?",
+            "UPDATE User SET biography = ?, profile_picture = ?, region_id = ? WHERE user_id = ?",
             [
-                password_hash,
                 biography,
                 profile_picture,
                 region_id,

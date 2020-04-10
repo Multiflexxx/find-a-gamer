@@ -290,7 +290,7 @@ export class UserFactory {
 
             // Update Biography, ProfilePicture & Region
             // Direct attributes of User, so they can be updated right away
-            let query: QueryObject = QueryBuilder.updateUser(user.user_id, editProfileRequest.nPassword, editProfileRequest.publicUser.biography, editProfileRequest.publicUser.profile_picture, editProfileRequest.publicUser.region.region_id);
+            let query: QueryObject = QueryBuilder.updateUser(user.user_id, editProfileRequest.publicUser.biography, editProfileRequest.publicUser.profile_picture, editProfileRequest.publicUser.region.region_id);
             let successful: boolean = false;
             try {
                 await ConnectToDatabaseService.executeQuery(query);
