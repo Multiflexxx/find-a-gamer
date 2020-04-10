@@ -24,9 +24,77 @@ export class ProfileUpdateEndpointController {
     @Post()
     public async handleProfileUpdateRequest(@Body() editProfileRequest: EditProfileRequest): Promise<EditProfileResponse> {
 
+        let user: User = await UserFactory.getUserBySessionID(editProfileRequest.session_id);
+        if(!user || user.user_id != editProfileRequest.publicUser.user_id) {
+            throw new HttpException({
+                status: HttpStatus.UNAUTHORIZED,
+                error: "Not authorized to change this user"
+            }, HttpStatus.UNAUTHORIZED);
+        }
+
+        if(editProfileRequest.oPassword != null && editProfileRequest.nPassword != null) {
+            if(user.password_hash != editProfileRequest.oPassword) {
+                throw new HttpException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    error: "Wrong Password"
+                }, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        if(!(await ProfileUpdateEndpointController.validateInput(editProfileRequest))) {
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "Invalid Input"
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
+
         let result = await UserFactory.updateUser(editProfileRequest);
-        console.log(result);
+        if(!result) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Failed to update User"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new EditProfileResponse(true, result);
+    }
+
+    private static async validateInput(editProfileRequest: EditProfileRequest): Promise<boolean> {
+        if(editProfileRequest.publicUser != null) {
+            // Validate Region
+            let region: Region = await RegionFactory.getRegionById(editProfileRequest.publicUser.region.region_id);
+            if(!region) {
+                console.error("ProfileUpdateEndpointController validateInput(): Couldn't get region");
+                return false;
+            }
+
+            // Validate Languages
+            editProfileRequest.publicUser.languages.forEach(async lang => {
+                let language: Language = await LanguageFactory.getLanguageById(lang.language_id);
+                if(!language) {
+                    console.error("ProfileUpdateEndpointController validateInput(): Couldn't get language");
+                    return false;
+                }
+            });
+            
+
+            // Validate Games
+            editProfileRequest.publicUser.games.forEach(async g => {
+                let game: Game = await GameFactory.getGameById(g.game_id);
+                if(!game) {
+                    console.error("ProfileUpdateEndpointController validateInput(): Couldn't get game");
+                    return false;
+                }
+            });
+
+            if(editProfileRequest.publicUser.biography.length > 500) {
+                console.error("ProfileUpdateEndpointController validateInput(): Biography exceeded maximum length");
+                return false;
+            }
+        }
+
+        return true;
+    }
 
         // // check if session is valid and belongs to user to be edited
         // let session: Session = await SessionFactory.getSessionBySessionId(editProfileRequest.session_id);
@@ -144,7 +212,6 @@ export class ProfileUpdateEndpointController {
 
         // return new EditProfileResponse(true, UserFactory.userToPublicUser(editProfileRequest.user));
 
-    }
 
         // @Get()
     // async handleProfileUpdateRequest(@Body() editProfileRequest: EditProfileRequest) {

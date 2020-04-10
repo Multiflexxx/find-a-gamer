@@ -17,25 +17,25 @@ import { User } from 'src/data_objects/user';
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
-    @Get()
+    @Post()
     async handleRegistration(@Body() registration: Registration) {
 
-        let randomNumber = Math.floor(Math.random() * 10000);
-        registration = new Registration(
-            'mrsbody@sex' + randomNumber + '.com',
-            'test123',
-            'Grimmig',
-            'Grimmig#1235',
-            new Date('1999-12-31T23:00:00.000Z'),
-            new Region(1, null),
-            [
-                new Language(1)
-            ],
-            [
-                new Game(1)
-            ]
-        );
-        console.log(registration.email);
+        // let randomNumber = Math.floor(Math.random() * 10000);
+        // registration = new Registration(
+        //     'mrsbody@sex' + randomNumber + '.com',
+        //     'test123',
+        //     'Grimmig',
+        //     'Grimmig#1235',
+        //     new Date('1999-12-31T23:00:00.000Z'),
+        //     new Region(1, null),
+        //     [
+        //         new Language(1)
+        //     ],
+        //     [
+        //         new Game(1)
+        //     ]
+        // );
+        // console.log(registration.email);
 
         // Validate User Input
         let temp = registration.birthdate;
