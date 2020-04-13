@@ -11,6 +11,10 @@ import { Response } from './response';
 import { UserLanguagePair } from './userlanguagepair';
 import { RegistrationResponse } from './registrationresponse';
 import { User } from './user';
+import { PublicUser } from './publicuser';
+import { QueryObject } from './queryobject';
+import { NotifyMatch } from './notifymatch';
+import { LoginResponse } from './loginresponse';
 
 // unit tests done for:
 // login
@@ -25,7 +29,19 @@ import { User } from './user';
 // registrationresponse
 // userlanguagepair
 // user
+// publicuser
+// queryobject
+// notifymatch
+// login response
 
+// todo:
+// DeleteMatchMakingRequest
+// DeleteProfileRequest
+// DeleteProfileResponse
+// EditProfileRequest
+// EditProfileResponse
+// MatchMakingRequest
+// MatchMakingResponse
 
 describe('Check Login-object', () => {
     let loginPw: Login = new Login(null, 'mail@mail.com', 'hash123', true);
@@ -83,7 +99,7 @@ describe('Check Session-object', () => {
     });
 });
 
-describe('Check Language-object', () => { 
+describe('Check Language-object', () => {
 
     let languageFull: Language = new Language(1, 'German', 'DE');
     let languageName: Language = new Language(2, 'English');
@@ -108,7 +124,7 @@ describe('Check Language-object', () => {
     });
 });
 
-describe('Check Game-object', () => { 
+describe('Check Game-object', () => {
 
     let testDate: Date = new Date;
     let gameFull: Game = new Game(1, 'Minecraft', '/image/img.png', 'A lego like game.', 'Mojang', testDate);
@@ -131,7 +147,7 @@ describe('Check Game-object', () => {
     });
 });
 
-describe('Check UserGamePair-object', () => { 
+describe('Check UserGamePair-object', () => {
 
     let userGamePair: UserGamePair = new UserGamePair(2, 3, 4);
 
@@ -188,7 +204,7 @@ describe('Check Registration-object', () => {
     });
 });
 
-describe('Check general Response-object', () => { 
+describe('Check general Response-object', () => {
     let response: Response = new Response(true, 'message');
 
     it('should be a valid response', () => {
@@ -197,7 +213,7 @@ describe('Check general Response-object', () => {
     });
 });
 
-describe('Check UserLanguagePair-object', () => { 
+describe('Check UserLanguagePair-object', () => {
     let userLanguagePair: UserLanguagePair = new UserLanguagePair(5, 6, 3);
 
     it('should be a valid User-Language-Pair', () => {
@@ -207,7 +223,7 @@ describe('Check UserLanguagePair-object', () => {
     });
 });
 
-describe('Check RegistrationResponse-object', () => { 
+describe('Check RegistrationResponse-object', () => {
     let testDate: Date = new Date();
     let testSession: Session = new Session('session_id', 12, true, testDate);
     let registrationResponse: RegistrationResponse = new RegistrationResponse(true, testSession, 'message');
@@ -220,14 +236,14 @@ describe('Check RegistrationResponse-object', () => {
     });
 });
 
-describe('Check User-object', () => { 
+describe('Check User-object', () => {
 
     let cakeDate: Date = new Date();
     let birthDate: Date = new Date();
     let testRegion: Region = new Region(3, 'Asia');
     let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
     let testGames: Game[] = [new Game(2), new Game(3)];
-    
+
     let userFull: User = new User(12, 'mail@mail.com', 'hash123', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio', testRegion, testGames, testLanguages);
     let user: User = new User(13, 'mail@mail1.com', 'hash1234', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio');
 
@@ -261,5 +277,94 @@ describe('Check User-object', () => {
         expect(user.region).toBeNull();
         expect(user.games).toBeNull();
         expect(user.languages).toBeNull();
+    });
+});
+
+describe('Check PublicUser-object', () => {
+
+    let cakeDate: Date = new Date();
+    let testRegion: Region = new Region(3, 'Asia');
+    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    let testGames: Game[] = [new Game(2), new Game(3)];
+
+    let userFull: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages, '/image/img.png', 'Bio');
+    let user: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
+
+    it('should be a full valid publicuser', () => {
+        expect(userFull).toBeDefined();
+        expect(userFull.user_id).toEqual(12);
+        expect(userFull.nickname).toEqual('nickname');
+        expect(userFull.discord_tag).toEqual('nickname#1234');
+        expect(userFull.profile_picture).toEqual('/image/img.png');
+        expect(userFull.cake_day).toEqual(cakeDate);
+        expect(userFull.biography).toEqual('Bio');
+        expect(userFull.region).toEqual(testRegion);
+        expect(userFull.games).toEqual(testGames);
+        expect(userFull.languages).toEqual(testLanguages);
+    });
+
+    it('should be a publicuser without bio and profile pic', () => {
+        expect(user).toBeDefined();
+        expect(user.user_id).toEqual(12);
+        expect(user.nickname).toEqual('nickname');
+        expect(user.discord_tag).toEqual('nickname#1234');
+        expect(user.profile_picture).toBeNull();
+        expect(user.cake_day).toEqual(cakeDate);
+        expect(user.biography).toBeNull();
+        expect(user.region).toEqual(testRegion);
+        expect(user.games).toEqual(testGames);
+        expect(user.languages).toEqual(testLanguages);
+    });
+});
+
+describe('Check Query-object', () => {
+
+    let queryobjectWithoutParam: QueryObject = new QueryObject("SELECT * FROM database;");
+    let queryobjectWithParam: QueryObject = new QueryObject("SELECT * FROM database;", ["Param1", "Param2"]);
+
+    it('should be a query-object without parameter', () => {
+        expect(queryobjectWithoutParam.query).toEqual('SELECT * FROM database;');
+        expect(queryobjectWithoutParam.parameter).toBeUndefined();
+        expect(queryobjectWithoutParam.createQueryObject().sql).toEqual('SELECT * FROM database;');
+        expect(queryobjectWithoutParam.createQueryObject().values).toBeUndefined();
+    });
+
+    it('should be a query-object with parameter', () => {
+        expect(queryobjectWithParam.query).toEqual('SELECT * FROM database;');
+        expect(queryobjectWithParam.parameter[0]).toEqual('Param1');
+        expect(queryobjectWithParam.createQueryObject().sql).toEqual('SELECT * FROM database;');
+        expect(queryobjectWithParam.createQueryObject().values[1]).toEqual('Param2');
+    });
+});
+
+describe('Check NotifyMatch-object', () => {
+
+    let notifyMatch: NotifyMatch = new NotifyMatch(5);
+
+    it('should be a notifymatch-object', () => {
+        expect(notifyMatch.request_id).toEqual(5);
+    });
+});
+
+describe('Check LoginResponse-object', () => {
+
+    let cakeDate: Date = new Date();
+    let testRegion: Region = new Region(3, 'Asia');
+    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    let testGames: Game[] = [new Game(2), new Game(3)];
+    let testSession: Session = new Session('session_id', 5, false);
+    let testUser: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
+
+    let loginResponseFull: LoginResponse = new LoginResponse(true, testSession, testUser);
+    let loginResponse: LoginResponse = new LoginResponse(true);
+
+    it('should be a full loginresponse-object', () => {
+        expect(loginResponseFull.successful).toBeTruthy();
+        expect(loginResponseFull.session).toEqual(testSession);
+        expect(loginResponseFull.user).toEqual(testUser);
+    });
+
+    it('should be a loginresponse-object', () => {
+        expect(loginResponse.successful).toBeTruthy();
     });
 });
