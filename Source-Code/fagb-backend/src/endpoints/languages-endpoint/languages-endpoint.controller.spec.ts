@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LanguagesEndpointController } from './languages-endpoint.controller';
-import { Language } from '../../data_objects/language';
-import { isNumber } from 'util';
 
 describe('LanguagesEndpoint Controller', () => {
   let controller: LanguagesEndpointController;
@@ -20,7 +18,4 @@ describe('LanguagesEndpoint Controller', () => {
     expect(languages[0].language_id).toBeGreaterThanOrEqual(1);
   });
 
-  afterAll( () => {
-    jest.resetAllMocks();
-  })
 });

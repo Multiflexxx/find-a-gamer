@@ -14,12 +14,8 @@ describe('RegionEndpoint Controller', () => {
   });
 
   it("Should return a Regionresponse if successfull", async () => {
-    const gamesGameResponse = await controller.getAllRegionsEndpoint();
+    const regionResponse = await controller.getAllRegionsEndpoint();
     
-    expect(gamesGameResponse[0]).toBeInstanceOf(Region);
-  });
-
-  afterAll( () => {
-    jest.resetAllMocks();
+    expect(regionResponse[0]).toBeInstanceOf(Region);
   });
 });

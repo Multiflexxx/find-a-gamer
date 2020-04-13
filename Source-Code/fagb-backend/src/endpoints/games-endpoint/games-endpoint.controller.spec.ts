@@ -18,8 +18,4 @@ describe('GamesEndpoint Controller', () => {
     
     expect(gamesGameResponse[0]).toBeInstanceOf(GameResponse);
   });
-
-  afterAll( () => {
-    jest.resetAllMocks();
-  });
 });
