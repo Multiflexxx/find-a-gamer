@@ -1,10 +1,10 @@
-import { User } from "../data_objects/user";
-import { Language } from "../data_objects/language";
+import { User } from '../data_objects/user';
+import { Language } from '../data_objects/language';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
-import { QueryBuilder } from "../connecttodatabase/querybuilder";
-import { UserLanguagePair } from "../data_objects/userlanguagepair";
-import { QueryObject } from "src/data_objects/queryobject";
-import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
+import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { UserLanguagePair } from '../data_objects/userlanguagepair';
+import { QueryObject } from 'src/data_objects/queryobject';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 export class UserLanguagePairFactory {
     // public static createUserLanguagePairs(user: User, languages: Language[]): void {
@@ -28,18 +28,18 @@ export class UserLanguagePairFactory {
 
     public static async createUserLanguagePairs(user: User, languages: Language[]): Promise<boolean> {
         await languages.forEach(async language => {
-            let query: QueryObject = QueryBuilder.createUserLanguagePair(user, language);
+            const query: QueryObject = QueryBuilder.createUserLanguagePair(user, language);
             let successful: boolean = false;
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             } catch (e) {
-                console.error("UserLanguagePairFactory createLanguagePairs(): Database Query threw exception");
+                console.error('UserLanguagePairFactory createLanguagePairs(): Database Query threw exception');
                 console.error(e);
             }
-            
+
             if (!successful) {
-                console.error("UserLanguagePairFactory createLanguagePairs(): Couldn't create UserLanguagePairs");
+                console.error('UserLanguagePairFactory createLanguagePairs(): Couldn\'t create UserLanguagePairs');
                 return false;
             }
         });
@@ -48,19 +48,19 @@ export class UserLanguagePairFactory {
 
 
     public static async deleteUserLanguagePairs(user: User): Promise<boolean> {
-        let query: QueryObject = QueryBuilder.deleteUserLanguagePairsByUser(user);
+        const query: QueryObject = QueryBuilder.deleteUserLanguagePairsByUser(user);
         let successful: boolean = false;
-        
+
         try {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch(e) {
-            console.error("UserLanguagePairFactory deleteUserLanguagePairs(): Database Query threw exception");
+            console.error('UserLanguagePairFactory deleteUserLanguagePairs(): Database Query threw exception');
             console.error(e);
         }
 
         if (!successful) {
-            console.error("UserLanguagePairFactory deleteLanguagePairs(): Database Query threw exception");
+            console.error('UserLanguagePairFactory deleteLanguagePairs(): Database Query threw exception');
             return false;
         }
 
@@ -106,26 +106,26 @@ export class UserLanguagePairFactory {
         let successful: boolean = await UserLanguagePairFactory.deleteUserLanguagePairs(user);
 
         if(!successful) {
-            console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't delete UserLanguagePairs");
+            console.error('UserLanguagePairFactory updateUserLanguagePairs(): Couldn\'t delete UserLanguagePairs');
             return false;
         }
 
 
         // Create new UserLanguagePairs
-        for(let language of newLanguages) {
-            let query = QueryBuilder.createUserLanguagePair(user, language);
-            let successful: boolean = false;
-            
+        for(const language of newLanguages) {
+            const query = QueryBuilder.createUserLanguagePair(user, language);
+            successful = false;
+
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             } catch (e) {
-                console.error("UserLanguagePairFactory updateUserLanguagePairs(): Database Query threw exception");
+                console.error('UserLanguagePairFactory updateUserLanguagePairs(): Database Query threw exception');
                 console.error(e);
             }
 
             if(!successful) {
-                console.error("UserLanguagePairFactory updateUserLanguagePairs(): Couldn't create UserLanguagePairs")
+                console.error('UserLanguagePairFactory updateUserLanguagePairs(): Couldn\'t create UserLanguagePairs')
                 return false;
             }
         }

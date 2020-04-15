@@ -1,31 +1,31 @@
-import { Game } from "../data_objects/game";
-import { User } from "../data_objects/user";
-import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
-import { QueryBuilder } from "../connecttodatabase/querybuilder";
-import { UserGamePairFactory } from "./usergamepairfactory";
-import { QueryObject } from "../data_objects/queryobject";
+import { Game } from '../data_objects/game';
+import { User } from '../data_objects/user';
+import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { UserGamePairFactory } from './usergamepairfactory';
+import { QueryObject } from '../data_objects/queryobject';
 
 export class GameFactory {
-    
+
     public static async getGamesForUser(user: User): Promise<Game[]> {
         // Get Updated Games
-        let query: QueryObject = QueryBuilder.getGamesByUser(user);
+        const query: QueryObject = QueryBuilder.getGamesByUser(user);
         let result: any;
 
         try {
             result = await ConnectToDatabaseService.executeQuery(query);
         } catch (e) {
-            console.error("GameFactory getGamesForUser(): Database Query threw exception");
+            console.error('GameFactory getGamesForUser(): Database Query threw exception');
             console.error(e);
         }
 
         if (!result) {
-            console.error("GameFactory getGamesForUser(): result is empty or null after getting Games for User");
+            console.error('GameFactory getGamesForUser(): result is empty or null after getting Games for User');
             return null;
         }
 
-        let newGames: Game[] = [];
-        for (let game of result) {
+        const newGames: Game[] = [];
+        for (const game of result) {
             newGames.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
         }
 
@@ -41,22 +41,22 @@ export class GameFactory {
         // Update UserGamePairs
         let successful: boolean = await UserGamePairFactory.deleteUserGamePairsByUser(user);
         if (!successful) {
-            console.error("GameFactory updateGamesForUser(): Couldn't delete UserGamePairs");
+            console.error('GameFactory updateGamesForUser(): Couldn\'t delete UserGamePairs');
             return null;
         }
 
         // create new User Game Pairs
         successful = await UserGamePairFactory.createUserGamePairs(user, newGames);
         if (!successful) {
-            console.error("GameFactory updateGamesForUser(): Couldn't create new UserGamePairs");
+            console.error('GameFactory updateGamesForUser(): Couldn\'t create new UserGamePairs');
             return null;
         }
 
 
         // Get Updated Games for User
-        let games: Game[] = await GameFactory.getGamesForUser(user);
+        const games: Game[] = await GameFactory.getGamesForUser(user);
         if (!games) {
-            console.error("GameFactory updateGamesForUser(): Couldn't get Games for User");
+            console.error('GameFactory updateGamesForUser(): Couldn\'t get Games for User');
             return null;
         }
 
@@ -64,21 +64,21 @@ export class GameFactory {
     }
 
     public static async getAllGames(): Promise<Game[]> {
-        let query: QueryObject = QueryBuilder.getGames();
-        let games: Game[];
+        const query: QueryObject = QueryBuilder.getGames();
+        const games: Game[] = [];
 
         try {
-            let result: any[] = await ConnectToDatabaseService.executeQuery(query);
+            const result: any[] = await ConnectToDatabaseService.executeQuery(query);
             await result.forEach(game => {
                 games.push(new Game(game.game_id, game.name, game.cover_link, game.game_description, game.publisher, game.published));
             });
         } catch(e) {
-            console.error("GameFactory getAllGames(): Database Query threw exception")
+            console.error('GameFactory getAllGames(): Database Query threw exception')
             console.error(e);
         }
 
         if (!games) {
-            console.error("GameFactory getAllGames(): Couldn't get all Games");
+            console.error('GameFactory getAllGames(): Couldn\'t get all Games');
             return null;
         }
 
@@ -86,19 +86,19 @@ export class GameFactory {
     }
 
     public static async getGameById(game_id: number): Promise<Game> {
-        let query: QueryObject = QueryBuilder.getGameById(game_id);
+        const query: QueryObject = QueryBuilder.getGameById(game_id);
         let game: Game;
         try {
-           let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+           const result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
            game = new Game(result.game_id, result.name, result.cover_link, result.game_description, result.publisher, result.published);
         } catch(e) {
-            console.error("GameFactory getGameById(): Database Query threw exception");
+            console.error('GameFactory getGameById(): Database Query threw exception');
             console.error(e);
         }
 
 
         if (!game) {
-            console.error("GameFactory getGameById(): Couldn't get Game with game_id + " + game_id);
+            console.error('GameFactory getGameById(): Couldn\'t get Game with game_id + ' + game_id);
             return null;
         }
         return game;

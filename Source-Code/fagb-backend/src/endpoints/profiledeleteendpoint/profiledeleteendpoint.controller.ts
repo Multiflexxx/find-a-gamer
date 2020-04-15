@@ -9,45 +9,45 @@ import { Game } from '../../data_objects/game';
 import { Language } from '../../data_objects/language';
 import { Session } from '../../data_objects/session';
 
-@Controller('profiledeleteendpoint') 
+@Controller('profiledeleteendpoint')
 export class ProfileDeleteEndpointController {
     @Get()
-    async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest): Promise<DeleteProfileResponse> {
+    public async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest): Promise<DeleteProfileResponse> {
         /*deleteProfileRequest = new DeleteProfileRequest(
             "3e8de529-977b-4b2e-8bf8-c4aa007d6202",
             new User(16, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
         );*/
 
-        
+
         // Check Session
-        let session: Session = await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id);
-        
+        const session: Session = await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id);
+
         // If is invalid or doesn't belong to user, reject
-        if(!session || session.user_id != deleteProfileRequest.user.user_id) {
+        if(!session || session.user_id !== deleteProfileRequest.user.user_id) {
             throw new HttpException({
                 status: HttpStatus.UNAUTHORIZED,
-                error: "Session not authorized to delete User"
+                error: 'Session not authorized to delete User'
             }, HttpStatus.UNAUTHORIZED);
         }
 
-        //Delete Session
-        let successful: boolean = await SessionFactory.deleteSessionByUser(deleteProfileRequest.user);
+        // Delete Session
+        const successful: boolean = await SessionFactory.deleteSessionByUser(deleteProfileRequest.user);
         if (!successful) {
-            console.error("ProfileDeleteEndpoint: Couldn't delete User sessions");
+            console.error('ProfileDeleteEndpoint: Couldn\'t delete User sessions');
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Failed to delete old User sessions"
+                error: 'Failed to delete old User sessions'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Delete User
-        let user: User = await UserFactory.deleteUser(deleteProfileRequest.user);
+        const user: User = await UserFactory.deleteUser(deleteProfileRequest.user);
 
         if (!user) {
-            console.error("ProfileDeleteEndpoint: Couldn't delete user");
+            console.error('ProfileDeleteEndpoint: Couldn\'t delete user');
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Failed to delete old User sessions"
+                error: 'Failed to delete old User sessions'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

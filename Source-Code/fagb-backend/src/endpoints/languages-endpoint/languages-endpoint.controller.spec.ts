@@ -12,9 +12,9 @@ describe('LanguagesEndpoint Controller', () => {
     controller = module.get<LanguagesEndpointController>(LanguagesEndpointController);
   });
 
-  it("Should return a Language ID if successfull", async () => {
+  it('Should return a Language ID if successfull', async () => {
     const languages = await controller.getAllLanguagesEndpoint();
-    
+
     expect(languages[0].language_id).toBeGreaterThanOrEqual(1);
   });
 

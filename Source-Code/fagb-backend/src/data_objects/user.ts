@@ -1,6 +1,6 @@
-import { Region } from "./region";
-import { Game } from "./game";
-import { Language } from "./language";
+import { Region } from './region';
+import { Game } from './game';
+import { Language } from './language';
 
 export class User {
     public user_id: number;
@@ -16,7 +16,9 @@ export class User {
     public languages: Language[];
     public games: Game[];
 
-    public constructor (user_id: number, email: string, password_hash: string, nickname: string, discord_tag: string, profile_picture: string, cake_day: Date, birthdate: Date, biography: string, region?: Region, games?: Game[], languages?: Language[]) {
+    public constructor (
+        user_id: number, email: string, password_hash: string, nickname: string, discord_tag: string, profile_picture: string, cake_day: Date, birthdate: Date, biography: string, region?: Region, games?: Game[], languages?: Language[]
+    ) {
         this.user_id = user_id;
         this.email = email;
         this.password_hash = password_hash;

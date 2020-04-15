@@ -1,25 +1,25 @@
-import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
-import { QueryBuilder } from "../connecttodatabase/querybuilder";
-import { Session } from "../data_objects/session";
-import { User } from "../data_objects/user";
+import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../connecttodatabase/querybuilder';
+import { Session } from '../data_objects/session';
+import { User } from '../data_objects/user';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryObject } from "src/data_objects/queryobject";
+import { QueryObject } from 'src/data_objects/queryobject';
 
 export class SessionFactory {
     public static async getSessionBySessionId(session_id: string): Promise<Session> {
-        let query: QueryObject = QueryBuilder.getSessionBySessionId(session_id);
+        const query: QueryObject = QueryBuilder.getSessionBySessionId(session_id);
         let session: Session;
 
         try {
-            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            const result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
             session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
         } catch (e) {
-            console.error("SessionFactory getSessionBySessionId(): Database Query threw Exception");
+            console.error('SessionFactory getSessionBySessionId(): Database Query threw Exception');
             console.error(e);
         }
 
         if (!session) {
-            console.error("SessionFactory getSessionBySessionId(): No Session with that ID: " + session_id);
+            console.error('SessionFactory getSessionBySessionId(): No Session with that ID: ' + session_id);
             return null;
         }
 
@@ -46,19 +46,19 @@ export class SessionFactory {
     // }
 
     public static async getSessionByUser(user: User): Promise<Session> {
-        let query: QueryObject = QueryBuilder.getSessionByUserId(user);
+        const query: QueryObject = QueryBuilder.getSessionByUserId(user);
         let session: Session;
 
         try {
-            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            const result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
             session = new Session(result.session_id.toString('utf8'), result.user_id, result.stay_logged_in, result.expiration_date);
         } catch (e) {
-            console.error("SessionFactory getSessionByUser(): Database Query threw Exception");
+            console.error('SessionFactory getSessionByUser(): Database Query threw Exception');
             console.error(e);
         }
 
         if (!session) {
-            console.error("SessionFactory getSessionByUser(): Failed to get session for User");
+            console.error('SessionFactory getSessionByUser(): Failed to get session for User');
             return null;
         }
 
@@ -66,27 +66,27 @@ export class SessionFactory {
     }
 
     public static async createSessionForUser(user: User, stay_logged_in: boolean): Promise<Session> {
-        let session_id = uuidv4();
-        let query: QueryObject = QueryBuilder.createSession(session_id, user, !stay_logged_in ? false : true);
+        const session_id = uuidv4();
+        const query: QueryObject = QueryBuilder.createSession(session_id, user, !stay_logged_in ? false : true);
         let successful: boolean = false;
 
         try {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("SessionFactory createSessionForUser(): Database Query threw Exception");
+            console.error('SessionFactory createSessionForUser(): Database Query threw Exception');
             console.error(e);
         }
 
         if (!successful) {
-            console.error("Session createSessionForUser(): Couldn't create session");
+            console.error('Session createSessionForUser(): Couldn\'t create session');
             return null
         }
 
 
-        let session: Session = await SessionFactory.getSessionBySessionId(session_id)
+        const session: Session = await SessionFactory.getSessionBySessionId(session_id)
         if (!session) {
-            console.error("Session createSessionForUser(): Couldn't get created Session");
+            console.error('Session createSessionForUser(): Couldn\'t get created Session');
             return null;
         }
 
@@ -94,19 +94,19 @@ export class SessionFactory {
     }
 
     public static async deleteSessionByUser(user: User): Promise<boolean> {
-        let query: QueryObject = QueryBuilder.deleteSessionByUserId(user);
+        const query: QueryObject = QueryBuilder.deleteSessionByUserId(user);
         let successful: boolean = false;
 
         try {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("SessionFactory deleteSessionByUser(): Database Query threw Exception");
+            console.error('SessionFactory deleteSessionByUser(): Database Query threw Exception');
             console.error(e);
         }
 
         if(!successful) {
-            console.error("SessionFactory deleteSessionByUser(): Couldn't delete Session");
+            console.error('SessionFactory deleteSessionByUser(): Couldn\'t delete Session');
             return false;
         }
 

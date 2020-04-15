@@ -13,9 +13,9 @@ describe('GamesEndpoint Controller', () => {
     controller = module.get<GamesEndpointController>(GamesEndpointController);
   });
 
-  it("Should return a Gameresponse if successfull", async () => {
+  it('Should return a Gameresponse if successfull', async () => {
     const gamesGameResponse = await controller.getAllGamesEndpoint();
-    
+
     expect(gamesGameResponse[0]).toBeInstanceOf(GameResponse);
   });
 });

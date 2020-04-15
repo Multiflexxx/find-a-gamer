@@ -31,14 +31,14 @@ describe('Loginendpoint Controller', () => {
     registrationEndpointController = module.get<RegistrationendpointController>(RegistrationendpointController);
     loginEndpointController = module.get<LoginendpointController>(LoginendpointController);
 
-    let randomNumber = Math.floor(Math.random() * 10000);
+    const randomNumber = Math.floor(Math.random() * 10000);
     registration = new Registration(
       'mail@mail' + randomNumber + '.com',
       'test123',
       'testNickname',
       'testNickname#1234',
       new Date('1999-12-31T23:00:00.000Z'),
-      new Region(1, "EU"),
+      new Region(1, 'EU'),
       [
         new Language(1)
       ],
@@ -49,9 +49,9 @@ describe('Loginendpoint Controller', () => {
 
     login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);
   });
-  
+
     it('Should try a login with wrong mail', async() => {
-      let testLogin = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
+      const testLogin = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
       let loginResponse: LoginResponse;
 
       try {
@@ -64,14 +64,14 @@ describe('Loginendpoint Controller', () => {
 
   it('Should create a new registration on database and delete', async () => {
 
-    let registrationResult = await registrationEndpointController.handleRegistration(registration);
+    const registrationResult = await registrationEndpointController.handleRegistration(registration);
     expect(registrationResult).toBeDefined();
 
-    let userId = registrationResult.user_id;
+    const userId = registrationResult.user_id;
 
     loginResponse = await loginEndpointController.handleLogin(login);
 
-    let user: User = new User(userId, 'mail@mail' + randomNumber + '.com', "test123", "testNickname", "testNickname#1234", "", new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), "");
+    const user: User = new User(userId, 'mail@mail' + randomNumber + '.com', 'test123', 'testNickname', 'testNickname#1234', '', new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), '');
 
     expect(loginResponse).toBeDefined();
     expect(loginResponse.user.user_id).toEqual(userId);
@@ -79,7 +79,7 @@ describe('Loginendpoint Controller', () => {
     deleteProfileRequest = new DeleteProfileRequest(loginResponse.session.session_id, user);
 
     try {
-      let profileDeleteRequestResult = await profileDeleteEndpointController.handleProfileDeleteRequest(deleteProfileRequest);
+      const profileDeleteRequestResult = await profileDeleteEndpointController.handleProfileDeleteRequest(deleteProfileRequest);
     }
     catch (e) {
       console.log(e);

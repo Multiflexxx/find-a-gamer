@@ -19,26 +19,26 @@ import { EditProfileRequest } from 'src/data_objects/editprofilerequest';
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
         // Create User
-        let query: QueryObject = QueryBuilder.createUser(registration);
+        const query: QueryObject = QueryBuilder.createUser(registration);
         let successful: boolean = false;
-        
+
         try {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("UserFactory createUser(): Database Query threw exception");
+            console.error('UserFactory createUser(): Database Query threw exception');
             console.error(e);
         }
 
         if(!successful) {
-            console.error("UserFactory createUser(): Couldn't create User");
+            console.error('UserFactory createUser(): Couldn\'t create User');
             return null;
         }
 
         // Get created User
-        let user: User = await UserFactory.getUserByEmail(registration.email);
+        const user: User = await UserFactory.getUserByEmail(registration.email);
         if (!user) {
-            console.error("UserFactory createUser(): Couldn't get created User by Email")
+            console.error('UserFactory createUser(): Couldn\'t get created User by Email')
             return null;
         }
 
@@ -62,14 +62,14 @@ export class UserFactory {
         // Create User Game Pairs
         successful = await UserGamePairFactory.createUserGamePairs(user, registration.games);
         if(!successful) {
-            console.error("UserFactory createUser(): Couldn't create UserGamePairs");
+            console.error('UserFactory createUser(): Couldn\'t create UserGamePairs');
             return null;
         }
 
         // Get Games for User
-        let games: Game[] = await GameFactory.getGamesForUser(user);
+        const games: Game[] = await GameFactory.getGamesForUser(user);
         if(!games) {
-            console.error("UserFactory createUser(): Couldn't get Games for User");
+            console.error('UserFactory createUser(): Couldn\'t get Games for User');
             return null;
         }
         user.games = games;
@@ -77,14 +77,14 @@ export class UserFactory {
         // Create User Language Pairs
         successful = await UserLanguagePairFactory.createUserLanguagePairs(user, registration.languages);
         if(!successful) {
-            console.error("UserFactory createUser(): Couldn't create UserLanguagePairs");
+            console.error('UserFactory createUser(): Couldn\'t create UserLanguagePairs');
             return null;
         }
 
         // Get Languages for User
-        let languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
+        const languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
         if(!languages) {
-            console.error("UserFactory createUser(): Couldn't get Languages for User");
+            console.error('UserFactory createUser(): Couldn\'t get Languages for User');
             return null;
         }
         user.languages = languages;
@@ -102,13 +102,13 @@ export class UserFactory {
 
     public static async getUserByEmail(email: string): Promise<User> {
         let result: any = null;
-        let query: QueryObject = QueryBuilder.getUserByEmail(email);
+        const query: QueryObject = QueryBuilder.getUserByEmail(email);
         let user: User;
         try {
             result = (await ConnectToDatabaseService.executeQuery(query))[0];
             user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
         } catch(e) {
-            console.error("UserFactory getUserByEmail(): Database Query threw exception");
+            console.error('UserFactory getUserByEmail(): Database Query threw exception');
             console.error(e);
         }
 
@@ -116,25 +116,25 @@ export class UserFactory {
             return null;
         }
 
-        let region: Region = await RegionFactory.getRegionById(result.region_id);
+        const region: Region = await RegionFactory.getRegionById(result.region_id);
         if(!region) {
-            console.error("UserFactory createUser(): Couldn't get region for User");
+            console.error('UserFactory createUser(): Couldn\'t get region for User');
             return null;
         }
         user.region = region;
 
         // Get Games for user
-        let games: Game[] = await GameFactory.getGamesForUser(user);
+        const games: Game[] = await GameFactory.getGamesForUser(user);
         if(!games) {
-            console.error("UserFactory createUser(): Couldn't get Games for User");
+            console.error('UserFactory createUser(): Couldn\'t get Games for User');
             return null;
         }
         user.games = games;
 
         // Get Languages for User
-        let languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
+        const languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
         if(!languages) {
-            console.error("UserFactory getUserByEmail(): Couldn't get Languages for User");
+            console.error('UserFactory getUserByEmail(): Couldn\'t get Languages for User');
             return null;
         }
         user.languages = languages;
@@ -144,7 +144,7 @@ export class UserFactory {
 
     public static async getUserBySessionID(session_id: string): Promise<User> {
 
-        let query: QueryObject = QueryBuilder.getUserBySessionID(session_id);
+        const query: QueryObject = QueryBuilder.getUserBySessionID(session_id);
         let result: any;
         let user: User;
 
@@ -152,35 +152,35 @@ export class UserFactory {
            result = (await ConnectToDatabaseService.executeQuery(query))[0];
            user = new User(result.user_id, result.email, result.password_hash, result.nickname, result.discord_tag, result.profile_picture, result.cake_day, result.birthdate, result.biography);
         } catch (e) {
-            console.error("UserFactory getUserBySessionID(): Database Query threw exception");
+            console.error('UserFactory getUserBySessionID(): Database Query threw exception');
             console.error(e);
         }
 
         if (!user) {
-            console.error("UserFactory getUserBySessionID(): No User with that Session");
+            console.error('UserFactory getUserBySessionID(): No User with that Session');
             return null;
         }
 
         // Get region for User
-        let region: Region = await RegionFactory.getRegionById(result.region_id);
+        const region: Region = await RegionFactory.getRegionById(result.region_id);
         if(!region) {
-            console.error("UserFactory createUser(): Couldn't get region for User");
+            console.error('UserFactory createUser(): Couldn\'t get region for User');
             return null;
         }
         user.region = region;
 
         // Get Games for user
-        let games: Game[] = await GameFactory.getGamesForUser(user);
+        const games: Game[] = await GameFactory.getGamesForUser(user);
         if(!games) {
-            console.error("UserFactory createUser(): Couldn't get Games for User");
+            console.error('UserFactory createUser(): Couldn\'t get Games for User');
             return null;
         }
         user.games = games;
 
         // Get Languages for User
-        let languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
+        const languages: Language[] = await LanguageFactory.getLanguagesForUser(user);
         if(!languages) {
-            console.error("UserFactory getUserBySessionID(): Couldn't get languages");
+            console.error('UserFactory getUserBySessionID(): Couldn\'t get languages');
             return null;
         }
         user.languages = languages;
@@ -197,12 +197,12 @@ export class UserFactory {
             await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
         } catch(e) {
-            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error('UserFactory deleteUser(): Database Query threw exception');
             console.error(e);
         }
 
         if (!successful) {
-            console.error("UserFactory deleteUser(): couldn't delete user game pair");
+            console.error('UserFactory deleteUser(): couldn\'t delete user game pair');
             return null;
         }
 
@@ -213,12 +213,12 @@ export class UserFactory {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error('UserFactory deleteUser(): Database Query threw exception');
             console.error(e);
         }
 
         if (!successful) {
-            console.error("UserFactory deleteUser(): couldn't delete user language pair");
+            console.error('UserFactory deleteUser(): couldn\'t delete user language pair');
             return null;
         }
 
@@ -228,39 +228,39 @@ export class UserFactory {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("UserFactory deleteUser(): Database Query threw exception");
+            console.error('UserFactory deleteUser(): Database Query threw exception');
             console.error(e);
         }
 
         if (!successful) {
-            console.error("UserFactory deleteUser(): couldn't delete user");
+            console.error('UserFactory deleteUser(): couldn\'t delete user');
             return null;
         }
 
         return user;
     }
 
-    public static async getUserByUserId(user_id): Promise<User> {
-        let query: QueryObject = QueryBuilder.getUserByUserId(user_id);
+    public static async getUserByUserId(user_id: number): Promise<User> {
+        const query: QueryObject = QueryBuilder.getUserByUserId(user_id);
         let user: User;
         let result: any;
         try {
             result = await ConnectToDatabaseService.executeQuery(query);
             user = new User(result[0].user_id, result[0].email, result[0].password_hash, result[0].nickname, result[0].discord_tag, result[0].profile_picture, result[0].cake_day, result[0].birthdate, result[0].biography);
         } catch (e) {
-            console.error("UserFactory getUserByUserId(): Database Query threw exception");
+            console.error('UserFactory getUserByUserId(): Database Query threw exception');
             console.error(e);
         }
 
         if(!user) {
-            console.error("UserFactory getUserByUserId(): Couldn't get User")
+            console.error('UserFactory getUserByUserId(): Couldn\'t get User')
             return null;
         }
 
         // TODO: Auslagern von getLanguages, getGames, getRegion...
         user = await UserFactory.getUserByEmail(user.email);
         if(!user) {
-            console.error("UserFactory getUserByUserId: Couldn't get User by Email")
+            console.error('UserFactory getUserByUserId: Couldn\'t get User by Email')
             return null;
         }
 
@@ -269,58 +269,58 @@ export class UserFactory {
 
     public static async updateUser(editProfileRequest: EditProfileRequest): Promise<PublicUser> {
         // Get user to be updated
-        let user: User = await UserFactory.getUserBySessionID(editProfileRequest.session_id);
+        const user: User = await UserFactory.getUserBySessionID(editProfileRequest.session_id);
 
         // Check for Public User
         if(!!editProfileRequest.publicUser) {
             // Update Public User
             // Update Games
-            let newGames = await GameFactory.updateGamesForUser(user, editProfileRequest.publicUser.games);
+            const newGames = await GameFactory.updateGamesForUser(user, editProfileRequest.publicUser.games);
             if(!newGames) {
-                console.error("UserFactory updateUser(): Couldn't update games");
+                console.error('UserFactory updateUser(): Couldn\'t update games');
                 return null;
             }
 
             // Update Languages
-            let newLanguages = await LanguageFactory.updateLanguagesForUser(user, editProfileRequest.publicUser.languages);
+            const newLanguages = await LanguageFactory.updateLanguagesForUser(user, editProfileRequest.publicUser.languages);
             if(!newLanguages) {
-                console.error("UserFactory updateUser(): Couldn't update languages");
+                console.error('UserFactory updateUser(): Couldn\'t update languages');
                 return null;
             }
 
             // Update Biography, ProfilePicture & Region
             // Direct attributes of User, so they can be updated right away
-            let query: QueryObject = QueryBuilder.updateUser(user.user_id, editProfileRequest.publicUser.biography, editProfileRequest.publicUser.profile_picture, editProfileRequest.publicUser.region.region_id);
+            const query: QueryObject = QueryBuilder.updateUser(user.user_id, editProfileRequest.publicUser.biography, editProfileRequest.publicUser.profile_picture, editProfileRequest.publicUser.region.region_id);
             let successful: boolean = false;
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             } catch(e) {
-                console.error("UserFactory updateUser(): Database Query threw exception");
+                console.error('UserFactory updateUser(): Database Query threw exception');
                 console.error(e);
             }
-            
+
             if(!successful) {
-                console.error("UserFactory updateUser(): Couldn't update user");
+                console.error('UserFactory updateUser(): Couldn\'t update user');
                 return null;
             }
         }
 
         // Check for new Password
         if(!!editProfileRequest.nPassword) {
-            // Update password 
-            let query: QueryObject = QueryBuilder.updatePasswordForUser(user.user_id, editProfileRequest.nPassword);
+            // Update password
+            const query: QueryObject = QueryBuilder.updatePasswordForUser(user.user_id, editProfileRequest.nPassword);
             let successful: boolean = false;
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             } catch(e) {
-                console.error("UserFactory updateUser(): Database Query threw exception");
+                console.error('UserFactory updateUser(): Database Query threw exception');
                 console.error(e);
             }
 
             if(!successful) {
-                console.error("UserFactory updateUser(): Couldn't update password for user");
+                console.error('UserFactory updateUser(): Couldn\'t update password for user');
                 return null;
             }
         }
@@ -333,12 +333,12 @@ export class UserFactory {
     }
 
     public static async checkIfUserExistsByEmail(email: string): Promise<boolean> {
-        let query: QueryObject = QueryBuilder.getUserByEmail(email);
+        const query: QueryObject = QueryBuilder.getUserByEmail(email);
         let result: any;
         try {
             result = (await ConnectToDatabaseService.executeQuery(query))[0];
         } catch(e) {
-            console.error("UserFactory updateUser(): Database Query threw exception");
+            console.error('UserFactory updateUser(): Database Query threw exception');
             console.error(e);
         }
 

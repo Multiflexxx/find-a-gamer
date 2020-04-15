@@ -1,4 +1,4 @@
-import { PublicUser } from "./publicuser";
+import { PublicUser } from './publicuser';
 
 export class EditProfileResponse {
     public successful: boolean;
@@ -6,7 +6,7 @@ export class EditProfileResponse {
 
     public constructor(successful: boolean, publicUser?: PublicUser) {
         this.successful = successful;
-        
+
         if(!!publicUser) {
             this.publicUser = publicUser;
         }

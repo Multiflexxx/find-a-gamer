@@ -1,11 +1,11 @@
-import { User } from "../data_objects/user";
-import { Game } from "../data_objects/game";
+import { User } from '../data_objects/user';
+import { Game } from '../data_objects/game';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
 import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { UserGamePair } from '../data_objects/usergamepair'
-import { rejects } from "assert";
-import { EditProfileResponse } from "../data_objects/editprofileresponse";
-import { QueryObject } from "src/data_objects/queryobject";
+import { rejects } from 'assert';
+import { EditProfileResponse } from '../data_objects/editprofileresponse';
+import { QueryObject } from 'src/data_objects/queryobject';
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {
@@ -29,19 +29,19 @@ export class UserGamePairFactory {
 
     public static async createUserGamePairs(user: User, games: Game[]): Promise<boolean> {
         await games.forEach(async game => {
-            let query: QueryObject = QueryBuilder.createUserGamePair(user, game);
+            const query: QueryObject = QueryBuilder.createUserGamePair(user, game);
             let successful: boolean = false;
-            
+
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             } catch(e) {
-                console.error("UserGamePairFactory createUserGamePairs(): Database Query threw exception");
+                console.error('UserGamePairFactory createUserGamePairs(): Database Query threw exception');
                 console.error(e);
             }
 
             if (!successful) {
-                console.error("UserGamePairFactory createUserGamePairs(): Couldn't create UserGamePairs");
+                console.error('UserGamePairFactory createUserGamePairs(): Couldn\'t create UserGamePairs');
                 return false;
             }
         });
@@ -64,18 +64,18 @@ export class UserGamePairFactory {
     }
 
     public static async deleteUserGamePairsByUser(user: User): Promise<boolean> {
-        let query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
-        let successful: boolean = false; 
+        const query: QueryObject = QueryBuilder.deleteUserGamePairsByUser(user);
+        let successful: boolean = false;
         try {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch (e) {
-            console.error("UserGamePairFactory deleteUserGamePairs(): Database Query threw exception");
+            console.error('UserGamePairFactory deleteUserGamePairs(): Database Query threw exception');
             console.error(e);
         }
-        
+
         if (!successful) {
-            console.error("UserGamePairFactory deleteUserGamePairs(): Couldn't delete UserGamePairs")
+            console.error('UserGamePairFactory deleteUserGamePairs(): Couldn\'t delete UserGamePairs')
             return false;
         }
 
@@ -142,30 +142,30 @@ export class UserGamePairFactory {
             await ConnectToDatabaseService.executeQuery(query);
             successful = true;
         } catch(e) {
-            console.error("UserGamePairFactory updateUserGamePairs(): Database Query threw exception");
+            console.error('UserGamePairFactory updateUserGamePairs(): Database Query threw exception');
             console.error(e);
         }
-        
+
 
         if (!successful) {
-            console.error("UserGamePairFactory updateUserGamePairs(): Couldn't delete UserGamePairs");
+            console.error('UserGamePairFactory updateUserGamePairs(): Couldn\'t delete UserGamePairs');
             return false;
         }
 
         // Create new User Game Pairs
-        for (let game of user.games) {
+        for (const game of user.games) {
             query = QueryBuilder.createUserGamePair(user, game);
-            let successful: boolean;
+            successful = false;
             try {
                 await ConnectToDatabaseService.executeQuery(query);
                 successful = true;
             }catch(e) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Database Query threw exception");
+                console.error('UserGamePairFactory updateUserGamePairs(): Database Query threw exception');
                 console.error(e);
             }
-            
+
             if (!successful) {
-                console.error("UserGamePairFactory updateUserGamePairs(): Couldn't create UserGamePairs");
+                console.error('UserGamePairFactory updateUserGamePairs(): Couldn\'t create UserGamePairs');
                 // console.error(game);
                 return false;
             }

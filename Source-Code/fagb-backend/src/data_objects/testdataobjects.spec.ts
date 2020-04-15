@@ -44,10 +44,10 @@ import { LoginResponse } from './loginresponse';
 // MatchMakingResponse
 
 describe('Check Login-object', () => {
-    let loginPw: Login = new Login(null, 'mail@mail.com', 'hash123', true);
-    let loginSession: Login = new Login('session_id');
-    let loginSessionEmpty: Login = new Login('');
-    let loginNull: Login = new Login();
+    const loginPw: Login = new Login(null, 'mail@mail.com', 'hash123', true);
+    const loginSession: Login = new Login('session_id');
+    const loginSessionEmpty: Login = new Login('');
+    const loginNull: Login = new Login();
 
     it('should be a full valid Login-object', () => {
         expect(loginPw.session_id).toBeNull();
@@ -80,9 +80,9 @@ describe('Check Login-object', () => {
 
 describe('Check Session-object', () => {
 
-    let testDate: Date = new Date();
-    let sessionWithDate: Session = new Session('session_id', 12, true, testDate);
-    let sessionWithoutDate: Session = new Session('session_id_2', 13, true);
+    const testDate: Date = new Date();
+    const sessionWithDate: Session = new Session('session_id', 12, true, testDate);
+    const sessionWithoutDate: Session = new Session('session_id_2', 13, true);
 
     it('should be a Session-object with expiration date', () => {
         expect(sessionWithDate.session_id).toEqual('session_id');
@@ -101,9 +101,9 @@ describe('Check Session-object', () => {
 
 describe('Check Language-object', () => {
 
-    let languageFull: Language = new Language(1, 'German', 'DE');
-    let languageName: Language = new Language(2, 'English');
-    let languageCode: Language = new Language(3, null, 'US');
+    const languageFull: Language = new Language(1, 'German', 'DE');
+    const languageName: Language = new Language(2, 'English');
+    const languageCode: Language = new Language(3, null, 'US');
 
     it('should be a full Language-object', () => {
         expect(languageFull.language_id).toEqual(1);
@@ -126,9 +126,9 @@ describe('Check Language-object', () => {
 
 describe('Check Game-object', () => {
 
-    let testDate: Date = new Date;
-    let gameFull: Game = new Game(1, 'Minecraft', '/image/img.png', 'A lego like game.', 'Mojang', testDate);
-    let gameNull: Game = new Game(2);
+    const testDate: Date = new Date;
+    const gameFull: Game = new Game(1, 'Minecraft', '/image/img.png', 'A lego like game.', 'Mojang', testDate);
+    const gameNull: Game = new Game(2);
 
     it('should be a Game-object with all set', () => {
         expect(gameFull.game_id).toEqual(1);
@@ -149,7 +149,7 @@ describe('Check Game-object', () => {
 
 describe('Check UserGamePair-object', () => {
 
-    let userGamePair: UserGamePair = new UserGamePair(2, 3, 4);
+    const userGamePair: UserGamePair = new UserGamePair(2, 3, 4);
 
     it('should be a valid User-Game-Pair', () => {
         expect(userGamePair.pair_id).toEqual(2);
@@ -159,8 +159,8 @@ describe('Check UserGamePair-object', () => {
 });
 
 describe('Check GameResponse-object', () => {
-    let testGame: Game = new Game(12);
-    let gameResponse: GameResponse = new GameResponse(testGame, 15);
+    const testGame: Game = new Game(12);
+    const gameResponse: GameResponse = new GameResponse(testGame, 15);
 
     it('should be a valid GameResponse with game_id == 12', () => {
         expect(gameResponse.game).toBeDefined();
@@ -170,8 +170,8 @@ describe('Check GameResponse-object', () => {
 });
 
 describe('Check Region-object', () => {
-    let region: Region = new Region(3, 'Asia');
-    let regionNull: Region = new Region(4);
+    const region: Region = new Region(3, 'Asia');
+    const regionNull: Region = new Region(4);
 
     it('should be a valid region', () => {
         expect(region.region_id).toEqual(3);
@@ -185,11 +185,11 @@ describe('Check Region-object', () => {
 });
 
 describe('Check Registration-object', () => {
-    let testDate: Date = new Date();
-    let testRegion: Region = new Region(3, 'Asia');
-    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
-    let testGames: Game[] = [new Game(2), new Game(3)];
-    let registration: Registration = new Registration('mail@mail.com', 'hash123', 'nickname', 'nickname#1234', testDate, testRegion, testLanguages, testGames);
+    const testDate: Date = new Date();
+    const testRegion: Region = new Region(3, 'Asia');
+    const testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    const testGames: Game[] = [new Game(2), new Game(3)];
+    const registration: Registration = new Registration('mail@mail.com', 'hash123', 'nickname', 'nickname#1234', testDate, testRegion, testLanguages, testGames);
 
     it('should be a valid registration', () => {
         expect(registration.email).toEqual('mail@mail.com');
@@ -205,7 +205,7 @@ describe('Check Registration-object', () => {
 });
 
 describe('Check general Response-object', () => {
-    let response: Response = new Response(true, 'message');
+    const response: Response = new Response(true, 'message');
 
     it('should be a valid response', () => {
         expect(response.successful).toBeTruthy();
@@ -214,7 +214,7 @@ describe('Check general Response-object', () => {
 });
 
 describe('Check UserLanguagePair-object', () => {
-    let userLanguagePair: UserLanguagePair = new UserLanguagePair(5, 6, 3);
+    const userLanguagePair: UserLanguagePair = new UserLanguagePair(5, 6, 3);
 
     it('should be a valid User-Language-Pair', () => {
         expect(userLanguagePair.pair_id).toEqual(5);
@@ -224,9 +224,9 @@ describe('Check UserLanguagePair-object', () => {
 });
 
 describe('Check RegistrationResponse-object', () => {
-    let testDate: Date = new Date();
-    let testSession: Session = new Session('session_id', 12, true, testDate);
-    let registrationResponse: RegistrationResponse = new RegistrationResponse(true, testSession, 'message');
+    const testDate: Date = new Date();
+    const testSession: Session = new Session('session_id', 12, true, testDate);
+    const registrationResponse: RegistrationResponse = new RegistrationResponse(true, testSession, 'message');
 
     it('should be a valid registration response', () => {
         expect(registrationResponse.successful).toBeTruthy();
@@ -238,14 +238,14 @@ describe('Check RegistrationResponse-object', () => {
 
 describe('Check User-object', () => {
 
-    let cakeDate: Date = new Date();
-    let birthDate: Date = new Date();
-    let testRegion: Region = new Region(3, 'Asia');
-    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
-    let testGames: Game[] = [new Game(2), new Game(3)];
+    const cakeDate: Date = new Date();
+    const birthDate: Date = new Date();
+    const testRegion: Region = new Region(3, 'Asia');
+    const testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    const testGames: Game[] = [new Game(2), new Game(3)];
 
-    let userFull: User = new User(12, 'mail@mail.com', 'hash123', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio', testRegion, testGames, testLanguages);
-    let user: User = new User(13, 'mail@mail1.com', 'hash1234', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio');
+    const userFull: User = new User(12, 'mail@mail.com', 'hash123', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio', testRegion, testGames, testLanguages);
+    const user: User = new User(13, 'mail@mail1.com', 'hash1234', 'nickname', 'nickname#1234', '/image/img.png', cakeDate, birthDate, 'Bio');
 
     it('should be a full valid user', () => {
         expect(userFull).toBeDefined();
@@ -282,13 +282,13 @@ describe('Check User-object', () => {
 
 describe('Check PublicUser-object', () => {
 
-    let cakeDate: Date = new Date();
-    let testRegion: Region = new Region(3, 'Asia');
-    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
-    let testGames: Game[] = [new Game(2), new Game(3)];
+    const cakeDate: Date = new Date();
+    const testRegion: Region = new Region(3, 'Asia');
+    const testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    const testGames: Game[] = [new Game(2), new Game(3)];
 
-    let userFull: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages, '/image/img.png', 'Bio');
-    let user: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
+    const userFull: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages, '/image/img.png', 'Bio');
+    const user: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
 
     it('should be a full valid publicuser', () => {
         expect(userFull).toBeDefined();
@@ -319,8 +319,8 @@ describe('Check PublicUser-object', () => {
 
 describe('Check Query-object', () => {
 
-    let queryobjectWithoutParam: QueryObject = new QueryObject("SELECT * FROM database;");
-    let queryobjectWithParam: QueryObject = new QueryObject("SELECT * FROM database;", ["Param1", "Param2"]);
+    const queryobjectWithoutParam: QueryObject = new QueryObject('SELECT * FROM database;');
+    const queryobjectWithParam: QueryObject = new QueryObject('SELECT * FROM database;', ['Param1', 'Param2']);
 
     it('should be a query-object without parameter', () => {
         expect(queryobjectWithoutParam.query).toEqual('SELECT * FROM database;');
@@ -339,7 +339,7 @@ describe('Check Query-object', () => {
 
 describe('Check NotifyMatch-object', () => {
 
-    let notifyMatch: NotifyMatch = new NotifyMatch(5);
+    const notifyMatch: NotifyMatch = new NotifyMatch(5);
 
     it('should be a notifymatch-object', () => {
         expect(notifyMatch.request_id).toEqual(5);
@@ -348,15 +348,15 @@ describe('Check NotifyMatch-object', () => {
 
 describe('Check LoginResponse-object', () => {
 
-    let cakeDate: Date = new Date();
-    let testRegion: Region = new Region(3, 'Asia');
-    let testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
-    let testGames: Game[] = [new Game(2), new Game(3)];
-    let testSession: Session = new Session('session_id', 5, false);
-    let testUser: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
+    const cakeDate: Date = new Date();
+    const testRegion: Region = new Region(3, 'Asia');
+    const testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
+    const testGames: Game[] = [new Game(2), new Game(3)];
+    const testSession: Session = new Session('session_id', 5, false);
+    const testUser: PublicUser = new PublicUser(12, 'nickname', 'nickname#1234', cakeDate, testRegion, testGames, testLanguages);
 
-    let loginResponseFull: LoginResponse = new LoginResponse(true, testSession, testUser);
-    let loginResponse: LoginResponse = new LoginResponse(true);
+    const loginResponseFull: LoginResponse = new LoginResponse(true, testSession, testUser);
+    const loginResponse: LoginResponse = new LoginResponse(true);
 
     it('should be a full loginresponse-object', () => {
         expect(loginResponseFull.successful).toBeTruthy();

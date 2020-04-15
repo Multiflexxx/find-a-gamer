@@ -6,10 +6,10 @@ export class Login {
 
     public constructor(session_id?: string, email?: string, password_hash?: string, stay_logged_in?: boolean) {
 
-        if(session_id != null && session_id != undefined && (!email && !password_hash)) {
+        if(session_id != null && session_id !== undefined && (!email && !password_hash)) {
             // login doesn't work if session_id is an empty string
-            if(session_id == "") {
-                session_id = "x";
+            if(session_id === '') {
+                session_id = 'x';
             }
             this.email = null;
             this.password_hash = null;

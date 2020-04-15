@@ -13,6 +13,6 @@ describe('Registration Controller', () => {
   // });
 
   it('should be defined', () => {
-   
+
   });
 });

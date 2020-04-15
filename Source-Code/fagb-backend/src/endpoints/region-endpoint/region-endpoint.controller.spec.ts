@@ -13,9 +13,9 @@ describe('RegionEndpoint Controller', () => {
     controller = module.get<RegionEndpointController>(RegionEndpointController);
   });
 
-  it("Should return a Regionresponse if successfull", async () => {
+  it('Should return a Regionresponse if successfull', async () => {
     const regionResponse = await controller.getAllRegionsEndpoint();
-    
+
     expect(regionResponse[0]).toBeInstanceOf(Region);
   });
 });

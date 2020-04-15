@@ -1,5 +1,5 @@
-import { Session } from "./session";
-import { PublicUser } from "./publicuser";
+import { Session } from './session';
+import { PublicUser } from './publicuser';
 
 export class LoginResponse {
     public successful: boolean;

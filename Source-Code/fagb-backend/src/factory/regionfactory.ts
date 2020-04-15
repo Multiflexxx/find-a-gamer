@@ -8,17 +8,17 @@ export class RegionFactory {
 
     public static async getRegionById(id: number): Promise<Region> {
         let region: Region;
-        let query = QueryBuilder.getRegionById(id);
+        const query = QueryBuilder.getRegionById(id);
         try {
-            let result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
+            const result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
             region = new Region(result.region_id, result.name);
         } catch (e) {
-            console.error("regionFactory getRegionById(): Database Query threw Exception");
+            console.error('regionFactory getRegionById(): Database Query threw Exception');
             console.error(e);
         }
 
         if(!region) {
-            console.error("regionFactory getRegionById(): Couldn't get Region");
+            console.error('regionFactory getRegionById(): Couldn\'t get Region');
             return null;
         }
 
@@ -26,23 +26,23 @@ export class RegionFactory {
     }
 
     public static async getAllRegions(): Promise<Region[]> {
-        let query: QueryObject = QueryBuilder.getRegions();
-        let regions: Region[] = [];
+        const query: QueryObject = QueryBuilder.getRegions();
+        const regions: Region[] = [];
         try {
-            let result: any[] = await ConnectToDatabaseService.executeQuery(query);
+            const result: any[] = await ConnectToDatabaseService.executeQuery(query);
             result.forEach(region => {
                 regions.push(new Region(region.region_id, region.name));
             });
         } catch (e) {
-            console.error("RegionFactory getAllRegions(): Database Query threw Exception");
+            console.error('RegionFactory getAllRegions(): Database Query threw Exception');
             console.error(e);
         }
 
         if(!regions) {
-            console.error("RegionFactory getAllRegions(): Couldn't get regions");
+            console.error('RegionFactory getAllRegions(): Couldn\'t get regions');
             return null;
         }
-        
+
         return regions;
     }
 

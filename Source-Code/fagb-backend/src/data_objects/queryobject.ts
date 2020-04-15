@@ -1,14 +1,14 @@
 export class QueryObject {
-    query: string;
-    parameter: any[];
-    constructor(query: string, parameter?: any) {
+    public query: string;
+    public parameter: any[];
+    public constructor(query: string, parameter?: any) {
         this.query = query;
         if(parameter) {
             this.parameter = parameter;
         }
     }
 
-    public createQueryObject() {
+    public createQueryObject(): any {
         if(this.parameter) {
             return {
                 sql: this.query,

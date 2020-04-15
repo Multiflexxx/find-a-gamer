@@ -10,7 +10,7 @@ export class Language {
         } else {
             this.name = null;
         }
-        
+
         if(language_code) {
             this.language_code = language_code;
         } else {

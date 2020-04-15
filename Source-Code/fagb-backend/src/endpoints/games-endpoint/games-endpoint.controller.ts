@@ -11,12 +11,12 @@ export class GamesEndpointController {
     @Get()
     public async getAllGamesEndpoint(): Promise<GameResponse[]> {
 
-        let games: GameResponse[] = await MatchFactory.getMatchMakingCountForGames();
+        const games: GameResponse[] = await MatchFactory.getMatchMakingCountForGames();
 
         if(!games) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Failed to get games"
+                error: 'Failed to get games'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

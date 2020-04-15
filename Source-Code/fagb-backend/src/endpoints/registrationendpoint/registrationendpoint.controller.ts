@@ -20,7 +20,7 @@ import { RegionFactory } from '../../factory/regionfactory';
 export class RegistrationendpointController {
 
     @Post()
-    async handleRegistration(@Body() registration: Registration): Promise<Session> {
+    public async handleRegistration(@Body() registration: Registration): Promise<Session> {
 
         // let randomNumber = Math.floor(Math.random() * 10000);
         // registration = new Registration(
@@ -46,7 +46,7 @@ export class RegistrationendpointController {
         if (!(await RegistrationendpointController.validateInput(registration))) {
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
-                error: "Invalid user input"
+                error: 'Invalid user input'
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -55,28 +55,28 @@ export class RegistrationendpointController {
         if((await UserFactory.checkIfUserExistsByEmail(registration.email))) {
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
-                error: "Email already registered"
+                error: 'Email already registered'
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
 
         // Create User using validated registration object
-        let user: User = await UserFactory.createUser(registration);
+        const user: User = await UserFactory.createUser(registration);
         if(!user) {
-            console.error("RegistrationEndpoint handleRegistration(): Couldn't create User");
+            console.error('RegistrationEndpoint handleRegistration(): Couldn\'t create User');
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Something went wrong"
+                error: 'Something went wrong'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Create Session using created user
         // stay_logged_in for Session is false by default
-        let session: Session = await SessionFactory.createSessionForUser(user, false);
+        const session: Session = await SessionFactory.createSessionForUser(user, false);
         if(!session) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Couldn't log in user"
+                error: 'Couldn\'t log in user'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -89,24 +89,24 @@ export class RegistrationendpointController {
      * @param registration Registration to checked
      */
     private static async validateInput(registration: Registration): Promise<boolean> {
-        
+
         // Check if email has valid format
         if (!EmailValidator.validate(registration.email)) {
             return false;
         }
 
         // Check if discord tag has valid format
-        var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
+        const regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
         if (!regex.test(registration.discord_tag)) {
             return false;
         }
 
         // Check if Birthdate is valid and in acceptable time range
-        let presentDate: Date = new Date(); //Format:2020-03-24T14:30:42.836Z
-        let birthdate: Date = new Date(registration.birthdate); //Format: 2000-06-05T22:00:00.000Z
-        
-        //Validate Birthdate
-        if (Object.prototype.toString.call(birthdate) === "[object Date]") {
+        const presentDate: Date = new Date(); // Format:2020-03-24T14:30:42.836Z
+        const birthdate: Date = new Date(registration.birthdate); // Format: 2000-06-05T22:00:00.000Z
+
+        // Validate Birthdate
+        if (Object.prototype.toString.call(birthdate) === '[object Date]') {
             // it is a date
             if (isNaN(birthdate.getTime())) {
                 // date is not valid
@@ -141,11 +141,11 @@ export class RegistrationendpointController {
             return false;
         }
 
-        if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === "" || registration.nickname === null) {
+        if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === '' || registration.nickname === null) {
             return false;
         }
 
-        if (registration.password_hash === null || registration.password_hash === "") {
+        if (registration.password_hash === null || registration.password_hash === '') {
             return false;
         }
 

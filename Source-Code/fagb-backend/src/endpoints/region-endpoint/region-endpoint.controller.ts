@@ -6,12 +6,12 @@ import { Region } from 'src/data_objects/region';
 export class RegionEndpointController {
     @Get()
     public async getAllRegionsEndpoint(): Promise<Region[]> {
-        let regions: Region[] = await RegionFactory.getAllRegions();
+        const regions: Region[] = await RegionFactory.getAllRegions();
 
         if(!regions) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Couldn't get regions"
+                error: 'Couldn\'t get regions'
             }, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 

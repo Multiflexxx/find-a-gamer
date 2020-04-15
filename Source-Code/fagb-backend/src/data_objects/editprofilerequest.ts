@@ -15,4 +15,4 @@ export class EditProfileRequest {
             this.nPassword = nPassword;
         }
     }
-} 
+}

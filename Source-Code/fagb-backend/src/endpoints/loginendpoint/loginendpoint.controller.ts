@@ -9,13 +9,13 @@ import { Session } from '../../data_objects/session';
 @Controller('loginendpoint')
 export class LoginendpointController {
     @Post()
-    async handleLogin(@Body() login: Login): Promise<LoginResponse> {
+    public async handleLogin(@Body() login: Login): Promise<LoginResponse> {
 
         // Check for validity?
         // Get User via Session OR email & password_hash
         if (login.email && login.password_hash) {
             // Get User by email and password
-            let user: User = await UserFactory.getUserByEmail(login.email);
+            const user: User = await UserFactory.getUserByEmail(login.email);
             if (!user) {
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
@@ -24,7 +24,7 @@ export class LoginendpointController {
             }
 
             // Check if password_hash is the same
-            if (user.password_hash != login.password_hash) {
+            if (user.password_hash !== login.password_hash) {
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: 'Email and Password don\'t match',
@@ -32,22 +32,22 @@ export class LoginendpointController {
             }
 
             // Delete old user session
-            let successful: boolean = await SessionFactory.deleteSessionByUser(user);
+            const successful: boolean = await SessionFactory.deleteSessionByUser(user);
             if (!successful) {
-                console.error("LoginEndpointController handleLogin(): Couldn't delete old session");
+                console.error('LoginEndpointController handleLogin(): Couldn\'t delete old session');
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: "Couldn't delete old session",
+                    error: 'Couldn\'t delete old session',
                 }, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             // Create new Session for User
-            let session: Session = await SessionFactory.createSessionForUser(user, login.stay_logged_in);
+            const session: Session = await SessionFactory.createSessionForUser(user, login.stay_logged_in);
             if (!session) {
-                console.error("LoginEndpointController handleLogin(): Couldn't create new session");
+                console.error('LoginEndpointController handleLogin(): Couldn\'t create new session');
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: "Couldn't create Session"
+                    error: 'Couldn\'t create Session'
                 }, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
@@ -55,9 +55,9 @@ export class LoginendpointController {
 
         } else if (login.session_id) {
             // Get User by session_id
-            let user: User = await UserFactory.getUserBySessionID(login.session_id);
+            const user: User = await UserFactory.getUserBySessionID(login.session_id);
             if (!user) {
-                console.error("LoginEndpoint: No user with that SessionID");
+                console.error('LoginEndpoint: No user with that SessionID');
                 throw new HttpException({
                     status: HttpStatus.UNAUTHORIZED,
                     error: 'Invalid Session',
@@ -65,7 +65,7 @@ export class LoginendpointController {
             }
 
             // Get Session
-            let session: Session = await SessionFactory.getSessionBySessionId(login.session_id);
+            const session: Session = await SessionFactory.getSessionBySessionId(login.session_id);
             if (!session) {
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,

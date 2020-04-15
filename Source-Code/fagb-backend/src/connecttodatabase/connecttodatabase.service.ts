@@ -6,10 +6,10 @@ import { QueryObject } from '../data_objects/queryobject';
 @Injectable()
 export class ConnectToDatabaseService {
 
-    static databaseLogin: string = '../../databaseLogin.json';
+    public static databaseLogin: string = '../../databaseLogin.json';
 
-    public static getConnection() {
-        let mysql = require('mysql');
+    public static getConnection(): any {
+        const mysql = require('mysql');
         const databaseLoginData = require(ConnectToDatabaseService.databaseLogin);
 
         return mysql.createConnection({
@@ -22,9 +22,9 @@ export class ConnectToDatabaseService {
     }
 
     public static async getPromise(queryObject: QueryObject): Promise<any> {
-        return new Promise(function(resolve, reject) {
-            let c = ConnectToDatabaseService.getConnection();
-            c.query(queryObject.createQueryObject(), function (error, results, fields) {
+        return new Promise((resolve, reject) => {
+            const c = ConnectToDatabaseService.getConnection();
+            c.query(queryObject.createQueryObject(), (error, results, fields) => {
                 if (error) {
                     reject(error);
                     // throw error;
@@ -37,7 +37,7 @@ export class ConnectToDatabaseService {
 
     /**
      * Not Type Safe because it cant be
-     * @param queryObject 
+     * @param queryObject Query to be executed as QueryObject (to enable escaping and SQl-Injection Protection)
      */
     public static async executeQuery(queryObject: QueryObject): Promise<any[]> {
         // let c = ConnectToDatabaseService.getConnection();
@@ -65,19 +65,19 @@ export class ConnectToDatabaseService {
             throw err;
         });
         return result;
-    } 
-
-    public static async testQuery(query: String) {
-        return new Promise(function(resolve, reject) {
-            let c = ConnectToDatabaseService.getConnection();
-            c.query(query, function (error, results, fields) {
-                if (error) {
-                    reject(error);
-                    throw error;
-                }
-                resolve(results);
-            });
-            c.end();
-        })
     }
+
+    // public static async testQuery(query: String) {
+    //     return new Promise(function(resolve, reject) {
+    //         const c = ConnectToDatabaseService.getConnection();
+    //         c.query(query, function (error, results, fields) {
+    //             if (error) {
+    //                 reject(error);
+    //                 throw error;
+    //             }
+    //             resolve(results);
+    //         });
+    //         c.end();
+    //     })
+    // }
 }

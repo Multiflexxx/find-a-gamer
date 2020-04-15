@@ -4,7 +4,7 @@ export class DeleteProfileResponse {
     public successfull: boolean;
     public user: User;
 
-    constructor(successfull: boolean, user?:User) {
+    public constructor(successfull: boolean, user?:User) {
         this.successfull = successfull;
 
         if(user) {

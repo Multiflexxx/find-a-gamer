@@ -13,65 +13,36 @@ import { Session } from 'src/data_objects/session';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
-    @Get()
-    public async testMatchMaking() {
-        // let matchMakingRequest = new MatchMakingRequest(null, 9, 1, 1, 1, true);
-
-        // await MatchFactory.createMatchMakingRequest(matchMakingRequest);
-
-        // return await UserFactory.getUserByEmail("mrsbody@sex190.com");
-        // let result;
-        // try {
-        //     result = await ConnectToDatabaseService.executeQuery(QueryBuilder.getNoOfMatchMakingRequestsByGame());
-        //     // console.log(result)
-        // } catch(e) {
-        //     console.error(e);
-        //     throw new HttpException({
-        //         status: HttpStatus.INTERNAL_SERVER_ERROR,
-        //         error: "Something went wrong"
-        //     }, HttpStatus.INTERNAL_SERVER_ERROR)
-        // }
-        // return result;
-
-        // matchMakingRequest = null;
-        // await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id).then(function(callbackValue) {
-        //     matchMakingRequest = callbackValue;
-        // }, function(callbackValue) {
-        //     console.error("NotifymatchendpointController handleUpdate(): ");
-        //     console.error(callbackValue);
-
-        // });
-    }
-
 
     @Get()
-    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest) {
+    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<boolean> {
         // Check if Session authorizes to delete request
-        let session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);
+        const session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);
 
         // Second get MatchMakingRequest
-        let matchMakingRequest: MatchMakingRequest= await MatchFactory.getMatchMakingRequestByRequestId(deleteRequest.request_id);
+        const matchMakingRequest: MatchMakingRequest= await MatchFactory.getMatchMakingRequestByRequestId(deleteRequest.request_id);
 
-        if (!session || ! matchMakingRequest || session.user_id != matchMakingRequest.user_id) {
+        if (!session || ! matchMakingRequest || session.user_id !== matchMakingRequest.user_id) {
             throw new HttpException({
                 status: HttpStatus.UNAUTHORIZED,
-                error: "Not authorized to delete request"
+                error: 'Not authorized to delete request'
             }, HttpStatus.UNAUTHORIZED);
         }
 
         // If MatchMakingRequest is already matched, don't delete
-        if(!(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "" || Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString() == matchMakingRequest.match_id.toString())) {
+        const compBuffer: Buffer = Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+        if(!(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() === '' || compBuffer.toString() === matchMakingRequest.match_id.toString())) {
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
-                error: "Can't delete already matched request"
+                error: 'Can\'t delete already matched request'
             }, HttpStatus.NOT_ACCEPTABLE)
         }
 
-        // Delete 
+        // Delete
         if(!(await MatchFactory.deleteMatchMakingRequest(deleteRequest.request_id))) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: "Couldn't delete MatchMakingRequest"
+                error: 'Couldn\'t delete MatchMakingRequest'
             }, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
