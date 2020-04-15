@@ -11,8 +11,8 @@ import { SessionFactory } from '../../factory/sessionfactory';
 import { Region } from '../../data_objects/region';
 import { Language } from '../../data_objects/language';
 import { Game } from '../../data_objects/game';
-import { LanguageFactory } from 'src/factory/languagefactory';
-import { User } from 'src/data_objects/user';
+import { LanguageFactory } from '../../factory/languagefactory';
+import { User } from '../../data_objects/user';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {

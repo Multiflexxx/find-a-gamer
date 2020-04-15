@@ -5,7 +5,7 @@ import { QueryBuilder } from "../connecttodatabase/querybuilder";
 import { UserLanguagePair } from "../data_objects/userlanguagepair";
 import { UserLanguagePairFactory } from "./userlanguagepairfactory";
 import { GameFactory } from "./gamefactory";
-import { QueryObject } from "src/data_objects/queryobject";
+import { QueryObject } from "../data_objects/queryobject";
 
 export class LanguageFactory {
 

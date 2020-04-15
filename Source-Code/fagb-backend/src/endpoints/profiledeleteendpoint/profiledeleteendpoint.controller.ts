@@ -7,7 +7,7 @@ import { User } from '../../data_objects/user';
 import { Region } from '../../data_objects/region';
 import { Game } from '../../data_objects/game';
 import { Language } from '../../data_objects/language';
-import { Session } from 'src/data_objects/session';
+import { Session } from '../../data_objects/session';
 
 @Controller('profiledeleteendpoint') 
 export class ProfileDeleteEndpointController {
