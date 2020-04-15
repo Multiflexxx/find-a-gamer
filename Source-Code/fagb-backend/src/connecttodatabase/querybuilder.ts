@@ -355,4 +355,13 @@ export class QueryBuilder {
         );
     }
 
+    public static deleteMatchMakingRequest(request_id: number): QueryObject {
+        return new QueryObject(
+            "DELETE FROM MatchMakingRequest WHERE request_id = ?;",
+            [
+                request_id
+            ]
+        );
+    }
+
 }

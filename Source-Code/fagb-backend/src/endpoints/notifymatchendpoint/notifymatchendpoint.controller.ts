@@ -20,7 +20,7 @@ import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
 export class NotifymatchendpointController {
 
     @Post()
-    async handleUpdate(@Body() notifyMatch: NotifyMatch) {
+    async handleUpdate(@Body() notifyMatch: NotifyMatch): Promise<MatchMakingResponse> {
 
         // Check whether matchMakingRequest has a match
         let matchMakingRequest: MatchMakingRequest = await MatchFactory.getMatchMakingRequestByRequestId(notifyMatch.request_id);

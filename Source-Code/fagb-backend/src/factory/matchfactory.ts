@@ -319,4 +319,23 @@ export class MatchFactory {
 
         return matchMakingRequest;
     }
+
+    public static async deleteMatchMakingRequest(request_id: number): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.deleteMatchMakingRequest(request_id);
+        let successful: boolean = false;
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
+            successful = true;
+        } catch(e) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Database query threw exception");
+            console.error(e);
+        }
+
+        if(!successful) {
+            console.error("MatchFactory getMatchMakingRequestsByMatchId(): Failed to delete MatchMakingRequest");
+            return false;
+        }
+
+        return true;
+    }
 }

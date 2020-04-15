@@ -5,7 +5,7 @@ import { Region } from 'src/data_objects/region';
 @Controller('regionendpoint')
 export class RegionEndpointController {
     @Get()
-    public async getAllRegionsEndpoint() {
+    public async getAllRegionsEndpoint(): Promise<Region[]> {
         let regions: Region[] = await RegionFactory.getAllRegions();
 
         if(!regions) {
