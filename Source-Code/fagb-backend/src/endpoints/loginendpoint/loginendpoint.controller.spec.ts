@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {Login} from '../../data_objects/login';
+import { Login } from '../../data_objects/login';
 import { LoginendpointController } from './loginendpoint.controller';
 import { Registration } from '../../data_objects/registration';
 import { RegistrationendpointController } from '../registrationendpoint/registrationendpoint.controller';
@@ -13,7 +13,7 @@ import { ProfileDeleteEndpointController } from '../profiledeleteendpoint/profil
 import { async } from 'rxjs/internal/scheduler/async';
 
 describe('Loginendpoint Controller', () => {
-   let profileDeleteEndpointController: ProfileDeleteEndpointController;
+  let profileDeleteEndpointController: ProfileDeleteEndpointController;
   let registrationEndpointController: RegistrationendpointController;
   let loginEndpointController: LoginendpointController;
   let registration: Registration;
@@ -33,7 +33,7 @@ describe('Loginendpoint Controller', () => {
 
     let randomNumber = Math.floor(Math.random() * 10000);
     registration = new Registration(
-      'mail@mail'+randomNumber+'.com',
+      'mail@mail' + randomNumber + '.com',
       'test123',
       'testNickname',
       'testNickname#1234',
@@ -47,19 +47,21 @@ describe('Loginendpoint Controller', () => {
       ]
     );
 
-    login = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
+    login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);
   });
-/*
-  it('Should try a login with wrong mail', async() => {
-    let testLogin = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
-    let loginResponse = await loginEndpointController.handleLogin(testLogin);
+  
+    it('Should try a login with wrong mail', async() => {
+      let testLogin = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
+      let loginResponse: LoginResponse;
 
-    expect(loginResponse.successful).toBeFalsy();
+      try {
+        loginResponse = await loginEndpointController.handleLogin(testLogin);
+      } catch (e) {
+        expect(e.status).toEqual(401);
+        expect(e.response.error).toEqual('No user with that Email');
+      }
+    });
 
-  });*/
-
-
-  //
   it('Should create a new registration on database and delete', async () => {
 
     let registrationResult = await registrationEndpointController.handleRegistration(registration);
@@ -69,19 +71,29 @@ describe('Loginendpoint Controller', () => {
 
     loginResponse = await loginEndpointController.handleLogin(login);
 
-    let user: User = new User(loginResponse.user_id, 'mail@mail' + randomNumber + '.com', "test123", "testNickname", "testNickname#1234", "", new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), "");
+    let user: User = new User(userId, 'mail@mail' + randomNumber + '.com', "test123", "testNickname", "testNickname#1234", "", new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), "");
 
     expect(loginResponse).toBeDefined();
     expect(loginResponse.user.user_id).toEqual(userId);
 
     deleteProfileRequest = new DeleteProfileRequest(loginResponse.session.session_id, user);
 
-    let profileDeleteRequestResult = await profileDeleteEndpointController.handleProfileDeleteRequest(deleteProfileRequest);
+    try {
+      let profileDeleteRequestResult = await profileDeleteEndpointController.handleProfileDeleteRequest(deleteProfileRequest);
+    }
+    catch (e) {
+      console.log(e);
+    }
 
-    console.log(profileDeleteRequestResult);
-    let loginResponse1 = await loginEndpointController.handleLogin(login);
-    expect(loginResponse1).toBeDefined();
-    expect(loginResponse1).toBeInstanceOf(LoginResponse);
-    //expect(loginResponse1.session_id).toEqual(loginResponse.session_id);
+    let loginResponse1: LoginResponse;
+
+    try {
+      loginResponse1 = await loginEndpointController.handleLogin(login);
+    } catch (e) {
+      expect(e.status).toEqual(401);
+      expect(e.response.error).toEqual('No user with that Email');
+    }
+
+    expect(loginResponse1).toBeUndefined();
   }, 10000);
 });
