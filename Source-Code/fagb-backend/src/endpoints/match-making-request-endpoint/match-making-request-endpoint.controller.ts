@@ -11,7 +11,7 @@ import { Session } from 'src/data_objects/session';
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
     @Post()
-    public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest) {
+    public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest): Promise<MatchMakingResponse> {
 
         // MatchFactory.createMatch(1);
         // matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);

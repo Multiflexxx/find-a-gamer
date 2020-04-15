@@ -332,5 +332,22 @@ export class UserFactory {
         return new PublicUser(user.user_id, user.nickname, user.discord_tag, user.cake_day, user.region, user.games, user.languages, user.profile_picture, user.biography);
     }
 
+    public static async checkIfUserExistsByEmail(email: string): Promise<boolean> {
+        let query: QueryObject = QueryBuilder.getUserByEmail(email);
+        let result: any;
+        try {
+            result = (await ConnectToDatabaseService.executeQuery(query))[0];
+        } catch(e) {
+            console.error("UserFactory updateUser(): Database Query threw exception");
+            console.error(e);
+        }
+
+        if(!result) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 

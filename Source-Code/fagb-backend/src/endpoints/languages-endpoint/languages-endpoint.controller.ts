@@ -6,7 +6,7 @@ import { Language } from 'src/data_objects/language';
 export class LanguagesEndpointController {
 
     @Get()
-    public async getAllLanguagesEndpoint() {
+    public async getAllLanguagesEndpoint(): Promise<Language[]> {
         let languages: Language[] = await LanguageFactory.getAllLanguages();
 
         if(!languages) {

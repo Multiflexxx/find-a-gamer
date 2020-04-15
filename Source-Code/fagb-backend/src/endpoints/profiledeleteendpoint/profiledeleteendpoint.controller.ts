@@ -12,7 +12,7 @@ import { Session } from '../../data_objects/session';
 @Controller('profiledeleteendpoint') 
 export class ProfileDeleteEndpointController {
     @Get()
-    async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest) {
+    async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest): Promise<DeleteProfileResponse> {
         /*deleteProfileRequest = new DeleteProfileRequest(
             "3e8de529-977b-4b2e-8bf8-c4aa007d6202",
             new User(16, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
@@ -33,33 +33,22 @@ export class ProfileDeleteEndpointController {
         //Delete Session
         let successful: boolean = await SessionFactory.deleteSessionByUser(deleteProfileRequest.user);
         if (!successful) {
+            console.error("ProfileDeleteEndpoint: Couldn't delete User sessions");
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: "Failed to delete old User sessions"
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // // Get User By Session ID
-
-        // let result = null;
-        // await UserFactory.getUserBySessionID(session1.user_id).then(function(callbackValue) {
-        //     result = callbackValue;
-        // }, function(callbackValue) {
-        //     console.error("profiledeleteendpoint: Couldn't find user");
-        //     console.error(callbackValue);
-        // });
-
-        // if (!result) {
-        //     return new DeleteProfileResponse(false, null);
-        // }
-
         // Delete User
-
         let user: User = await UserFactory.deleteUser(deleteProfileRequest.user);
 
         if (!user) {
             console.error("ProfileDeleteEndpoint: Couldn't delete user");
-            return new DeleteProfileResponse(false, null);
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Failed to delete old User sessions"
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new DeleteProfileResponse(true, deleteProfileRequest.user);

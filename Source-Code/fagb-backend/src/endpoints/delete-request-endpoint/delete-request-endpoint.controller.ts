@@ -9,6 +9,7 @@ import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
 import { Language } from 'src/data_objects/language';
 import { LanguageFactory } from 'src/factory/languagefactory';
 import { UserFactory } from 'src/factory/userfactory';
+import { Session } from 'src/data_objects/session';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
@@ -18,7 +19,7 @@ export class DeleteRequestEndpointController {
 
         // await MatchFactory.createMatchMakingRequest(matchMakingRequest);
 
-        return await UserFactory.getUserByEmail("mrsbody@sex190.com");
+        // return await UserFactory.getUserByEmail("mrsbody@sex190.com");
         // let result;
         // try {
         //     result = await ConnectToDatabaseService.executeQuery(QueryBuilder.getNoOfMatchMakingRequestsByGame());
@@ -43,65 +44,37 @@ export class DeleteRequestEndpointController {
     }
 
 
-    // @Get()
-    // public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest) {
-    //     // Check if Session authorizes to delete request
-    //     // First get Session Object
-    //     let session;
-    //     await SessionFactory.getSessionBySessionId(deleteRequest.session_id).then(function (callbackValue) {
-    //         session = callbackValue;
-    //     }, function (callbackValue) {
-    //         console.error("DeleteRequestEndpointController handleDeleteRequest(): Couldn't get Session with ID: " + deleteRequest.session_id);
-    //         console.error(callbackValue);
-    //         throw new HttpException({
-    //             status: HttpStatus.INTERNAL_SERVER_ERROR,
-    //             error: "Couldn't get Session"
-    //         }, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     });
+    @Get()
+    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest) {
+        // Check if Session authorizes to delete request
+        let session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);
 
-    //     if (!session) {
-    //         console.error("DeleteRequestEndpointController handleDeleteRequest(): Session is null");
-    //         throw new HttpException({
-    //             status: HttpStatus.NOT_ACCEPTABLE,
-    //             error: "No such Session"
-    //         }, HttpStatus.NOT_ACCEPTABLE);
-    //     }
+        // Second get MatchMakingRequest
+        let matchMakingRequest: MatchMakingRequest= await MatchFactory.getMatchMakingRequestByRequestId(deleteRequest.request_id);
 
-    //     // Second get MatchMakingRequest
-    //     let matchMakingRequest;
-    //     await MatchFactory.getMatchMakingRequestByRequestId(deleteRequest.request_id).then(function(callbackValue) {
-    //         matchMakingRequest = callbackValue;
-    //     }, function(callbackValue) {
-    //         console.error("DeleteRequestEndpointController handleDeleteRequest(): Couldn't get MatchMakingRequest with ID: " + deleteRequest.request_id);
-    //         console.error(callbackValue);
-    //         throw new HttpException({
-    //             status: HttpStatus.NOT_ACCEPTABLE,
-    //             error: "No such MatchMakingRequest"
-    //         }, HttpStatus.NOT_ACCEPTABLE)
-    //     });
+        if (!session || ! matchMakingRequest || session.user_id != matchMakingRequest.user_id) {
+            throw new HttpException({
+                status: HttpStatus.UNAUTHORIZED,
+                error: "Not authorized to delete request"
+            }, HttpStatus.UNAUTHORIZED);
+        }
 
-    //     if(!matchMakingRequest) {
-    //         console.error("DeleteRequestEndpointController handleDeleteRequest(): matchMakingRequest is null");
-    //         throw new HttpException({
-    //             status: HttpStatus.NOT_ACCEPTABLE,
-    //             error: "No such matchMakingRequest"
-    //         }, HttpStatus.NOT_ACCEPTABLE);
-    //     }
+        // If MatchMakingRequest is already matched, don't delete
+        if(!(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() == "" || Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).toString() == matchMakingRequest.match_id.toString())) {
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "Can't delete already matched request"
+            }, HttpStatus.NOT_ACCEPTABLE)
+        }
 
-    //     // Check if Session authorizes user to delete particular MatchMakingRequest
-    //     if(matchMakingRequest.user_id != session.user_id) {
-    //         throw new HttpException({
-    //             status: HttpStatus.UNAUTHORIZED,
-    //             error: "Session doesn't match User of MatchMakingRequest"
-    //         }, HttpStatus.UNAUTHORIZED)
-    //     }
+        // Delete 
+        if(!(await MatchFactory.deleteMatchMakingRequest(deleteRequest.request_id))) {
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: "Couldn't delete MatchMakingRequest"
+            }, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
 
-    //     // If MatchMakingRequest is already matched, don't delete
-    //     if(!!matchMakingRequest.match_id) {
-            
-    //     }
-
-    //     // Delete 
-
-    // }
+        return true;
+    }
 }

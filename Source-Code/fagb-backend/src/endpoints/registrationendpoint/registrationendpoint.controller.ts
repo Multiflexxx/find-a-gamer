@@ -13,12 +13,14 @@ import { Language } from '../../data_objects/language';
 import { Game } from '../../data_objects/game';
 import { LanguageFactory } from '../../factory/languagefactory';
 import { User } from '../../data_objects/user';
+import { GameFactory } from '../../factory/gamefactory';
+import { RegionFactory } from '../../factory/regionfactory';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
 
     @Post()
-    async handleRegistration(@Body() registration: Registration) {
+    async handleRegistration(@Body() registration: Registration): Promise<Session> {
 
         // let randomNumber = Math.floor(Math.random() * 10000);
         // registration = new Registration(
@@ -37,28 +39,26 @@ export class RegistrationendpointController {
         // );
         // console.log(registration.email);
 
-        // Validate User Input
-        let temp = registration.birthdate;
-        registration.birthdate = new Date(temp);
-        // console.log(registration.birthdate);
-
-        let isInputValid = false;
-        let myPromise = this.validateInput(registration);
-        await myPromise.then(function (callbackValue) {
-            isInputValid = true;
-        }, function (callbackValue) {
-            console.error("Failed to validate User Input");
-            console.error(callbackValue);
-        });
-
+        // Convert to proper Date Format
+        registration.birthdate = new Date(registration.birthdate);
 
         // return empty Session if User Input is invalid
-        if (!isInputValid) {
+        if (!(await RegistrationendpointController.validateInput(registration))) {
             throw new HttpException({
                 status: HttpStatus.NOT_ACCEPTABLE,
                 error: "Invalid user input"
-            }, HttpStatus.NOT_ACCEPTABLE)
+            }, HttpStatus.NOT_ACCEPTABLE);
         }
+
+
+        // Check if user already exists
+        if((await UserFactory.checkIfUserExistsByEmail(registration.email))) {
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: "Email already registered"
+            }, HttpStatus.NOT_ACCEPTABLE);
+        }
+
 
         // Create User using validated registration object
         let user: User = await UserFactory.createUser(registration);
@@ -83,114 +83,73 @@ export class RegistrationendpointController {
         // Return Session
         return session;
     }
-    private async validateInput(registration: Registration): Promise<string> {
-        // Validate User input
-        return new Promise(async function (resolve, reject) {
-            if (!EmailValidator.validate(registration.email)) {
-                reject("Email is invalid");
-            }
 
-            let queryResult: any = null;
+    /**
+     * Checks registration Input for validity, return false if invalid, otherwise returns true
+     * @param registration Registration to checked
+     */
+    private static async validateInput(registration: Registration): Promise<boolean> {
+        
+        // Check if email has valid format
+        if (!EmailValidator.validate(registration.email)) {
+            return false;
+        }
 
-            let emailQueryObject: QueryObject = QueryBuilder.getUserByEmail(registration.email);
-            let emailPromise = ConnectToDatabaseService.getPromise(emailQueryObject);
-            await emailPromise.then(function (callback_value) {
-                // Successfully got value
-                queryResult = callback_value;
-            }, function (callback_value) {
-                // Error Case of Promise
-            });
+        // Check if discord tag has valid format
+        var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
+        if (!regex.test(registration.discord_tag)) {
+            return false;
+        }
 
-            if (queryResult !== null) {
-                if (queryResult.length > 0) {
-                    reject("User with that email already exists");
-                }
-            }
-
-            // console.log(registration);
-
-            var regex = new RegExp('([a-zA-Z0-9]{2,32})#([0-9]{4})');
-            if (!regex.test(registration.discord_tag)) {
-                reject("Discord Tag is invalid");
-            }
-
-            let presentDate: Date = new Date(); //Format:2020-03-24T14:30:42.836Z
-            let birthdate: Date = new Date(registration.birthdate); //Format: 2000-06-05T22:00:00.000Z
-            
-            //Validate Birthdate
-            if (Object.prototype.toString.call(birthdate) === "[object Date]") {
-                // it is a date
-                if (isNaN(birthdate.getTime())) {
-                  // date is not valid
-                  return false;
-                } else {
-                  // date is valid
-                  if (birthdate > presentDate) {
-                      return false;
-                    }
-                }
+        // Check if Birthdate is valid and in acceptable time range
+        let presentDate: Date = new Date(); //Format:2020-03-24T14:30:42.836Z
+        let birthdate: Date = new Date(registration.birthdate); //Format: 2000-06-05T22:00:00.000Z
+        
+        //Validate Birthdate
+        if (Object.prototype.toString.call(birthdate) === "[object Date]") {
+            // it is a date
+            if (isNaN(birthdate.getTime())) {
+                // date is not valid
+                return false;
             } else {
-                // not a date
+                // date is valid
+                if (birthdate > presentDate) {
+                    return false;
+                }
+            }
+        } else {
+            // not a date
+            return false;
+        }
+
+        // Check if all game_ids are valid
+        registration.games.forEach(async game => {
+            if(!(await GameFactory.getGameById(game.game_id))) {
                 return false;
             }
-
-            queryResult = undefined; // reset Result
-
-            registration.games.forEach(async game => {
-
-                let gameQueryObject: QueryObject = QueryBuilder.getGameById(game.game_id);
-
-                let gamePromise = ConnectToDatabaseService.getPromise(gameQueryObject);
-                await gamePromise.then(function (callback_value) {
-                    // Successfully got value
-                    queryResult = callback_value;
-                }, function (callback_value) {
-                    // Error Case of Promise
-                    console.error("Failed to get Game");
-                    console.error(callback_value);
-                });
-
-                if (queryResult.length == 0) {
-                    reject("Failed to get Game(s)");
-                }
-            });
-
-            queryResult = null; // reset Result
-
-            registration.languages.forEach(async language => {
-                if(!(await LanguageFactory.getLanguageById(language.language_id))) {
-                    reject("language fail")
-                }
-            });
-
-            if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === "" || registration.nickname === null) {
-                reject("nickname fail");
-            }
-
-            if (registration.password_hash === null || registration.password_hash === "") {
-                reject("password fail");
-            }
-
-            queryResult = undefined; // reset Result
-
-            let regionQueryObject: QueryObject = QueryBuilder.getRegionById(registration.region.region_id);
-
-            let regionPromise = ConnectToDatabaseService.getPromise(regionQueryObject);
-            await regionPromise.then(function (callback_value) {
-                // Successfully got value
-                queryResult = callback_value;
-            }, function (callback_value) {
-                // Error Case of Promise
-                console.error("Failed to get Region");
-                console.error(callback_value);
-            });
-
-            if (queryResult.length == 0) {
-                reject("region fail");
-            }
-
-            resolve("Success");
-
         });
+
+        // Check if all language_ids are valid
+        registration.languages.forEach(async language => {
+            if(!(await LanguageFactory.getLanguageById(language.language_id))) {
+                return false;
+            }
+        });
+
+        // Check if region is valid
+        if(!(await RegionFactory.getRegionById(registration.region.region_id))) {
+            return false;
+        }
+
+        if (registration.nickname.length > 32 || registration.nickname.length < 2 || registration.nickname === "" || registration.nickname === null) {
+            return false;
+        }
+
+        if (registration.password_hash === null || registration.password_hash === "") {
+            return false;
+        }
+
+        return true;
+
     }
 }

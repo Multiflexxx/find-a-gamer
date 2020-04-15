@@ -9,7 +9,7 @@ import { Session } from '../../data_objects/session';
 @Controller('loginendpoint')
 export class LoginendpointController {
     @Post()
-    async handleLogin(@Body() login: Login) {
+    async handleLogin(@Body() login: Login): Promise<LoginResponse> {
 
         // Check for validity?
         // Get User via Session OR email & password_hash
