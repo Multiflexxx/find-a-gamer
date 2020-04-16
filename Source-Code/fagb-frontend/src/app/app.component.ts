@@ -16,4 +16,10 @@ export class AppComponent {
   public constructor(private authenticationService: AuthenticationService) {
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
+
+  public onActivate(event: any): void { // without type info @https://angular.io/guide/user-input
+    window.scroll(0, 0);
+    // or document.body.scrollTop = 0;
+    // or document.querySelector('body').scrollTo(0,0)
+  }
 }

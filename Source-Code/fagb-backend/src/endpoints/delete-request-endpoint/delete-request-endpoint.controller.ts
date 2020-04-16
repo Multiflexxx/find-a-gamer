@@ -1,4 +1,4 @@
-import { Controller, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Body, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { DeleteMatchMakingRequest } from '../../data_objects/deletematchmakingrequest';
 import { SessionFactory } from '../../factory/sessionfactory';
 import { MatchFactory } from '../../factory/matchfactory';
@@ -15,7 +15,7 @@ import { DeleteMatchMakingResponse } from '../../data_objects/deletematchmakingr
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
 
-    @Get()
+    @Post()
     public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<DeleteMatchMakingResponse> {
         // Check if Session authorizes to delete request
         const session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);

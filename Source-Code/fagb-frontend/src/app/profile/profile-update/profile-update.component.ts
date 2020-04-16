@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 
 import { GameSelectStatus } from '../../_classes/game-select-status';
 import { gameValidator } from 'src/app/_shared/game-validator.directive';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile-update',
@@ -41,7 +42,9 @@ export class ProfileUpdateComponent implements OnInit {
     private regionService: RegionService,
     private languageService: LanguageService,
     private gameService: GameService,
-    private router: Router) { }
+    private router: Router,
+    private toastrService: ToastrService,
+  ) { }
 
 
   public ngOnInit(): void {
@@ -141,10 +144,13 @@ export class ProfileUpdateComponent implements OnInit {
     this.profileService.deleteProfile().subscribe(
       (data) => {
         console.log(data);
+        this.authenticationService.logout();
         this.router.navigate(['']);
+        this.toastrService.error('User with the discord tag' + data.publicUser.discord_tag + ' was deleted');
       },
       (error) => {
         console.log(error.error.error);
+        this.toastrService.error(error.error.error, 'Deletion failed');
       }
     );
   }

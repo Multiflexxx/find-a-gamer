@@ -50,7 +50,7 @@ import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
     SharedComponentsModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
-      timeOut: 5000,
+      timeOut: 7000,
       positionClass: 'toast-bottom-full-width',
       tapToDismiss: false
     }),

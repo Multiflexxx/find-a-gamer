@@ -3,6 +3,7 @@ import { MatchService } from '../../_services';
 import { Router } from '@angular/router';
 
 import { interval, Subscription, Observable } from 'rxjs';
+import { MatchMakingResponse } from 'src/app/data_objects/matchmakingresponse';
 
 @Component({
   selector: 'app-match-process',
@@ -11,7 +12,7 @@ import { interval, Subscription, Observable } from 'rxjs';
 })
 export class MatchProcessComponent implements OnInit {
 
-  public matchData;
+  public matchData: MatchMakingResponse;
 
   private subscription: Subscription;
   private i: Observable<number> = interval(1000);
@@ -21,7 +22,7 @@ export class MatchProcessComponent implements OnInit {
     private router: Router, ) { }
 
   public ngOnInit(): void {
-    this.matchData = JSON.parse(localStorage.getItem('matchRequest'));
+    this.matchData = JSON.parse(localStorage.getItem('matchMakingResponse'));
     console.log(this.matchData);
     console.log(this.matchData.matchmaking_request.request_id);
     let num: number = 0;
@@ -44,4 +45,9 @@ export class MatchProcessComponent implements OnInit {
       }
     );
   }
+
+  public onRequestDelete(): void {
+    console.log("Ich bin hier");
+  }
+
 }
