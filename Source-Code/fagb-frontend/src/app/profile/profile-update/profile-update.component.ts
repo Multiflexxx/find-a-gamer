@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 
 import { GameSelectStatus } from '../../_classes/game-select-status';
 import { gameValidator } from 'src/app/_shared/game-validator.directive';
-import { AddGameComponent } from 'src/app/add-game/add-game.component';
 
 @Component({
   selector: 'app-profile-update',
@@ -65,8 +64,8 @@ export class ProfileUpdateComponent implements OnInit {
 
   public createForm(): void {
     this.profileUpdateForm = this.formBuilder.group({
-      region: [this.regionSelected],
-      lang: [this.languageSelected],
+      region: [this.regionSelected, Validators.required],
+      lang: [this.languageSelected, Validators.required],
       oPassword: [''],
       nPassword: ['', Validators.minLength(6)],
       biography: [this.gamer.biography, Validators.maxLength(100)],
@@ -133,6 +132,18 @@ export class ProfileUpdateComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
+        console.log(error.error.error);
+      }
+    );
+  }
+
+  public onProfileDelete(): void {
+    this.profileService.deleteProfile().subscribe(
+      (data) => {
+        console.log(data);
+        this.router.navigate(['']);
+      },
+      (error) => {
         console.log(error.error.error);
       }
     );

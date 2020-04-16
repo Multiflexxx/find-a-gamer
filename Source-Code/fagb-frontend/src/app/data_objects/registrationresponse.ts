@@ -5,8 +5,8 @@ export class RegistrationResponse {
     public session_object: Session;
     public message: string;
 
-    public constructor (successful: boolean, session_object: Session, message: string) {
-        this.successful = successful; 
+    public constructor(successful: boolean, session_object: Session, message: string) {
+        this.successful = successful;
         this.session_object = session_object;
         this.message = message;
     }
