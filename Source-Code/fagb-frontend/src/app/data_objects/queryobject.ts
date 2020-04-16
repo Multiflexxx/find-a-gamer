@@ -3,21 +3,21 @@ export class QueryObject {
     public parameter: any[];
     public constructor(query: string, parameter?: any) {
         this.query = query;
-        if (parameter) {
+        if(parameter) {
             this.parameter = parameter;
         }
     }
 
     public createQueryObject(): any {
-        if (this.parameter) {
+        if(this.parameter) {
             return {
                 sql: this.query,
                 values: this.parameter
-            };
+            }
         } else {
             return {
                 sql: this.query,
-            };
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ import { AbstractControl } from '@angular/forms';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
 import { ControlsMap } from '../_interface/controls-map';
 import { DeleteMatchMakingRequest } from '../data_objects/deletematchmakingrequest';
+import { DeleteMatchMakingResponse } from '../data_objects/deletematchmakingresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -98,12 +99,12 @@ export class MatchService {
       }));
   }
 
-  public deleteRequest(): Observable<any> {
-    const deleteMatchMakingRequest = new DeleteMatchMakingRequest (
+  public deleteRequest(requestId: number): Observable<DeleteMatchMakingResponse> {
+    const deleteMatchMakingRequest = new DeleteMatchMakingRequest(
       this.authenticationService.session.session_id,
-      1
+      requestId
     );
-    return this.http.post<any>(this.urlD, deleteMatchMakingRequest);
+    return this.http.post<DeleteMatchMakingResponse>(this.urlD, deleteMatchMakingRequest);
   }
 
   // this.authenticationService.session.session_id,
