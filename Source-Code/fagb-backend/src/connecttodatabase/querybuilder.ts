@@ -19,7 +19,6 @@ export class QueryBuilder {
                 registration.region.region_id
              ]
         );
-//        return `INSERT INTO User (email, password_hash, nickname, discord_tag, cake_day, birthdate, region_id) VALUES (${registration.email}, ${registration.password_hash}, ${registration.nickname}, ${registration.discord_tag}, CURRENT_DATE, ${registration.birthdate}, ${registration.region.region_id});`;
     }
 
     public static createUserLanguagePair(user: User, language: Language): QueryObject {
