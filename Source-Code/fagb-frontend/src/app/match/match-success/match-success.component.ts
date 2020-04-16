@@ -17,7 +17,7 @@ export class MatchSuccessComponent implements OnInit {
   public constructor(private matchService: MatchService) { }
 
   public ngOnInit(): void {
-    localStorage.removeItem('matchRequest');
+    localStorage.removeItem('matchMakingResponse');
     this.matchService.currentMatchUsers.subscribe(matchUsers => this.matchUsers = matchUsers);
     this.matchService.currentMatchGame.subscribe(matchGame => this.matchGame = matchGame);
   }

@@ -13,6 +13,7 @@ import { NotifyMatch } from '../data_objects/notifymatch';
 import { AbstractControl } from '@angular/forms';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
 import { ControlsMap } from '../_interface/controls-map';
+import { DeleteMatchMakingRequest } from '../data_objects/deletematchmakingrequest';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class MatchService {
   public currentMatchGame: Observable<Game>;
   private urlS: string = '/matchmakingrequestendpoint';
   private urlN: string = '/notifymatchendpoint';
+  private urlD: string = '/deleterequestendpoint';
   private currentGamer: PublicUser;
 
   // Users
@@ -95,5 +97,15 @@ export class MatchService {
         return data;
       }));
   }
+
+  public deleteRequest(): Observable<any> {
+    const deleteMatchMakingRequest = new DeleteMatchMakingRequest (
+      this.authenticationService.session.session_id,
+      1
+    );
+    return this.http.post<any>(this.urlD, deleteMatchMakingRequest);
+  }
+
+  // this.authenticationService.session.session_id,
 
 }
