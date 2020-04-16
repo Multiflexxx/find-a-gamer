@@ -10,12 +10,14 @@ import { Language } from 'src/data_objects/language';
 import { LanguageFactory } from 'src/factory/languagefactory';
 import { UserFactory } from 'src/factory/userfactory';
 import { Session } from 'src/data_objects/session';
+import { DeleteMatchMakingResponse } from '../../data_objects/deletematchmakingresponse'
+import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
 
     @Get()
-    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<boolean> {
+    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<DeleteMatchMakingResponse> {
         // Check if Session authorizes to delete request
         const session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);
 
@@ -46,6 +48,6 @@ export class DeleteRequestEndpointController {
             }, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-        return true;
+        return new DeleteMatchMakingResponse(true, matchMakingRequest);
     }
 }
