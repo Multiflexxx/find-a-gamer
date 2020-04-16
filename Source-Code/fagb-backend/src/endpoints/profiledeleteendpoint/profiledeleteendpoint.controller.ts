@@ -8,7 +8,7 @@ import { Region } from '../../data_objects/region';
 import { Game } from '../../data_objects/game';
 import { Language } from '../../data_objects/language';
 import { Session } from '../../data_objects/session';
-import { MatchFactory } from 'src/factory/matchfactory';
+import { MatchFactory } from '../../factory/matchfactory';
 
 @Controller('profiledeleteendpoint')
 export class ProfileDeleteEndpointController {
