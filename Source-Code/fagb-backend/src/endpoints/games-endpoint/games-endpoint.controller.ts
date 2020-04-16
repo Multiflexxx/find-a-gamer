@@ -2,7 +2,7 @@ import { Controller, Get, HttpException, HttpStatus, Injectable } from '@nestjs/
 import { GameFactory } from '../../factory/gamefactory';
 import { Game } from '../../data_objects/game';
 import { MatchFactory } from '../../factory/matchfactory';
-import { GameResponse } from 'src/data_objects/gameresponse';
+import { GameResponse } from '../../data_objects/gameresponse';
 
 @Injectable()
 @Controller('gamesendpoint')

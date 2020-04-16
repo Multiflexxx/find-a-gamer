@@ -5,7 +5,7 @@ import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { UserGamePair } from '../data_objects/usergamepair'
 import { rejects } from 'assert';
 import { EditProfileResponse } from '../data_objects/editprofileresponse';
-import { QueryObject } from 'src/data_objects/queryobject';
+import { QueryObject } from '../data_objects/queryobject';
 
 export class UserGamePairFactory {
     // public static createUserGamePairs(user: User, games: Game[]): void {

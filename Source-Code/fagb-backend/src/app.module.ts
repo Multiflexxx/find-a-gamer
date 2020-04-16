@@ -14,12 +14,13 @@ import { MatchMakingRequestEndpointController } from './endpoints/match-making-r
 import { DeleteRequestEndpointController } from './endpoints/delete-request-endpoint/delete-request-endpoint.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { DiscordEndpointController } from './endpoints/discord-endpoint/discord-endpoint.controller';
 
 @Module({
   imports: [ServeStaticModule.forRoot({
     rootPath: join(__dirname, '../../fagb-frontend/dist/', 'FAGB'),
   }),],
-  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController, MatchMakingRequestEndpointController, DeleteRequestEndpointController],
+  controllers: [AppController, NotifymatchendpointController, RegistrationendpointController, LoginendpointController, ProfileUpdateEndpointController, ProfileDeleteEndpointController, RegionEndpointController, GamesEndpointController, LanguagesEndpointController, MatchMakingRequestEndpointController, DeleteRequestEndpointController, DiscordEndpointController],
   providers: [AppService, ConnectToDatabaseService],
 })
 export class AppModule {}

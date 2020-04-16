@@ -1,21 +1,22 @@
 import { Controller, Get, Body, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { DeleteMatchMakingRequest } from 'src/data_objects/deletematchmakingrequest';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { MatchFactory } from 'src/factory/matchfactory';
+import { DeleteMatchMakingRequest } from '../../data_objects/deletematchmakingrequest';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { MatchFactory } from '../../factory/matchfactory';
 import { match } from 'assert';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
-import { ConnectToDatabaseService } from 'src/connecttodatabase/connecttodatabase.service';
-import { QueryBuilder } from 'src/connecttodatabase/querybuilder';
-import { Language } from 'src/data_objects/language';
-import { LanguageFactory } from 'src/factory/languagefactory';
-import { UserFactory } from 'src/factory/userfactory';
-import { Session } from 'src/data_objects/session';
+import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
+import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
+import { QueryBuilder } from '../../connecttodatabase/querybuilder';
+import { Language } from '../../data_objects/language';
+import { LanguageFactory } from '../../factory/languagefactory';
+import { UserFactory } from '../../factory/userfactory';
+import { Session } from '../../data_objects/session';
+import { DeleteMatchMakingResponse } from '../../data_objects/deletematchmakingresponse';
 
 @Controller('deleterequestendpoint')
 export class DeleteRequestEndpointController {
 
     @Post()
-    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<boolean> {
+    public async handleDeleteRequest(@Body() deleteRequest: DeleteMatchMakingRequest): Promise<DeleteMatchMakingResponse> {
         // Check if Session authorizes to delete request
         const session: Session = await SessionFactory.getSessionBySessionId(deleteRequest.session_id);
 
@@ -46,6 +47,6 @@ export class DeleteRequestEndpointController {
             }, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-        return true;
+        return new DeleteMatchMakingResponse(true, matchMakingRequest);
     }
 }

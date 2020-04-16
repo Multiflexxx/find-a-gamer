@@ -8,6 +8,7 @@ import { Region } from '../../data_objects/region';
 import { Game } from '../../data_objects/game';
 import { Language } from '../../data_objects/language';
 import { Session } from '../../data_objects/session';
+import { MatchFactory } from '../../factory/matchfactory';
 
 @Controller('profiledeleteendpoint')
 export class ProfileDeleteEndpointController {
@@ -43,6 +44,14 @@ export class ProfileDeleteEndpointController {
                 status: HttpStatus.UNAUTHORIZED,
                 error: 'Session not authorized to delete User'
             }, HttpStatus.UNAUTHORIZED);
+        }
+
+        // Check if user has open matchMakingRequests
+        if((await MatchFactory.checkOpenMatchMakingRequest(session.user_id))) {
+            throw new HttpException({
+                status: HttpStatus.NOT_ACCEPTABLE,
+                error: 'User still has open Matchmaking Requests'
+            }, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Delete Session

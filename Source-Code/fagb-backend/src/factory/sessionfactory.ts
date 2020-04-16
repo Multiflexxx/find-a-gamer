@@ -3,7 +3,7 @@ import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { Session } from '../data_objects/session';
 import { User } from '../data_objects/user';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryObject } from 'src/data_objects/queryobject';
+import { QueryObject } from '../data_objects/queryobject';
 
 export class SessionFactory {
     public static async getSessionBySessionId(session_id: string): Promise<Session> {

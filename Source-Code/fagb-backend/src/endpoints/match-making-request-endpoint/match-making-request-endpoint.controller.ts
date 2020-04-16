@@ -5,8 +5,8 @@ import { GameFactory } from '../../factory/gamefactory';
 import { Response } from '../../data_objects/response';
 import { MatchFactory } from '../../factory/matchfactory';
 import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
-import { Game } from 'src/data_objects/game';
-import { Session } from 'src/data_objects/session';
+import { Game } from '../../data_objects/game';
+import { Session } from '../../data_objects/session';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {

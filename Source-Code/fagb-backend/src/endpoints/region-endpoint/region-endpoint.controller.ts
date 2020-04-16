@@ -1,6 +1,6 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { RegionFactory } from '../../factory/regionfactory';
-import { Region } from 'src/data_objects/region';
+import { Region } from '../../data_objects/region';
 
 @Controller('regionendpoint')
 export class RegionEndpointController {

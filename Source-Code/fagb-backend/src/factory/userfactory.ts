@@ -13,8 +13,8 @@ import { Game } from '../data_objects/game';
 import { UserLanguagePairFactory } from './userlanguagepairfactory';
 import { Language } from '../data_objects/language';
 import { PublicUser } from '../data_objects/publicuser';
-import { QueryObject } from 'src/data_objects/queryobject';
-import { EditProfileRequest } from 'src/data_objects/editprofilerequest';
+import { QueryObject } from '../data_objects/queryobject';
+import { EditProfileRequest } from '../data_objects/editprofilerequest';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
@@ -195,7 +195,7 @@ export class UserFactory {
 
         try {
             await ConnectToDatabaseService.executeQuery(query);
-                successful = true;
+            successful = true;
         } catch(e) {
             console.error('UserFactory deleteUser(): Database Query threw exception');
             console.error(e);

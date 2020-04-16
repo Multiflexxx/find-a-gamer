@@ -3,7 +3,7 @@ import { Language } from '../data_objects/language';
 import { ConnectToDatabaseService } from '../connecttodatabase/connecttodatabase.service'
 import { QueryBuilder } from '../connecttodatabase/querybuilder';
 import { UserLanguagePair } from '../data_objects/userlanguagepair';
-import { QueryObject } from 'src/data_objects/queryobject';
+import { QueryObject } from '../data_objects/queryobject';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 export class UserLanguagePairFactory {
