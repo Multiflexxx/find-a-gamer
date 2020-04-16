@@ -12,8 +12,8 @@ import { MatchFactory } from '../../factory/matchfactory';
 import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 import { GameFactory } from '../../factory/gamefactory';
 import { PublicUser } from '../../data_objects/publicuser';
-import { Game } from 'src/data_objects/game';
-import { MatchMakingRequest } from 'src/data_objects/matchmakingrequest';
+import { Game } from '../../data_objects/game';
+import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
 
 @Controller('notifymatchendpoint')
 export class NotifymatchendpointController {

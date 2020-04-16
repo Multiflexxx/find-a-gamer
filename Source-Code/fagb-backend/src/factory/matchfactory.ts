@@ -5,11 +5,11 @@ import { GameResponse } from '../data_objects/gameresponse';
 import { Game } from '../data_objects/game';
 import { v4 as uuidv4 } from 'uuid';
 import { UserFactory } from './userfactory';
-import { QueryObject } from 'src/data_objects/queryobject';
+import { QueryObject } from '../data_objects/queryobject';
 import { match } from 'assert';
 import { UploadedFile } from '@nestjs/common';
 import { throwError } from 'rxjs';
-import { User } from 'src/data_objects/user';
+import { User } from '../data_objects/user';
 
 export class MatchFactory {
     public static async createMatchMakingRequest(matchMakingRequest: MatchMakingRequest): Promise<boolean> {
