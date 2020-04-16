@@ -1,10 +1,11 @@
 import { User } from './user';
+import { PublicUser } from './publicuser';
 
 export class DeleteProfileResponse {
     public successfull: boolean;
-    public user: User;
+    public user: PublicUser;
 
-    public constructor(successfull: boolean, user?:User) {
+    public constructor(successfull: boolean, user?: PublicUser) {
         this.successfull = successfull;
 
         if(user) {

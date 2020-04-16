@@ -1,12 +1,13 @@
 import { User } from './user';
 import { Session } from './session';
+import { PublicUser } from './publicuser';
 
 export class DeleteProfileRequest {
 
-    public user: User;
+    public user: PublicUser;
     public session_id: string;
 
-    public constructor( session_id: string, user: User) {
+    public constructor( session_id: string, user: PublicUser) {
         this.user = user;
         this.session_id = session_id;
     }

@@ -18,6 +18,21 @@ export class ProfileDeleteEndpointController {
             new User(16, "benno.grimm@gmx.de", "updated Hash", "Updated Nickname", "Hier muss noch validated werden", "", new Date(), new Date(), "", new Region(1, "Test"), [new Game(1)], [new Language(2), new Language(3)])
         );*/
 
+        let user: User = new User(
+            deleteProfileRequest.user.user_id,
+            null,
+            null,
+            deleteProfileRequest.user.nickname,
+            deleteProfileRequest.user.discord_tag,
+            deleteProfileRequest.user.profile_picture,
+            deleteProfileRequest.user.cake_day,
+            null,
+            deleteProfileRequest.user.biography,
+            deleteProfileRequest.user.region,
+            deleteProfileRequest.user.games,
+            deleteProfileRequest.user.languages
+        );
+
 
         // Check Session
         const session: Session = await SessionFactory.getSessionBySessionId(deleteProfileRequest.session_id);
@@ -31,7 +46,7 @@ export class ProfileDeleteEndpointController {
         }
 
         // Delete Session
-        const successful: boolean = await SessionFactory.deleteSessionByUser(deleteProfileRequest.user);
+        const successful: boolean = await SessionFactory.deleteSessionByUser(user);
         if (!successful) {
             console.error('ProfileDeleteEndpoint: Couldn\'t delete User sessions');
             throw new HttpException({
@@ -41,7 +56,7 @@ export class ProfileDeleteEndpointController {
         }
 
         // Delete User
-        const user: User = await UserFactory.deleteUser(deleteProfileRequest.user);
+        user  = await UserFactory.deleteUser(user);
 
         if (!user) {
             console.error('ProfileDeleteEndpoint: Couldn\'t delete user');
@@ -51,6 +66,6 @@ export class ProfileDeleteEndpointController {
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new DeleteProfileResponse(true, deleteProfileRequest.user);
+        return new DeleteProfileResponse(true, UserFactory.userToPublicUser(user));
     }
 }
