@@ -1,4 +1,4 @@
-import { Controller, Body, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Body, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { DeleteProfileRequest } from '../../data_objects/deleteprofilerequest';
 import { DeleteProfileResponse } from '../../data_objects/deleteprofileresponse';
 import { SessionFactory } from '../../factory/sessionfactory';
@@ -11,7 +11,7 @@ import { Session } from '../../data_objects/session';
 
 @Controller('profiledeleteendpoint')
 export class ProfileDeleteEndpointController {
-    @Get()
+    @Post()
     public async handleProfileDeleteRequest(@Body() deleteProfileRequest: DeleteProfileRequest): Promise<DeleteProfileResponse> {
         /*deleteProfileRequest = new DeleteProfileRequest(
             "3e8de529-977b-4b2e-8bf8-c4aa007d6202",
