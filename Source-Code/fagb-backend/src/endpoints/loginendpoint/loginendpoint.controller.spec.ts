@@ -18,9 +18,9 @@ describe('Loginendpoint Controller', () => {
   let loginEndpointController: LoginendpointController;
   let registration: Registration;
   let login: Login;
-  let loginResponse;
-  let deleteProfileRequest;
-  let randomNumber;
+  let loginResponse: LoginResponse;
+  let deleteProfileRequest: DeleteProfileRequest;
+  const randomNumber: number = Math.floor(Math.random() * 10000);;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,7 +31,6 @@ describe('Loginendpoint Controller', () => {
     registrationEndpointController = module.get<RegistrationendpointController>(RegistrationendpointController);
     loginEndpointController = module.get<LoginendpointController>(LoginendpointController);
 
-    const randomNumber = Math.floor(Math.random() * 10000);
     registration = new Registration(
       'mail@mail' + randomNumber + '.com',
       'test123',
@@ -52,10 +51,10 @@ describe('Loginendpoint Controller', () => {
 
     it('Should try a login with wrong mail', async() => {
       const testLogin = new Login(null, 'mail@mail'+randomNumber+'.com', 'test123', true);
-      let loginResponse: LoginResponse;
+      let testloginResponse: LoginResponse;
 
       try {
-        loginResponse = await loginEndpointController.handleLogin(testLogin);
+        testloginResponse = await loginEndpointController.handleLogin(testLogin);
       } catch (e) {
         expect(e.status).toEqual(401);
         expect(e.response.error).toEqual('No user with that Email');
