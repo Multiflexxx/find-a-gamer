@@ -16,13 +16,13 @@
       </div>
       <div class="column is-one-fifths-tablet is-half-mobile">
         <div class="buttons">
-          <a class="button is-link is-fullwidth" [routerLink]="['/profile']" routerLinkActive="router-link-active">
+          <button class="button is-link is-fullwidth" [routerLink]="['/profile']" routerLinkActive="router-link-active">
             <span class="icon">
               <i class="far fa-trash-alt"></i>
             </span>
             <span>Cancel</span>
-          </a>
-          <a class="button is-link is-fullwidth" type="submit" (click)="onProfileUpdateSubmit()">
+          </button>
+          <button class="button is-link is-fullwidth" type="submit" (click)="onProfileUpdateSubmit()" [disabled]="profileUpdateForm.invalid">
             <span class="icon">
               <i *ngIf="!loading" class="far fa-user-circle"></i>
             </span>
@@ -31,7 +31,7 @@
               </mat-spinner>
             </mat-icon>
             <span>Save</span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Region</mat-label>
-              <mat-select formControlName="region">
+              <mat-select formControlName="region" required>
                 <mat-option *ngFor="let region of regionList" [value]="region.region_id">{{region.name}}
                 </mat-option>
               </mat-select>
@@ -63,7 +63,7 @@
           <div class="box">
             <mat-form-field>
               <mat-label>Languages</mat-label>
-              <mat-select formControlName="lang" multiple>
+              <mat-select formControlName="lang" multiple required>
                 <mat-option *ngFor="let lang of langList" [value]="lang.language_id" data-name="lang.name">
                   {{lang.name}}
                 </mat-option>
@@ -107,11 +107,29 @@
           </div>
         </div>
       </div>
-
       <div class="box">
         <app-add-game [gameForm]="profileUpdateForm"></app-add-game>
       </div>
-
     </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-mobile is-centered is-vcentered">
+      <div class="column is-full-mobile">
+        <div class="buttons">
+          <button class="button is-danger is-fullwidth" type="submit" (click)="onProfileDelete()">
+            <span class="icon">
+              <i *ngIf="!loading" class="far fa-user-circle"></i>
+            </span>
+            <mat-icon *ngIf="loading">
+              <mat-spinner color="accent" diameter="20"></mat-spinner>
+            </mat-icon>
+            <span>Delete account with discord-tag: {{gamer.discord_tag}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

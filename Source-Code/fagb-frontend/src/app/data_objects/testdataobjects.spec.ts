@@ -71,7 +71,7 @@ describe('Check Login-object', () => {
     });
 
     it('should be a Login-object with all null', () => {
-        expect(loginNull.session_id).toBeNull();
+        expect(loginNull.session_id).toBeNull;
         expect(loginNull.email).toBeNull();
         expect(loginNull.password_hash).toBeNull();
         expect(loginNull.stay_logged_in).toBeFalsy();
@@ -126,7 +126,7 @@ describe('Check Language-object', () => {
 
 describe('Check Game-object', () => {
 
-    const testDate: Date = new Date();
+    const testDate: Date = new Date;
     const gameFull: Game = new Game(1, 'Minecraft', '/image/img.png', 'A lego like game.', 'Mojang', testDate);
     const gameNull: Game = new Game(2);
 
