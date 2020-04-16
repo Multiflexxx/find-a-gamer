@@ -11,6 +11,8 @@ import { Language } from '../data_objects/language';
 import { Region } from '../data_objects/region';
 import { EditProfileRequest } from '../data_objects/editprofilerequest';
 import { map } from 'rxjs/operators';
+import { DeleteProfileRequest } from '../data_objects/deleteprofilerequest';
+import { DeleteProfileResponse } from '../data_objects/deleteprofileresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ import { map } from 'rxjs/operators';
 export class ProfileService {
 
   private url: string = '/profileupdateendpoint';
+  private urlD: string = '/profiledeleteendpoint';
   private currentGamer: PublicUser;
 
   public constructor(
@@ -78,6 +81,22 @@ export class ProfileService {
     );
 
     return this.http.post<EditProfileResponse>(this.url, editprofileRequest)
+      .pipe(map(data => {
+        if (data && data.successful) {
+          this.authenticationService.currentGamerSubject.next(data.publicUser);
+        }
+        return data;
+      }));
+  }
+
+  public deleteProfile(): Observable<DeleteProfileResponse> {
+
+    const deleteProfileRequest: DeleteProfileRequest = new DeleteProfileRequest(
+      this.authenticationService.session.session_id,
+      this.currentGamer
+    );
+
+    return this.http.post<DeleteProfileResponse>(this.urlD, deleteProfileRequest)
       .pipe(map(data => {
         if (data && data.successful) {
           this.authenticationService.currentGamerSubject.next(data.publicUser);
