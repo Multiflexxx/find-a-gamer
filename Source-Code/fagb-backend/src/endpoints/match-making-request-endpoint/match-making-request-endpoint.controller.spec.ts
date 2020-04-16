@@ -17,7 +17,8 @@ import { MatchMakingRequest } from '../../data_objects/matchmakingrequest';
 import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 import { DeleteMatchMakingRequest } from '../../data_objects/deletematchmakingrequest';
 import { DeleteRequestEndpointController } from '../delete-request-endpoint/delete-request-endpoint.controller';
-import { DeleteProfileResponse } from 'src/data_objects/deleteprofileresponse';
+import { DeleteProfileResponse } from '../../data_objects/deleteprofileresponse';
+import { DeleteMatchMakingResponse } from '../../data_objects/deletematchmakingresponse';
 
 describe('MatchMakingRequestEndpoint Controller', () => {
   let matchMakingController: MatchMakingRequestEndpointController;
@@ -99,14 +100,14 @@ describe('MatchMakingRequestEndpoint Controller', () => {
 
     expect(deleteMatchMaking).toBeDefined();
 
-    let deleteRequestResult: boolean;
+    let deleteRequestResult: DeleteMatchMakingResponse;
     try {
       deleteRequestResult = await deleteRequestEndpointController.handleDeleteRequest(deleteMatchMaking);
     } catch (e) {
     }
 
     // Should be true
-    expect(deleteRequestResult).toBeTruthy();
+    expect(deleteRequestResult.successful).toBeTruthy();
 
     // delete user
     deleteProfileRequest = new DeleteProfileRequest(loginResponse.session.session_id, user);
