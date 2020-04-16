@@ -16,7 +16,7 @@ export class User {
     public languages: Language[];
     public games: Game[];
 
-    public constructor (
+    public constructor(
         user_id: number, email: string, password_hash: string, nickname: string, discord_tag: string, profile_picture: string, cake_day: Date, birthdate: Date, biography: string, region?: Region, games?: Game[], languages?: Language[]
     ) {
         this.user_id = user_id;
@@ -30,19 +30,19 @@ export class User {
         this.biography = biography;
         this.region = region;
 
-        if(games) {
+        if (games) {
             this.games = games;
         } else {
             this.games = null;
         }
 
-        if(languages) {
+        if (languages) {
             this.languages = languages;
         } else {
             this.languages = null;
         }
 
-        if(region) {
+        if (region) {
             this.region = region;
         } else {
             this.region = null;

@@ -7,7 +7,7 @@ export class EditProfileResponse {
     public constructor(successful: boolean, publicUser?: PublicUser) {
         this.successful = successful;
 
-        if(!!publicUser) {
+        if (!!publicUser) {
             this.publicUser = publicUser;
         }
     }
