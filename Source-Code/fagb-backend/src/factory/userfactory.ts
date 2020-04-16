@@ -195,7 +195,7 @@ export class UserFactory {
 
         try {
             await ConnectToDatabaseService.executeQuery(query);
-                successful = true;
+            successful = true;
         } catch(e) {
             console.error('UserFactory deleteUser(): Database Query threw exception');
             console.error(e);
