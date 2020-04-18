@@ -347,7 +347,7 @@ export class QueryBuilder {
 
     public static getMatchMakingRequestsByMatchId(match_id: string): QueryObject {
         return new QueryObject(
-            'SELECT request_id, user_id, game_id, searching_for, players_in_party, casual, time_stamp, BIN_TO_UUID(match_id) as match_id FROM MatchMakingRequest WHERE match_id = UUID_TO_BIN(?);',
+            "SELECT request_id, user_id, game_id, searching_for, players_in_party, casual, time_stamp, BIN_TO_UUID(match_id) as match_id FROM MatchMakingRequest WHERE match_id = UUID_TO_BIN(?);",
             [
                 match_id
             ]
@@ -374,8 +374,22 @@ export class QueryBuilder {
 
     public static matchHistoryWithPaging(user_id: number, first: number, next: number): QueryObject {
         return new QueryObject(
-            "SELECT * FROM MatchMakingRequest Where user_id = ? AND match_id IS NOT NULL ORDER BY time_stamp DESC "
-        )
+            "SELECT request_id, user_id, game_id, searching_for, players_in_party, casual, time_stamp, BIN_TO_UUID(match_id) as match_id FROM MatchMakingRequest Where user_id = ? AND match_id IS NOT NULL ORDER BY time_stamp DESC LIMIT ?, ?",
+            [
+                user_id,
+                first,
+                next  
+            ]
+        );
+    }
+
+    public static getNumberOfMatchedRequestsByUser(user_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT count(*) as amount FROM MatchMakingRequest WHERE user_id = ? AND match_id IS NOT NULL GROUP BY user_id;",
+            [
+                user_id
+            ]
+        );
     }
 
 }

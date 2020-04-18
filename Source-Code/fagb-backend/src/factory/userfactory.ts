@@ -325,10 +325,10 @@ export class UserFactory {
             }
         }
 
-        return UserFactory.userToPublicUser(await UserFactory.getUserBySessionID(editProfileRequest.session_id));
+        return await UserFactory.userToPublicUser(await UserFactory.getUserBySessionID(editProfileRequest.session_id));
     }
 
-    public static userToPublicUser(user: User): PublicUser {
+    public static async userToPublicUser(user: User): Promise<PublicUser> {
         return new PublicUser(user.user_id, user.nickname, user.discord_tag, user.cake_day, user.region, user.games, user.languages, user.profile_picture, user.biography);
     }
 

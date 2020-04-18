@@ -75,6 +75,6 @@ export class ProfileDeleteEndpointController {
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new DeleteProfileResponse(true, UserFactory.userToPublicUser(user));
+        return new DeleteProfileResponse(true, await UserFactory.userToPublicUser(user));
     }
 }
