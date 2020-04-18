@@ -4,8 +4,8 @@
       <div class="column is-full-mobile">
         <div class="box">
           <div class="content has-text-centered">
-            <h1 class="title">Your Matchmaking for {{matchData.game.name}}</h1>
-            <mat-spinner></mat-spinner>
+            <h4 class="title is-4">Your Matchmaking for {{matchData.game.name}}</h4>
+            <mat-spinner diameter=70></mat-spinner>
             <p class="text">Matchmaking ..</p>
           </div>
         </div>
@@ -39,14 +39,25 @@
           </div>
         </div>
       </div>
-      
+
       <div class="column is-half-tablet is-full-mobile">
         <div class="box">
-          <h3 class="title infos">Number of players being already in the party:</h3>
-          <p class="text">{{matchData.matchmaking_request.searching_for}}</p>
-          <br>
-          <h3 class="title infos">Number of players to join the party:</h3>
-          <p class="text">{{matchData.matchmaking_request.players_in_party}}</p>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td class="title is-5">Game:</td>
+                <td class="title is-5">{{matchData.game.name}}</td>
+              </tr>
+              <tr>
+                <td class="title is-5">Players in your party:</td>
+                <td class="title is-5">{{matchData.matchMakingRequest .searching_for}}</td>
+              </tr>
+              <tr>
+                <td class="title is-5">Players to join party:</td>
+                <td class="title is-5">{{matchData.matchMakingRequest.players_in_party}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

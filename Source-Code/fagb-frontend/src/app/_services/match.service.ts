@@ -66,16 +66,16 @@ export class MatchService {
     const notifyMatch = new NotifyMatch(requestId);
     return this.http.post<MatchMakingResponse>(this.urlN, notifyMatch)
       .pipe(map(data => {
-        if (data && !!data.users) {
+        if (data && !!data.matchedUsers) {
           const matchUseres: PublicUser[] = [];
           // tslint:disable-next-line: prefer-for-of
-          for (let i = 0; i < data.users.length; i++) {
+          for (let i = 0; i < data.matchedUsers.length; i++) {
             matchUseres.push(new PublicUser(
-              data.users[i].user_id,
-              data.users[i].nickname,
-              data.users[i].discord_tag,
-              data.users[i].cake_day,
-              data.users[i].region,
+              data.matchedUsers[i].user_id,
+              data.matchedUsers[i].nickname,
+              data.matchedUsers[i].discord_tag,
+              data.matchedUsers[i].cake_day,
+              data.matchedUsers[i].region,
               null,
               null)
             );

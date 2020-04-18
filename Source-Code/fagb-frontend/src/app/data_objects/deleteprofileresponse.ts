@@ -11,7 +11,7 @@ export class DeleteProfileResponse {
 
         this.successful = successfull;
 
-        if (publicUser) {
+        if(publicUser) {
             this.publicUser = publicUser;
         } else {
             this.publicUser = null;

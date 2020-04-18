@@ -31,9 +31,9 @@ export class MatchProcessComponent implements OnInit {
     this.subscription = this.i.subscribe(
       (d) => {
         num = num + 1;
-        this.matchService.notifyMatch(this.matchData.matchmaking_request.request_id).subscribe(
+        this.matchService.notifyMatch(this.matchData.matchMakingRequest.request_id).subscribe(
           (data) => {
-            if (!!data.users) {
+            if (!!data.matchedUsers) {
               this.subscription.unsubscribe();
               this.router.navigate(['/match-success']);
             }
@@ -47,7 +47,7 @@ export class MatchProcessComponent implements OnInit {
   }
 
   public onRequestDelete(): void {
-    this.matchService.deleteRequest(this.matchData.matchmaking_request.request_id).subscribe(
+    this.matchService.deleteRequest(this.matchData.matchMakingRequest.request_id).subscribe(
       (data) => {
         this.subscription.unsubscribe();
         localStorage.removeItem('matchMakingResponse');

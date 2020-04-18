@@ -8,7 +8,7 @@ export class LoginResponse {
 
     public constructor(successful: boolean, session?: Session, user?: PublicUser) {
         this.successful = successful;
-        if (session && user) {
+        if(session && user) {
             this.session = session;
             this.user = user;
         }
