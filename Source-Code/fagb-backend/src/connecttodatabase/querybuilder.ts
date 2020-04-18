@@ -363,4 +363,19 @@ export class QueryBuilder {
         );
     }
 
+    public static matchHistoryNoPaging(user_id: number): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM MatchMakingRequest Where user_id = ? AND match_id IS NOT NULL ORDER BY time_stamp DESC",
+            [
+                user_id
+            ]
+        );
+    }
+
+    public static matchHistoryWithPaging(user_id: number, first: number, next: number): QueryObject {
+        return new QueryObject(
+            "SELECT * FROM MatchMakingRequest Where user_id = ? AND match_id IS NOT NULL ORDER BY time_stamp DESC "
+        )
+    }
+
 }
