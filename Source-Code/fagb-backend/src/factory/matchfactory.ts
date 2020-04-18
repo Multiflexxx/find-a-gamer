@@ -340,7 +340,7 @@ export class MatchFactory {
         return true;
     }
 
-    public static getMatchHistory(user_id: number, first: number, next: number) {
-        let query: QueryObject = QueryBuilder.getMat
-    }
+    // public static getMatchHistory(user_id: number, first: number, next: number) {
+    //     let query: QueryObject = QueryBuilder.getMat
+    // }
 }
