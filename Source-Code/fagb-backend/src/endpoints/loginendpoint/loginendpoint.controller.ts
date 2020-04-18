@@ -51,7 +51,7 @@ export class LoginendpointController {
                 }, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            return new LoginResponse(true, session, UserFactory.userToPublicUser(user));
+            return new LoginResponse(true, session, await UserFactory.userToPublicUser(user));
 
         } else if (login.session_id) {
             // Get User by session_id
@@ -73,7 +73,7 @@ export class LoginendpointController {
                 }, HttpStatus.INTERNAL_SERVER_ERROR)
             }
 
-            return new LoginResponse(true, session, UserFactory.userToPublicUser(user));
+            return new LoginResponse(true, session, await UserFactory.userToPublicUser(user));
         }
     }
 }

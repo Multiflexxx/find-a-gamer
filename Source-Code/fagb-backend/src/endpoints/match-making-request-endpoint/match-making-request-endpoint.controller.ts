@@ -79,6 +79,8 @@ export class MatchMakingRequestEndpointController {
         // Get PublicUser by ID
         const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(session.user_id));
 
+        console.log(new MatchMakingResponse(publicUser, game, request));
+
         return new MatchMakingResponse(publicUser, game, request);
     }
 }

@@ -53,6 +53,7 @@ export class NotifymatchendpointController {
         // Until now it's the only possibility we have found to check if the ID is null
         const compBuffer: Buffer = Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
         if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() === '' || compBuffer.toString() === matchMakingRequest.match_id.toString()) {
+            console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest));
             return new MatchMakingResponse(publicUser, game, matchMakingRequest);
         }
 
@@ -69,23 +70,25 @@ export class NotifymatchendpointController {
 
         // Create User Array from Matches
         const matchedUsers: PublicUser[] = [];
-        matches.forEach(async match => {
+        for(let match of matches) {
             if(match.user_id != matchMakingRequest.user_id) {
-                matchedUsers.push(UserFactory.userToPublicUser(await UserFactory.getUserByUserId(match.user_id)));
-                if(!matchedUsers[matchedUsers.length]) {
+                let tempUser: User = await UserFactory.getUserByUserId(match.user_id);
+                if(!tempUser) {
                     console.error('NotifymatchendpointController handleUpdate(): user is null');
                     throw new HttpException({
                         status: HttpStatus.NOT_ACCEPTABLE,
                         error: 'Matched user doesn\'t exist'
                     }, HttpStatus.NOT_ACCEPTABLE);
                 }
+                matchedUsers.push(await UserFactory.userToPublicUser(tempUser));
             }
-        });
+        }
 
 
         // console.log(matchMakingRequest);
         // console.log(game);
         // console.log(users);
+        console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers));
 
         return new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers);
     }
