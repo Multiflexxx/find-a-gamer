@@ -18,7 +18,7 @@
         <a class="navbar-item" [routerLink]="['/profile']" routerLinkActive="router-link-active">
           Profile
         </a>
-        <a class="navbar-item" [routerLink]="['/match']" routerLinkActive="router-link-active">
+        <a class="navbar-item" (click)="onMatch()">
           Find a G-Buddy
         </a>
         <a class="navbar-item">

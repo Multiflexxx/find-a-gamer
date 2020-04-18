@@ -19,6 +19,16 @@ export class NavComponent implements OnInit {
   public ngOnInit(): void {
   }
 
+  public onMatch(): void {
+    let url: string = '';
+    if (!!localStorage.getItem('matchMakingResponse')) {
+      url = 'match-process';
+    } else {
+      url = 'match';
+    }
+    this.router.navigate([url]);
+  }
+
   public onLogout(): void {
     this.authenticationService.logout();
     this.router.navigate(['']);

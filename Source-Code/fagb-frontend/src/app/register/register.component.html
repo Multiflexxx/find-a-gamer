@@ -13,7 +13,7 @@
                       <mat-form-field>
                         <mat-label>Nickname</mat-label>
                         <input matInput formControlName="name" required>
-                        <mat-error *ngIf="hasError('name', 'required')">Nickname is required test.</mat-error>
+                        <mat-error *ngIf="hasError('name', 'required')">Nickname is required.</mat-error>
                         <mat-error *ngIf="hasError('name', 'maxlength')">Nickname must be shorter than 32
                           characters.
                         </mat-error>
@@ -29,7 +29,7 @@
                       <mat-form-field>
                         <mat-label>Discord Tag</mat-label>
                         <input matInput formControlName="tag" required>
-                        <mat-error *ngIf="hasError('tag', 'required')">Discord Tag is required .</mat-error>
+                        <mat-error *ngIf="hasError('tag', 'required')">Discord Tag is required.</mat-error>
                         <mat-error *ngIf="hasError('tag', 'pattern')">Discord Tag must be in this format: Name#1234.
                         </mat-error>
                       </mat-form-field>
@@ -108,7 +108,7 @@
                           <mat-icon>{{hidePv ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-error *ngIf="hasError('vpassword', 'required')">Password is required.</mat-error>
-                        <mat-error *ngIf="hasError('vpassword', 'compare')">Passwords don' t match.</mat-error>
+                        <mat-error *ngIf="hasError('vpassword', 'compare')">Passwords don't match.</mat-error>
                       </mat-form-field>
                     </div>
                   </div>

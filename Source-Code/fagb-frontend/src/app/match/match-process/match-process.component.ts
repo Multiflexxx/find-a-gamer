@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { interval, Subscription, Observable } from 'rxjs';
 import { MatchMakingResponse } from 'src/app/data_objects/matchmakingresponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-match-process',
@@ -19,7 +20,9 @@ export class MatchProcessComponent implements OnInit {
 
   public constructor(
     private matchService: MatchService,
-    private router: Router, ) { }
+    private router: Router,
+    private toastrService: ToastrService,
+  ) { }
 
   public ngOnInit(): void {
     this.matchData = JSON.parse(localStorage.getItem('matchMakingResponse'));
@@ -47,7 +50,18 @@ export class MatchProcessComponent implements OnInit {
   }
 
   public onRequestDelete(): void {
-    console.log("Ich bin hier");
+    this.matchService.deleteRequest(this.matchData.matchmaking_request.request_id).subscribe(
+      (data) => {
+        this.subscription.unsubscribe();
+        localStorage.removeItem('matchMakingResponse');
+        this.router.navigate(['/match']);
+        this.toastrService.error('Match request with id ' + data.request.request_id + ' was deleted');
+      },
+      (error) => {
+        console.log(error.error.error);
+        this.toastrService.error(error.error.error);
+      }
+    );
   }
 
 }
