@@ -26,8 +26,6 @@ export class MatchProcessComponent implements OnInit {
 
   public ngOnInit(): void {
     this.matchData = JSON.parse(localStorage.getItem('matchMakingResponse'));
-    console.log(this.matchData);
-    console.log(this.matchData.matchmaking_request.request_id);
     let num: number = 0;
 
     this.subscription = this.i.subscribe(
@@ -41,7 +39,6 @@ export class MatchProcessComponent implements OnInit {
             }
           },
           (error) => {
-            console.log('Nein!');
             console.log(error);
           }
         );

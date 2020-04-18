@@ -129,7 +129,6 @@ export class ProfileUpdateComponent implements OnInit {
     this.loading = true;
     this.profileService.updateProfile(this.profileUpdateValue).subscribe(
       (data) => {
-        console.log(data);
         this.router.navigate(['/profile']);
         this.loading = false;
       },
@@ -143,7 +142,6 @@ export class ProfileUpdateComponent implements OnInit {
   public onProfileDelete(): void {
     this.profileService.deleteProfile().subscribe(
       (data) => {
-        console.log(data);
         this.authenticationService.logout();
         this.router.navigate(['']);
         this.toastrService.error('User with the discord tag' + data.publicUser.discord_tag + ' was deleted');

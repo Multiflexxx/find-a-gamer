@@ -70,7 +70,6 @@ export class AddGameComponent implements OnInit {
   }
 
   public selectChoosenGame(games: Array<Game>): void {
-    console.log('Bin ich hier wirklich gelandet?');
     for (const game of games) {
       this.isSelected[game.game_id] = !this.isSelected[game.game_id];
       this.createTag(game.game_id, game.name);

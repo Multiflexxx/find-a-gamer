@@ -23,6 +23,7 @@ import { MatchModule } from './match/match.module';
 import { SharedComponentsModule } from './shared-components.module';
 
 import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ToastrModule, ToastContainerModule } from 'ngx-toastr';
     BackgroundComponent,
     LandingPageNavbarComponent,
     GameValidatorDirective,
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,

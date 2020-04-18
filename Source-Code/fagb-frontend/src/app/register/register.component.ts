@@ -138,12 +138,10 @@ export class RegisterComponent implements OnInit {
 
   public onProfileSubmit(): void {
     this.profileData = this.profileValue;
-    console.log(this.profileValue);
   }
 
   public onGameSubmit(): void {
     this.gameData = this.gameValue;
-    console.log(this.gameData);
     this.onSubmit();
   }
 
@@ -152,7 +150,6 @@ export class RegisterComponent implements OnInit {
       (data) => {
         this.authenticationService.loginS().subscribe(
           (dataL) => {
-            console.log(dataL);
             this.router.navigate(['/profile']);
           },
           (error) => {

@@ -12,9 +12,7 @@
       </div>
     </div>
   </div>
-</section>
 
-<section class="section">
   <div class="container">
     <div class="columns is-mobile is-centered is-vcentered">
       <div class="column is-full-mobile">
@@ -29,21 +27,9 @@
       </div>
     </div>
   </div>
-</section>
 
-<section class="section">
   <div class="container">
     <div class="columns is-multiline is-mobile">
-      <div class="column is-half-tablet is-full-mobile">
-        <div class="box">
-          <h3 class="title infos">Number of players being already in the party:</h3>
-          <p class="text">{{matchData.matchmaking_request.searching_for}}</p>
-          <br>
-          <h3 class="title infos">Number of players to join the party:</h3>
-          <p class="text">{{matchData.matchmaking_request.players_in_party}}</p>
-        </div>
-      </div>
-
       <div class="column is-half-tablet is-full-mobile">
         <div class="card-image">
           <div class="overlay">
@@ -51,6 +37,16 @@
               <img class="picture" [src]="matchData.game.cover_link">
             </figure>
           </div>
+        </div>
+      </div>
+      
+      <div class="column is-half-tablet is-full-mobile">
+        <div class="box">
+          <h3 class="title infos">Number of players being already in the party:</h3>
+          <p class="text">{{matchData.matchmaking_request.searching_for}}</p>
+          <br>
+          <h3 class="title infos">Number of players to join the party:</h3>
+          <p class="text">{{matchData.matchmaking_request.players_in_party}}</p>
         </div>
       </div>
     </div>

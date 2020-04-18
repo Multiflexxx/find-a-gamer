@@ -59,7 +59,6 @@ export class MatchService {
       // String to bool
       filterData.playstyle.value === 'true' ? true : false
     );
-    console.log(requestMatch);
     return this.http.post<MatchMakingResponse>(this.urlS, requestMatch);
   }
 
@@ -94,7 +93,6 @@ export class MatchService {
             )
           );
         }
-        console.log(data);
         return data;
       }));
   }

@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.loginValue).subscribe(
       (data) => {
-        console.log(data);
         this.router.navigate(['/profile']);
         this.loading = false;
       },

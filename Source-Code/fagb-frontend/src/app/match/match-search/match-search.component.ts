@@ -84,19 +84,16 @@ export class MatchSearchComponent implements OnInit {
 
   public onMatchGameSubmit(): void {
     this.gameData = this.gameValue;
-    console.log(this.gameData);
   }
 
   public onMatchFilterSubmit(): void {
     this.filterData = this.filterValue;
-    console.log(this.filterData);
     this.onSubmit();
   }
 
   public onSubmit(): void {
     this.matchService.searchMatch(this.gameData, this.filterData).subscribe(
       (data) => {
-        console.log(data);
         localStorage.setItem('matchMakingResponse', JSON.stringify(data));
         this.router.navigate(['/match-process']);
       },
