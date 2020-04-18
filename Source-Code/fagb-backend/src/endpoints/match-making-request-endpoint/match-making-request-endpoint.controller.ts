@@ -7,6 +7,8 @@ import { MatchFactory } from '../../factory/matchfactory';
 import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 import { Game } from '../../data_objects/game';
 import { Session } from '../../data_objects/session';
+import { UserFactory } from 'src/factory/userfactory';
+import { PublicUser } from 'src/data_objects/publicuser';
 
 @Controller('matchmakingrequestendpoint')
 export class MatchMakingRequestEndpointController {
@@ -74,6 +76,9 @@ export class MatchMakingRequestEndpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new MatchMakingResponse(request, game);
+        // Get PublicUser by ID
+        const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(session.user_id));
+
+        return new MatchMakingResponse(publicUser, game, request);
     }
 }

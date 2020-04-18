@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
 import { NotifyMatch } from '../../data_objects/notifymatch';
 import { ConnectToDatabaseService } from '../../connecttodatabase/connecttodatabase.service';
 import { QueryBuilder } from '../../connecttodatabase/querybuilder';
@@ -42,6 +42,8 @@ export class NotifymatchendpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
+        const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(matchMakingRequest.user_id));
+
 
         // Don't question it
         //
@@ -51,12 +53,12 @@ export class NotifymatchendpointController {
         // Until now it's the only possibility we have found to check if the ID is null
         const compBuffer: Buffer = Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
         if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() === '' || compBuffer.toString() === matchMakingRequest.match_id.toString()) {
-            return new MatchMakingResponse(matchMakingRequest, game);
+            return new MatchMakingResponse(publicUser, game, matchMakingRequest);
         }
 
 
 
-        const matches = await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id);
+        const matches: MatchMakingRequest[] = await MatchFactory.getMatchMakingRequestsByMatchId(matchMakingRequest.match_id);
         if(!matches || !matches[0] || !matches[1]) {
             console.error('NotifymatchendpointController handleUpdate(): Match is null or contains to few elements');
             throw new HttpException({
@@ -66,23 +68,25 @@ export class NotifymatchendpointController {
         }
 
         // Create User Array from Matches
-        const users: PublicUser[] = [];
-        for(const match of matches) {
-            const user: User = await UserFactory.getUserByUserId(match.user_id);
-            if(!user) {
-                console.error('NotifymatchendpointController handleUpdate(): user is null');
-                throw new HttpException({
-                    status: HttpStatus.NOT_ACCEPTABLE,
-                    error: 'Matched user doesn\'t exist'
-                }, HttpStatus.NOT_ACCEPTABLE);
+        const matchedUsers: PublicUser[] = [];
+        matches.forEach(async match => {
+            if(match.user_id != matchMakingRequest.user_id) {
+                matchedUsers.push(UserFactory.userToPublicUser(await UserFactory.getUserByUserId(match.user_id)));
+                if(!matchedUsers[matchedUsers.length]) {
+                    console.error('NotifymatchendpointController handleUpdate(): user is null');
+                    throw new HttpException({
+                        status: HttpStatus.NOT_ACCEPTABLE,
+                        error: 'Matched user doesn\'t exist'
+                    }, HttpStatus.NOT_ACCEPTABLE);
+                }
             }
-            users.push(UserFactory.userToPublicUser(user));
-        }
+        });
+
 
         // console.log(matchMakingRequest);
         // console.log(game);
         // console.log(users);
 
-        return new MatchMakingResponse(matchMakingRequest, game, users);
+        return new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers);
     }
 }
