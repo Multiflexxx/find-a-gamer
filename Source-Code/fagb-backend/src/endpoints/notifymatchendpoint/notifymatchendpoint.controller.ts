@@ -88,7 +88,7 @@ export class NotifymatchendpointController {
         // console.log(matchMakingRequest);
         // console.log(game);
         // console.log(users);
-        console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers));
+        // console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers));
 
         return new MatchMakingResponse(publicUser, game, matchMakingRequest, matchedUsers);
     }

@@ -27,9 +27,9 @@ export class MatchMakingResponse {
         this.game = game;
         this.matchMakingRequest = matchMakingRequest;
         if(matchedUsers != null) {
-            this.matchedUsers = null;
-        } else {
             this.matchedUsers = matchedUsers;
+        } else {
+            this.matchedUsers = null;
         }
     }
 
