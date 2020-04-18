@@ -93,6 +93,7 @@ export class MatchService {
             )
           );
         }
+        console.log(data);
         return data;
       }));
   }
