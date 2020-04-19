@@ -15,6 +15,8 @@ import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
 import { ControlsMap } from '../_interface/controls-map';
 import { DeleteMatchMakingRequest } from '../data_objects/deletematchmakingrequest';
 import { DeleteMatchMakingResponse } from '../data_objects/deletematchmakingresponse';
+import { MatchHistoryResponse } from '../data_objects/matchhistoryresponse';
+import { MatchHistoryRequest } from '../data_objects/matchhistoryrequest';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,8 @@ export class MatchService {
   private urlS: string = '/matchmakingrequestendpoint';
   private urlN: string = '/notifymatchendpoint';
   private urlD: string = '/deleterequestendpoint';
+  private urlH: string = '/match-history';
+  private compState: number;
   private currentGamer: PublicUser;
 
   // MatchMakingResponse
@@ -39,6 +43,14 @@ export class MatchService {
     this.currentMatchMakingResponse = this.currentMatchMakingResponseSubject.asObservable();
 
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
+  }
+
+  public setCompState(num: number): void {
+    this.compState = num;
+  }
+
+  public getCompState(): number {
+    return this.compState;
   }
 
   public searchMatch(gameData: ControlsMap<AbstractControl>, filterData: ControlsMap<AbstractControl>): Observable<MatchMakingResponse> {
@@ -74,5 +86,16 @@ export class MatchService {
       requestId
     );
     return this.http.post<DeleteMatchMakingResponse>(this.urlD, deleteMatchMakingRequest);
+  }
+
+  public getMatchHistory(): Observable<MatchHistoryResponse> {
+    const sessionId = this.cookieService.get('gamer');
+
+    const matchHistoryRequest = new MatchHistoryRequest(
+      sessionId,
+      this.currentGamer.user_id,
+    );
+
+    return this.http.post<MatchHistoryResponse>(this.urlH, matchHistoryRequest);
   }
 }

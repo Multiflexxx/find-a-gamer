@@ -21,7 +21,7 @@
         <a class="navbar-item" (click)="onMatch()">
           Find a G-Buddy
         </a>
-        <a class="navbar-item">
+        <a class="navbar-item" [routerLink]="['/history']" routerLinkActive="router-link-active" >
           History
         </a>
         <div class="navbar-item">
@@ -37,65 +37,3 @@
       </div>
     </div>
   </nav>
-
-  <!-- <section class="hero is-dark is-fullheight">
-  <div class="hero-head">
-    <header class="navbar is-dark">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item">
-            <strong>FAGB</strong>
-          </a>
-          <span class="navbar-burger burger" data-target="navbarMenuHeroC">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-        <div id="navbarMenuHeroC" class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item">
-              Home
-            </a>
-            <a class="navbar-item">
-              Find a G-Buddy
-            </a>
-            <a class="navbar-item">
-              History
-            </a>
-            <span class="navbar-item">
-              <a class="button is-success">
-                <span class="icon">
-                  <i class="fas fa-sign-in-alt"></i>
-                </span>
-                <span>Sign Up</span>
-              </a>
-            </span>
-            <span class="navbar-item">
-              <a class="button is-light is-inverted">
-                <span class="icon">
-                  <i class="far fa-user-circle"></i>
-                </span>
-                <span>Log in</span>
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-    </header>
-  </div> -->
-
-  <!-- Hero content: will be in the middle -->
-  <!-- <div class="hero-body">
-    <div class="container has-text-centered">
-      <figure class="image is-fullwidth has-bg-img">
-        <h1 class="title">
-          "You'll never game alone"
-        </h1>
-        <h2 class="subtitle">
-          Multiflexxx Team
-        </h2>
-        <img src="assets\\img\\hero.jpg">
-      </figure>
-    </div>
-  </div> -->

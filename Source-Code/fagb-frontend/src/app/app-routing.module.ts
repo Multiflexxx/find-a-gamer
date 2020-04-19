@@ -7,6 +7,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthenticationGuard } from './_guards/authentication.guard';
+import { HistoryComponent } from './history/history.component';
 
 const appRoutes: Routes = [
   // {
@@ -23,6 +24,11 @@ const appRoutes: Routes = [
     path: 'register',
     canActivate: [AuthenticationGuard],
     component: RegisterComponent
+  },
+  {
+    path: 'history',
+    canActivate: [AuthenticationGuard],
+    component: HistoryComponent
   },
   {
     path: '',
