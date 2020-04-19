@@ -5,6 +5,7 @@ import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { QueryObject } from '../data_objects/queryobject';
 import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
+import { DiscordInformation } from 'src/data_objects/discordinformation';
 
 export class QueryBuilder {
     public static createUser(registration: Registration): QueryObject {
@@ -388,6 +389,28 @@ export class QueryBuilder {
             "SELECT count(*) as amount FROM MatchMakingRequest WHERE user_id = ? AND match_id IS NOT NULL GROUP BY user_id;",
             [
                 user_id
+            ]
+        );
+    }
+
+    public static saveDiscordInfo(discordInformation: DiscordInformation): QueryObject {
+        return new QueryObject(
+            "INSERT INTO Discord_Info (token, user_id, username, avatar, discriminator) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?);",
+            [
+                discordInformation.token,
+                discordInformation.userID,
+                discordInformation.username,
+                discordInformation.avatar,
+                discordInformation.discriminator
+            ]
+        );
+    }
+
+    public static getDiscordInfo(token: string): QueryObject {
+        return new QueryObject(
+            "SELECT BIN_TO_UUID(token) as token, user_id, username, avatar, discriminator FROM Discord_Info WHERE token = UUID_TO_BIN(?);",
+            [
+                token
             ]
         );
     }
