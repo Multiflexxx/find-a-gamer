@@ -19,9 +19,11 @@ import { DeleteMatchMakingRequest } from '../../data_objects/deletematchmakingre
 import { DeleteRequestEndpointController } from '../delete-request-endpoint/delete-request-endpoint.controller';
 import { DeleteProfileResponse } from '../../data_objects/deleteprofileresponse';
 import { DeleteMatchMakingResponse } from '../../data_objects/deletematchmakingresponse';
+import { Discord } from '../../factory/discord';
 
 describe('MatchMakingRequestEndpoint Controller', () => {
   let matchMakingController: MatchMakingRequestEndpointController;
+
 
   let profileDeleteEndpointController: ProfileDeleteEndpointController;
   let registrationEndpointController: RegistrationendpointController;
@@ -44,6 +46,8 @@ describe('MatchMakingRequestEndpoint Controller', () => {
     loginEndpointController = module.get<LoginendpointController>(LoginendpointController);
     deleteRequestEndpointController = module.get<DeleteRequestEndpointController>(DeleteRequestEndpointController);
 
+    let discordToken: string = await Discord.saveDiscordInformation('654654643514', 'testNickname', '', '1234');
+
     registration = new Registration(
       'mail@mail' + randomNumber + '.com',
       'test123',
@@ -56,7 +60,7 @@ describe('MatchMakingRequestEndpoint Controller', () => {
       ],
       [
         new Game(1)
-      ]
+      ], discordToken
     );
 
     login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);
@@ -70,7 +74,7 @@ describe('MatchMakingRequestEndpoint Controller', () => {
 
     loginResponse = await loginEndpointController.handleLogin(login);
 
-    const user: User = new User(userId, 'mail@mail' + randomNumber + '.com', 'test123', 'testNickname', 'testNickname#1234', '', new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), '');
+    const user: PublicUser = new PublicUser(loginResponse.user.user_id, 'testNickname', 'testNickname#1234', new Date('1999-12-31T23:00:00.000Z'), new Region(1, 'EU'), [new Game(1)], [new Language(1)]);
 
     expect(loginResponse).toBeDefined();
     expect(loginResponse.user.user_id).toEqual(userId);
@@ -84,7 +88,7 @@ describe('MatchMakingRequestEndpoint Controller', () => {
     expect(matchMakingResult).toBeDefined();
     expect(matchMakingResult.game.game_id).toEqual(1);
 
-    const requestID = matchMakingResult.matchmaking_request.request_id;
+    const requestID = matchMakingResult.matchMakingRequest.request_id;
 
     // matchmaking does exist
     let matchmakingResult2: MatchMakingResponse;

@@ -1,6 +1,6 @@
 import { Controller, Get, Req, HttpModule, HttpService, Res, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Router, Response } from 'express';
-import { Discord } from 'src/factory/discord';
+import { Discord } from '../../factory/discord';
 
 
 let fetch = require('node-fetch');

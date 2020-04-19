@@ -10,8 +10,8 @@ import { match } from 'assert';
 import { UploadedFile } from '@nestjs/common';
 import { throwError } from 'rxjs';
 import { User } from '../data_objects/user';
-import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
-import { PublicUser } from 'src/data_objects/publicuser';
+import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
+import { PublicUser } from '../data_objects/publicuser';
 import { GameFactory } from './gamefactory';
 
 export class MatchFactory {

@@ -17,7 +17,7 @@ import { UserLanguagePairFactory } from '../../factory/userlanguagepairfactory';
 import { LanguageFactory } from '../../factory/languagefactory';
 import { RegionFactory } from '../../factory/regionfactory';
 import { Session } from '../../data_objects/session';
-import { PublicUser } from 'src/data_objects/publicuser';
+import { PublicUser } from '../../data_objects/publicuser';
 
 @Controller('profileupdateendpoint')
 export class ProfileUpdateEndpointController {

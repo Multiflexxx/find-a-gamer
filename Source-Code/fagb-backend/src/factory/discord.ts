@@ -1,8 +1,8 @@
-import { DiscordInformation } from "src/data_objects/discordinformation";
-import { QueryObject } from "src/data_objects/queryobject";
-import { QueryBuilder } from "src/connecttodatabase/querybuilder";
+import { DiscordInformation } from "../data_objects/discordinformation";
+import { QueryObject } from "../data_objects/queryobject";
+import { QueryBuilder } from "../connecttodatabase/querybuilder";
 import { v4 as uuidv4 } from 'uuid';
-import { ConnectToDatabaseService } from "src/connecttodatabase/connecttodatabase.service";
+import { ConnectToDatabaseService } from "../connecttodatabase/connecttodatabase.service";
 
 export class Discord {
 

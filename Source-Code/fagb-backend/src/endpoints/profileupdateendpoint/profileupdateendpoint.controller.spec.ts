@@ -14,6 +14,7 @@ import { ProfileDeleteEndpointController } from '../profiledeleteendpoint/profil
 import { async } from 'rxjs/internal/scheduler/async';
 import { EditProfileRequest } from '../../data_objects/editprofilerequest';
 import { PublicUser } from '../../data_objects/publicuser';
+import { Discord } from '../../factory/discord';
 
 describe('Profileupdateendpoint Controller', () => {
   let profileUpdateController: ProfileUpdateEndpointController;
@@ -36,6 +37,8 @@ describe('Profileupdateendpoint Controller', () => {
     registrationEndpointController = module.get<RegistrationendpointController>(RegistrationendpointController);
     loginEndpointController = module.get<LoginendpointController>(LoginendpointController);
 
+    let discordToken: string = await Discord.saveDiscordInformation('65546434', 'testNickname', '', '1234');
+
     registration = new Registration(
       'mail@mail' + randomNumber + '.com',
       'test123',
@@ -48,8 +51,7 @@ describe('Profileupdateendpoint Controller', () => {
       ],
       [
         new Game(1)
-      ]
-      , ""
+      ], discordToken
     );
 
     login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);
@@ -64,11 +66,11 @@ describe('Profileupdateendpoint Controller', () => {
 
     loginResponse = await loginEndpointController.handleLogin(login);
 
-    const user: User = new User(userId, 'mail@mail' + randomNumber + '.com', 'test123', 'testNickname', 'testNickname#1234', '', new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), '');
+    const user: PublicUser = new PublicUser(loginResponse.user.user_id, 'testNickname', 'testNickname#1234', new Date('1999-12-31T23:00:00.000Z'), new Region(1, 'EU'), [new Game(1)], [new Language(1)]);
 
     expect(loginResponse).toBeDefined();
     expect(loginResponse.user.user_id).toEqual(userId);
-    expect(loginResponse.user.biography).toEqual(null);
+    expect(loginResponse.user.biography).toEqual(' ');
 
     // update
     const publicUser: PublicUser = new PublicUser(userId, 'testNickname', 'testNickname#1234', new Date('1999-12-31T23:00:00.000Z'), new Region(1, 'EU'), [new Game(1), new Game(2)], [new Language(1), new Language(2)], '', 'new Bio');
