@@ -26,10 +26,10 @@ export class MatchMakingResponse {
         this.user = user;
         this.game = game;
         this.matchMakingRequest = matchMakingRequest;
-        if (matchedUsers != null) {
-            this.matchedUsers = null;
-        } else {
+        if(matchedUsers != null) {
             this.matchedUsers = matchedUsers;
+        } else {
+            this.matchedUsers = null;
         }
     }
 

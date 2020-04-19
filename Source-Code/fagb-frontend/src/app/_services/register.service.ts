@@ -24,13 +24,11 @@ export class RegisterService {
 
   public register(profileData: ControlsMap<AbstractControl>, gameData: ControlsMap<AbstractControl>): Observable<Session> {
     const games: Array<Game> = [];
-    console.log(gameData.game.value);
     const gameids: Array<number> = JSON.parse(gameData.game.value);
     for (const gameid of gameids) {
       games.push(new Game(gameid));
     }
     const langs: Array<Language> = [];
-    console.log(profileData.lang.value);
     const langids: Array<number> = profileData.lang.value;
     for (const langid of langids) {
       langs.push(new Language(langid));
@@ -48,9 +46,6 @@ export class RegisterService {
       langs,
       games
     );
-
-    console.log(registration);
-    console.log(JSON.stringify(registration));
 
     return this.http.post<Session>(this.url, registration)
       .pipe(map(regGamer => {

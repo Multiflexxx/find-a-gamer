@@ -93,7 +93,6 @@ export class MatchService {
             )
           );
         }
-        console.log(data);
         return data;
       }));
   }
@@ -105,7 +104,4 @@ export class MatchService {
     );
     return this.http.post<DeleteMatchMakingResponse>(this.urlD, deleteMatchMakingRequest);
   }
-
-  // this.authenticationService.session.session_id,
-
 }

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthenticationGuard } from './_guards/authentication.guard';
 
 const appRoutes: Routes = [
   // {
@@ -15,14 +16,17 @@ const appRoutes: Routes = [
   // },
   {
     path: 'login',
+    canActivate: [AuthenticationGuard],
     component: LoginComponent
   },
   {
     path: 'register',
+    canActivate: [AuthenticationGuard],
     component: RegisterComponent
   },
   {
     path: '',
+    canActivate: [AuthenticationGuard],
     component: LandingPageComponent
   },
   {

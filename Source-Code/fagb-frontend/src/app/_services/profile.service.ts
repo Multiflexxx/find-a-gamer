@@ -31,13 +31,11 @@ export class ProfileService {
   }
 
   public updateProfile(profileUpdateValue: ControlsMap<AbstractControl>): Observable<EditProfileResponse> {
-    console.log(profileUpdateValue);
     const games: Array<Game> = [];
     const gameids: Array<number> = JSON.parse(profileUpdateValue.game.value);
     for (const gameid of gameids) {
       games.push(new Game(gameid));
     }
-    console.log(games);
 
     const langs: Array<Language> = [];
     const langids: Array<number> = profileUpdateValue.lang.value;

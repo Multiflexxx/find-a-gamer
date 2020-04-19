@@ -94,7 +94,6 @@ export class MatchSearchComponent implements OnInit {
   public onSubmit(): void {
     this.matchService.searchMatch(this.gameData, this.filterData).subscribe(
       (data) => {
-        console.log(data);
         localStorage.setItem('matchMakingResponse', JSON.stringify(data));
         this.router.navigate(['/match-process']);
       },

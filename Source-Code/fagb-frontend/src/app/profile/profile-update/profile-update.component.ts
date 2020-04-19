@@ -134,7 +134,8 @@ export class ProfileUpdateComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        console.log(error.error.error);
+        console.log('Fehler');
+        console.log(error.error);
       }
     );
   }

@@ -30,34 +30,37 @@
 
   <div class="container">
     <div class="columns is-multiline is-mobile">
-      <div class="column is-half-tablet is-full-mobile">
+      <div class="column is-half-desktop is-full-tablet is-full-mobile">
+        <div class="box">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td class="title is-5">Game:</td>
+                  <td class="title is-5">{{matchData.game.name}}</td>
+                </tr>
+                <tr>
+                  <td class="title is-5">Players in your party:</td>
+                  <td class="title is-5">{{matchData.matchMakingRequest .searching_for}}</td>
+                </tr>
+                <tr>
+                  <td class="title is-5">Players to join party:</td>
+                  <td class="title is-5">{{matchData.matchMakingRequest.players_in_party}}</td>
+                </tr>
+                <tr>
+                  <td class="title is-5">Region:</td>
+                  <td class="title is-5">{{matchData.user.region.region_id}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="column is-half-desktop is-full-tablet">
         <div class="card-image">
           <div class="overlay">
             <figure class="image is-2by1">
               <img class="picture" [src]="matchData.game.cover_link">
             </figure>
           </div>
-        </div>
-      </div>
-
-      <div class="column is-half-tablet is-full-mobile">
-        <div class="box">
-          <table class="table">
-            <tbody>
-              <tr>
-                <td class="title is-5">Game:</td>
-                <td class="title is-5">{{matchData.game.name}}</td>
-              </tr>
-              <tr>
-                <td class="title is-5">Players in your party:</td>
-                <td class="title is-5">{{matchData.matchMakingRequest .searching_for}}</td>
-              </tr>
-              <tr>
-                <td class="title is-5">Players to join party:</td>
-                <td class="title is-5">{{matchData.matchMakingRequest.players_in_party}}</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
