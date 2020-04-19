@@ -14,7 +14,7 @@ import { PublicUser } from 'src/data_objects/publicuser';
 export class MatchMakingRequestEndpointController {
     @Post()
     public async requestMatch(@Body() matchmakingRequest: MatchMakingRequest): Promise<MatchMakingResponse> {
-
+ 
         // MatchFactory.createMatch(1);
         // matchmakingRequest = new MatchMakingRequest("b9117c5e-8c9e-4e5e-be97-717677c8ecfd", 2, 1, 1, 1, true, null);
         // Check if Session is valid for User
@@ -79,7 +79,7 @@ export class MatchMakingRequestEndpointController {
         // Get PublicUser by ID
         const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(session.user_id));
 
-        console.log(new MatchMakingResponse(publicUser, game, request));
+        // console.log(new MatchMakingResponse(publicUser, game, request));
 
         return new MatchMakingResponse(publicUser, game, request);
     }

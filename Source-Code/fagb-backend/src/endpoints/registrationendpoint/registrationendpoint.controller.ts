@@ -15,6 +15,8 @@ import { LanguageFactory } from '../../factory/languagefactory';
 import { User } from '../../data_objects/user';
 import { GameFactory } from '../../factory/gamefactory';
 import { RegionFactory } from '../../factory/regionfactory';
+import { Discord } from 'src/factory/discord';
+import { DiscordInformation } from 'src/data_objects/discordinformation';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
@@ -146,6 +148,16 @@ export class RegistrationendpointController {
         }
 
         if (registration.password_hash === null || registration.password_hash === '') {
+            return false;
+        }
+
+        // finally check if discord token is valid
+        if(!registration.discordToken || !(new RegExp('([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12})').test(registration.discordToken))) {
+            return false;
+        }
+
+        const discordInfo: DiscordInformation = await Discord.getDiscordInformation(registration.discordToken)
+        if(!discordInfo || `${discordInfo.username}#${discordInfo.discriminator}` !== registration.discord_tag) {
             return false;
         }
 

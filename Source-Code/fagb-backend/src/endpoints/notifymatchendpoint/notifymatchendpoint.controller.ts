@@ -53,7 +53,7 @@ export class NotifymatchendpointController {
         // Until now it's the only possibility we have found to check if the ID is null
         const compBuffer: Buffer = Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
         if(!matchMakingRequest.match_id || !matchMakingRequest.match_id.toString() || matchMakingRequest.match_id.toString() === '' || compBuffer.toString() === matchMakingRequest.match_id.toString()) {
-            console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest));
+            // console.log(new MatchMakingResponse(publicUser, game, matchMakingRequest));
             return new MatchMakingResponse(publicUser, game, matchMakingRequest);
         }
 
