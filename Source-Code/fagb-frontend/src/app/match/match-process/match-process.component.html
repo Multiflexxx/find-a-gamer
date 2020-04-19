@@ -32,7 +32,49 @@
     <div class="columns is-multiline is-mobile">
       <div class="column is-half-desktop is-full-tablet is-full-mobile">
         <div class="box">
-            <table class="table">
+          <!-- <div class="columns is-multiline">
+            <div class="column">Game:</div>
+            <div class="column">{{matchData.game.name}}</div>
+          </div>   -->
+
+          <table class="table">
+            <tbody>
+              <tr>
+                <td class="title is-5">
+                  <div class="columns is-multiline is-mobile">
+                    <div class="column is-one-third">Game:</div>
+                    <div class="column column-table">{{matchData.game.name}}</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title is-5">
+                  <div class="columns is-multiline is-mobile">
+                    <div class="column is-four-fifths">Players in your party:</div>
+                    <div class="column column-table">{{matchData.matchMakingRequest .searching_for}}</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title is-5">
+                  <div class="columns is-multiline is-mobile">
+                    <div class="column is-four-fifths">Players to join party:</div>
+                    <div class="column column-table">{{matchData.matchMakingRequest.players_in_party}}</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="title is-5">
+                  <div class="columns is-multiline is-mobile">
+                    <div class="column is-one-third">Region:</div>
+                    <div class="column column-table">{{matchData.user.region.name}}</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- <table class="table">
               <tbody>
                 <tr>
                   <td class="title is-5">Game:</td>
@@ -48,10 +90,11 @@
                 </tr>
                 <tr>
                   <td class="title is-5">Region:</td>
-                  <td class="title is-5">{{matchData.user.region.region_id}}</td>
+                  <td class="title is-5">{{matchData.user.region.name}}</td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
+
         </div>
       </div>
       <div class="column is-half-desktop is-full-tablet">
