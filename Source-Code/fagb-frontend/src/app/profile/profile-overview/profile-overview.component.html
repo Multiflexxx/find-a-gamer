@@ -48,7 +48,7 @@
           <p class="text">{{lang}}</p>
         </div>
       </div>
-      <div class="column is-full">
+      <div *ngIf="gamer.biography.length > 0" class="column is-full">
         <div class="box">
           <h1 class="title">Bio:</h1>
           <p class="text">{{gamer.biography}}</p>

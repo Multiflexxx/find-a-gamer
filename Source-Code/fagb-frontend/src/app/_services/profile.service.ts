@@ -31,7 +31,6 @@ export class ProfileService {
   }
 
   public updateProfile(profileUpdateValue: ControlsMap<AbstractControl>): Observable<EditProfileResponse> {
-    console.log(profileUpdateValue);
     const games: Array<Game> = [];
     const gameids: Array<number> = JSON.parse(profileUpdateValue.game.value);
     for (const gameid of gameids) {
@@ -44,12 +43,6 @@ export class ProfileService {
       langs.push(new Language(langid));
     }
 
-    let biography: string = '';
-    if (profileUpdateValue.biography.value.length === 0) {
-        console.log('Ist er leer?');
-        biography = profileUpdateValue.biography.value;
-    }
-
     const region: Region = new Region(profileUpdateValue.region.value);
     let publicUser: PublicUser = new PublicUser(
       this.currentGamer.user_id,
@@ -60,11 +53,8 @@ export class ProfileService {
       games,
       langs,
       this.currentGamer.profile_picture,
-      biography
-      // profileUpdateValue.biography.value
+      profileUpdateValue.biography.value
     );
-
-    console.log(publicUser);
 
     if (publicUser.region.region_id === this.currentGamer.region.region_id
       && this.equalGame(publicUser.games, this.currentGamer.games)
