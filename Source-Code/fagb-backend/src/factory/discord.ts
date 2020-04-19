@@ -38,7 +38,7 @@ export class Discord {
         let discordInfo: DiscordInformation;
         try {
             let result: any = (await ConnectToDatabaseService.executeQuery(query))[0]
-            discordInfo = new DiscordInformation(result.token, result.userID, result.username, result.avatar, result.discriminator)
+            discordInfo = new DiscordInformation(result.token.toString(), result.user_id, result.username, result.avatar, result.discriminator)
         } catch(e) {
             console.error("Discord getDiscordInformation(): Database query threw exception");
             console.error(e);
