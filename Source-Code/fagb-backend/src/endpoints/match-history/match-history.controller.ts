@@ -11,10 +11,10 @@ import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 @Controller('match-history')
 export class MatchHistoryController {
 
-    @Post()
+    @Get()
     public async getMatchHistory(@Body() matchHistoryRequest: MatchHistoryRequest): Promise<MatchHistoryResponse> {
 
-        // matchHistoryRequest = new MatchHistoryRequest("c943e748-9c53-4f9b-bbc8-690a4813bf81", 201, 0, 10);
+        // matchHistoryRequest = new MatchHistoryRequest("77016cf2-2600-4d8b-b2dd-2b1bebf2a29d", 201, 0, 10);
         // Validate Request
         // Get Session by Session Id
         const session: Session = await SessionFactory.getSessionBySessionId(matchHistoryRequest.session_id);
@@ -26,7 +26,7 @@ export class MatchHistoryController {
         }
 
         // Get Public User
-        const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(session.user_id));
+        const publicUser: PublicUser = await UserFactory.userToPublicUser(await UserFactory.getUserByUserId(matchHistoryRequest.user_id));
         let history: MatchMakingResponse[];
 
         // Get MatchHistory without Paging

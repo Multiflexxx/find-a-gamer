@@ -15,12 +15,27 @@ import { Language } from '../data_objects/language';
 import { PublicUser } from '../data_objects/publicuser';
 import { QueryObject } from '../data_objects/queryobject';
 import { EditProfileRequest } from '../data_objects/editprofilerequest';
+import { DiscordInformation } from 'src/data_objects/discordinformation';
+import { Discord } from './discord';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
         // Create discord avatar URL from discordInformation
+        const path: string = "../../discordAPI.json";
+        const discord: any = await require(path);
+
+        // Get Discord information
+        const discordInfo: DiscordInformation = await Discord.getDiscordInformation(registration.discordToken);
+        const avatarUrl: string = `${discord.discord_avatars_uri}${discordInfo.userID}/${discordInfo.avatar}.png`;
+
+        // Delete Discord Information from DB
+        if(!(await Discord.deleteDiscordInformation(registration.discordToken))) {
+            console.error("UserFactory createUser(): Couldn't delete Discord Info");
+            return null;
+        }
+
         // Create User
-        const query: QueryObject = QueryBuilder.createUser(registration);
+        const query: QueryObject = QueryBuilder.createUser(registration, avatarUrl);
         let successful: boolean = false;
 
         try {

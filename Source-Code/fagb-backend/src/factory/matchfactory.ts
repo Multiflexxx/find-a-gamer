@@ -357,7 +357,7 @@ export class MatchFactory {
 
         let history: MatchMakingResponse[] = [];
         for(let request of result) {
-            history.push(await MatchFactory.matchToMatchMakingResponse(publicUser, new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id)));
+            history.push(await MatchFactory.matchToMatchMakingResponse(publicUser, new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id.toString(), request.time_stamp, request.request_id)));
         }
         // console.log(history);
 
@@ -381,6 +381,7 @@ export class MatchFactory {
                 let tempUser: User = await UserFactory.getUserByUserId(request.user_id);
                 // console.log(tempUser);
                 matchedUsers.push(await UserFactory.userToPublicUser(tempUser));
+                // matchedUsers.push(null);
             }
         }
 

@@ -8,16 +8,17 @@ import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 import { DiscordInformation } from 'src/data_objects/discordinformation';
 
 export class QueryBuilder {
-    public static createUser(registration: Registration): QueryObject {
+    public static createUser(registration: Registration, avatarUrl: string): QueryObject {
         return new QueryObject(
-            'INSERT INTO User (email, password_hash, nickname, discord_tag, cake_day, birthdate, region_id) VALUES (?, ?, ?, ?, CURRENT_DATE, ?, ?);',
+            'INSERT INTO User (email, password_hash, nickname, discord_tag, cake_day, birthdate, region_id, profile_picture) VALUES (?, ?, ?, ?, CURRENT_DATE, ?, ?, ?);',
              [
                 registration.email,
                 registration.password_hash,
                 registration.nickname,
                 registration.discord_tag,
                 registration.birthdate,
-                registration.region.region_id
+                registration.region.region_id,
+                avatarUrl
              ]
         );
     }
@@ -409,6 +410,15 @@ export class QueryBuilder {
     public static getDiscordInfo(token: string): QueryObject {
         return new QueryObject(
             "SELECT BIN_TO_UUID(token) as token, user_id, username, avatar, discriminator FROM Discord_Info WHERE token = UUID_TO_BIN(?);",
+            [
+                token
+            ]
+        );
+    }
+
+    public static deleteDiscordInfo(token: string): QueryObject {
+        return new QueryObject(
+            "DELETE FROM Discord_Info WHERE token = UUID_TO_BIN(?);",
             [
                 token
             ]
