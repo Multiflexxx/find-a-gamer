@@ -1,16 +1,26 @@
-.center{
-    text-align: center;
+.center {
+  text-align: center;
 }
-.title{
-    text-transform: uppercase;
+
+.box {
+  background-color: #333;
 }
-.box{
-    background-color: #333;
+
+.current-user {
+    border: 2px solid hsl(217, 71%, 53%);
 }
-.text{
-    color: white;
+
+.text,
+.title {
+  color: white;
 
 }
-.title{
-    color: white;
+
+table {
+  width: 100%;
+  background-color: #333;
+}
+
+.column-table {
+  text-align: right;
 }

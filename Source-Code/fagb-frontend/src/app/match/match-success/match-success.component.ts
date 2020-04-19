@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MatchService } from '../../_services';
-
-import { PublicUser } from '../../data_objects/publicuser';
-import { Game } from 'src/app/data_objects/game';
+import { MatchMakingResponse } from 'src/app/data_objects/matchmakingresponse';
 
 @Component({
   selector: 'app-match-success',
@@ -11,15 +9,12 @@ import { Game } from 'src/app/data_objects/game';
   styleUrls: ['./match-success.component.scss']
 })
 export class MatchSuccessComponent implements OnInit {
-  public matchUsers: Array<PublicUser>;
-  public matchGame: Game;
+  public matchResponse: MatchMakingResponse;
 
   public constructor(private matchService: MatchService) { }
 
   public ngOnInit(): void {
     localStorage.removeItem('matchMakingResponse');
-    this.matchService.currentMatchUsers.subscribe(matchUsers => this.matchUsers = matchUsers);
-    this.matchService.currentMatchGame.subscribe(matchGame => this.matchGame = matchGame);
+    this.matchService.currentMatchMakingResponse.subscribe(data => this.matchResponse = data);
   }
-
 }

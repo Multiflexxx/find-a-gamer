@@ -17,7 +17,10 @@ export class AuthenticationGuard implements CanActivate {
   ) { }
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const url: string = state.url;
+    let url: string = state.url;
+    url = url.split('?')[0];
+
+    console.log(url);
 
     if (url === '/' || url === '/register' || url === '/login') {
       console.log('Login');

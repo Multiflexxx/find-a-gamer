@@ -18,15 +18,15 @@ export class MatchMakingRequest {
         this.players_in_party = players_in_party;
         this.casual = casual;
 
-        if(match_id) {
+        if (match_id) {
             this.match_id = match_id;
         }
 
-        if(time_stamp) {
+        if (time_stamp) {
             this.time_stamp = time_stamp;
         }
 
-        if(request_id) {
+        if (request_id) {
             this.request_id = request_id;
         }
     }

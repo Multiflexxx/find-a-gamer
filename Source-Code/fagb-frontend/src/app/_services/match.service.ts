@@ -20,29 +20,23 @@ import { DeleteMatchMakingResponse } from '../data_objects/deletematchmakingresp
   providedIn: 'root'
 })
 export class MatchService {
-  public currentMatchUsers: Observable<PublicUser[]>;
-  public currentMatchGame: Observable<Game>;
+  public currentMatchMakingResponse: Observable<MatchMakingResponse>;
+
   private urlS: string = '/matchmakingrequestendpoint';
   private urlN: string = '/notifymatchendpoint';
   private urlD: string = '/deleterequestendpoint';
   private currentGamer: PublicUser;
 
-  // Users
-  private currentMatchUsersSubject: BehaviorSubject<PublicUser[]>;
-
-  // Game
-  private currentMatchGameSubject: BehaviorSubject<Game>;
+  // MatchMakingResponse
+  private currentMatchMakingResponseSubject: BehaviorSubject<MatchMakingResponse>;
 
   public constructor(
     private http: HttpClient,
     private cookieService: CookieService,
     private authenticationService: AuthenticationService
   ) {
-    this.currentMatchUsersSubject = new BehaviorSubject<PublicUser[]>(null);
-    this.currentMatchUsers = this.currentMatchUsersSubject.asObservable();
-
-    this.currentMatchGameSubject = new BehaviorSubject<Game>(null);
-    this.currentMatchGame = this.currentMatchGameSubject.asObservable();
+    this.currentMatchMakingResponseSubject = new BehaviorSubject<MatchMakingResponse>(null);
+    this.currentMatchMakingResponse = this.currentMatchMakingResponseSubject.asObservable();
 
     this.authenticationService.currentGamer.subscribe(gamer => this.currentGamer = gamer);
   }
@@ -54,8 +48,8 @@ export class MatchService {
       this.currentGamer.user_id,
       // first game_id of string array as num
       +gameData.game.value[1],
-      filterData.playerParty.value,
       filterData.playerSearch.value,
+      filterData.playerParty.value,
       // String to bool
       filterData.playstyle.value === 'true' ? true : false
     );
@@ -67,31 +61,8 @@ export class MatchService {
     return this.http.post<MatchMakingResponse>(this.urlN, notifyMatch)
       .pipe(map(data => {
         if (data && !!data.matchedUsers) {
-          const matchUseres: PublicUser[] = [];
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = 0; i < data.matchedUsers.length; i++) {
-            matchUseres.push(new PublicUser(
-              data.matchedUsers[i].user_id,
-              data.matchedUsers[i].nickname,
-              data.matchedUsers[i].discord_tag,
-              data.matchedUsers[i].cake_day,
-              data.matchedUsers[i].region,
-              null,
-              null)
-            );
-          }
-          this.currentMatchUsersSubject.next(matchUseres);
-
-          this.currentMatchGameSubject.next(
-            new Game(
-              data.game.game_id,
-              data.game.name,
-              data.game.cover_link,
-              data.game.game_description,
-              data.game.publisher,
-              data.game.published
-            )
-          );
+          console.log(data);
+          this.currentMatchMakingResponseSubject.next(data);
         }
         return data;
       }));
