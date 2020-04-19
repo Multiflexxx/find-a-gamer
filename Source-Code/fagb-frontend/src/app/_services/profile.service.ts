@@ -37,12 +37,17 @@ export class ProfileService {
     for (const gameid of gameids) {
       games.push(new Game(gameid));
     }
-    console.log(games);
 
     const langs: Array<Language> = [];
     const langids: Array<number> = profileUpdateValue.lang.value;
     for (const langid of langids) {
       langs.push(new Language(langid));
+    }
+
+    let biography: string = '';
+    if (profileUpdateValue.biography.value !== '') {
+        console.log('Ist er leer?');
+        biography = profileUpdateValue.biography.value;
     }
 
     const region: Region = new Region(profileUpdateValue.region.value);
@@ -55,8 +60,11 @@ export class ProfileService {
       games,
       langs,
       this.currentGamer.profile_picture,
-      profileUpdateValue.biography.value
+      biography
+      // profileUpdateValue.biography.value
     );
+
+    console.log(publicUser);
 
     if (publicUser.region.region_id === this.currentGamer.region.region_id
       && this.equalGame(publicUser.games, this.currentGamer.games)

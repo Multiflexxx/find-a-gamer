@@ -68,14 +68,10 @@ export class AuthenticationGuard implements CanActivate {
   private checkRequest(): void {
     const matchData: MatchMakingResponse = JSON.parse(localStorage.getItem('matchMakingResponse'));
     if (matchData !== null && matchData.user.user_id === this.authenticationService.currentGamerValue.user_id) {
-      console.log('Was testet er...');
-      console.log(matchData);
       if (!!matchData.matchedUsers) {
         this.router.navigate(['match-success']);
-        console.log('Richtig');
       } else {
         this.router.navigate(['match-process']);
-        console.log('Falsch');
       }
     } else {
       this.router.navigate(['match']);
