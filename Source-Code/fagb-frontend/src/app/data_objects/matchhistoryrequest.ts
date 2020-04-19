@@ -10,11 +10,11 @@ export class MatchHistoryRequest {
         this.session_id = session_id;
         this.user_id = user_id;
 
-        if (first != null && next != null) {
-            this.first = first;
+        if(first != null && next != null) {
+            this.first = first; 
             this.next = next;
         } else {
-            this.first = null;
+            this.first = null; 
             this.next = null;
         }
     }

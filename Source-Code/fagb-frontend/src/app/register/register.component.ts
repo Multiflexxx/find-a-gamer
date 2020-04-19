@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent } from '@angular/cdk/stepper';
 
 // Import Validator
@@ -25,7 +25,7 @@ import { MatStepper } from '@angular/material/stepper';
     provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
   }]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
   // Stepper values
   public isEditable: boolean = false;
   public hideP: boolean = true;
@@ -53,17 +53,22 @@ export class RegisterComponent implements OnInit {
   public regionList: Array<Region> = [];
   public langList: Array<Language> = [];
 
-  @ViewChild('stepper') private stepper: MatStepper;
+  @ViewChild('stepper') public stepper: MatStepper;
+
+  private successful: boolean;
+  private token: string;
 
   public constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private registerService: RegisterService,
     private authenticationService: AuthenticationService,
     private regionService: RegionService,
     private languageService: LanguageService,
     private gameService: GameService,
-    private toastrService: ToastrService, ) {
+    private toastrService: ToastrService,
+  ) {
 
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
@@ -82,6 +87,26 @@ export class RegisterComponent implements OnInit {
 
     this.gameService.setCompState(GameSelectStatus.COMP_REGISTER);
     this.gameService.setFormState(GameSelectStatus.FORM_REGISTER);
+  }
+
+  public ngAfterViewInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.successful = params.successful;
+      this.token = params.token;
+      console.log(this.token);
+    });
+
+    if (this.successful) {
+      this.stepper.selectedIndex = 1;
+      this.registerService.getDiscordData(this.token).subscribe(
+        (data) => {
+          console.log(data);
+        },
+        (error) => {
+          console.error(error.error.error);
+        }
+      );
+    }
   }
 
   public createForm(): void {

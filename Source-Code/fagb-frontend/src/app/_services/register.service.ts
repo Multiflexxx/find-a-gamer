@@ -12,6 +12,7 @@ import { Region } from '../data_objects/region';
 import { Registration } from '../data_objects/registration';
 import { Session } from '../data_objects/session';
 import { ControlsMap } from '../_interface/controls-map';
+import { DiscordInformation } from '../data_objects/discordinformation';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,13 @@ import { ControlsMap } from '../_interface/controls-map';
 export class RegisterService {
 
   private url: string = '/registrationendpoint';
+  private urlD: string = '/discord-data';
 
   public constructor(private http: HttpClient, private cookieService: CookieService) { }
+
+  public getDiscordData(token: string): Observable<DiscordInformation> {
+    return this.http.post<DiscordInformation>(this.urlD, token);
+  }
 
   public register(profileData: ControlsMap<AbstractControl>, gameData: ControlsMap<AbstractControl>): Observable<Session> {
     const games: Array<Game> = [];
@@ -36,6 +42,8 @@ export class RegisterService {
 
     const region: Region = new Region(profileData.region.value);
 
+    const discordToken: string = 'f961c7ff-f79c-4b13-9f8d-6e69a76c72e7';
+
     const registration: Registration = new Registration(
       profileData.email.value,
       profileData.password.value,
@@ -44,7 +52,8 @@ export class RegisterService {
       profileData.date.value,
       region,
       langs,
-      games
+      games,
+      discordToken
     );
 
     return this.http.post<Session>(this.url, registration)

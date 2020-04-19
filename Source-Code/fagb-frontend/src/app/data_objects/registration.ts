@@ -11,8 +11,9 @@ export class Registration {
     public region: Region;
     public languages: Language[];
     public games: Game[];
+    public discordToken: string;
 
-    public constructor(email: string, password_hash: string, nickname: string, discord_tag: string, birthdate: Date, region: Region, languages: Language[], games: Game[]) {
+    public constructor(email: string, password_hash: string, nickname: string, discord_tag: string, birthdate: Date, region: Region, languages: Language[], games: Game[], discordToken: string) {
         this.email = email;
         this.password_hash = password_hash;
         this.nickname = nickname;
@@ -21,5 +22,6 @@ export class Registration {
         this.region = region;
         this.languages = languages;
         this.games = games;
+        this.discordToken = discordToken;
     }
 }
