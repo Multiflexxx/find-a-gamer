@@ -49,6 +49,7 @@ describe('Profileupdateendpoint Controller', () => {
       [
         new Game(1)
       ]
+      , ""
     );
 
     login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);

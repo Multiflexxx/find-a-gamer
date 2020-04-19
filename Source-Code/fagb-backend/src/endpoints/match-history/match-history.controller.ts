@@ -1,4 +1,4 @@
-import { Controller, HttpException, HttpStatus, Body, Get } from '@nestjs/common';
+import { Controller, HttpException, HttpStatus, Body, Get, Post } from '@nestjs/common';
 import { MatchHistoryRequest } from 'src/data_objects/matchhistoryrequest';
 import { MatchHistoryResponse } from 'src/data_objects/matchhistoryresponse';
 import { SessionFactory } from 'src/factory/sessionfactory';
@@ -11,10 +11,10 @@ import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
 @Controller('match-history')
 export class MatchHistoryController {
 
-    @Get()
+    @Post()
     public async getMatchHistory(@Body() matchHistoryRequest: MatchHistoryRequest): Promise<MatchHistoryResponse> {
 
-        matchHistoryRequest = new MatchHistoryRequest("c943e748-9c53-4f9b-bbc8-690a4813bf81", 201, 0, 10);
+        // matchHistoryRequest = new MatchHistoryRequest("c943e748-9c53-4f9b-bbc8-690a4813bf81", 201, 0, 10);
         // Validate Request
         // Get Session by Session Id
         const session: Session = await SessionFactory.getSessionBySessionId(matchHistoryRequest.session_id);

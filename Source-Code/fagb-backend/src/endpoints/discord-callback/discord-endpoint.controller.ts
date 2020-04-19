@@ -22,7 +22,7 @@ export class DiscordEndpointController {
         const creds = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"); 
         const tokenUrl: string = discord.discord_token_uri + `?grant_type=authorization_code&code=${CODE}&redirect_uri=${REDIRECT_URI}`;
 
-        console.log(tokenUrl);
+        // console.log(tokenUrl);
 
         // Get access token from discord
         let response = await fetch(tokenUrl, {
@@ -45,7 +45,7 @@ export class DiscordEndpointController {
             }
         });
         responseJSON = await response.json();
-        console.log(responseJSON);
+        // console.log(responseJSON);
 
 
         // If response is successful create temp DB entries and create token for frontend

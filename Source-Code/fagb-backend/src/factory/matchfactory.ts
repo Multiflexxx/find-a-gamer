@@ -220,7 +220,7 @@ export class MatchFactory {
         let matchMakingRequest: MatchMakingRequest;
         try {
             const result: any = (await ConnectToDatabaseService.executeQuery(query))[0];
-            console.log(result);
+            // console.log(result);
             matchMakingRequest = new MatchMakingRequest(null, result.user_id, result.game_id, result.searching_for, result.players_in_party, result.casual, result.match_id, result.time_stamp, result.request_id)
         } catch (e) {
             console.error('MatchFactory getMostRecentRequestByUser(): Database query threw exception');
@@ -359,7 +359,7 @@ export class MatchFactory {
         for(let request of result) {
             history.push(await MatchFactory.matchToMatchMakingResponse(publicUser, new MatchMakingRequest(null, request.user_id, request.game_id, request.searching_for, request.players_in_party, request.casual, request.match_id, request.time_stamp, request.request_id)));
         }
-        console.log(history);
+        // console.log(history);
 
         return history;
     }
