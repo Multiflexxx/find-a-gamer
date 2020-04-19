@@ -15,7 +15,9 @@ export class Discord {
         // Create Discord Info object
         const discordInfo: DiscordInformation = new DiscordInformation(uuidv4(), userID, username, avatar, discriminator);
 
-        const query: QueryObject = QueryBuilder.saveDiscordInfo(discordInfo)
+        console.log(discordInfo);
+
+        const query: QueryObject = QueryBuilder.saveDiscordInfo(discordInfo);
         let successful: boolean = false;
         try {
             await ConnectToDatabaseService.executeQuery(query);
@@ -45,9 +47,29 @@ export class Discord {
         }
 
         if(!discordInfo) {
-            console.error("Discord getDiscordInformation(): Couldn't get Discord Information");            return null;
+            console.error("Discord getDiscordInformation(): Couldn't get Discord Information");            
+            return null;
         }
 
         return discordInfo;
+    }
+
+    public static async deleteDiscordInformation(token: string): Promise<boolean> {
+        const query: QueryObject = QueryBuilder.deleteDiscordInfo(token);
+        let successful: boolean = false;
+        try {
+            await ConnectToDatabaseService.executeQuery(query);
+            successful = true;
+        } catch(e) {
+            console.error("Discord deleteDiscordInformation(): Database query threw exception");
+            console.error(e);
+        }
+
+        if(!successful) {
+            console.error("Discord deleteDiscordInformation(): Couldn't delete Discord information");
+            return false;
+        }
+
+        return true;
     }
 }

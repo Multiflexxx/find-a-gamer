@@ -4,9 +4,9 @@ import { Discord } from 'src/factory/discord';
 
 @Controller('discord-data')
 export class DiscordDataController {
-    @Get()
+    @Post()
     public async getDiscordData(@Body() token: string): Promise<DiscordInformation> {
-        token = "1918e40e-05da-4687-94e9-2aadda531dd8";
+        // token = "1918e40e-05da-4687-94e9-2aadda531dd8";
         // Validate token format
         if(!token ||token.length < 36 || !(new RegExp('([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12})').test(token))) {
             throw new HttpException({

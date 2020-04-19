@@ -45,8 +45,7 @@ export class DiscordEndpointController {
             }
         });
         responseJSON = await response.json();
-        // console.log(responseJSON);
-
+        console.log(responseJSON);
 
         // If response is successful create temp DB entries and create token for frontend
         const token: string = await Discord.saveDiscordInformation(responseJSON.id, responseJSON.username, responseJSON.avatar, responseJSON.discriminator);
