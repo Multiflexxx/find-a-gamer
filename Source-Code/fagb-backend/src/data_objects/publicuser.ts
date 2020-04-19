@@ -22,15 +22,15 @@ export class PublicUser {
         this.games = games;
         this.languages = languages;
 
-        if (biography) {
-            this.biography = biography;
-        } else {
+        if (!biography) {
             this.biography = null;
-        }
-        if (profile_picture) {
-            this.profile_picture = profile_picture;
         } else {
+            this.biography = biography;
+        }
+        if (!profile_picture) {
             this.profile_picture = null;
+        } else {
+            this.profile_picture = profile_picture;
         }
     }
 }
