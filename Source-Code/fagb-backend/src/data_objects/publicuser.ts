@@ -22,8 +22,8 @@ export class PublicUser {
         this.games = games;
         this.languages = languages;
 
-        if (!biography) {
-            this.biography = null;
+        if (!biography || biography.length === 0) {
+            this.biography = '';
         } else {
             this.biography = biography;
         }

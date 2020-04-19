@@ -45,7 +45,7 @@ export class ProfileService {
     }
 
     let biography: string = '';
-    if (profileUpdateValue.biography.value !== '') {
+    if (profileUpdateValue.biography.value.length === 0) {
         console.log('Ist er leer?');
         biography = profileUpdateValue.biography.value;
     }
