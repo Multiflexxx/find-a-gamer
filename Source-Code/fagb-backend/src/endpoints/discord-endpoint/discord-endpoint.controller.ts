@@ -10,16 +10,46 @@ export class DiscordEndpointController {
     @Get()
     public async handleDiscordCallback(@Res() res: Response, @Req() request: Request) {
 
-        const CLIENT_ID = "700293853399351297";
-        const CLIENT_SECRET = "fqbew8BAtOAozW274iZIww9_O5xGbsx_";
-        const REDIRECT_URI = encodeURIComponent("http://localhost:3000/discord");
+        const path: string = "../../../databaseLogin.json";
+        const discord: any = require(path);
+
+        const CLIENT_ID = discord.client_id;
+        const CLIENT_SECRET = discord.client_secret;
+        const REDIRECT_URI = encodeURIComponent(discord.redirect_uri);
         const CODE = request.query.code
 
-        const creds = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"); //btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
+        const creds = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"); 
+
+
+
+        const tokenUrl: string = discord.discord_token_uri + `?grant_type=authorization_code&code=${CODE}&redirect_uri=${REDIRECT_URI}`;
+
+        let response = await fetch(tokenUrl, {
+            method: 'POST',
+            headers: {
+                Authorization: `Basic ${creds}`,
+            }
+        });
+
+        const ACCESS_TOKEN = await response.json().access_token;
+
+        const UsersUrl = discord.discord_users_uri;
+        response = await fetch(UsersUrl, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+            }
+        });
+
+
+        // If response is successful create temp DB entries and create token for frontend
         
+        
+        console.log(await response.json());
 
-        console.log(CODE);
-
+        // Send back Successful and Token 
+        
+        return res.redirect('/register?test=1234');
 
         // URL for redirect to discord
         // https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${redirect}
@@ -35,31 +65,6 @@ export class DiscordEndpointController {
         //     },
         //   });
         // const json = await response.json();
-
-        let url = `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${CODE}&redirect_uri=${REDIRECT_URI}`;
-
-        let response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                Authorization: `Basic ${creds}`,
-            }
-        });
-
-        const json = await response.json();
-
-        url = `http://discordapp.com/api/users/@me`
-        response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${json.access_token}`,
-            }
-        });
-        
-        console.log(await response.json());
-
-        // Send back Successful and Token 
-        
-        return res.redirect('/register?test=1234');
         
         // const content = {
         //     'client_id': CLIENT_ID,
