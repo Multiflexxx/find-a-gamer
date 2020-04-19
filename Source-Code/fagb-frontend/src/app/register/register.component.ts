@@ -78,7 +78,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   public ngOnInit(): void {
     this.createForm();
-
     this.regionService.getRegions()
       .subscribe(r => this.regionList = r);
 
@@ -101,6 +100,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       this.registerService.getDiscordData(this.token).subscribe(
         (data) => {
           console.log(data);
+          this.profileForm.controls.name.setValue(data.username);
+          this.profileForm.controls.tag.setValue(data.username + '#' + data.discriminator);
         },
         (error) => {
           console.error(error.error.error);
@@ -112,7 +113,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   public createForm(): void {
     this.profileForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
-      tag: ['', [Validators.required, Validators.pattern(this.regDisTag)]],
+      tag: [{value: '', disabled: true}, [Validators.required, Validators.pattern(this.regDisTag)]],
       email: ['', [Validators.required, emailValidator()]],
       date: ['', Validators.required],
       region: ['', Validators.required],
@@ -171,7 +172,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   public onSubmit(): void {
-    this.registerService.register(this.profileData, this.gameData).subscribe(
+    this.registerService.register(this.profileData, this.gameData, this.token).subscribe(
       (data) => {
         this.authenticationService.loginS().subscribe(
           (dataL) => {

@@ -13,6 +13,7 @@ import { Registration } from '../data_objects/registration';
 import { Session } from '../data_objects/session';
 import { ControlsMap } from '../_interface/controls-map';
 import { DiscordInformation } from '../data_objects/discordinformation';
+import { DiscordInfoRequest } from '../data_objects/discordinforequest';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,13 @@ export class RegisterService {
   public constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   public getDiscordData(token: string): Observable<DiscordInformation> {
-    return this.http.post<DiscordInformation>(this.urlD, token);
+    const discordInfoRequest: DiscordInfoRequest = new DiscordInfoRequest(
+      token
+    );
+    return this.http.post<DiscordInformation>(this.urlD, discordInfoRequest);
   }
 
-  public register(profileData: ControlsMap<AbstractControl>, gameData: ControlsMap<AbstractControl>): Observable<Session> {
+  public register(profileData: ControlsMap<AbstractControl>, gameData: ControlsMap<AbstractControl>, token: string): Observable<Session> {
     const games: Array<Game> = [];
     const gameids: Array<number> = JSON.parse(gameData.game.value);
     for (const gameid of gameids) {
@@ -42,8 +46,6 @@ export class RegisterService {
 
     const region: Region = new Region(profileData.region.value);
 
-    const discordToken: string = 'f961c7ff-f79c-4b13-9f8d-6e69a76c72e7';
-
     const registration: Registration = new Registration(
       profileData.email.value,
       profileData.password.value,
@@ -53,7 +55,7 @@ export class RegisterService {
       region,
       langs,
       games,
-      discordToken
+      token
     );
 
     return this.http.post<Session>(this.url, registration)
