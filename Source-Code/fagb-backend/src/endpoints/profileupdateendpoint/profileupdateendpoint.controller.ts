@@ -17,6 +17,7 @@ import { UserLanguagePairFactory } from '../../factory/userlanguagepairfactory';
 import { LanguageFactory } from '../../factory/languagefactory';
 import { RegionFactory } from '../../factory/regionfactory';
 import { Session } from '../../data_objects/session';
+import { PublicUser } from 'src/data_objects/publicuser';
 
 @Controller('profileupdateendpoint')
 export class ProfileUpdateEndpointController {
@@ -48,15 +49,15 @@ export class ProfileUpdateEndpointController {
             }, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        const result = await UserFactory.updateUser(editProfileRequest);
-        if(!result) {
+        const publicUser: PublicUser = await UserFactory.updateUser(editProfileRequest);
+        if(!publicUser) {
             throw new HttpException({
                 status: HttpStatus.INTERNAL_SERVER_ERROR,
                 error: 'Failed to update User'
             }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new EditProfileResponse(true, result);
+        return new EditProfileResponse(true, publicUser);
     }
 
     private static async validateInput(editProfileRequest: EditProfileRequest): Promise<boolean> {
