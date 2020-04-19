@@ -8,7 +8,6 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { MatchMakingRequest } from '../data_objects/matchmakingrequest';
 import { PublicUser } from '../data_objects/publicuser';
-import { Game } from '../data_objects/game';
 import { NotifyMatch } from '../data_objects/notifymatch';
 import { AbstractControl } from '@angular/forms';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
@@ -88,12 +87,14 @@ export class MatchService {
     return this.http.post<DeleteMatchMakingResponse>(this.urlD, deleteMatchMakingRequest);
   }
 
-  public getMatchHistory(): Observable<MatchHistoryResponse> {
+  public getMatchHistory(pageNumber: number, pageSize: number): Observable<MatchHistoryResponse> {
     const sessionId = this.cookieService.get('gamer');
 
     const matchHistoryRequest = new MatchHistoryRequest(
       sessionId,
       this.currentGamer.user_id,
+      pageSize * (pageNumber),
+      pageSize
     );
 
     return this.http.post<MatchHistoryResponse>(this.urlH, matchHistoryRequest);

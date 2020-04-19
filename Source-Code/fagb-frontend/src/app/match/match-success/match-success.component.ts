@@ -18,6 +18,6 @@ export class MatchSuccessComponent implements OnInit {
 
   public ngOnInit(): void {
     this.matchService.setCompState(MatchStatus.COMP_MATCH);
-    // localStorage.removeItem('matchMakingResponse');
+    localStorage.removeItem('matchMakingResponse');
   }
 }

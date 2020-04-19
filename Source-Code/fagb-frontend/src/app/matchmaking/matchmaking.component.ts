@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatchService } from '../_services';
 import { MatchMakingResponse } from '../data_objects/matchmakingresponse';
 import { MatchStatus } from '../_classes/match-status';
@@ -11,6 +11,8 @@ import { MatchStatus } from '../_classes/match-status';
 export class MatchmakingComponent implements OnInit {
   public matchResponse: MatchMakingResponse;
 
+  @Input() private match: MatchMakingResponse;
+
   public constructor(
     private matchService: MatchService,
   ) { }
@@ -19,7 +21,7 @@ export class MatchmakingComponent implements OnInit {
     if (this.matchService.getCompState() === MatchStatus.COMP_MATCH) {
       this.matchService.currentMatchMakingResponse.subscribe(data => this.matchResponse = data);
     } else if (this.matchService.getCompState() === MatchStatus.COMP_HISTORY) {
-      this.matchService.currentMatchMakingResponse.subscribe(data => this.matchResponse = data);
+      this.matchResponse = this.match;
     }
   }
 }

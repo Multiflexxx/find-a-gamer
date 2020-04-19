@@ -1,16 +1,23 @@
-<section class="section">
-    <div class="container">
-      <div class="columns is-mobile is-centered is-multiline">
-        <div class="column is-full-mobile">
-          <div class="box">
-            <div class="content has-text-centered">
-              <h1 class="title">Match XY</h1>
-            </div>
+<section>
+  <br>
+  <div class="container">
+    <mat-paginator [length]="historyResponse.totalAmount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10]" [showFirstLastButtons]="true"
+      (page)="pageEvent = handlePage($event)">
+    </mat-paginator>
+  </div>
+</section>
+
+<section *ngFor="let match of matchHistory" class="section">
+  <div class="container">
+    <div class="columns is-mobile is-centered is-multiline">
+      <div class="column is-full-mobile">
+        <div class="box">
+          <div class="content has-text-centered">
+            <h1 class="title">Match {{match.matchMakingRequest.time_stamp | date }}</h1>
           </div>
         </div>
       </div>
     </div>
-  
-    <app-matchmaking></app-matchmaking>
-  
-  </section>
+    <app-matchmaking [match]="match"></app-matchmaking>
+  </div>
+</section>
