@@ -189,7 +189,7 @@ describe('Check Registration-object', () => {
     const testRegion: Region = new Region(3, 'Asia');
     const testLanguages: Language[] = [new Language(1, 'German', 'DE'), new Language(2, 'English', 'US')];
     const testGames: Game[] = [new Game(2), new Game(3)];
-    const registration: Registration = new Registration('mail@mail.com', 'hash123', 'nickname', 'nickname#1234', testDate, testRegion, testLanguages, testGames);
+    const registration: Registration = new Registration('mail@mail.com', 'hash123', 'nickname', 'nickname#1234', testDate, testRegion, testLanguages, testGames, '123456');
 
     it('should be a valid registration', () => {
         expect(registration.email).toEqual('mail@mail.com');
@@ -201,6 +201,7 @@ describe('Check Registration-object', () => {
         expect(registration.languages[0].language_id).toEqual(1);
         expect(registration.games).toHaveLength(2);
         expect(registration.games[0].game_id).toEqual(2);
+        expect(registration.discordToken).toEqual('123456');
     });
 });
 
@@ -310,7 +311,7 @@ describe('Check PublicUser-object', () => {
         expect(user.discord_tag).toEqual('nickname#1234');
         expect(user.profile_picture).toBeNull();
         expect(user.cake_day).toEqual(cakeDate);
-        expect(user.biography).toBeNull();
+        expect(user.biography).toEqual('');
         expect(user.region).toEqual(testRegion);
         expect(user.games).toEqual(testGames);
         expect(user.languages).toEqual(testLanguages);

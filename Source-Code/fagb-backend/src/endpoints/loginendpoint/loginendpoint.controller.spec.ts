@@ -11,6 +11,8 @@ import { DeleteProfileRequest } from '../../data_objects/deleteprofilerequest';
 import { LoginResponse } from '../../data_objects/loginresponse';
 import { ProfileDeleteEndpointController } from '../profiledeleteendpoint/profiledeleteendpoint.controller';
 import { async } from 'rxjs/internal/scheduler/async';
+import { Discord } from '../../factory/discord';
+import { PublicUser } from '../../data_objects/publicuser';
 
 describe('Loginendpoint Controller', () => {
   let profileDeleteEndpointController: ProfileDeleteEndpointController;
@@ -31,6 +33,8 @@ describe('Loginendpoint Controller', () => {
     registrationEndpointController = module.get<RegistrationendpointController>(RegistrationendpointController);
     loginEndpointController = module.get<LoginendpointController>(LoginendpointController);
 
+    let discordToken: string = await Discord.saveDiscordInformation('456789', 'testNickname', '', '1234');
+
     registration = new Registration(
       'mail@mail' + randomNumber + '.com',
       'test123',
@@ -43,7 +47,7 @@ describe('Loginendpoint Controller', () => {
       ],
       [
         new Game(1)
-      ]
+      ], discordToken
     );
 
     login = new Login(null, 'mail@mail' + randomNumber + '.com', 'test123', true);
@@ -63,14 +67,20 @@ describe('Loginendpoint Controller', () => {
 
   it('Should create a new registration on database and delete', async () => {
 
-    const registrationResult = await registrationEndpointController.handleRegistration(registration);
+    let registrationResult;
+    try {
+      registrationResult = await registrationEndpointController.handleRegistration(registration);
+    } catch (e) {
+      console.log(e);
+    }
+    
     expect(registrationResult).toBeDefined();
 
     const userId = registrationResult.user_id;
 
     loginResponse = await loginEndpointController.handleLogin(login);
 
-    const user: User = new User(userId, 'mail@mail' + randomNumber + '.com', 'test123', 'testNickname', 'testNickname#1234', '', new Date('1999-12-31T23:00:00.000Z'), new Date('1999-12-31T23:00:00.000Z'), '');
+    const user: PublicUser = new PublicUser(loginResponse.user.user_id, 'testNickname', 'testNickname#1234', new Date('1999-12-31T23:00:00.000Z'), new Region(1, 'EU'), [new Game(1)], [new Language(1)]);
 
     expect(loginResponse).toBeDefined();
     expect(loginResponse.user.user_id).toEqual(userId);

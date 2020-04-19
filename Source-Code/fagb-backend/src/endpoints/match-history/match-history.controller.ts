@@ -1,12 +1,12 @@
 import { Controller, HttpException, HttpStatus, Body, Get, Post } from '@nestjs/common';
-import { MatchHistoryRequest } from 'src/data_objects/matchhistoryrequest';
-import { MatchHistoryResponse } from 'src/data_objects/matchhistoryresponse';
-import { SessionFactory } from 'src/factory/sessionfactory';
-import { Session } from 'src/data_objects/session';
-import { MatchFactory } from 'src/factory/matchfactory';
-import { PublicUser } from 'src/data_objects/publicuser';
-import { UserFactory } from 'src/factory/userfactory';
-import { MatchMakingResponse } from 'src/data_objects/matchmakingresponse';
+import { MatchHistoryRequest } from '../../data_objects/matchhistoryrequest';
+import { MatchHistoryResponse } from '../../data_objects/matchhistoryresponse';
+import { SessionFactory } from '../../factory/sessionfactory';
+import { Session } from '../../data_objects/session';
+import { MatchFactory } from '../../factory/matchfactory';
+import { PublicUser } from '../../data_objects/publicuser';
+import { UserFactory } from '../../factory/userfactory';
+import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 
 @Controller('match-history')
 export class MatchHistoryController {

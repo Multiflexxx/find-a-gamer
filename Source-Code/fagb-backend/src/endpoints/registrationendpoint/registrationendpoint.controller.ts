@@ -15,8 +15,8 @@ import { LanguageFactory } from '../../factory/languagefactory';
 import { User } from '../../data_objects/user';
 import { GameFactory } from '../../factory/gamefactory';
 import { RegionFactory } from '../../factory/regionfactory';
-import { Discord } from 'src/factory/discord';
-import { DiscordInformation } from 'src/data_objects/discordinformation';
+import { Discord } from '../../factory/discord';
+import { DiscordInformation } from '../../data_objects/discordinformation';
 
 @Controller('registrationendpoint')
 export class RegistrationendpointController {
