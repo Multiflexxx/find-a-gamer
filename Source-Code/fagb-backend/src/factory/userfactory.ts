@@ -18,6 +18,7 @@ import { EditProfileRequest } from '../data_objects/editprofilerequest';
 
 export class UserFactory {
     public static async createUser(registration: Registration): Promise<User> {
+        // Create discord avatar URL from discordInformation
         // Create User
         const query: QueryObject = QueryBuilder.createUser(registration);
         let successful: boolean = false;

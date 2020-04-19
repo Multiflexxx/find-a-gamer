@@ -14,7 +14,7 @@ export class MatchHistoryController {
     @Post()
     public async getMatchHistory(@Body() matchHistoryRequest: MatchHistoryRequest): Promise<MatchHistoryResponse> {
 
-        matchHistoryRequest = new MatchHistoryRequest("c943e748-9c53-4f9b-bbc8-690a4813bf81", 201, 0, 10);
+        // matchHistoryRequest = new MatchHistoryRequest("c943e748-9c53-4f9b-bbc8-690a4813bf81", 201, 0, 10);
         // Validate Request
         // Get Session by Session Id
         const session: Session = await SessionFactory.getSessionBySessionId(matchHistoryRequest.session_id);
