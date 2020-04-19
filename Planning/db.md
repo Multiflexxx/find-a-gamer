@@ -113,6 +113,17 @@ Create Table MatchMakingRequest(
 );
 ```
 
+### Discord_Info
+```sql
+Create Table Discord_Info(
+    token binary(16) NOT NULL,
+    username varchar(32) NOT NULL,
+    avatar varchar(32),
+    discriminator varchar(10),
+    PRIMARY KEY (token)
+);
+```
+
 ###
 
 ## Own Functions:
