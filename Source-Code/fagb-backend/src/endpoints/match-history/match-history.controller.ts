@@ -11,7 +11,7 @@ import { MatchMakingResponse } from '../../data_objects/matchmakingresponse';
 @Controller('match-history')
 export class MatchHistoryController {
 
-    @Get()
+    @Post()
     public async getMatchHistory(@Body() matchHistoryRequest: MatchHistoryRequest): Promise<MatchHistoryResponse> {
 
         // matchHistoryRequest = new MatchHistoryRequest("77016cf2-2600-4d8b-b2dd-2b1bebf2a29d", 201, 0, 10);

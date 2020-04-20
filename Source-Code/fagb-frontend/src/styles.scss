@@ -35,9 +35,9 @@ $light: hsl(0, 0%, 96%);
 // Update some of Bulma's component variables 
 $title-color: $light;
 
-$body-background-color: $dark;
+$body-background-color: hsl(0, 0%, 17%);;
 
-$navbar-background-color: $dark;
+$navbar-background-color: hsl(217, 71%, 53%);
 $navbar-item-color: $light;
 $navbar-item-hover-background-color: $dark;
 

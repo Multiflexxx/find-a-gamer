@@ -6,3 +6,15 @@
 .title {
   color: white;
 }
+
+mat-spinner {
+  margin: 0 auto 1em;
+}
+
+.match {
+  margin-bottom: 3rem;
+}
+
+.match:nth-last-child() {
+  margin-bottom: 0rem;
+}

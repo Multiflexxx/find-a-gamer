@@ -23,8 +23,9 @@
                 </mat-checkbox>
               </div>
               <button mat-flat-button color="primary" class="button" [disabled]="loading || loginForm.invalid">
-                <mat-icon *ngIf="loading"><mat-spinner color="accent" diameter="20">
-                </mat-spinner></mat-icon>
+                <mat-icon *ngIf="loading">
+                  <mat-spinner color="accent" diameter="20"></mat-spinner>
+                </mat-icon>
                 Log In
                 <i class="fa fa-sign-in" aria-hidden="true"></i>
               </button>

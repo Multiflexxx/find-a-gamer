@@ -1,5 +1,5 @@
-import { MatchMakingResponse } from "./matchmakingresponse";
-import { PublicUser } from "./publicuser";
+import { MatchMakingResponse } from './matchmakingresponse';
+import { PublicUser } from './publicuser';
 
 export class MatchHistoryResponse {
     public totalAmount: number;
