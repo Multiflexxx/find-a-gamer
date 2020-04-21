@@ -131,11 +131,12 @@ export class ProfileUpdateComponent implements OnInit {
       (data) => {
         this.router.navigate(['/profile']);
         this.loading = false;
+        this.toastrService.success('Your profile was successful changed');
       },
       (error) => {
         this.loading = false;
-        console.log('Fehler');
         console.log(error.error);
+        this.toastrService.error(error.error, 'Editing failed');
       }
     );
   }
@@ -145,7 +146,7 @@ export class ProfileUpdateComponent implements OnInit {
       (data) => {
         this.authenticationService.logout();
         this.router.navigate(['']);
-        this.toastrService.error('User with the discord tag' + data.publicUser.discord_tag + ' was deleted');
+        this.toastrService.success('User with the discord tag' + data.publicUser.discord_tag + ' was deleted');
       },
       (error) => {
         console.log(error.error.error);

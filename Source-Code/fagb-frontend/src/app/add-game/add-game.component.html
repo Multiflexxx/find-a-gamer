@@ -22,7 +22,7 @@
           <div class="card" [ngClass]="isSelected[game.game.game_id] ? 'is-selected' : 'none'">
             <div class="card-image">
               <figure class="image is-2by1">
-                <img [src]="game.game.cover_link">
+                <img [src]="game.game.cover_link" alt="{{game.game.name}}">
               </figure>
             </div>
             <div class="card-header">

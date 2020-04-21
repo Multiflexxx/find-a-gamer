@@ -1,21 +1,21 @@
 <section class="section">
   <div class="container">
     <div class="columns is-mobile is-centered is-vcentered is-multiline">
-      <div class="column is-one-fifths-tablet is-half-mobile">
-        <figure class="image">
-          <img class="is-rounded img-shadow" [src]="gamer.profile_picture">
+      <div class="column is-half-mobile">
+        <figure class="image is-96x96 has-image-centerd">
+          <img class="is-rounded img-shadow " [src]="gamer.profile_picture" alt="{{gamer.nickname}}">
         </figure>
       </div>
       <div class="column is-four-fifths-tablet is-full-mobile">
-        <div class="box">
+        <div class="box current-user">
           <div class="content has-text-centered">
             <h1 class="title">{{gamer.nickname}}</h1>
             <p class="text">{{gamer.discord_tag}}</p>
           </div>
         </div>
       </div>
-      <div class="column is-one-fifths-tablet is-half-mobile">
-        <a class="button is-link" [routerLink]="['/profile-update']" routerLinkActive="router-link-active" >
+      <div class="column is-two-thirds-mobile">
+        <a class="button is-link is-fullwidth" [routerLink]="['/profile-update']" routerLinkActive="router-link-active">
           <span class="icon">
             <i class="far fa-user-circle"></i>
           </span>
@@ -65,7 +65,7 @@
           <div *ngIf="i<6" class="card-image">
             <div class="overlay">
               <figure class="image is-2by1">
-                <img class="picture" [src]="game.cover_link">
+                <img class="picture" [src]="game.cover_link" alt="{{game.name}}">
               </figure>
             </div>
           </div>

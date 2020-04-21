@@ -52,7 +52,7 @@ export class MatchProcessComponent implements OnInit {
         this.subscription.unsubscribe();
         localStorage.removeItem('matchMakingResponse');
         this.router.navigate(['/match']);
-        this.toastrService.error('Match request with id ' + data.request.request_id + ' was deleted');
+        this.toastrService.success('Match request with id ' + data.request.request_id + ' was deleted');
       },
       (error) => {
         console.log(error.error.error);
