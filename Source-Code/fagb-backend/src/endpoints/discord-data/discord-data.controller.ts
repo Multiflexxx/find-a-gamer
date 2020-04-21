@@ -1,7 +1,7 @@
 import { Controller, Post, Body, HttpException, HttpStatus, Get } from '@nestjs/common';
 import { DiscordInformation } from '../../data_objects/discordinformation';
 import { Discord } from '../../factory/discord';
-import { DiscordInfoRequest } from 'src/data_objects/discordinforequest';
+import { DiscordInfoRequest } from '../../data_objects/discordinforequest';
 
 @Controller('discord-data')
 export class DiscordDataController {
