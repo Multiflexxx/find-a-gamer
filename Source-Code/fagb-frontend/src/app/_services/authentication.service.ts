@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AbstractControl } from '@angular/forms';
@@ -29,15 +31,15 @@ export class AuthenticationService {
   public currentGamer: Observable<PublicUser>;
   private url: string = '/loginendpoint';
 
-
-
   public constructor(private http: HttpClient, private cookieService: CookieService) {
     this.currentGamerSubject = new BehaviorSubject<PublicUser>(null);
     this.currentGamer = this.currentGamerSubject.asObservable();
   }
 
   public login(loginValue: ControlsMap<AbstractControl>): Observable<LoginResponse> {
-    const login: Login = new Login(null, loginValue.email.value, loginValue.password.value, loginValue.check.value);
+    const hash: string = bcrypt.hashSync(loginValue.password.value, '$2a$10$6SGv47p.FlJYI/WsYJKWle');
+    const login: Login = new Login(null, loginValue.email.value, hash, loginValue.check.value);
+
 
     return this.http.post<LoginResponse>(this.url, login)
       .pipe(map(data => {

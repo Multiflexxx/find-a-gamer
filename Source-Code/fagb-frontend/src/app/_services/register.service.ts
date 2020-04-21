@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AbstractControl } from '@angular/forms';
@@ -46,9 +48,11 @@ export class RegisterService {
 
     const region: Region = new Region(profileData.region.value);
 
+    const hash: string = bcrypt.hashSync(profileData.password.value, '$2a$10$6SGv47p.FlJYI/WsYJKWle');
+
     const registration: Registration = new Registration(
       profileData.email.value,
-      profileData.password.value,
+      hash,
       profileData.name.value,
       profileData.tag.value,
       profileData.date.value,

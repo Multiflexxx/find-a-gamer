@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -67,8 +69,8 @@ export class ProfileService {
     let nPassword: string = null;
 
     if (profileUpdateValue.oPassword.value !== '' && profileUpdateValue.nPassword.value !== '') {
-      oPassword = profileUpdateValue.oPassword.value;
-      nPassword = profileUpdateValue.nPassword.value;
+      oPassword = bcrypt.hashSync(profileUpdateValue.oPassword.value, '$2a$10$6SGv47p.FlJYI/WsYJKWle');
+      nPassword = bcrypt.hashSync(profileUpdateValue.nPassword.value, '$2a$10$6SGv47p.FlJYI/WsYJKWle');
     }
 
     const editprofileRequest: EditProfileRequest = new EditProfileRequest(
