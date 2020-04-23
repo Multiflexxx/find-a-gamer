@@ -53,6 +53,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   public regionList: Array<Region> = [];
   public langList: Array<Language> = [];
 
+  public discord: string = (require('../../../discordAPI.json')).link;
+
   @ViewChild('stepper') public stepper: MatStepper;
 
   private successful: boolean;

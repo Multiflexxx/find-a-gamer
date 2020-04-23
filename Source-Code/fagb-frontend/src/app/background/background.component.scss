@@ -6,6 +6,7 @@
     top: 0vh;
     right: 0vw;
     transform: rotate(20deg);
+    z-index: -1;
 }
 
 #shape2{
@@ -16,6 +17,7 @@
     top: 57vh;
     right: 20vw;
     transform: rotate(-9deg);  
+    z-index: -1;
 }
 
 #shape4{
@@ -28,6 +30,7 @@
     right: 30vw;
     transform: rotate(25deg);
     animation: rotate 2s linear 0s infinite alternate forwards;
+    z-index: -1;
 }
 
 #shape6{
@@ -37,6 +40,7 @@
     bottom: 0vh;
     left: 0;
     position: fixed;
+    z-index: -1;
 }
 
 #shape7{
@@ -44,7 +48,8 @@
     height: 0;
     border-left: 12vw solid #E8A87C;
     border-bottom: 17vh solid transparent;
-    position: fixed;    
+    position: fixed;
+    z-index: -1;    
 }
 
 #shape8{
@@ -56,6 +61,7 @@
     top: -10vh;
     right: 40vw;
     transform-origin: bottom center;
+    z-index: -1;
 }
 
 #shape9{
@@ -67,6 +73,7 @@
     left: 18vw;
     position: fixed;
     animation: getBig 4s linear 0s infinite alternate forwards;
+    z-index: -1;
 }
 
 #shape10{
@@ -80,6 +87,7 @@
     right: 0;
     transform: rotate(8deg);
     animation: moveup 4s linear 0s infinite alternate forwards;
+    z-index: -1;
 }
 
 #shape11{
@@ -91,7 +99,7 @@
     right: 50vw;
     position: fixed;
     transform: rotate(200deg);
-    
+    z-index: -1;
 }
 
 @media(min-width: 769px){ 

@@ -55,7 +55,9 @@ $footer-background-color: $dark;
 $footer-color: true;
 
 footer {
+  background-color: $footer-background-color;
   color: $light;
+  z-index: 999;
 }
 
 $card-color: $light;
