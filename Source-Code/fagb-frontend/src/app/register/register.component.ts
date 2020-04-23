@@ -28,6 +28,7 @@ import { MatStepper } from '@angular/material/stepper';
 export class RegisterComponent implements OnInit, AfterViewInit {
   // Stepper values
   public isEditable: boolean = false;
+  public isCompleted: boolean = false;
   public hideP: boolean = true;
   public hidePv: boolean = true;
 
@@ -88,15 +89,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     this.gameService.setCompState(GameSelectStatus.COMP_REGISTER);
     this.gameService.setFormState(GameSelectStatus.FORM_REGISTER);
-  }
 
-  public ngAfterViewInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       this.successful = params.successful;
       this.token = params.token;
       console.log(this.token);
+      this.isCompleted = this.successful;
     });
+  }
 
+  public ngAfterViewInit(): void {
     if (this.successful) {
       this.stepper.selectedIndex = 1;
       this.registerService.getDiscordData(this.token).subscribe(

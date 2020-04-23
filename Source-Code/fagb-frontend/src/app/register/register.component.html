@@ -4,20 +4,20 @@
       <div class="box">
         <div id="stepper">
           <mat-vertical-stepper linear #stepper>
-            <mat-step state="discord">
+            <mat-step state="discord" [editable]="isEditable" [completed]="isCompleted">
               <ng-template matStepLabel><span class="ng-template">Discord authentication</span></ng-template>
               <div>
                 <h6 class="title is-6">Please connect your account with discord</h6>
                 <a
                   href="{{discord}}">
-                  <button mat-flat-button matStepperNext class="button" color="primary">Connect
+                  <button mat-flat-button class="button" type="button" color="primary">Connect
                     to discord</button>
                 </a>
               </div>
             </mat-step>
 
 
-            <mat-step [stepControl]="profileForm" state="profile" [optional]=true [editable]="isEditable">
+            <mat-step [stepControl]="profileForm" state="profile" [editable]="isEditable">
               <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()">
                 <ng-template matStepLabel><span class="ng-template">Fill out your profile</span></ng-template>
                 <div>
@@ -159,7 +159,7 @@
 
             <!-- Icon overrides. -->
             <ng-template matStepperIcon="discord">
-              <mat-icon class="material-icons-outlined">account_circle</mat-icon>
+              <mat-icon class="material-icons-outlined"><i class="fab fa-discord" style="color: white;"></i></mat-icon>
             </ng-template>
             <ng-template matStepperIcon="profile">
               <mat-icon class="material-icons-outlined">account_circle</mat-icon>
