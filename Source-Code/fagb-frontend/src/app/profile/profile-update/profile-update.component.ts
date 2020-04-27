@@ -135,8 +135,8 @@ export class ProfileUpdateComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        console.log(error.error);
-        this.toastrService.error(error.error, 'Editing failed');
+        console.log(error.error.error);
+        this.toastrService.error(error.error.error, 'Editing failed');
       }
     );
   }
