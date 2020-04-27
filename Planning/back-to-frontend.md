@@ -1,172 +1,234 @@
 # Communication between Back- and Frontend
 
+
 |Action|Request Type|Request Parameter|Response Parameter|
 |---:|---:|---|---|
-|Landing Page|POST|<code>string: sessionID</code>|<code>bool: loggedIn</code> <br> <code>string: welcomeText</code><br><code>array: popularGames</code><br><code>object: user</code>|
-|Profile|POST|<code>string: sessionID</code>|<code>object: user</code><br><code>array: matchHistory</code>
-|Registration|POST|<code>object: registration</code>|<code>bool: successful</code><br><code>string: sessionID</code>
-|Login|POST|<code>string: email</code><br><code>string: pwdHash</code><br><code>bool: stayLoggedIn</code>|<code>string: sessionID</code><br><code>bool: stayLoggedIn</code>
-|Matchmaking- <br> Request|POST|<code>string: sessionID</code><br><code>object: MatchMakingRequest|<code>bool: successful</code><br><code>object: MatchMakingRequest</code>
-|Match-Found- <br> Request|POST|<code>string: sessionID</code><br><code>int: MatchMakingRequestID|<code>bool: matchFound</code><br><code>object: Match</code>
-|Edit Profile|POST|<code>object: user</code><br><code>string: sessionID</code>|<code>bool: successful</code><br><code>object: user</code>
+|Delete Match-<br>Request|POST|<code>object: </code><br><code>DeleteMatchMakingRequest</code>|<code>object: DeleteMatchMakingResponse</code>|
+|Discord<br>Callback|GET|<code>object: Request</code>|<code>void</code>|
+|Discord<br>Data|POST|<code>object: DiscordInfoRequest</code>|<code>object: DiscordInformation</code>|
+|Games Data|GET|| <code> object[]: GameResponse[]</code>|
+|Language Data|GET|| <code> object[]: Language[]</code>|
+|Login|POST|<code> object: Login</code>|<code> object: LoginResponse</code>|
+|Match History|POST|<code> object: MatchHistoryRequest</code>|<code> object: MatchHistoryResponse</code>|
+|MatchMaking- <br> Request|POST|<code> object: MatchMakingRequest</code>|<code> object: MatchMakingResponse</code>|
+|Match Notify|POST|<code> object: NotifyMatch</code>|<code> object: MatchMakingResponse</code>|
+|Delete Profil|POST|<code> object: DeleteProfileRequest</code>|<code> object: DeleteProfileResponse</code>|
+|Update Profile|POST|<code> object: EditProfileRequest</code>|<code> object: EditProfileResponse</code>|
+|Region Data|GET||<code> object[]: Region[]</code>|
+|Register|POST|<code> object: Registration</code>|<code> object: Session</code>|
 
 ## Object Definitions
-### User
+### DeleteMatchMakingRequest
 ```javascript
-class User {
-  "user_id": 12,
-  "email": "mail@mail.com",
-  "password_hash": "123456",
-  "nickname": "GamerName",
-  "discord_tag": "User#1234",
-  "profile_picture": "/link/to/image.png",
-  "cake_day": "01.12.2020",
-  "birthdate": "01.01.1970",
-  "biography": "I am a gamer",
-  "region": {region},
-  "games": [{game}],
-  "languages": [{languages}]
+class DeleteMatchMakingRequest {
+  "request_id": number,
+  "session_id": string
 }
 ```
 
-### Public User
+### DeleteMatchMakingResponse
 ```javascript
-class PublicUser {
-  "user_id": 12,
-  "nickname": "GamerName",
-  "discord_tag": "User#1234",
-  "profile_picture": "/link/to/image.png",
-  "cake_day": "01.12.2020",
-  "biography": "I am a gamer",
-  "region": {region},
-  "games": [{game}],
-  "languages": [{languages}]
+class DeleteMatchMakingResponse {
+  "successful": true,
+  "request": DeleteMatchMakingRequest
 }
 ```
 
-### Registration
-```javascript
-class Registration {
-  "email": "mail@mail.com",
-  "password_hash": "123456",
-  "nickname": "GamerName",
-  "discord_tag": "User#1234",
-  "birthdate": "01.01.1970",
-  "region": "Europe",
-  "languages": [{language}, {language}],
-  "games": [{game}, {game}]
-}
-```
-
-### Language
-```javascript
-class Language {
-  "language_id": 15,
-  "name": "German",
-  "language_code": "DE"
-}
-```
-
-### Game
-```javascript
-class Game {
-  "game_id": 12,
-  "name": "Apex Legends",
-  "cover_link": "https://url",
-  "game_description": "Battle Royale shooter",
-  "publisher": "EA",
-  "published": "01.01.1970"
-}
-```
-
-### MatchMakingRequest
-```javascript
-class MatchMakingRequest {
-  "session_id": "nlksfjom20ü4820-b5rw0er98nmw"
-  "user_id": 12,
-  "game_id": 1,
-  "searching_for": 3,
-  "players_in_party": 2,
-  "casual": true, //false => Looking for Competitive
-  "time_stamp": null //always null when incoming
-}
-```
-
-### MatchMakingResponse
-```javascript
-class MatchMakinResponse {
-  "users": [{PublicUser}],
-  "matchMakingRequest": {MatchMakingRequest}
-}
-```
-
-### DeleteProfilerRequest
+### DeleteProfileRequest
 ```javascript
 class DeleteProfileRequest {
-  "user": {User},
-  "session_id": "klkajsd-asdljiasdlkj-asdas"
+  "publicUser": PublicUser,
+  "session_id": string
 }
 ```
 
 ### DeleteProfileResponse
 ```javascript
 class DeleteProfileResponse {
-  "successfull": true,
-  "user": {User}
+  "successful": true,
+  "publicUser": PublicUser
+}
+```
+
+### DiscordInfoRequest
+```javascript
+class DiscordInfoRequest {
+  "token": string
+}
+```
+
+### DiscordInformation
+```javascript
+class DiscordInformation {
+  "token": string,
+  "userID": number,
+  "username": string,
+  "avater": string,
+  "discriminator": string
 }
 ```
 
 ### EditProfileRequest
 ```javascript
 class EditProfileRequest {
-  "user": {User},
-  "session_id": "lkjlkj-zuiizads-sdasda"
+  "session_id": string,
+  "publicUser": PublicUser,
+  "oPassword": string,
+  "nPassword": string,
 }
 ```
 
 ### EditProfileResponse
 ```javascript
 class EditProfileResponse {
-  "successfull": true,
-  "user": {User}
+  "successful": true,
+  "publicUser": PublicUser
+}
+```
+
+### Game
+```javascript
+class Game {
+  "game_id": number,
+  "name": string,
+  "cover_link": string,
+  "game_description": string,
+  "publisher": string,
+  "published": Date,
+}
+```
+
+### GameResponse
+```javascript
+class GameResponse {
+  "game": Game;
+  "counter": number;
+}
+```
+
+
+### Language
+```javascript
+class Language {
+  "language_id": number,
+  "name": string,
+  "language_code": string
 }
 ```
 
 ### Login
 ```javascript
-class Login {
- "session_id": "lkkjlk-asdasd-asdasd",
- "email": mail@mail.com,
- "password_hash": "öylkyöxlck<yöxcyapsoddsyxcy",
- "stay_logged_in": true
+class Login{
+  "seesion_id": string,
+  "email": string,
+  "password_hash": string,
+  "stay_logged_in": boolean,
 }
 ```
 
 ### LoginResponse
 ```javascript
 class LoginResponse {
- "successful": true,
- "session": {Session},
- "user": {User}
+  "successful": boolean,
+  "session": Session,
+  "user": PublicUser,
 }
 ```
 
-### NotifyMatch
-**TBD!**
+### MatchHistoryRequest
+```javascript
+class MatchHistoryRequest {
+  "session_id": string;
+  "user_id": number;
+  "first": number;
+  "next": number;
+}
+```
+
+### MatchHistoryResponse
+```javascript
+class MatchHistoryResponse {
+  "totalAmount": number;
+  "publicUser": PublicUser;
+  "matchHistory": MatchMakingResponse[];
+}
+```
+
+### MatchMakingRequest
+```javascript
+class MatchMakingRequest {
+  "request_id": number;
+  "session_id": string;
+  "user_id": number;
+  "game_id": number;
+  "searching_for": number;
+  "players_in_party": number;
+  "casual": boolean;
+  "time_stamp": Date;
+  "match_id": string;
+}
+```
+
+### MatchHistoryResponse
+```javascript
+class MatchHistoryResponse {
+    "user": PublicUser;
+    "game": Game;
+    "matchMakingRequest": MatchMakingRequest;
+    "matchedUsers": PublicUser[];
+}
+```
+
+### NotifiyMatch
+```javascript
+class MatchMakingRequest {
+  "request_id": number
+}
+```
+
+### PublicUser
+```javascript
+class PublicUser {
+  "user_id": number,
+  "nickname": string,
+  "discord_tag": string,
+  "profile_picture": string,
+  "cake_day": Date,
+  "biography": string,
+  "region": Region[],
+  "games": Game[],
+  "languages": Language[]
+}
+```
 
 ### QueryObject
 ```javascript
 class QueryObject {
- "query": "SELECT * FROM <TABLE>",
- "parameter": [any]
+ "query": string,
+ "parameter": any[]
 }
 ```
 
 ### Region
 ```javascript
 class Region {
- "region_id": 1,
- "name": "Europe"
+ "region_id": number,
+ "name": string
+}
+```
+
+### Registration
+```javascript
+class Registration {
+  "email": string,
+  "password_hash": string,
+  "nickname": string,
+  "discord_tag": string,
+  "birthdate": Date,
+  "region": string,
+  "languages": Language[],
+  "games": Game[],
+  "discordToken": string
 }
 ```
 
@@ -174,37 +236,62 @@ class Region {
 ```javascript
 class RegistrationResponse {
  "successful": true,
- "session_object": {Session},
- "message": "Message"
+ "session_object": Session,
+ "message": string
 }
+```
+
+### Response
+```javascript
+  class Response {
+    "successful": true,
+    "message": string
+  }
 ```
 
 ### Session
 ```javascript
 class Session {
- "session_id": 42,
- "user_id": 16,
- "expiration_date": {Date},
- "stay_logged_in": true
+  "session_id": number,
+  "user_id": number,
+  "expiration_date": Date,
+  "stay_logged_in": true
+}
+```
+
+### User
+```javascript
+class User {
+  "user_id": number,
+  "email": string,
+  "password_hash": string,
+  "nickname": string,
+  "discord_tag": string,
+  "profile_picture": string,
+  "cake_day": Date,
+  "birthdate": Date,
+  "biography": string,
+  "region": region,
+  "games": Game[],
+  "languages": Language[]
 }
 ```
 
 ### UserGamePair
 ```javascript
 class UserGamePair {
- "pair_id": 12,
- "user_id": 15,
- "game_id": 45
+ "pair_id": number,
+ "user_id": number,
+ "game_id": number
 }
 ```
 
 ### UserLanguagePair
 ```javascript
 class UserLanguagePair {
- "pair_id": 56,
- "user_id": 13,
- "language_id": 2
+ "pair_id": number,
+ "user_id": number,
+ "language_id": number
 }
-```
 
 Info how to serve frontend with backend [here](https://docs.nestjs.com/recipes/serve-static)

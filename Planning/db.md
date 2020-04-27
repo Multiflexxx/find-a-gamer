@@ -30,7 +30,7 @@ Create Table User (
 
 ### Region
 ```sql
-Create Table User (
+Create Table Region (
     region_id int AUTO_INCREMENT,
     region_name varchar(30),
     Primary Key (region_id)
