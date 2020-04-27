@@ -101,8 +101,8 @@ class Game {
 ### GameResponse
 ```javascript
 class GameResponse {
-  "game": Game;
-  "counter": number;
+  "game": Game,
+  "counter": number,
 }
 ```
 
@@ -138,44 +138,44 @@ class LoginResponse {
 ### MatchHistoryRequest
 ```javascript
 class MatchHistoryRequest {
-  "session_id": string;
-  "user_id": number;
-  "first": number;
-  "next": number;
+  "session_id": string,
+  "user_id": number,
+  "first": number,
+  "next": number,
 }
 ```
 
 ### MatchHistoryResponse
 ```javascript
 class MatchHistoryResponse {
-  "totalAmount": number;
-  "publicUser": PublicUser;
-  "matchHistory": MatchMakingResponse[];
+  "totalAmount": number,
+  "publicUser": PublicUser,
+  "matchHistory": MatchMakingResponse[],
 }
 ```
 
 ### MatchMakingRequest
 ```javascript
 class MatchMakingRequest {
-  "request_id": number;
-  "session_id": string;
-  "user_id": number;
-  "game_id": number;
-  "searching_for": number;
-  "players_in_party": number;
-  "casual": boolean;
-  "time_stamp": Date;
-  "match_id": string;
+  "request_id": number,
+  "session_id": string,
+  "user_id": number,
+  "game_id": number,
+  "searching_for": number,
+  "players_in_party": number,
+  "casual": boolean,
+  "time_stamp": Date,
+  "match_id": string,
 }
 ```
 
 ### MatchHistoryResponse
 ```javascript
 class MatchHistoryResponse {
-    "user": PublicUser;
-    "game": Game;
-    "matchMakingRequest": MatchMakingRequest;
-    "matchedUsers": PublicUser[];
+    "user": PublicUser,
+    "game": Game,
+    "matchMakingRequest": MatchMakingRequest,
+    "matchedUsers": PublicUser[],
 }
 ```
 
