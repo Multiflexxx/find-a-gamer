@@ -22,7 +22,7 @@
   "dependencies": {
     "@nestjs/common": "^6.11.11",
     "@nestjs/core": "^6.10.14",
-    "@nestjs/platform-express": "^6.10.14",
+    "@nestjs/platform-express": "^9.2.1",
     "@nestjs/serve-static": "^2.1.0",
     "@nestjs/typeorm": "^6.3.4",
     "@types/node-fetch": "^2.5.6",
